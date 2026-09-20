@@ -4,19 +4,24 @@
 #  You should NOT need to edit this file when adding chapter content.
 # ============================================================
 
+import random
+
 import pygame
 import config
 import game_state
 import data.chapters as chapters_data
 from story.engine     import StoryEngine
-from story.characters import CharacterLayer
+from story.characters import CharacterLayer, get_slot_width
+from story.effects    import SmokeFX
 from popups           import scan_popup, image_popup
+
 
 WIDTH = HEIGHT = 0
 _go_to_scene   = None
 
 _engine = None
 _chars  = None
+_smoke  = None
 _last_ticks = 0
 
 # _dbox is recomputed every frame from character bounds + text length.
@@ -36,6 +41,12 @@ _fade_phase    = None       # None | "out" | "hold" | "in"
 _fade_alpha    = 0
 _fade_timer    = 0.0
 
+# ── Camera shake (slide flag: "shake": True) ─────────────────
+SHAKE_DURATION  = 0.45     # seconds the shake lasts after landing
+SHAKE_INTENSITY = 0.008    # max offset as a fraction of screen width
+_shake_timer = 0.0
+_shake_surf: pygame.Surface | None = None
+
 # ── Chapter-complete overlay ──────────────────────────────────
 _chapter_done  = False
 _end_buttons   = {}     # {"repeat": Rect, "menu": Rect, "next": Rect}
@@ -47,6 +58,7 @@ _logo_cache       : dict = {}
 _choice_img_cache : dict = {}
 _font_body               = None
 _font_hint               = None
+_dialogue_font           = None
 
 # ── Dialogue box style ────────────────────────────────────────
 _DBOX_FILL   = (252, 242, 215)
@@ -93,8 +105,54 @@ _CROP_WATER_COLORS = {
 }
 
 # ── Layout constants ──────────────────────────────────────────
-_CHAR_GAP_FRAC    = 0.0001   # gap between character right/left edge and box
-_EDGE_MARGIN_FRAC = 0.038   # margin from the opposite screen edge (~2 visual inches)
+_EDGE_MARGIN_FRAC = 0.03
+
+# Each character occupies one fixed invisible horizontal slot.
+# The character itself is rendered at CHARACTER_W × 727 px by
+# story/characters.py.
+_CHARACTER_SLOT_GAP = 20
+
+# Dialogue box placement. The box uses whatever horizontal space
+# remains after left/right character slots are accounted for, then
+# clamps to a maximum width so the box stays compact even when the
+# characters leave a lot of room.
+_DIALOGUE_TOP_FRAC = 0.12
+_DIALOGUE_MAX_HEIGHT_FRAC = 0.22
+_DIALOGUE_MAX_WIDTH_FRAC = 0.52
+
+# Middle margin between the characters' artwork and the dialogue
+# box: 5% of screen width when the box shares the screen with one
+# character, 2% on each side when characters stand on both sides.
+# Measured from the art's actual drawn edges so the box never sits
+# on top of a character.
+_DBOX_SIDE_MARGIN_FRAC = 0.05
+_DBOX_MID_MARGIN_FRAC = 0.02
+
+# Padding around the box's content, as a fraction of screen width.
+# Shared by _compute_dbox() (sizing) and _draw_dbox() (drawing) so
+# the two always agree.
+_DBOX_PAD_FRAC = 0.014
+
+# Base dialogue text size, as a fraction of the box's inner text
+# width. Because the box's width is whatever space the character
+# slots leave over, the text automatically gets smaller when 1-2
+# characters are on screen and bigger when the box is wider.
+_DIALOGUE_FONT_W_FRAC = 0.042
+
+# Ceiling for the dialogue font, as a fraction of screen height
+# (POINT size). Deliberately much smaller than the body font
+# (0.065 in _make_fonts) so dialogue text stays compact.
+_DIALOGUE_MAX_FONT_FRAC = 0.042
+
+# Point-size fraction for the small corner hint line inside the
+# dialogue box ("tap screen to continue..."). Smaller than the
+# shared _font_hint so it adds less height to every box.
+_DIALOGUE_HINT_PT_FRAC = 0.022
+
+# The font will shrink only as much as needed. The floor is stored
+# as a fraction of screen height so it stays readable on any
+# resolution.
+_DIALOGUE_MIN_FONT_FRAC = 0.024
 
 
 # ─────────────────────────────────────────────────────────────
@@ -103,7 +161,7 @@ _EDGE_MARGIN_FRAC = 0.038   # margin from the opposite screen edge (~2 visual in
 
 def init(width, height, go_to_scene_callback):
     global WIDTH, HEIGHT, _go_to_scene, _last_ticks
-    global _font_body, _font_hint
+    global _font_body, _font_hint, _smoke
 
     WIDTH, HEIGHT = width, height
     _go_to_scene  = go_to_scene_callback
@@ -112,6 +170,7 @@ def init(width, height, go_to_scene_callback):
 
     scan_popup.init(WIDTH, HEIGHT)
     image_popup.init(WIDTH, HEIGHT)
+    _smoke = SmokeFX(width, height)
     _last_ticks = pygame.time.get_ticks()
 
 
@@ -159,7 +218,42 @@ def _sync_chars():
     s = _engine.slide
     if "day" in s:
         game_state.day = s["day"]
-    _chars.set_slide(s.get("chars", {}), _engine.active_char)
+    _chars.set_slide(
+        s.get("chars", {}),
+        _engine.active_char,
+        dim_others=bool(s.get("dim_inactive", False)),
+    )
+    _start_shake_if_flagged()
+
+    # Smoke panels (e.g. S2P21) also fire a dense one-shot burst on
+    # arrival; emission continues while the slide stays on screen.
+    if _smoke is not None:
+        if s.get("smoke"):
+            _smoke.start(burst=True)
+        else:
+            _smoke.stop()
+
+
+def _start_shake_if_flagged():
+    """Called every time we land on a slide. If the slide carries the
+    "shake" flag, kick off a camera shake — e.g. tapping from S2P20
+    into S2P21 (the Baron's explosion) rattles the screen."""
+    global _shake_timer
+    if _engine is not None and _engine.slide.get("shake"):
+        _shake_timer = SHAKE_DURATION
+
+
+def _blit_shaken(surf: pygame.Surface):
+    """Present the offscreen frame with a decaying random offset.
+    The thin gaps this reveals at the screen edges read as impact."""
+    if _shake_timer <= 0 or _shake_surf is None:
+        return
+    t = _shake_timer / SHAKE_DURATION
+    mag = int(SHAKE_INTENSITY * WIDTH * t)
+    dx = random.randint(-mag, mag)
+    dy = random.randint(-mag, mag)
+    surf.fill((0, 0, 0))
+    surf.blit(_shake_surf, (dx, dy))
 
 
 def _on_chapter_end():
@@ -233,72 +327,395 @@ def _get_choice_img(path: str, max_w: int, max_h: int) -> pygame.Surface:
 #  Dynamic dialogue box — sized to text, anchored to head
 # ─────────────────────────────────────────────────────────────
 
-def _wrapped_line_count(text: str, max_px: int) -> int:
-    """Count how many visual lines the text wraps into."""
+def _wrapped_line_count(text: str, max_px: int, font=None) -> int:
+    """Count visual lines using the supplied font and width."""
+    if font is None:
+        font = _font_body
+
     words = text.split()
-    line  = ""
+    if not words:
+        return 1
+
+    line = ""
     count = 0
+
     for word in words:
         test = (line + " " + word).strip()
-        if _font_body.size(test)[0] <= max_px:
+
+        if font.size(test)[0] <= max_px:
             line = test
         else:
             if line:
                 count += 1
-            line = word
+                line = word
+            else:
+                # A single word is wider than the box. Count it as
+                # one line; _draw_wrapped() will place it on a line.
+                count += 1
+                line = ""
+
     if line:
         count += 1
+
     return max(count, 1)
+
+
+def _dialogue_min_font_px() -> int:
+    """Smallest allowed dialogue font size, in screen pixels."""
+    return max(16, int(HEIGHT * _DIALOGUE_MIN_FONT_FRAC))
+
+
+# Pixel-sized dialogue fonts are created during _fit_dialogue_font(),
+# which runs every frame — cache them so the shrink search only pays
+# the cost once per size.
+_font_px_cache: dict[int, pygame.font.Font] = {}
+
+
+def _make_font_px(size_px: int):
+    """Create (and cache) the story font at an exact pixel size."""
+    size_px = max(1, int(size_px))
+
+    cached = _font_px_cache.get(size_px)
+    if cached is not None:
+        return cached
+
+    try:
+        font = pygame.font.Font(
+            "fonts/RumRaisin-Regular.ttf",
+            size_px
+        )
+    except Exception:
+        font = pygame.font.SysFont(
+            "Georgia",
+            size_px,
+            bold=True
+        )
+
+    _font_px_cache[size_px] = font
+    return font
+
+
+def _dialogue_hint_font():
+    """Small font for the dialogue box's corner hint line."""
+    return _make_font_px(
+        max(12, int(HEIGHT * _DIALOGUE_HINT_PT_FRAC))
+    )
+
+
+def _fit_dialogue_font(text: str, max_width: int, max_height: int, pad: int):
+    """
+    Find the largest font that lets the full dialogue fit in the
+    available width/height.
+    """
+    max_width = max(1, int(max_width))
+    max_height = max(1, int(max_height))
+
+    # Start from a size that tracks the box's width (bigger box ->
+    # bigger text), but never render taller than normal body text.
+    base = int(max_width * _DIALOGUE_FONT_W_FRAC)
+    size = min(
+        int(HEIGHT * _DIALOGUE_MAX_FONT_FRAC),
+        max(_dialogue_min_font_px(), base)
+    )
+
+    while size >= _dialogue_min_font_px():
+        font = _make_font_px(size)
+
+        line_count = _wrapped_line_count(
+            text,
+            max_width,
+            font
+        )
+
+        text_height = (
+            line_count
+            * font.get_linesize()
+        )
+
+        hint_height = _dialogue_hint_font().get_linesize()
+
+        required_height = (
+            pad
+            + text_height
+            + int(pad * 0.3)
+            + hint_height
+            + pad
+        )
+
+        if required_height <= max_height:
+            return font, required_height
+
+        size -= 1
+
+    font = _make_font_px(_dialogue_min_font_px())
+    line_count = _wrapped_line_count(
+        text,
+        max_width,
+        font
+    )
+
+    text_height = (
+        line_count
+        * font.get_linesize()
+    )
+
+    hint_height = _dialogue_hint_font().get_linesize()
+
+    required_height = (
+        pad
+        + text_height
+        + int(pad * 0.3)
+        + hint_height
+        + pad
+    )
+
+    return font, required_height
+
+
+def _count_character_slots(chars_d: dict) -> tuple[int, int]:
+    """Return (left_count, right_count) for the current slide."""
+    left_count = 0
+    right_count = 0
+
+    for spec in chars_d.values():
+        if isinstance(spec, str):
+            side = spec
+        elif isinstance(spec, dict):
+            side = spec.get("side", "left")
+        else:
+            continue
+
+        if side == "left":
+            left_count += 1
+        elif side == "right":
+            right_count += 1
+
+    return left_count, right_count
+
+
+def _character_art_edges(chars_d: dict) -> tuple[int | None, int | None]:
+    """
+    Return (left_art_right, right_art_left): the right-most drawn
+    edge of the left-side characters and the left-most drawn edge of
+    the right-side characters on the current slide. The dialogue
+    box's margins are measured from these so it never sits on top of
+    the artwork. A value is None when that side has no character (or
+    its bounds are unavailable). Only characters on the current slide
+    count — ones still sliding out are ignored.
+    """
+    left_art_right = None
+    right_art_left = None
+
+    if _chars is None:
+        return left_art_right, right_art_left
+
+    for cid, spec in chars_d.items():
+        if isinstance(spec, str):
+            side = spec
+        elif isinstance(spec, dict):
+            side = spec.get("side", "left")
+        else:
+            continue
+
+        bounds = _chars.get_char_bounds(cid)
+        if bounds is None:
+            continue
+
+        x, _y, w, _h = bounds
+
+        if side == "left":
+            edge = x + w
+            left_art_right = (
+                edge if left_art_right is None
+                else max(left_art_right, edge)
+            )
+        else:
+            right_art_left = (
+                x if right_art_left is None
+                else min(right_art_left, x)
+            )
+
+    return left_art_right, right_art_left
 
 
 def _compute_dbox(full_text: str) -> pygame.Rect:
     """
-    Compute the dialogue box rect:
-      - Top    : aligned with the character's head (top of sprite).
-      - Left   : just past the character's right edge (for left chars),
-                 or from the left margin (for right chars).
-      - Right  : screen edge minus ~2-inch visual margin.
-      - Height : sized exactly to fit the full text + hint row.
+    Compute the dialogue box for the current slide.
+
+    Horizontal placement is measured from the characters' actual
+    drawn edges (so the box never sits on top of the artwork):
+
+        1 left character:
+            [ CHAR ](--5%--)[      DIALOGUE      ]|edge
+
+        1 right character:
+            edge|[      DIALOGUE      ](--5%--)[ CHAR ]
+
+        2 characters (left + right):
+            [ CHAR ](-2%-)[  DIALOGUE  ](-2%-)[ CHAR ]
+
+        no characters:
+            [        centred, width-capped box        ]
+
+    Characters are drawn after the dialogue box.
     """
-    s         = _engine.slide
-    active_id = _engine.active_char
-    chars_d   = s.get("chars", {})
-    side      = chars_d.get(active_id) if active_id else None
-    bounds    = _chars.get_char_bounds(active_id) if (_chars and active_id) else None
+    global _dialogue_font
 
+    chars_d = _engine.slide.get("chars", {})
+
+    pad = int(WIDTH * _DBOX_PAD_FRAC)
     edge_margin = int(WIDTH * _EDGE_MARGIN_FRAC)
-    char_gap    = int(WIDTH * _CHAR_GAP_FRAC)
-    pad         = int(WIDTH * 0.020)
 
-    # Keep the dialogue box top at least 12% from top so it never touches the day counter.
-    _DAY_CLEAR = int(HEIGHT * 0.12)
+    box_top = int(
+        HEIGHT * _DIALOGUE_TOP_FRAC
+    )
 
-    if bounds and side:
-        cx, cy, cw, _ = bounds
-        head_y = max(cy, _DAY_CLEAR)
-        if side == "left":
-            box_left  = cx + cw + char_gap
-            box_right = WIDTH - edge_margin
-        else:
-            box_left  = edge_margin
-            box_right = cx - char_gap
+    max_box_height = int(
+        HEIGHT * _DIALOGUE_MAX_HEIGHT_FRAC
+    )
+
+    left_count, right_count = _count_character_slots(chars_d)
+
+    # ---------------------------------------------------------
+    # Calculate horizontal space occupied by character slots.
+    # ---------------------------------------------------------
+    slot_w = get_slot_width(WIDTH)
+
+    # Gap between logical character slots.
+    slot_gap = int(
+        _CHARACTER_SLOT_GAP
+        * WIDTH
+        / 1920
+    )
+
+    left_slots_width = (
+        left_count * slot_w
+        + max(0, left_count - 1) * slot_gap
+    )
+
+    right_slots_width = (
+        right_count * slot_w
+        + max(0, right_count - 1) * slot_gap
+    )
+
+    # ---------------------------------------------------------
+    # Horizontal placement of the dialogue area. Margins are
+    # measured from the characters' actual drawn edges so the box
+    # never sits on top of the artwork:
+    #
+    #   1 character         → box hugs the FAR side of the screen,
+    #                         5% middle margin to the character.
+    #   2 characters (L+R)  → box fills the middle, 2% margin to
+    #                         the art on each side.
+    #   no characters       → centred box with a capped width.
+    # ---------------------------------------------------------
+    left_art_right, right_art_left = _character_art_edges(chars_d)
+
+    # Fall back to the slot boundaries when art bounds are missing.
+    if left_count and left_art_right is None:
+        left_art_right = edge_margin + left_slots_width
+    if right_count and right_art_left is None:
+        right_art_left = WIDTH - edge_margin - right_slots_width
+
+    side_margin = int(WIDTH * _DBOX_SIDE_MARGIN_FRAC)
+    mid_margin = int(WIDTH * _DBOX_MID_MARGIN_FRAC)
+
+    if left_count and right_count:
+        # Box fills the middle, with a small margin to each character.
+        box_left = left_art_right + mid_margin
+        box_right = right_art_left - mid_margin
+
+    elif left_count:
+        # Box hugs the far RIGHT edge, with a bigger margin so it
+        # never sits on top of the left character.
+        box_right = WIDTH - edge_margin
+        box_left = left_art_right + side_margin
+
+    elif right_count:
+        # Mirror: box hugs the far LEFT edge.
+        box_left = edge_margin
+        box_right = right_art_left - side_margin
+
     else:
-        head_y    = _DAY_CLEAR
-        box_left  = edge_margin
+        # No characters → centred box with a capped width.
+        box_left = edge_margin
         box_right = WIDTH - edge_margin
 
-    box_w = max(box_right - box_left, int(WIDTH * 0.20))
+        max_box_width = int(WIDTH * _DIALOGUE_MAX_WIDTH_FRAC)
+        if box_right - box_left > max_box_width:
+            center = (box_left + box_right) // 2
+            box_left = center - max_box_width // 2
+            box_right = box_left + max_box_width
 
-    # Height: one pad above text + text rows + small gap + hint row + one pad below
-    n_lines  = _wrapped_line_count(full_text, box_w - pad * 2)
-    text_h   = n_lines * _font_body.get_linesize()
-    hint_h   = _font_hint.get_linesize()
-    box_h    = pad + text_h + int(pad * 0.5) + hint_h + pad
+    # ---------------------------------------------------------
+    # Safety: if many character slots consume the available
+    # screen, keep a minimum usable dialogue width.
+    # ---------------------------------------------------------
+    minimum_width = int(
+        WIDTH * 0.20
+    )
 
-    # Never overflow below the screen
-    box_h = min(box_h, HEIGHT - head_y - int(HEIGHT * 0.02))
+    if box_right - box_left < minimum_width:
+        center = (
+            box_left
+            + box_right
+        ) // 2
 
-    return pygame.Rect(box_left, head_y, box_w, box_h)
+        box_left = (
+            center
+            - minimum_width // 2
+        )
+
+        box_right = (
+            box_left
+            + minimum_width
+        )
+
+    # Clamp to the screen.
+    box_left = max(
+        edge_margin,
+        int(box_left)
+    )
+
+    box_right = min(
+        WIDTH - edge_margin,
+        int(box_right)
+    )
+
+    box_width = max(
+        1,
+        box_right - box_left
+    )
+
+    # ---------------------------------------------------------
+    # Automatically choose the largest font that fits.
+    # ---------------------------------------------------------
+    text_width = max(
+        1,
+        box_width - pad * 2
+    )
+
+    _dialogue_font, box_height = _fit_dialogue_font(
+        full_text,
+        text_width,
+        max_box_height,
+        pad
+    )
+
+    # Never allow the box to extend below the screen.
+    box_height = min(
+        box_height,
+        HEIGHT
+        - box_top
+        - int(HEIGHT * 0.02)
+    )
+
+    return pygame.Rect(
+        int(box_left),
+        int(box_top),
+        int(box_width),
+        int(box_height)
+    )
 
 
 # ─────────────────────────────────────────────────────────────
@@ -345,8 +762,20 @@ def handle_tap(px, py):
 
     prev_slide = _engine.slide_idx
     _engine.tap()
+
+    # The tap may have ended the chapter (on_chapter_end fired during
+    # engine.tap) — don't touch the engine afterwards.
+    if _chapter_done:
+        return
+
     if _engine.slide_idx != prev_slide:
         _sync_chars()
+
+    # The chapter may have ended without slide_idx changing (e.g. all
+    # trailing slides were skipped feedback) — don't touch the engine
+    # once on_chapter_end() has fired.
+    if _engine is None:
+        return
 
     if _engine.popup_open == "scan":
         card_name = s.get("card", "")
@@ -403,6 +832,7 @@ def _handle_end_tap(px, py):
 def draw(surf):
     global _last_ticks, _typing_chars, _typing_done, _typing_text, _prev_line_key
     global _dbox, _fade_phase, _fade_alpha, _fade_timer, _last_bg_surf
+    global _shake_timer, _shake_surf
 
     # Chapter-complete overlay
     if _chapter_done:
@@ -423,25 +853,40 @@ def draw(surf):
     s     = _engine.slide
     stype = s["type"]
 
+    # ── Camera shake ─────────────────────────────────────────
+    if _shake_timer > 0:
+        _shake_timer = max(0.0, _shake_timer - dt)
+    shaking = _shake_timer > 0
+    if shaking:
+        if _shake_surf is None or _shake_surf.get_size() != (WIDTH, HEIGHT):
+            _shake_surf = pygame.Surface((WIDTH, HEIGHT))
+        target = _shake_surf    # render offscreen, present with offset
+    else:
+        target = surf
+
+    # ── Smoke particles ──────────────────────────────────────
+    if _smoke is not None:
+        _smoke.update(dt, emitting=bool(s.get("smoke")))
+
     # ── Background ────────────────────────────────────────────
     bg_path = s.get("bg")
     if bg_path:
         bg = _get_bg(bg_path)
-        surf.blit(bg, (0, 0))
+        target.blit(bg, (0, 0))
         _last_bg_surf = bg
     else:
-        surf.fill(config.STORY_BG_COLOR)
+        target.fill(config.STORY_BG_COLOR)
 
     # Dark overlay or coloured tint (for feedback slides)
     tint = s.get("tint")
     if tint:
         overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
         overlay.fill(tint)
-        surf.blit(overlay, (0, 0))
+        target.blit(overlay, (0, 0))
     elif s.get("dark"):
         overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 100))
-        surf.blit(overlay, (0, 0))
+        target.blit(overlay, (0, 0))
 
     _chars.update(dt)
 
@@ -451,6 +896,7 @@ def draw(surf):
         if logo_path:
             logo = _get_logo(logo_path, int(WIDTH * 0.50))
             surf.blit(logo, logo.get_rect(center=(WIDTH // 2, HEIGHT // 2)))
+        _finish_fade_in(surf, dt)
         return
 
     # ── Transition slide — kick off the black fade ────────────
@@ -463,8 +909,23 @@ def draw(surf):
         _apply_fade(surf, dt)
         return
 
-    _chars.draw(surf)
-
+    # ── Character-only scene ─────────────────────────────────
+    if stype == "scene":
+        if _chars is not None:
+            _chars.draw(target)
+        if _smoke is not None:
+            _smoke.draw(target)
+        _draw_day_counter(target)
+        _draw_water_bar(target)
+        _blit_shaken(surf)
+        # The fade-in has to be driven on this path too: a "scene" slide
+        # can sit directly after a "transition" slide (S2P26 does). Leaving
+        # it out keeps _fade_phase stuck on "in" forever, and handle_tap()
+        # blocks every tap while a fade is running — the panel just sits
+        # there looking frozen and never reaches S2P27.
+        _finish_fade_in(surf, dt)
+        return
+    
     # ── Typewriter animation (dialogue, feedback) ─────────────
     line = _engine.current_line
     if stype == "choice" and _engine.is_retry and s.get("retry_question"):
@@ -489,17 +950,30 @@ def draw(surf):
     _dbox = _compute_dbox(full_text)
 
     # ── Day counter pill ──────────────────────────────────────
-    _draw_day_counter(surf)
+    _draw_day_counter(target)
 
     # ── Dialogue box ──────────────────────────────────────────
-    _draw_dbox(surf)
+    _draw_dbox(target)
+
+    # Characters are drawn AFTER the dialogue box so that
+    # characters appear in front of it.
+    _chars.draw(target)
+
+    # Smoke floats in front of the characters but behind UI.
+    if _smoke is not None:
+        _smoke.draw(target)
+
+    # ── Choice image buttons (only on choice slide) ───────────
 
     # ── Choice image buttons (only on choice slide) ───────────
     if stype == "choice":
-        _draw_choice_image_buttons(surf)
+        _draw_choice_image_buttons(target)
 
     # ── Water meter (bottom of the planter) ────────────────────
-    _draw_water_bar(surf)
+    _draw_water_bar(target)
+
+    # ── Camera shake: present the frame with the offset ───────
+    _blit_shaken(surf)
 
     # ── Fade-in overlay (drawn on top of fully-rendered next slide) ──
     if _fade_phase == "in":
@@ -510,6 +984,20 @@ def draw(surf):
         scan_popup.draw(surf)
     elif _engine and _engine.popup_open == "image":
         image_popup.draw(surf)
+
+
+def _finish_fade_in(surf, dt):
+    """Blit (and advance) the black fade-in overlay for render paths that
+    return early (title / scene slides).
+
+    _apply_fade() drives "out" and "hold" before those paths are even
+    reached, but the "in" phase is blitted at the very end of the normal
+    dialogue path. A slide rendered by an early-return path would never
+    clear it, leaving _fade_phase on "in" — which permanently blocks
+    input in handle_tap().
+    """
+    if _fade_phase == "in":
+        _apply_fade(surf, dt)
 
 
 def _apply_fade(surf, dt):
@@ -625,46 +1113,111 @@ def _draw_day_counter(surf):
 
 
 def _draw_dbox(surf):
-    s     = _engine.slide
+    s = _engine.slide
     stype = s["type"]
-    pad   = int(WIDTH * 0.020)
+    pad = int(WIDTH * _DBOX_PAD_FRAC)
 
     r = min(18, _dbox.width // 6, _dbox.height // 4)
 
-    fill   = _QBOX_FILL   if stype == "choice" else _DBOX_FILL
+    fill = _QBOX_FILL if stype == "choice" else _DBOX_FILL
     border = _QBOX_BORDER if stype == "choice" else _DBOX_BORDER
-    pygame.draw.rect(surf, fill,   _dbox, border_radius=r)
-    pygame.draw.rect(surf, border, _dbox, width=_BORDER_W, border_radius=r)
+
+    pygame.draw.rect(
+        surf,
+        fill,
+        _dbox,
+        border_radius=r
+    )
+
+    pygame.draw.rect(
+        surf,
+        border,
+        _dbox,
+        width=_BORDER_W,
+        border_radius=r
+    )
+
+    body_font = (
+        _dialogue_font
+        if _dialogue_font is not None
+        else _font_body
+    )
 
     if stype in ("dialogue", "end", "feedback"):
         visible = _typing_text[:int(_typing_chars)]
-        _draw_wrapped(surf, _font_body, visible, _DBOX_TEXT,
-                      _dbox.x + pad,
-                      _dbox.y + pad,
-                      _dbox.width - pad * 2)
+
+        _draw_wrapped(
+            surf,
+            body_font,
+            visible,
+            _DBOX_TEXT,
+            _dbox.x + pad,
+            _dbox.y + pad,
+            _dbox.width - pad * 2
+        )
 
         if _typing_done:
-            hint = _font_hint.render("tap screen to continue...", True, _HINT_COLOR)
+            hint = _dialogue_hint_font().render(
+                "tap screen to continue...",
+                True,
+                _HINT_COLOR
+            )
+
             hint.set_alpha(140)
-            surf.blit(hint, hint.get_rect(
-                bottomright=(
-                    _dbox.right  - pad - _BORDER_W,
-                    _dbox.bottom - pad - _BORDER_W,
+
+            surf.blit(
+                hint,
+                hint.get_rect(
+                    bottomright=(
+                        _dbox.right - pad - _BORDER_W,
+                        _dbox.bottom - pad - _BORDER_W
+                    )
                 )
-            ))
+            )
 
     elif stype == "choice":
-        q = s.get("retry_question", s["question"]) if _engine.is_retry else s["question"]
-        _draw_wrapped(surf, _font_body, q, _QBOX_TEXT,
-                      _dbox.x + pad, _dbox.y + pad, _dbox.width - pad * 2)
+        q = (
+            s.get("retry_question", s["question"])
+            if _engine.is_retry
+            else s["question"]
+        )
+
+        _draw_wrapped(
+            surf,
+            body_font,
+            q,
+            _QBOX_TEXT,
+            _dbox.x + pad,
+            _dbox.y + pad,
+            _dbox.width - pad * 2
+        )
 
     elif stype == "scan":
-        _draw_wrapped(surf, _font_body, s.get("dialogue", ""), _DBOX_TEXT,
-                      _dbox.x + pad, _dbox.y + pad, _dbox.width - pad * 2)
-        hint = _font_hint.render("Tap to scan card  >>", True, _HINT_COLOR)
-        surf.blit(hint, hint.get_rect(
-            bottomright=(_dbox.right - pad, _dbox.bottom - int(pad * 0.4))
-        ))
+        _draw_wrapped(
+            surf,
+            body_font,
+            s.get("dialogue", ""),
+            _DBOX_TEXT,
+            _dbox.x + pad,
+            _dbox.y + pad,
+            _dbox.width - pad * 2
+        )
+
+        hint = _dialogue_hint_font().render(
+            "Tap to scan card  >>",
+            True,
+            _HINT_COLOR
+        )
+
+        surf.blit(
+            hint,
+            hint.get_rect(
+                bottomright=(
+                    _dbox.right - pad,
+                    _dbox.bottom - int(pad * 0.4)
+                )
+            )
+        )
 
 
 def _choice_image_buttons():
@@ -793,17 +1346,62 @@ def _draw_chapter_complete(surf):
 #  Text helpers
 # ─────────────────────────────────────────────────────────────
 
-def _draw_wrapped(surf, font, text, color, x, y, max_width):
-    words  = text.split()
-    line   = ""
+def _draw_wrapped(
+    surf,
+    font,
+    text,
+    color,
+    x,
+    y,
+    max_width
+):
+    """Draw text wrapped to max_width."""
+    if not text:
+        return
+
+    max_width = max(1, int(max_width))
+
+    words = text.split()
+    line = ""
     line_h = font.get_linesize()
+    current_y = y
+
     for word in words:
-        test = (line + " " + word).strip()
+        test = (
+            line + " " + word
+        ).strip()
+
         if font.size(test)[0] <= max_width:
             line = test
-        else:
-            surf.blit(font.render(line, True, color), (x, y))
-            y   += line_h
-            line = word
+            continue
+
+        if line:
+            surf.blit(
+                font.render(
+                    line,
+                    True,
+                    color
+                ),
+                (
+                    x,
+                    current_y
+                )
+            )
+
+            current_y += line_h
+
+        # Start the next line with this word.
+        line = word
+
     if line:
-        surf.blit(font.render(line, True, color), (x, y))
+        surf.blit(
+            font.render(
+                line,
+                True,
+                color
+            ),
+            (
+                x,
+                current_y
+            )
+        )

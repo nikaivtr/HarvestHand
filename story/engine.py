@@ -74,7 +74,7 @@ class StoryEngine:
             else:
                 return self._advance()
 
-        if s["type"] in ("title", "transition"):
+        if s["type"] in ("title", "transition", "scene"):
             return self._advance()
 
         if s["type"] == "scan":

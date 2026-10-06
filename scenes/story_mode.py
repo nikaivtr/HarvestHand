@@ -55,6 +55,9 @@ _last_bg_surf  = None   # cached last background for the overlay backdrop
 # ── Asset caches ──────────────────────────────────────────────
 _bg_cache         : dict = {}
 _logo_cache       : dict = {}
+_overlay_cache    : dict = {}
+_overlay_aspect   : dict = {}
+_overlay_inset    : dict = {}
 _choice_img_cache : dict = {}
 _font_body               = None
 _font_hint               = None
@@ -154,6 +157,74 @@ _DIALOGUE_HINT_PT_FRAC = 0.022
 # resolution.
 _DIALOGUE_MIN_FONT_FRAC = 0.024
 
+# ── Action challenge (temporary stand-in for the real card scan) ──
+# Slide type "action_challenge": the instruction art is drawn over the
+# slide background, and the player taps one of two squares. This is a
+# placeholder so the scenes can be finished first; the camera-based
+# cardscan package replaces it later.
+_ACTION_BLUE  = ( 62, 132, 226)
+_ACTION_RED   = (198,  74,  66)
+_ACTION_OK    = ( 86, 176,  96)
+_ACTION_EDGE  = (253, 241, 208)
+_ACTION_WRONG_FACE = "I-click naman ang BLUE na square."
+_ACTION_OK_FACE     = "Tama! Tama ang card na i-scan."
+_ACTION_HINT_IDLE   = (253, 241, 208)
+
+_ACTION_SOLVE_DELAY = 0.9   # seconds the success banner stays up
+_ACTION_WRONG_TIME  = 0.45  # seconds the red square flashes
+_ACTION_SOLVED_T    = 0.0
+_ACTION_WRONG_T     = 0.0
+
+# Layout, as fractions of the screen, so it scales to any resolution.
+_ACTION_OVERLAY_W_FRAC = 0.60
+_ACTION_OVERLAY_TOP_FRAC = 0.05
+_ACTION_SQUARE_FRAC     = 0.17   # side length, of screen height
+_ACTION_SQUARE_GAP_FRAC = 0.06   # gap between the two, of screen width
+_ACTION_SQUARE_TOP_PAD  = 0.06   # gap under the instruction art
+_ACTION_HINT_GAP_FRAC   = 0.045
+_font_action = None
+
+# ── Narration overlay ──────────────────────────────────────────
+# Slide type "narration_overlay": a carved wooden board is laid over
+# the slide background and a passage of narration is written on it.
+# Used for the story beats where nobody is speaking (a time skip,
+# a montage), so it needs neither a speaker nor a dialogue box.
+_NARR_TEXT   = (253, 241, 208)   # cream paint on the board
+_NARR_SHADOW = ( 44,  24,   8)   # dark offset shadow, as in level_select
+_NARR_HINT   = (222, 200, 156)
+
+# The board is a fixed 1.78:1 asset. Its height drives the size so
+# the art keeps its own proportions, and the other dimension is
+# re-clamped afterwards so the board can never run off the screen.
+# The board sits dead centre, so the passage and the board read as
+# one centred block.
+_NARR_BOARD_H_FRAC     = 0.66
+_NARR_BOARD_MAX_W_FRAC = 0.86
+_NARR_BOARD_MAX_H_FRAC = 0.86
+
+# The carved frame eats into each edge, so the text only ever goes
+# inside the recessed panel. Fractions measured off woodbg.png,
+# the same board the level-select signposts use.
+_NARR_PANEL = (0.090, 0.150, 0.910, 0.850)
+
+# Narration is read, not spoken aloud, so it gets noticeably bigger
+# type than the dialogue box. The fitter starts at _NARR_FONT_MAX
+# and only shrinks when a passage is long enough to need it.
+_NARR_FONT_MAX_FRAC = 0.055
+_NARR_FONT_MIN_FRAC = 0.030
+
+# Free strip kept at the bottom of the panel for the hint line.
+_NARR_HINT_RESERVE_FRAC = 0.02
+
+# ── Choice wooden board ("dbox") ─────────────────────────────────
+# A choice may carry a wooden board of its own and print its label
+# inside the recessed panel. Only needed when the answer is a full
+# sentence: the card art plus the single label line underneath it has
+# room for a word or two, not a paragraph. Choices without a "dbox"
+# keep the original panel-and-caption treatment untouched.
+_CHOICE_DBOX_FONT_MAX_FRAC = 0.032
+_CHOICE_DBOX_FONT_MIN_FRAC = 0.016
+
 
 # ─────────────────────────────────────────────────────────────
 #  Setup
@@ -224,6 +295,11 @@ def _sync_chars():
         dim_others=bool(s.get("dim_inactive", False)),
     )
     _start_shake_if_flagged()
+
+    # Fresh panel, fresh challenge state: a solved or flashing square from
+    # a previous panel must never carry over.
+    if s.get("type") != "action_challenge":
+        _reset_action()
 
     # Smoke panels (e.g. S2P21) also fire a dense one-shot burst on
     # arrival; emission continues while the slide stays on screen.
@@ -312,6 +388,77 @@ def _get_logo(path: str, target_w: int) -> pygame.Surface:
     return _logo_cache[key]
 
 
+def _get_overlay(path: str, target_w: int):
+    """An instruction image drawn on top of a slide's background.
+
+    Returns (surface, target_height). The width is honoured exactly and
+    the height follows the art's own aspect ratio, so the picture is
+    never stretched.
+    """
+    key = (path, target_w)
+    if key not in _overlay_cache:
+        raw   = pygame.image.load(config.IMG_DIR + path).convert_alpha()
+        ratio = target_w / raw.get_width()
+        h     = max(1, int(raw.get_height() * ratio))
+        _overlay_cache[key] = pygame.transform.smoothscale(raw, (target_w, h))
+    surf = _overlay_cache[key]
+    return surf, surf.get_height()
+
+
+def _get_overlay_aspect(path: str) -> float:
+    """Native width/height of an overlay image, for sizing it by height.
+
+    _get_overlay() sizes by width, so a board laid out from its height
+    first needs the raw ratio to work out what that width would be.
+    """
+    if path not in _overlay_aspect:
+        raw = pygame.image.load(config.IMG_DIR + path)
+        _overlay_aspect[path] = raw.get_width() / max(1, raw.get_height())
+    return _overlay_aspect[path]
+
+
+def _alpha_bbox(surf: pygame.Surface):
+    """Bounding rect of the non-transparent pixels of `surf`.
+
+    Returns None when the surface is fully transparent. Uses the mask
+    module's C implementation rather than looping over pixels in
+    Python, since this runs on a 1366x768 board asset.
+    """
+    rects = pygame.mask.from_surface(surf, 8).get_bounding_rects()
+    if not rects:
+        return None
+    out = pygame.Rect(rects[0])
+    for r in rects[1:]:
+        out = out.union(r)
+    return out
+
+
+def _get_overlay_inset(path: str):
+    """Transparent border of an overlay, as (left, top, right, bottom)
+    fractions of the image.
+
+    The board art is not edge-to-edge: woodbg.png has a wider margin
+    under the plank than above it, so centring the image rectangle
+    leaves the wood the player actually sees a few pixels high. The
+    border is measured once per path and returned as fractions so the
+    caller can keep the visible plank centred at any size.
+    """
+    if path not in _overlay_inset:
+        raw = pygame.image.load(config.IMG_DIR + path).convert_alpha()
+        iw, ih = max(1, raw.get_width()), max(1, raw.get_height())
+        rect = _alpha_bbox(raw)
+        if rect is None or rect.width == 0 or rect.height == 0:
+            _overlay_inset[path] = (0.0, 0.0, 0.0, 0.0)
+        else:
+            _overlay_inset[path] = (
+                rect.left          / iw,
+                rect.top           / ih,
+                (iw - rect.right)  / iw,
+                (ih - rect.bottom) / ih,
+            )
+    return _overlay_inset[path]
+
+
 def _get_choice_img(path: str, max_w: int, max_h: int) -> pygame.Surface:
     key = (path, max_w, max_h)
     if key not in _choice_img_cache:
@@ -329,35 +476,40 @@ def _get_choice_img(path: str, max_w: int, max_h: int) -> pygame.Surface:
 
 def _wrapped_line_count(text: str, max_px: int, font=None) -> int:
     """Count visual lines using the supplied font and width."""
+    return max(len(_wrap_lines(text, max_px, font)), 1)
+
+
+def _wrap_lines(text: str, max_px: int, font=None) -> list[str]:
+    """Split text into the visual lines it occupies at this width.
+
+    Single source of truth for the wrap: the line count used when
+    fitting a font, the narration board and _draw_wrapped() all agree
+    on where the breaks fall.
+    """
     if font is None:
         font = _font_body
 
-    words = text.split()
-    if not words:
-        return 1
+    max_px = max(1, int(max_px))
 
-    line = ""
-    count = 0
+    lines = []
+    line  = ""
 
-    for word in words:
+    for word in text.split():
         test = (line + " " + word).strip()
 
         if font.size(test)[0] <= max_px:
             line = test
         else:
             if line:
-                count += 1
-                line = word
-            else:
-                # A single word is wider than the box. Count it as
-                # one line; _draw_wrapped() will place it on a line.
-                count += 1
-                line = ""
+                lines.append(line)
+            # A single word wider than the box keeps its own line
+            # rather than being broken mid-word.
+            line = word
 
     if line:
-        count += 1
+        lines.append(line)
 
-    return max(count, 1)
+    return lines
 
 
 def _dialogue_min_font_px() -> int:
@@ -557,6 +709,9 @@ def _compute_dbox(full_text: str) -> pygame.Rect:
         no characters:
             [        centred, width-capped box        ]
 
+    A slide can override the automatic choice with
+    "dbox_side": "left" or "right" (see below).
+
     Characters are drawn after the dialogue box.
     """
     global _dialogue_font
@@ -648,6 +803,27 @@ def _compute_dbox(full_text: str) -> pygame.Rect:
             box_right = box_left + max_box_width
 
     # ---------------------------------------------------------
+    # Explicit side override from the slide data.
+    #
+    # Some backgrounds have their character painted into the art
+    # (e.g. S2P51's Lucas watering the bed) instead of placed as
+    # a sprite, so there is no "chars" entry for the rules above
+    # to measure and the box lands centred — on top of the
+    # artwork. "dbox_side" lets those slides state where the text
+    # should go. The width chosen above is kept; only the position
+    # is re-anchored, so the font sizing does not change.
+    # ---------------------------------------------------------
+    forced_side = _engine.slide.get("dbox_side")
+    if forced_side in ("left", "right"):
+        width = box_right - box_left
+        if forced_side == "left":
+            box_left = edge_margin
+            box_right = box_left + width
+        else:
+            box_right = WIDTH - edge_margin
+            box_left = box_right - width
+
+    # ---------------------------------------------------------
     # Safety: if many character slots consume the available
     # screen, keep a minimum usable dialogue width.
     # ---------------------------------------------------------
@@ -719,6 +895,294 @@ def _compute_dbox(full_text: str) -> pygame.Rect:
 
 
 # ─────────────────────────────────────────────────────────────
+#  Action challenge  (temporary stand-in for the real card scan)
+# ─────────────────────────────────────────────────────────────
+
+def _action_fonts():
+    """Lazily built fonts for the challenge, so none are made per frame."""
+    global _font_action
+    if _font_action is None:
+        _font_action = (_make_font(0.024), _make_font(0.038))
+    return _font_action
+
+
+def _reset_action():
+    global _ACTION_SOLVED_T, _ACTION_WRONG_T
+    _ACTION_SOLVED_T = 0.0
+    _ACTION_WRONG_T  = 0.0
+
+
+def _action_layout():
+    """Rects for the instruction art, the two squares and the hint line.
+
+    Recomputed from the screen size every call, so it follows the
+    resolution exactly like the rest of the scene.
+    """
+    lay = {"overlay": None, "blue": None, "red": None, "hint_y": HEIGHT}
+    if _engine is None:
+        return lay
+    path = _engine.slide.get("overlay")
+    if not path:
+        return lay
+
+    img, h = _get_overlay(path, int(WIDTH * _ACTION_OVERLAY_W_FRAC))
+    r = pygame.Rect(0, 0, img.get_width(), h)
+    r.midtop = (WIDTH // 2, int(HEIGHT * _ACTION_OVERLAY_TOP_FRAC))
+    lay["overlay"] = (img, r)
+
+    side = int(HEIGHT * _ACTION_SQUARE_FRAC)
+    top  = r.bottom + int(HEIGHT * _ACTION_SQUARE_TOP_PAD)
+    # Never let the squares run off the bottom, whatever the aspect ratio.
+    floor = int(HEIGHT * 0.88)
+    if top + side > floor:
+        side = max(24, floor - top)
+    gap  = int(WIDTH * _ACTION_SQUARE_GAP_FRAC)
+    mid  = WIDTH // 2
+    lay["blue"] = pygame.Rect(mid - gap // 2 - side, top, side, side)
+    lay["red"]  = pygame.Rect(mid + gap // 2,      top, side, side)
+    lay["hint_y"] = top + side + int(HEIGHT * _ACTION_HINT_GAP_FRAC)
+    return lay
+
+
+def _handle_action_tap(px, py):
+    """Blue square -> solved. Red square -> flash and let them try again.
+
+    Tapping anywhere else does nothing: the player has to pick a square,
+    so the panel cannot be skipped past.
+    """
+    global _ACTION_SOLVED_T, _ACTION_WRONG_T
+
+    if _ACTION_SOLVED_T > 0:
+        return                       # already solved, waiting to advance
+
+    lay = _action_layout()
+    blue, red = lay["blue"], lay["red"]
+    if blue is not None and blue.collidepoint(px, py):
+        _ACTION_SOLVED_T = _ACTION_SOLVE_DELAY
+        return
+    if red is not None and red.collidepoint(px, py):
+        _ACTION_WRONG_T = _ACTION_WRONG_TIME
+        return
+
+
+def _draw_action_square(surf, rect, color, wobble_t=0.0, solved=False):
+    """One pickable square, with a cream frame like the rest of the UI."""
+    r = rect
+    if wobble_t > 0.0:
+        # Quick shake, so a wrong pick registers even without reading text.
+        amp = int(6 * (wobble_t / _ACTION_WRONG_TIME))
+        r = r.move(int(amp * 2.0 * ((wobble_t * 18) % 2 - 1)), 0)
+
+    pygame.draw.rect(surf, color, r, border_radius=int(r.width * 0.12))
+    edge = _ACTION_OK if solved else _ACTION_EDGE
+    pygame.draw.rect(surf, edge, r, width=4, border_radius=int(r.width * 0.12))
+    # Inner highlight so the flat colour reads as a solid tile.
+    inset = r.inflate(-int(r.width * 0.22), -int(r.height * 0.22))
+    pygame.draw.rect(surf, edge, inset, width=2, border_radius=int(inset.width * 0.14))
+
+
+def _draw_action(surf, dt):
+    """Instruction art over the slide background, plus the two squares.
+
+    Advances the story on its own once the solved banner has had its
+    moment, so the player sees the confirmation before moving on.
+    """
+    global _ACTION_SOLVED_T, _ACTION_WRONG_T
+
+    if _ACTION_SOLVED_T > 0.0:
+        _ACTION_SOLVED_T = max(0.0, _ACTION_SOLVED_T - dt)
+        if _ACTION_SOLVED_T <= 0.0 and _engine is not None and not _chapter_done:
+            _engine.tap()
+            if not _chapter_done:
+                _sync_chars()
+            return
+    if _ACTION_WRONG_T > 0.0:
+        _ACTION_WRONG_T = max(0.0, _ACTION_WRONG_T - dt)
+
+    lay = _action_layout()
+    if lay["overlay"] is None:
+        return
+    img, r = lay["overlay"]
+    surf.blit(img, r.topleft)
+
+    solved = _ACTION_SOLVED_T > 0.0
+    _draw_action_square(surf, lay["blue"], _ACTION_BLUE, solved=solved)
+    _draw_action_square(surf, lay["red"],  _ACTION_RED,
+                        wobble_t=_ACTION_WRONG_T if not solved else 0.0,
+                        solved=solved)
+
+    hint_f, banner_f = _action_fonts()
+    if solved:
+        text, color, font = _ACTION_OK_FACE, _ACTION_OK, banner_f
+    elif _ACTION_WRONG_T > 0.0:
+        text, color, font = _ACTION_WRONG_FACE, _ACTION_RED, banner_f
+    else:
+        text, color, font = _ACTION_WRONG_FACE, _ACTION_HINT_IDLE, hint_f
+
+    # The hint sits over the planter, which is dark and busy, so the text
+    # gets a dark shadow behind it and stays legible on any background.
+    label = font.render(text, True, color)
+    shad  = font.render(text, True, (20, 10, 4))
+    y     = int(min(lay["hint_y"], HEIGHT - label.get_height() - 4))
+    surf.blit(shad,  shad.get_rect(midtop=(WIDTH // 2 + 2, y + 2)))
+    surf.blit(label, label.get_rect(midtop=(WIDTH // 2, y)))
+
+
+# ─────────────────────────────────────────────────────────────
+#  Narration overlay
+# ─────────────────────────────────────────────────────────────
+
+def _narration_layout():
+    """Board rect and the recessed panel inside it that holds the text.
+
+    Recomputed from the screen size every call, so the board and its
+    text scale together on any resolution.
+    """
+    lay = {"board": None, "text": None}
+    if _engine is None:
+        return lay
+
+    path = _engine.slide.get("overlay")
+    if not path:
+        return lay
+
+    aspect = _get_overlay_aspect(path)
+
+    # Height drives the size so the board keeps its own proportions.
+    h = int(HEIGHT * _NARR_BOARD_H_FRAC)
+    w = int(h * aspect)
+
+    # Clamp both dimensions to the screen, re-deriving the other from
+    # the image's own proportions each time, so neither a narrow nor a
+    # very tall window can push the board off screen.
+    max_w = int(WIDTH  * _NARR_BOARD_MAX_W_FRAC)
+    max_h = int(HEIGHT * _NARR_BOARD_MAX_H_FRAC)
+
+    if w > max_w:
+        w = max_w
+        h = int(w / aspect)
+    if h > max_h:
+        h = max_h
+        w = int(h * aspect)
+
+    img, img_h = _get_overlay(path, w)
+    board = pygame.Rect(0, 0, w, img_h)
+
+    # Dead centre of the screen: the board is the focal point of the
+    # slide, not a strip hung under the top edge.
+    #
+    # Centring the image rectangle is not quite enough — the board art
+    # has a transparent margin, and woodbg.png's margin is not even
+    # (wider under the plank than above it). Centre the *visible* wood
+    # instead, so the plank the player sees sits on the true middle of
+    # the screen at every resolution and the passage travels with it.
+    pad_l, pad_t, pad_r, pad_b = _get_overlay_inset(path)
+    vis = pygame.Rect(
+        int(round(pad_l * w)),
+        int(round(pad_t * img_h)),
+        int(round((1.0 - pad_r - pad_l) * w)),
+        int(round((1.0 - pad_b - pad_t) * img_h)),
+    )
+    board.topleft = (WIDTH // 2 - vis.centerx, HEIGHT // 2 - vis.centery)
+
+    lay["board"] = (img, board)
+
+    # The carved frame eats into each edge, so the text only ever
+    # goes inside the recessed panel. The fractions are measured off
+    # the visible plank rather than the image rectangle, so the text
+    # keeps its place on the wood and travels with it as one block.
+    l, t, r, b = _NARR_PANEL
+    lay["text"] = pygame.Rect(
+        board.left + vis.left   + int(l * vis.width),
+        board.top  + vis.top    + int(t * vis.height),
+        int((r - l) * vis.width),
+        int((b - t) * vis.height),
+    )
+
+    return lay
+
+
+def _fit_narration_font(text: str, max_w: int, max_h: int):
+    """Largest font that lets the whole passage fit the board's panel.
+
+    Returns (font, lines, text_height). Starts deliberately large —
+    narration is read by kids, not scanned — and only shrinks when
+    the passage is long enough to demand it.
+    """
+    max_w = max(1, int(max_w))
+    max_h = max(1, int(max_h))
+
+    floor_px = max(14, int(HEIGHT * _NARR_FONT_MIN_FRAC))
+    size     = max(floor_px, int(HEIGHT * _NARR_FONT_MAX_FRAC))
+
+    while True:
+        font  = _make_font_px(size)
+        lines = _wrap_lines(text, max_w, font)
+        height = len(lines) * font.get_linesize()
+
+        if height <= max_h or size <= floor_px:
+            return font, lines, height
+
+        size -= 1
+
+
+def _draw_narration(surf):
+    """Wooden board over the slide background, carrying a narration.
+
+    The passage is shown in full rather than typed out letter by
+    letter: it is a block of prose to read, and having to wait for a
+    typewriter to catch up would work against that.
+    """
+    lay = _narration_layout()
+    if lay["board"] is None:
+        return
+
+    img, board = lay["board"]
+    surf.blit(img, board.topleft)
+
+    text = _engine.slide.get("narration", "")
+    if not text:
+        return
+
+    inner = lay["text"]
+
+    # Leave the hint line its own strip at the bottom of the panel.
+    hint_f    = _dialogue_hint_font()
+    reserve   = hint_f.get_linesize() + int(HEIGHT * _NARR_HINT_RESERVE_FRAC)
+    font, lines, text_h = _fit_narration_font(
+        text,
+        inner.width,
+        inner.height - reserve,
+    )
+
+    line_h = font.get_linesize()
+
+    # The board is textured, so a dark offset shadow under the cream
+    # letters keeps every line readable at a glance.
+    off = max(1, font.get_height() // 22)
+
+    # The passage and its hint are centred together as a single block,
+    # so the whole thing sits on the board's centre line instead of
+    # the text alone with the hint dangling underneath it.
+    gap     = off * 2
+    hint_h  = hint_f.get_linesize()
+    block_h = text_h + gap + hint_h
+    y       = inner.centery - block_h // 2
+
+    for line in lines:
+        shad  = font.render(line, True, _NARR_SHADOW)
+        body  = font.render(line, True, _NARR_TEXT)
+        rect  = body.get_rect(midtop=(inner.centerx, y))
+        surf.blit(shad, rect.move(off, off))
+        surf.blit(body, rect)
+        y += line_h
+
+    hint = hint_f.render("tap screen to continue...", True, _NARR_HINT)
+    hint.set_alpha(150)
+    surf.blit(hint, hint.get_rect(midtop=(inner.centerx, y + gap)))
+
+
+# ─────────────────────────────────────────────────────────────
 #  Input
 # ─────────────────────────────────────────────────────────────
 
@@ -758,6 +1222,12 @@ def handle_tap(px, py):
                 if _engine.choose(i):
                     _sync_chars()
                 return
+        return
+
+    # Action challenge: the player has to pick a square, so this must be
+    # handled before the generic tap below would advance the slide.
+    if s["type"] == "action_challenge":
+        _handle_action_tap(px, py)
         return
 
     prev_slide = _engine.slide_idx
@@ -925,7 +1395,34 @@ def draw(surf):
         # there looking frozen and never reaches S2P27.
         _finish_fade_in(surf, dt)
         return
-    
+
+    # ── Action challenge: instruction art + two squares ─────────
+    # Sits after the "scene" branch because it is the same shape of
+    # screen: a background, no dialogue box, no typewriter.
+    if stype == "action_challenge":
+        if _chars is not None:
+            _chars.draw(target)
+        _draw_action(target, dt)
+        _draw_day_counter(target)
+        _draw_water_bar(target)
+        _blit_shaken(surf)
+        _finish_fade_in(surf, dt)
+        return
+
+    # ── Narration overlay: board + prose, no dialogue box ────
+    # Same shape of screen as "scene": a background, characters,
+    # no typewriter. The board is drawn in front of the cast so
+    # the passage is never read across their artwork.
+    if stype == "narration_overlay":
+        if _chars is not None:
+            _chars.draw(target)
+        _draw_narration(target)
+        _draw_day_counter(target)
+        _draw_water_bar(target)
+        _blit_shaken(surf)
+        _finish_fade_in(surf, dt)
+        return
+
     # ── Typewriter animation (dialogue, feedback) ─────────────
     line = _engine.current_line
     if stype == "choice" and _engine.is_retry and s.get("retry_question"):
@@ -1235,6 +1732,84 @@ def _choice_image_buttons():
     ]
 
 
+def _fit_dbox_font(text: str, max_w: int, max_h: int):
+    """Largest font that lets a choice's label fit its wooden board."""
+    max_w = max(1, int(max_w))
+    max_h = max(1, int(max_h))
+
+    floor_px = max(12, int(HEIGHT * _CHOICE_DBOX_FONT_MIN_FRAC))
+    size     = max(floor_px, int(HEIGHT * _CHOICE_DBOX_FONT_MAX_FRAC))
+
+    while True:
+        font   = _make_font_px(size)
+        lines  = _wrap_lines(text, max_w, font)
+        height = len(lines) * font.get_linesize()
+
+        if height <= max_h or size <= floor_px:
+            return font, lines, height
+
+        size -= 1
+
+
+def _draw_dbox_choice(surf, btn, choice):
+    """Draw one answer on its own wooden board, text inside the panel.
+
+    Same board art and same recessed-panel fractions the narration
+    slides use, so a choice board reads as part of the same world.
+    Returns True when the board handled the whole choice.
+    """
+    path = choice.get("dbox")
+    if not path:
+        return False
+
+    aspect = _get_overlay_aspect(path)
+
+    # Fill the button rect with the board, keeping the art's own
+    # proportions so the plank is never stretched.
+    w = btn.width
+    h = int(w / aspect)
+    if h > btn.height:
+        h = btn.height
+        w = int(h * aspect)
+
+    img, img_h = _get_overlay(path, w)
+    board = pygame.Rect(0, 0, w, img_h)
+    board.center = btn.center
+    surf.blit(img, board.topleft)
+
+    label = choice.get("label", "")
+    if not label:
+        return True
+
+    # The carved frame eats into each edge, so the text only ever
+    # goes inside the recessed panel.
+    l, t, r, b = _NARR_PANEL
+    panel = pygame.Rect(
+        board.left + int(l * w),
+        board.top  + int(t * img_h),
+        int((r - l) * w),
+        int((b - t) * img_h),
+    )
+
+    font, lines, _ = _fit_dbox_font(label, panel.width, panel.height)
+    line_h = font.get_linesize()
+
+    # The plank is textured, so a dark offset shadow under the cream
+    # letters keeps every line readable at a glance.
+    off = max(1, font.get_height() // 22)
+    y   = panel.centery - (len(lines) * line_h) // 2
+
+    for line in lines:
+        shad = font.render(line, True, _NARR_SHADOW)
+        body = font.render(line, True, _NARR_TEXT)
+        rect = body.get_rect(centerx=panel.centerx, top=y)
+        surf.blit(shad, rect.move(off, off))
+        surf.blit(body, rect)
+        y += line_h
+
+    return True
+
+
 def _draw_choice_image_buttons(surf):
     s       = _engine.slide
     choices = s.get("choices", [])
@@ -1244,8 +1819,18 @@ def _draw_choice_image_buttons(surf):
     label_font = _font_hint
 
     for btn, choice in zip(buttons, choices):
-        pygame.draw.rect(surf, _DBOX_FILL,   btn, border_radius=r)
-        pygame.draw.rect(surf, _DBOX_BORDER, btn, width=_BORDER_W, border_radius=r)
+        # A choice with its own "dbox" board carries the text inside
+        # the wood, so it needs neither the panel nor the caption.
+        if _draw_dbox_choice(surf, btn, choice):
+            continue
+
+        # Opt-out frame: slides whose art is a finished button with its own
+        # frame and baked-in text (e.g. S2P55, S2P41) set "frame": False so
+        # only the image is shown, with no panel behind it.
+        framed = choice.get("frame", True)
+        if framed:
+            pygame.draw.rect(surf, _DBOX_FILL,   btn, border_radius=r)
+            pygame.draw.rect(surf, _DBOX_BORDER, btn, width=_BORDER_W, border_radius=r)
 
         label_text = choice.get("label", "")
 

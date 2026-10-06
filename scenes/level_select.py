@@ -1,16 +1,26 @@
 # ============================================================
 #  Level Select Scene
 #
-#  Layout: three difficulty boxes (Beginner / Intermediate / Expert).
-#  Tapping a difficulty expands it — chapter cards slide out to the right.
-#  Tapping it again collapses them.
-#  Drag left/right to scroll when expanded content is wider than the screen.
+#  Layout: three rustic wooden signposts, one per difficulty.
+#  Each signpost is a carved board (img/woodbg.png) that acts as
+#  the plate for a difficulty name, with that group's chapter
+#  cards hanging underneath it on a slim wooden post.
+#
+#  Tapping a signpost expands / collapses its chapters.
+#  Tapping a chapter card starts that chapter.
+#
+#  You should NOT need to edit this file when adding chapters.
 # ============================================================
 
+import time
+
 import pygame
+
+import config
 import utils
 import game_state
 import data.chapters as chapters_data
+
 
 WIDTH = HEIGHT = 0
 _go_to_scene = None
@@ -25,39 +35,59 @@ _DIFF_LABELS = {
     "intermediate": "Intermediate",
     "advanced":     "Expert",
 }
-_DIFF_COLORS = {                       # difficulty box colour
-    "beginner":     (45,  150,  75),
-    "intermediate": (190, 125,  30),
-    "advanced":     (165,  50,  50),
+
+# Paint on the ribbon across the top of each wooden sign.
+_DIFF_COLORS = {
+    "beginner":     (92,  158, 80),
+    "intermediate": (206, 146, 48),
+    "advanced":     (176, 66,  56),
 }
-_CHAP_COLORS = {                       # chapter card colour (darker shade)
-    "beginner":     (28,  105,  52),
-    "intermediate": (145,  95,  20),
-    "advanced":     (120,  30,  30),
+# Slim stripe down the left edge of each chapter card.
+_CHAP_COLORS = {
+    "beginner":     (136, 196, 110),
+    "intermediate": (232, 178, 78),
+    "advanced":     (212, 112, 98),
 }
+
+# ── Text colours (cream paint on dark wood) ──────────────────
+_CREAM     = (253, 241, 208)
+_CREAM_DIM = (222, 200, 156)
+_GOLD      = (255, 216, 126)
+_SHADOW    = (44,  24,  8)
+
+# ── Wood ──────────────────────────────────────────────────────
+# The board's carved frame eats into each edge, so text only ever
+# goes inside the recessed panel. Fractions of the board measured
+# off woodbg.png: (left, top, right, bottom).
+_PANEL = (0.090, 0.150, 0.910, 0.850)
+# A slice of that panel with no frame in it, i.e. plain wood grain,
+# so it can be stretched to any aspect for slim slats (title, post).
+_PANEL_CROP = (150, 170, 1000, 430)
 
 # ── Groups (built in init) ────────────────────────────────────
 # Each group = { id, label, color, chap_color, chapters[], expanded, anim }
 _groups: list = []
 
-# ── Layout constants (set in init) ────────────────────────────
-_BOX_H  = 0   # height of every box
-_DIFF_W = 0   # width of a difficulty box
-_CHAP_W = 0   # full width of a chapter card
-_GAP    = 0   # gap between boxes
-_ROW_Y  = 0   # top edge of the row
-_X0     = 0   # left start x (centers the 3 boxes when all collapsed)
+# ── Layout (set in init) ──────────────────────────────────────
+_TITLE_TOP = 0
+_TITLE_H   = 0
+_COL_Y     = 0        # top edge of the wooden signs
+_PLAQ_W    = 0
+_PLAQ_H    = 0
+_TILE_TOP  = 0
+_TILE_W    = 0
+_TILE_H    = 0
+_TILE_GAP  = 0
+_POST_W    = 0
+_POST_H    = 0
+_COL_X     = []       # left edge of each signpost
 
-# ── Scroll state ──────────────────────────────────────────────
-_scroll_x       = 0.0
-_drag_start_x   = 0
-_drag_start_scr = 0.0
-_is_dragging    = False
-DRAG_THRESHOLD  = 8    # px before a tap becomes a drag
-
-# ── Animation ─────────────────────────────────────────────────
-ANIM_SPEED  = 6.0  # 0→1 per second
-_last_ticks = 0
+# ── Surfaces, all scaled once in init ─────────────────────────
+_plaque_s = None
+_tile_s   = None
+_post_s   = None
+_title_s  = None
+_back_s   = None
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -66,26 +96,20 @@ _last_ticks = 0
 
 def init(width, height, go_to_scene_callback):
     global WIDTH, HEIGHT, _go_to_scene, bg_image, back_rect
-    global _BOX_H, _DIFF_W, _CHAP_W, _GAP, _ROW_Y, _X0
-    global _groups, _scroll_x, _last_ticks
+    global _groups, _last_ticks, _press_at, _pressed, _font_cache
+    global _TITLE_TOP, _TITLE_H, _COL_Y
+    global _PLAQ_W, _PLAQ_H, _TILE_TOP, _TILE_W, _TILE_H, _TILE_GAP
+    global _POST_W, _POST_H, _COL_X
+    global _plaque_s, _tile_s, _post_s, _title_s, _back_s
+    global _shadow_p, _shadow_t
+    global _f_title, _f_name, _f_sub, _f_chap, _f_crop, _f_back
 
     WIDTH, HEIGHT = width, height
     _go_to_scene  = go_to_scene_callback
 
     bg_image = utils.load_bg("background/menubg2.png", (WIDTH, HEIGHT))
-
-    back_size = int(min(WIDTH, HEIGHT) * 0.08)
-    back_rect = pygame.Rect(int(WIDTH * 0.03), int(HEIGHT * 0.03), back_size, back_size)
-
-    _BOX_H  = int(HEIGHT * 0.52)
-    _DIFF_W = int(WIDTH  * 0.20)
-    _CHAP_W = int(WIDTH  * 0.14)
-    _GAP    = int(WIDTH  * 0.025)
-    _ROW_Y  = HEIGHT // 2 - _BOX_H // 2
-
-    # Center the 3 difficulty boxes when all are collapsed
-    collapsed_total = 3 * _DIFF_W + 4 * _GAP
-    _X0 = max(_GAP, (WIDTH - collapsed_total) // 2)
+    wood     = utils.load_img("woodbg.png")
+    panel    = wood.subsurface(pygame.Rect(*_PANEL_CROP))
 
     # ── Load chapters, group by difficulty ──────────────────────
     by_diff = {"beginner": [], "intermediate": [], "advanced": []}
@@ -109,106 +133,257 @@ def init(width, height, go_to_scene_callback):
             "anim":       0.0,
         })
 
-    _scroll_x   = 0.0
+    # ── Layout ─────────────────────────────────────────────────
+    _TITLE_H   = int(HEIGHT * 0.085)
+    _TITLE_TOP = int(HEIGHT * 0.035)
+    _COL_Y     = int(HEIGHT * 0.165)
+
+    # Signs are as tall as the screen allows, then shrunk as a group
+    # if the three of them don't fit side by side.
+    _PLAQ_H = int(HEIGHT * 0.21)
+    _PLAQ_W = int(_PLAQ_H * 1.90)
+    gap     = int(WIDTH * 0.032)
+    fit     = (WIDTH * 0.92) / (3 * _PLAQ_W + 2 * gap)
+    if fit < 1.0:
+        _PLAQ_W = int(_PLAQ_W * fit)
+        _PLAQ_H = int(_PLAQ_H * fit)
+        gap     = int(gap * fit)
+
+    # Cards hang below their sign, trimmed to whatever room the
+    # tallest group actually needs.
+    _TILE_TOP = _COL_Y + _PLAQ_H + int(HEIGHT * 0.018)
+    _TILE_GAP = int(HEIGHT * 0.012)
+    rows      = max(1, max(len(g["chapters"]) for g in _groups))
+    room      = int(HEIGHT * 0.965) - _TILE_TOP
+    _TILE_H   = int((room - _TILE_GAP * (rows - 1)) / rows)
+    _TILE_W   = int(_TILE_H * 1.90)
+    if _TILE_W > _PLAQ_W * 0.86:                 # never wider than its sign
+        _TILE_W = int(_PLAQ_W * 0.86)
+        _TILE_H = int(_TILE_W / 1.90)
+
+    _POST_W = max(4, int(_TILE_W * 0.09))
+    _POST_H = int(HEIGHT * 0.975) - (_COL_Y + _PLAQ_H)
+
+    total = 3 * _PLAQ_W + 2 * gap
+    x0    = max(0, (WIDTH - total) // 2)
+    _COL_X = [x0 + i * (_PLAQ_W + gap) for i in range(3)]
+
+    # ── Pre-scale every wooden surface (no per-frame scaling) ───
+    _plaque_s = pygame.transform.smoothscale(wood, (_PLAQ_W, _PLAQ_H))
+    _tile_s   = pygame.transform.smoothscale(wood, (_TILE_W, _TILE_H))
+    _post_s   = pygame.transform.smoothscale(panel, (_POST_W, _POST_H))
+
+    _title_w = int(HEIGHT * 0.145)
+    _title_s = pygame.transform.smoothscale(panel, (_title_w, _TITLE_H))
+
+    back_w  = int(min(WIDTH, HEIGHT) * 0.13)
+    _back_s = pygame.transform.smoothscale(panel, (back_w, int(back_w / 1.9)))
+    back_rect = _back_s.get_rect(topleft=(int(WIDTH * 0.028), _TITLE_TOP))
+
+    _shadow_p = _make_shadow(_PLAQ_W, _PLAQ_H, int(_PLAQ_H * 0.09))
+    _shadow_t = _make_shadow(_TILE_W, _TILE_H, int(_TILE_H * 0.14))
+
+    # ── Fonts ──────────────────────────────────────────────────
+    _font_cache = {}
+    _f_title = _make_font(HEIGHT * 0.046)
+    _f_name  = _make_font(HEIGHT * 0.044)
+    _f_sub   = _make_font(HEIGHT * 0.023)
+    _f_chap  = _make_font(HEIGHT * 0.022)
+    _f_crop  = _make_font(HEIGHT * 0.032)
+    _f_back  = _make_font(HEIGHT * 0.034)
+
+    _press_at   = 0.0
+    _pressed    = None
     _last_ticks = pygame.time.get_ticks()
+
+_shadow_p = None
+_shadow_t = None
+
+# ── Fonts ─────────────────────────────────────────────────────
+_f_title = None
+_f_name  = None
+_f_sub   = None
+_f_chap  = None
+_f_crop  = None
+_f_back  = None
+_font_cache: dict = {}
+
+# ── Animation / press feedback ────────────────────────────────
+ANIM_SPEED  = 6.0     # 0 to 1 per second
+_press_at   = 0.0
+_pressed    = None    # (kind, gi, ci) currently shrinking
+_last_ticks = 0
 
 
 # ═══════════════════════════════════════════════════════════════
-#  Layout helpers
+#  Small helpers
+# ═══════════════════════════════════════════════════════════════
+
+def _make_font(size):
+    try:
+        return pygame.font.Font("fonts/RumRaisin-Regular.ttf", int(size))
+    except Exception:
+        return pygame.font.SysFont("Georgia", int(size), bold=True)
+
+
+def _fit_font(text, max_w, font, floor=10):
+    """Shrink `font` until the text fits max_w, then remember it.
+
+    "Intermediate" is a much longer word than "Expert", so the sign
+    names are scaled to their own plank rather than trusting one size.
+    """
+    key = (text, int(max_w), font.get_height())
+    hit = _font_cache.get(key)
+    if hit is not None:
+        return hit
+
+    size = font.get_height()
+    while size > floor and font.size(text)[0] > max_w:
+        size = int(size * 0.94)
+        font = _make_font(size)
+
+    _font_cache[key] = font
+    return font
+
+
+def _make_shadow(w, h, radius, alpha=115):
+    sh = pygame.Surface((max(1, w), max(1, h)), pygame.SRCALPHA)
+    pygame.draw.rect(sh, (22, 11, 4, alpha), sh.get_rect(), border_radius=radius)
+    return sh
+
+
+def _scaled_rect(img, rect, k):
+    """Where img actually lands when drawn at `k` scale inside rect."""
+    if k >= 0.999:
+        return rect
+    w = max(1, int(img.get_width()  * k))
+    h = max(1, int(img.get_height() * k))
+    return pygame.Rect(0, 0, w, h).move(
+        rect.centerx - w // 2,
+        rect.centery - h // 2,
+    )
+
+
+def _blit_scaled(surf, img, rect, k=1.0):
+    if k >= 0.999:
+        surf.blit(img, rect)
+    else:
+        out = pygame.transform.smoothscale(
+            img, (max(1, int(img.get_width() * k)), max(1, int(img.get_height() * k)))
+        )
+        surf.blit(out, _scaled_rect(img, rect, k))
+
+
+def _press_k(item, k=1.0):
+    """Multiply a draw scale by the press-shrink while the finger is down."""
+    if _pressed == (item["kind"], item["gi"], item["ci"]):
+        if time.time() - _press_at < config.PRESS_DURATION:
+            return k * config.PRESS_SCALE
+    return k
+
+
+def _paint_text(surf, text, font, color, pos, anchor="center"):
+    """Cream paint with a dark offset shadow so it reads on the wood."""
+    shadow = font.render(text, True, _SHADOW)
+    body   = font.render(text, True, color)
+    rect   = body.get_rect(**{anchor: pos})
+    surf.blit(shadow, rect.move(2, 3))
+    surf.blit(body,   rect)
+
+
+def _panel_rect(rect):
+    """The recessed area inside a carved board, in board-local fractions."""
+    l, t, r, b = _PANEL
+    return pygame.Rect(
+        rect.left + int(l * rect.width),
+        rect.top  + int(t * rect.height),
+        int((r - l) * rect.width),
+        int((b - t) * rect.height),
+    )
+
+
+# ═══════════════════════════════════════════════════════════════
+#  Layout
 # ═══════════════════════════════════════════════════════════════
 
 def _compute_layout():
     """
-    Returns a list of items describing every visible box this frame.
+    Every visible board this frame.
     Each item: { kind:"diff"|"chap", gi, ci, rect, [ch] }
-    Positions account for scroll_x and current anim values.
+
+    The three signs sit side by side; each group's chapter cards
+    stack underneath its own sign, and only appear while it is open.
     """
     items = []
-    x = _X0 - int(_scroll_x)
-
     for gi, g in enumerate(_groups):
-        # Difficulty box
+        x = _COL_X[gi]
         items.append({
             "kind": "diff",
             "gi": gi, "ci": -1,
-            "rect": pygame.Rect(x, _ROW_Y, _DIFF_W, _BOX_H),
+            "rect": pygame.Rect(x, _COL_Y, _PLAQ_W, _PLAQ_H),
         })
-        x += _DIFF_W + _GAP
 
-        # Chapter cards (width grows 0 → _CHAP_W as anim goes 0 → 1)
-        if g["anim"] > 0:
-            card_w = max(1, int(_CHAP_W * g["anim"]))
-            for ci, ch in enumerate(g["chapters"]):
-                items.append({
-                    "kind": "chap",
-                    "gi": gi, "ci": ci,
-                    "rect": pygame.Rect(x, _ROW_Y, card_w, _BOX_H),
-                    "ch": ch,
-                })
-                x += card_w + _GAP
+        if g["anim"] <= 0.001:
+            continue
 
+        cx = x + (_PLAQ_W - _TILE_W) // 2
+        y  = _TILE_TOP
+        for ci, ch in enumerate(g["chapters"]):
+            items.append({
+                "kind": "chap",
+                "gi": gi, "ci": ci,
+                "rect": pygame.Rect(cx, y, _TILE_W, _TILE_H),
+                "ch": ch,
+            })
+            y += _TILE_H + _TILE_GAP
     return items
 
 
-def _content_right_edge():
-    """Right edge of all content at full expansion."""
-    x = _X0
-    for g in _groups:
-        x += _DIFF_W + _GAP
-        if g["anim"] > 0:
-            x += len(g["chapters"]) * (int(_CHAP_W * g["anim"]) + _GAP)
-    return x
-
-
-def _max_scroll():
-    return max(0.0, _content_right_edge() - WIDTH + _GAP)
-
 
 # ═══════════════════════════════════════════════════════════════
-#  Input  (tap = finger/mouse down, drag = motion, release = up)
+#  Input
 # ═══════════════════════════════════════════════════════════════
 
 def handle_tap(px, _py):
-    """Records the start of a potential drag. Clicks fire on release."""
-    global _drag_start_x, _drag_start_scr, _is_dragging
-    _drag_start_x   = px
-    _drag_start_scr = _scroll_x
-    _is_dragging    = False
-
-
-def handle_drag(px, _py2):
-    global _scroll_x, _is_dragging
-    dx = _drag_start_x - px
-    if abs(dx) > DRAG_THRESHOLD:
-        _is_dragging = True
-    if _is_dragging:
-        _scroll_x = max(0.0, min(_max_scroll(), _drag_start_scr + dx))
-
-
-def handle_release(px, _py):
-    if _is_dragging:
-        return  # was a scroll, not a tap
-
-    # Back button
-    if back_rect and back_rect.collidepoint(px, _py):
-        _go_to_scene("main_menu")
-        return
-
-    # Check which box was tapped
+    """Remember the press so the board under the finger shrinks."""
+    global _press_at, _pressed
     for item in _compute_layout():
         if item["rect"].collidepoint(px, _py):
-            if item["kind"] == "diff":
-                g = _groups[item["gi"]]
-                g["expanded"] = not g["expanded"]
-            elif item["kind"] == "chap":
-                ch = item["ch"]
-                game_state.selected_chapter = ch["_module_id"]
-                _go_to_scene("story_mode")
+            _pressed = (item["kind"], item["gi"], item["ci"])
+            _press_at = time.time()
             return
 
 
+def handle_drag(_px, _py):
+    """Nothing to drag, but main.py still calls this."""
+    pass
+
+
+def handle_release(px, py):
+    global _pressed
+    _pressed = None
+
+    if back_rect and back_rect.collidepoint(px, py):
+        _go_to_scene("main_menu")
+        return
+
+    for item in _compute_layout():
+        if not item["rect"].collidepoint(px, py):
+            continue
+        if item["kind"] == "diff":
+            g = _groups[item["gi"]]
+            g["expanded"] = not g["expanded"]
+        elif item["kind"] == "chap":
+            ch = item["ch"]
+            game_state.selected_chapter = ch["_module_id"]
+            _go_to_scene("story_mode")
+        return
+
+
+
+
 # ═══════════════════════════════════════════════════════════════
-#  Draw
+#  Drawing
 # ═══════════════════════════════════════════════════════════════
 
 def draw(surf):
@@ -218,102 +393,136 @@ def draw(surf):
     dt  = (now - _last_ticks) / 1000.0
     _last_ticks = now
 
-    # ── Animate expand / collapse ────────────────────────────────
+    # ── Animate expand / collapse ──────────────────────────────
     for g in _groups:
         if g["expanded"]:
             g["anim"] = min(1.0, g["anim"] + ANIM_SPEED * dt)
         else:
             g["anim"] = max(0.0, g["anim"] - ANIM_SPEED * dt)
 
-    # ── Background ───────────────────────────────────────────────
     surf.blit(bg_image, (0, 0))
 
-    # ── Title ────────────────────────────────────────────────────
-    font_title = pygame.font.SysFont(None, int(HEIGHT * 0.055))
-    title = font_title.render("Piliin ang Kabanata", True, (255, 255, 255))
-    surf.blit(title, title.get_rect(midtop=(WIDTH // 2, int(HEIGHT * 0.05))))
+    _draw_title(surf)
 
-    # ── Boxes ────────────────────────────────────────────────────
-    layout = _compute_layout()
-    font_diff = pygame.font.SysFont(None, int(HEIGHT * 0.048))
-    font_sub  = pygame.font.SysFont(None, int(HEIGHT * 0.028))
-    font_chap = pygame.font.SysFont(None, int(HEIGHT * 0.030))
-    font_crop = pygame.font.SysFont(None, int(HEIGHT * 0.038))
+    # Posts first, so the cards hang in front of them.
+    for gi, g in enumerate(_groups):
+        if g["anim"] > 0.001:
+            _draw_post(surf, gi, g)
 
-    for item in layout:
-        g    = _groups[item["gi"]]
-        rect = item["rect"]
-
+    for item in _compute_layout():
         if item["kind"] == "diff":
-            # Difficulty box
-            border_col = (255, 230, 80) if g["expanded"] or g["anim"] > 0 else (200, 200, 200)
-            pygame.draw.rect(surf, g["color"], rect, border_radius=14)
-            pygame.draw.rect(surf, border_col, rect, width=3, border_radius=14)
+            _draw_sign(surf, item)
+        else:
+            _draw_card(surf, item)
 
-            # Difficulty name
-            lbl = font_diff.render(g["label"], True, (255, 255, 255))
-            surf.blit(lbl, lbl.get_rect(center=(rect.centerx, rect.centery - int(HEIGHT * 0.04))))
-
-            # Chapter count
-            n = len(g["chapters"])
-            sub = font_sub.render(f"{n} chapter{'s' if n != 1 else ''}", True, (220, 220, 180))
-            surf.blit(sub, sub.get_rect(center=(rect.centerx, rect.centery + int(HEIGHT * 0.01))))
-
-            # Expand arrow
-            arrow = "v" if (g["expanded"] or g["anim"] > 0.5) else ">"
-            arr_surf = font_sub.render(arrow, True, (255, 255, 255))
-            surf.blit(arr_surf, arr_surf.get_rect(midbottom=(rect.centerx, rect.bottom - 14)))
-
-        elif item["kind"] == "chap":
-            # Chapter card — only draw content when wide enough
-            pygame.draw.rect(surf, g["chap_color"], rect, border_radius=10)
-            pygame.draw.rect(surf, (200, 200, 200), rect, width=2, border_radius=10)
-
-            if g["anim"] > 0.55 and rect.width > 60:
-                ch = item["ch"]
-
-                # Find global chapter number
-                ch_num = chapters_data.CHAPTER_IDS.index(ch["_module_id"]) + 1
-
-                # Clip text to the card boundaries
-                surf.set_clip(rect)
-
-                num_lbl = font_chap.render(f"Ch {ch_num}", True, (255, 220, 80))
-                surf.blit(num_lbl, num_lbl.get_rect(midtop=(rect.centerx, rect.top + 14)))
-
-                crop_lbl = font_crop.render(ch["crop"], True, (255, 255, 255))
-                surf.blit(crop_lbl, crop_lbl.get_rect(center=(rect.centerx, rect.centery)))
-
-                tap_lbl = font_sub.render("Tap to play", True, (180, 220, 180))
-                surf.blit(tap_lbl, tap_lbl.get_rect(midbottom=(rect.centerx, rect.bottom - 14)))
-
-                surf.set_clip(None)
-
-    # ── Scrollbar ────────────────────────────────────────────────
-    max_s = _max_scroll()
-    if max_s > 0:
-        _draw_scrollbar(surf, max_s)
-
-    # ── Back button ──────────────────────────────────────────────
-    pygame.draw.rect(surf, (50, 50, 65), back_rect, border_radius=8)
-    pygame.draw.rect(surf, (255, 255, 255), back_rect, width=2, border_radius=8)
-    bfont = pygame.font.SysFont(None, int(HEIGHT * 0.042))
-    blbl  = bfont.render("<", True, (255, 255, 255))
-    surf.blit(blbl, blbl.get_rect(center=back_rect.center))
+    _draw_back(surf)
 
 
-def _draw_scrollbar(surf, max_s):
-    bar_h = 6
-    bar_y = _ROW_Y + _BOX_H + 18
-    bar_x = _GAP
-    bar_w = WIDTH - 2 * _GAP
+def _draw_title(surf):
+    rect = _title_s.get_rect(midtop=(WIDTH // 2, _TITLE_TOP))
+    _blit_scaled(surf, _title_s, rect)
+    _paint_text(
+        surf,
+        "Piliin ang Kabanata",
+        _fit_font("Piliin ang Kabanata", int(rect.width * 0.88), _f_title),
+        _CREAM,
+        rect.center,
+    )
 
-    # Track
-    pygame.draw.rect(surf, (60, 60, 80), pygame.Rect(bar_x, bar_y, bar_w, bar_h), border_radius=3)
 
-    # Thumb
-    visible_ratio = min(1.0, WIDTH / (_content_right_edge() + 1))
-    thumb_w = max(40, int(bar_w * visible_ratio))
-    scroll_ratio = _scroll_x / max_s if max_s > 0 else 0
-    thumb_x = bar_x + int(scroll_ratio * (bar_w - thumb_w))
-    pygame.draw.rect(surf, (160, 160, 210), pygame.Rect(thumb_x, bar_y, thumb_w, bar_h), border_radius=3)
+def _draw_post(surf, gi, g):
+    """Slim wooden post the chapter cards hang from."""
+    a = g["anim"]
+    x = _COL_X[gi] + _PLAQ_W // 2
+    rect = pygame.Rect(
+        x - _POST_W // 2,
+        _COL_Y + _PLAQ_H - int(_POST_H * 0.06),
+        _POST_W,
+        _POST_H,
+    )
+    k = 0.35 + 0.65 * a
+    _blit_scaled(surf, _post_s, rect, k)
+
+
+def _draw_sign(surf, item):
+    """The difficulty name, painted on its own carved board."""
+    g = _groups[item["gi"]]
+    k = _press_k(item)
+    rect = item["rect"]
+
+    _blit_scaled(surf, _shadow_p, rect.move(0, int(HEIGHT * 0.008)), k)
+    _blit_scaled(surf, _plaque_s, rect, k)
+
+    panel = _panel_rect(_scaled_rect(_plaque_s, rect, k))
+
+    # Ribbon of paint across the top of the recessed panel.
+    rib_h = max(4, int(panel.height * 0.20))
+    rib   = pygame.Rect(panel.left, panel.top, panel.width, rib_h)
+    pygame.draw.rect(surf, g["color"], rib, border_radius=int(rib_h * 0.4))
+    pygame.draw.rect(
+        surf, _CREAM_DIM, rib, width=2, border_radius=int(rib_h * 0.4)
+    )
+
+    # Name, then the chapter count underneath it.
+    mid = panel.centerx
+    _paint_text(
+        surf,
+        g["label"],
+        _fit_font(g["label"], int(panel.width * 0.84), _f_name),
+        _CREAM,
+        (mid, panel.top + rib_h + int(panel.height * 0.34)),
+    )
+
+    n = len(g["chapters"])
+    _paint_text(
+        surf,
+        f"{n} chapter{'s' if n != 1 else ''}",
+        _fit_font(f"{n} chapters", int(panel.width * 0.70), _f_sub),
+        _CREAM_DIM,
+        (mid, panel.top + rib_h + int(panel.height * 0.66)),
+    )
+
+
+def _draw_card(surf, item):
+    """One chapter, hanging on the post under its difficulty sign."""
+    g   = _groups[item["gi"]]
+    ch  = item["ch"]
+    a   = g["anim"]
+    k   = _press_k(item, 0.80 + 0.20 * a)
+    rect = item["rect"]
+
+    _blit_scaled(surf, _shadow_t, rect.move(0, int(HEIGHT * 0.006)), k)
+    _blit_scaled(surf, _tile_s, rect, k)
+
+    r    = _scaled_rect(_tile_s, rect, k)
+    panel = _panel_rect(r)
+
+    # Difficulty-coloured stripe down the left edge of the panel.
+    stripe_w = max(3, int(panel.width * 0.035))
+    pygame.draw.rect(
+        surf,
+        g["chap_color"],
+        pygame.Rect(panel.left, panel.top, stripe_w, panel.height),
+        border_radius=stripe_w,
+    )
+
+    ch_num = chapters_data.CHAPTER_IDS.index(ch["_module_id"]) + 1
+    _paint_text(
+        surf,
+        f"KABANATA {ch_num}",
+        _fit_font(f"KABANATA {ch_num}", int(panel.width * 0.72), _f_chap),
+        _GOLD,
+        (panel.left + stripe_w + int(panel.width * 0.40), panel.centery - int(panel.height * 0.19)),
+    )
+    _paint_text(
+        surf,
+        ch["crop"],
+        _fit_font(ch["crop"], int(panel.width * 0.72), _f_crop),
+        _CREAM,
+        (panel.left + stripe_w + int(panel.width * 0.40), panel.centery + int(panel.height * 0.21)),
+    )
+
+
+def _draw_back(surf):
+    _blit_scaled(surf, _back_s, back_rect)
+    _paint_text(surf, "<", _f_back, _CREAM, back_rect.center)

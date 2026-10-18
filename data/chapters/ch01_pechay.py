@@ -33,21 +33,21 @@ CHAPTER = {
         },
 
         # ── Scene 1, Panel 2 — Lucas introduces himself ───────
-            {
-                "id":    "S1P2",
-                "type":  "dialogue",
-                "bg":    "background/scenebg_default.png",
-                "chars": {
-                    "lucas": {
-                        "side": "left",
-                        "expression": "default",
-                        "flip": True,
-                        }
-                        },
-                "lines": [
-                    ("lucas", "Sigurado akong matutuwa si Lola Maria dahil may tutulong na sa kanya sa taniman."),
-                ],
-            },
+        {
+            "id":    "S1P2",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {
+                "lucas": {
+                    "side": "left",
+                    "expression": "default",
+                    "flip": True,
+                    }
+                    },
+            "lines": [
+                ("lucas", "Sigurado akong matutuwa si Lola Maria dahil may tutulong na sa kanya sa taniman."),
+            ],
+        },
 
         # ── Scene 1, Panel 3 — Lucas asks you to come with him ───────
             {
@@ -929,13 +929,13 @@ CHAPTER = {
     # drawn on top of the default scene background and the player picks
     # the blue square. This slide type is replaced once the camera-based
     # cardscan feature is wired in.
-            {
-                "id": "S2P48",
-                "type": "action_challenge",
-                "bg": "background/scenebg_default.png",
-                "overlay": "background/Action_Challenge-Water.png",
-                "dim_inactive": False,
-            },
+        {
+            "id": "S2P48",
+            "type": "action_challenge",
+            "bg": "background/scenebg_default.png",
+            "overlay": "background/Action_Challenge-Water.png",
+            "dim_inactive": False,
+        },
     # ── Scene 2, Panel 49 - Lucas explains to lola ───────────────
             {
                 "id": "S2P49",

@@ -200,12 +200,11 @@ CHAPTER = {
             ],
         },
 
-        # ── Day 1 transition ───────────────────────────────────
+        # Timeline: Day 1 begins in the next scene as planting starts.
         {
             "id":   "day1_fade",
             "type": "transition",
         },
-
         {
             "id":    "S2P19",
             "type":  "dialogue",
@@ -248,7 +247,7 @@ CHAPTER = {
                 ("lucas", "Tatakpan naman natin ito ng isa pang malinis na tela at plato sa ibabaw. Ilagay natin sa lugar na may sapat na liwanag at hindi direktang maarawan. Pagkatapos ng tatlong araw, makikita natin ang mga buto ng monggo na unti-unting sumisibol."),
             ],
         },
-        # ── Day 4 transition ───────────────────────────────────
+        # Timeline: Day 4 begins in the next scene, after three days of sprouting.
         {
             "id":   "day4_fade",
             "type": "transition",
@@ -256,6 +255,7 @@ CHAPTER = {
         {
             "id":    "S2P23",
             "type":  "dialogue",
+            "day":   4,
             "bg":    "background/MonggoSproutbg.jpg",
             "lines": [
                 ("lucas", "Tatlong araw na ang nakalipas kapitan."),
@@ -273,7 +273,7 @@ CHAPTER = {
         {
             "id":    "S2P25",
             "type":  "dialogue",
-            "day":   1,
+            "day":   4,
             "bg":    "background/MonggoSproutbg.jpg",
             "chars": {"kapitan": "right"},
             "lines": [
@@ -364,7 +364,7 @@ CHAPTER = {
             ("kapitan_wrong", "Mag-ingat. Ang Asarol ay para sa malalim na paghukay. Baka masira natin ang mga buto kung gagamitin natin ito dito. Subukan mong hanapin ang kasanggamit para sa mababaw na hukay."),
         ],
     },
-    # ── Day 5 transition ───────────────────────────────────
+    # Timeline: Day 5 begins in the next scene, one day after transplanting.
         {
             "id":   "day5_fade",
             "type": "transition",
@@ -372,6 +372,7 @@ CHAPTER = {
         {
             "id":    "S2P31",
             "type":  "dialogue",
+            "day":   5,
             "bg":    "background/Monggobg.jpg",
             "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
             "lines": [
@@ -425,6 +426,7 @@ CHAPTER = {
                 ("baron", "Matitikman nyo ngayon ang lupit ng kapangyarihan ko!"),
             ],
         },
+        # Timeline: Still Day 5; the Baron summons pests in the next scene.
         {
             "id":   "day5_fade",
             "type": "transition",
@@ -432,6 +434,7 @@ CHAPTER = {
         {
             "id": "S2P36",
             "type": "scene",
+            "day": 5,
             "bg": "background/baronmonggoswarmed.jpg",
             "shake": True,   # camera shake on arrival (S2P35 -> S2P36)
         },
@@ -540,6 +543,7 @@ CHAPTER = {
                 ("kapitan", "Tama ka Lucas! Ngayon ay maaari na nating hintayin ang mga halaman ng Monggo na tuluyang sumibol!"),
             ],
         },
+        # Timeline: Day 10 begins in the next scene after five days of watering and growth.
         {
             "id":   "day5_fade",
             "type": "transition",
@@ -547,6 +551,7 @@ CHAPTER = {
         {
             "id": "S2P47",
             "type": "narration_overlay",
+            "day": 10,
             "bg": "background/scenebg_night.jpg",
             "dim_inactive": False,
             "overlay": "woodbg.png",
@@ -567,7 +572,7 @@ CHAPTER = {
                 ("lucas", "Mahusay unti unti nang lumalago ang mga pananim!"),
             ],
         },
-         # ── After 5 days ────
+         # Timeline: Day 15 begins in the next scene, five days later.
         {
             "id":   "day5_fade",
             "type": "transition",
@@ -575,9 +580,10 @@ CHAPTER = {
         {
             "id": "S2P49",
             "type": "scene",
+            "day": 15,
             "bg": "background/lucasmonggobg.jpg",
         },
-         # ── Day 30 story sequence ────
+         # Timeline: Day 30 begins in the next scene, fifteen days later.
         {
             "id":   "day30_fade",
             "type": "transition",
@@ -585,6 +591,7 @@ CHAPTER = {
         {
             "id":    "S3P50",
             "type":  "dialogue",
+            "day":   30,
             "bg":    "background/baronmonggobgnew.jpg",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "angry"}},
@@ -607,15 +614,21 @@ CHAPTER = {
                 },
             },
         },
+        # Timeline: Day 65 begins in the next scene at harvest.
+        {
+            "id":   "day65_fade",
+            "type": "transition",
+        },
         {
             "id":    "S3P52",
             "type":  "dialogue",
+            "day":   65,
             "bg":    "background/monggobgnew.jpg",
             "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
             "lines": [
                 ("lucas", "Magaling! lumago na ang ating mga pananim!"),
                 ("lucas", "Ngayon ay maaari na natin itong anihin!"),
-                ("lucas", "Ihanda na natin ang mga "),
+                ("lucas", "Ihanda na natin ang mga gagamitin natin"),
             ],
         },
          {
@@ -673,19 +686,22 @@ CHAPTER = {
         {
             "id":    "S3P58",
             "type":  "dialogue",
-            "bg":    "background/monggobgnew.jpg",
-            "chars": {"lola": {"side": "left", "expression": "Celebrates", "flip": False}},
+            "day":   65,
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lola": {"side": "left", "expression": "celebrates", "flip": False}},
             "lines": [
                 ("lola", "Magaling! Naaalala ko na ulit paano gawin ang Ginisang Monggo! Hali na kayo at gawin na natin ito!!"),
             ],
         },
+        # Timeline: Still Day 65 as Kapitan's memories return in the next scene.
         {
-            "id":   "day1_fade",
+            "id":   "day65_fade",
             "type": "transition",
         },
         {
-            "id":    "S1P1",
+            "id":    "S3P59",
             "type":  "dialogue",
+            "day":   65,
             "bg":    "background/scenebg_default.png",
             "chars": {"kapitan": "right"},
             "lines": [
@@ -694,9 +710,9 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S3P57",
+            "id":    "S3P60",
             "type":  "dialogue",
-            "bg":    "background/monggobgnew.jpg",
+            "bg":    "background/scenebg_default.png",
             "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
             "lines": [
                 ("lucas", "Puntahan naman natin si Chef Pablo"),

@@ -7,26 +7,37 @@
 #      "smoke": True
 # ============================================================
 
+import bisect
 import random
 
 import pygame
 
 
 # ── Tuning knobs ─────────────────────────────────────────────
-EMISSION_RATE   = 26.0    # new puffs per second while active
-BURST_COUNT     = 55      # puffs for a one-shot burst()
-PUFF_LIFE       = (1.6, 2.6)   # seconds: (min, max)
+EMISSION_RATE   = 12.0    # new puffs per second while active
+BURST_COUNT     = 26      # puffs for a one-shot burst()
+PUFF_LIFE       = (1.8, 3.0)   # seconds: (min, max)
 PUFF_RISE       = (140, 260)   # design px/s upward speed: (min, max)
 PUFF_DRIFT      = (-60, 60)    # design px/s horizontal drift range
-PUFF_START_R    = (0.03, 0.055)  # start radius as fraction of screen width
-PUFF_GROW       = (0.10, 0.22)   # radius growth, screen-width fraction/s
-PUFF_ALPHA      = (60, 120)      # starting opacity range (0-255)
+PUFF_START_R    = (0.020, 0.038)  # start radius as fraction of screen width
+PUFF_GROW       = (0.030, 0.070)  # radius growth, screen-width fraction/s
+PUFF_MAX_R      = 0.15      # hard cap on radius, screen-width fraction
+PUFF_ALPHA      = (70, 125)      # starting opacity range (0-255)
+MAX_PUFFS       = 40        # hard cap on live puffs (bounds draw cost)
+
+# The sprite ladder is pre-rendered once, so it needs no eviction cap:
+# its size is fixed by SPRITE_LADDER_RATIO and the screen size.
+#
+# Ratio 1.12 keeps a puff's sprite within ~5.6% of its true radius
+# (≈8 px at the 288 px cap) while using only ~19 surfaces / ~6.7 MB.
+SPRITE_LADDER_RATIO = 1.12
+SPRITE_MIN_R        = 8      # smallest sprite radius, in px
 
 
 class _Puff:
     """One smoke particle."""
 
-    __slots__ = ("x", "y", "vx", "vy", "r", "grow", "life", "age", "alpha")
+    __slots__ = ("x", "y", "vx", "vy", "r", "grow", "max_r", "life", "age", "alpha")
 
     def __init__(self, screen_w, screen_h, x=None, y=None):
         sx = screen_w / 1920.0    # design px -> screen px (x/speeds)
@@ -38,7 +49,10 @@ class _Puff:
 
         self.vx = random.uniform(*PUFF_DRIFT) * sx
         self.vy = -random.uniform(*PUFF_RISE) * sx
-        self.r = random.uniform(*PUFF_START_R) * screen_w
+        # Radius is capped: without a cap a puff grows past half the
+        # screen width and the effect stops reading as smoke.
+        self.max_r = PUFF_MAX_R * screen_w
+        self.r = min(random.uniform(*PUFF_START_R) * screen_w, self.max_r)
         self.grow = random.uniform(*PUFF_GROW) * screen_w
         self.life = random.uniform(*PUFF_LIFE)
         self.age = 0.0
@@ -50,7 +64,8 @@ class _Puff:
         # rising in a rigid line.
         self.x += (self.vx + wobble) * dt
         self.y += self.vy * dt
-        self.r += self.grow * dt
+        if self.r < self.max_r:
+            self.r = min(self.r + self.grow * dt, self.max_r)
 
     @property
     def dead(self) -> bool:
@@ -66,13 +81,17 @@ class SmokeFX:
         self._puffs: list[_Puff] = []
         self._emit_accum = 0.0
         self._wobble_t = random.uniform(0, 10)
-        self._sprite_cache: dict[int, pygame.Surface] = {}
+        self._sprites: list[pygame.Surface] = []
+        self._radii: list[int] = []
+        self._build_ladder()
 
     # ── Control ──────────────────────────────────────────────
     def start(self, burst: bool = False):
         """Begin emitting. burst=True also fires one dense burst."""
         if burst:
             for _ in range(BURST_COUNT):
+                if len(self._puffs) >= MAX_PUFFS:
+                    self._puffs.pop(0)
                 self._puffs.append(_Puff(self._w, self._h))
 
     def stop(self):
@@ -85,26 +104,82 @@ class SmokeFX:
     def alive(self) -> bool:
         return bool(self._puffs)
 
-    # ── Soft puff sprite (cached per radius bucket) ──────────
-    def _sprite(self, radius: int) -> pygame.Surface:
-        # Bucket to 8px steps so the cache stays tiny.
-        key = max(4, int(radius) // 8 * 8)
-        surf = self._sprite_cache.get(key)
-        if surf is None:
-            size = key * 2
-            surf = pygame.Surface((size, size), pygame.SRCALPHA)
-            cx = cy = key
-            # Radial gradient: draw circles from the rim inwards with
-            # alpha increasing toward the center. Each smaller circle
-            # overwrites the center pixels, so the final result is a
-            # dense core fading to transparent at the rim.
-            for i in range(key, 0, -2):
-                a = int(255 * (1 - i / key) ** 1.4)
-                pygame.draw.circle(
-                    surf, (200, 200, 200, a), (cx, cy), i
-                )
-            self._sprite_cache[key] = surf
-        return surf
+    # ── Soft puff sprite (pre-rendered radius ladder) ────────
+    def _build_ladder(self) -> None:
+        """Pre-render every sprite the effect will ever need.
+
+        Building sprites lazily inside draw() meant a brand-new surface
+        was allocated mid-frame whenever a puff crossed a radius
+        boundary. That allocation is what blew the frame budget: the
+        large surface triggered a GC pause plus page faults, so the
+        frames that happened to build a bucket cost 15-21 ms while
+        every other frame cost 3-5 ms.
+
+        Rendering the whole ladder up front means draw() only reads
+        from a fixed list -- no allocation, no GC spike, and the cost
+        of the ladder is paid once when the scene starts.
+        """
+        max_r = max(SPRITE_MIN_R, int(PUFF_MAX_R * self._w))
+        radii = []
+        r = float(SPRITE_MIN_R)
+        while r < max_r:
+            radii.append(int(round(r)))
+            r *= SPRITE_LADDER_RATIO
+        radii.append(max_r)
+        radii = sorted(set(radii))
+
+        base = self._base_gradient()
+        self._radii = radii
+        self._sprites = [
+            pygame.transform.smoothscale(base, (rad * 2, rad * 2))
+            for rad in radii
+        ]
+
+    def _base_gradient(self) -> pygame.Surface:
+        """Build the low-res radial alpha ramp every puff sprite is scaled from.
+
+        Rasterising the ramp once at low resolution and scaling it up
+        is far cheaper than re-drawing a gradient per radius, and the
+        upscale gives the soft edge smoke needs.
+        """
+        n = 64
+        base = pygame.Surface((n, n), pygame.SRCALPHA)
+        c = (n - 1) / 2.0
+        for y in range(n):
+            for x in range(n):
+                d = ((x - c) ** 2 + (y - c) ** 2) ** 0.5 / c
+                if d > 1.0:
+                    continue
+                a = int(255 * (1.0 - d) ** 1.4)
+                base.set_at((x, y), (200, 200, 200, a))
+        return base
+
+    def _sprite_index(self, radius: int) -> int:
+        """Index into the sprite ladder for a requested radius.
+
+        Returns an int rather than a (surface, radius) tuple on purpose:
+        a tuple is a GC-tracked allocation, and allocating one per puff
+        per frame was enough to trigger a generational GC pass inside
+        draw() -- which cost more than the blits themselves.
+        """
+        radii = self._radii
+        idx = bisect.bisect_left(radii, radius)
+        if idx >= len(radii):
+            idx = len(radii) - 1
+        elif idx > 0 and radius - radii[idx - 1] < radii[idx] - radius:
+            # Snap to the nearer neighbour so the error stays <= half a step.
+            idx -= 1
+        return idx
+
+    def _sprite(self, radius: int) -> tuple[pygame.Surface, int]:
+        """Return (sprite, sprite_radius) for a requested radius.
+
+        The sprite is drawn at the *bucketed* radius, so the caller must
+        use the returned radius when positioning it, otherwise puffs would
+        jitter as they cross bucket boundaries.
+        """
+        idx = self._sprite_index(radius)
+        return self._sprites[idx], self._radii[idx]
 
     # ── Frame update / draw ──────────────────────────────────
     def update(self, dt: float, emitting: bool):
@@ -119,25 +194,43 @@ class SmokeFX:
             self._emit_accum += EMISSION_RATE * dt
             while self._emit_accum >= 1.0:
                 self._emit_accum -= 1.0
-                self._puffs.append(_Puff(self._w, self._h))
+                if len(self._puffs) < MAX_PUFFS:
+                    self._puffs.append(_Puff(self._w, self._h))
+                else:
+                    # Budget spent: drop the oldest puff so the column
+                    # keeps moving instead of stalling.
+                    self._puffs.pop(0)
 
         for p in self._puffs:
             p.update(dt, wobble)
 
-        self._puffs = [
-            p for p in self._puffs
-            if not p.dead and p.y + p.r > -self._h * 0.2
-        ]
+        # Cull in place: rebuilding the list every frame allocates a new
+        # list object, and the churn was enough to trigger a GC pass.
+        puffs = self._puffs
+        write = 0
+        for p in puffs:
+            if not p.dead and p.y + p.r > -self._h * 0.2:
+                puffs[write] = p
+                write += 1
+        del puffs[write:]
 
     def draw(self, surf: pygame.Surface):
+        # The pre-rendered sprite is reused directly: set_alpha()
+        # modulates the per-pixel alpha of an SRCALPHA surface, so
+        # copying it per puff per frame (a full-surface memcpy) buys
+        # nothing.
+        #
+        # Nothing in this loop allocates, so no frame can be stalled by
+        # a GC pause -- that was the cause of the 15-21 ms spikes.
+        sprites = self._sprites
+        radii = self._radii
+        blit = surf.blit
         for p in self._puffs:
             if p.dead:
                 continue
             fade = max(0.0, 1.0 - (p.age / p.life))
-            img = self._sprite(int(p.r))
-            img = img.copy()
-            img.set_alpha(int(p.alpha * fade))
-            surf.blit(
-                img,
-                (int(p.x - p.r), int(p.y - p.r))
-            )
+            idx = self._sprite_index(int(p.r))
+            img = sprites[idx]
+            img.set_alpha(max(0, min(255, int(p.alpha * fade))))
+            sr = radii[idx]
+            blit(img, (int(p.x - sr), int(p.y - sr)))

@@ -49,6 +49,7 @@ _shake_surf: pygame.Surface | None = None
 
 # ── Chapter-complete overlay ──────────────────────────────────
 _chapter_done  = False
+_memory_game_played = False
 _end_buttons   = {}     # {"repeat": Rect, "menu": Rect, "next": Rect}
 _last_bg_surf  = None   # cached last background for the overlay backdrop
 
@@ -269,12 +270,13 @@ def _make_font(size_frac):
 
 def _load_chapter():
     global _engine, _chars, _DAY_TOTAL, _chapter_done, _last_bg_surf
-    global _water_level, _crop_name, _pending_water_scan
+    global _water_level, _crop_name, _pending_water_scan, _memory_game_played
     chapter     = chapters_data.load(game_state.selected_chapter)
     _DAY_TOTAL  = chapter.get("total_days", 30)
     _chars      = CharacterLayer(WIDTH, HEIGHT)
     _engine     = StoryEngine(chapter, on_chapter_end=_on_chapter_end)
     _chapter_done = False
+    _memory_game_played = False
     _last_bg_surf = None
     _water_level  = 1.0
     _crop_name    = chapter.get("crop", "")
@@ -337,6 +339,27 @@ def _on_chapter_end():
     _chapter_done = True
     _chars = None
     _compute_end_buttons()
+
+
+def _launch_memory_game():
+    global _chars, _memory_game_played
+    from scenes import memory_game
+
+    _memory_game_played = True
+    _chars = None
+    memory_game.start()
+    _go_to_scene("memory_game")
+
+
+def resume_after_memory_game():
+    global _chars, _chapter_done, _last_ticks
+    if _engine is None:
+        return
+    _chars = CharacterLayer(WIDTH, HEIGHT)
+    _chapter_done = False
+    _last_ticks = pygame.time.get_ticks()
+    _reset_typing()
+    _sync_chars()
 
 
 def _compute_end_buttons():
@@ -1207,6 +1230,9 @@ def handle_tap(px, py):
         return
 
     s = _engine.slide
+    if s["type"] == "memory_game" and not _memory_game_played:
+        _launch_memory_game()
+        return
 
     # Complete typing on first tap for dialogue/feedback
     if s["type"] in ("dialogue", "end", "feedback"):
@@ -1235,11 +1261,14 @@ def handle_tap(px, py):
 
     # The tap may have ended the chapter (on_chapter_end fired during
     # engine.tap) — don't touch the engine afterwards.
-    if _chapter_done:
+    if _chapter_done or _engine is None:
         return
 
     if _engine.slide_idx != prev_slide:
         _sync_chars()
+        if _engine.slide.get("type") == "memory_game" and not _memory_game_played:
+            _launch_memory_game()
+            return
 
     # The chapter may have ended without slide_idx changing (e.g. all
     # trailing slides were skipped feedback) — don't touch the engine
@@ -1357,6 +1386,12 @@ def draw(surf):
         overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 100))
         target.blit(overlay, (0, 0))
+
+    if stype == "memory_game":
+        _draw_memory_game_return(target)
+        _blit_shaken(surf)
+        _finish_fade_in(surf, dt)
+        return
 
     _chars.update(dt)
 
@@ -1481,6 +1516,33 @@ def draw(surf):
         scan_popup.draw(surf)
     elif _engine and _engine.popup_open == "image":
         image_popup.draw(surf)
+
+
+def _draw_memory_game_return(surf):
+    panel = pygame.Rect(
+        int(WIDTH * 0.16),
+        int(HEIGHT * 0.30),
+        int(WIDTH * 0.68),
+        int(HEIGHT * 0.38),
+    )
+    pygame.draw.rect(surf, _DBOX_FILL, panel, border_radius=24)
+    pygame.draw.rect(surf, _DBOX_BORDER, panel, width=4, border_radius=24)
+
+    title = _make_font(0.075).render("Memory Challenge Complete!", True, _DBOX_TEXT)
+    title_width = int(panel.width * 0.9)
+    if title.get_width() > title_width:
+        title = pygame.transform.smoothscale(
+            title,
+            (title_width, int(title.get_height() * title_width / title.get_width())),
+        )
+    surf.blit(title, title.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.42))))
+    hint = _font_body.render("Tap to continue Chapter 2.", True, _HINT_COLOR)
+    if hint.get_width() > title_width:
+        hint = pygame.transform.smoothscale(
+            hint,
+            (title_width, int(hint.get_height() * title_width / hint.get_width())),
+        )
+    surf.blit(hint, hint.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.55))))
 
 
 def _finish_fade_in(surf, dt):

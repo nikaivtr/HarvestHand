@@ -74,7 +74,7 @@ class StoryEngine:
             else:
                 return self._advance()
 
-        if s["type"] in ("title", "transition", "scene",
+        if s["type"] in ("title", "transition", "scene", "memory_game",
                          "action_challenge", "narration_overlay"):
             return self._advance()
 

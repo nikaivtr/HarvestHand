@@ -2,7 +2,7 @@ import sys
 
 import pygame
 
-from scenes import main_menu, level_select, story_mode
+from scenes import main_menu, level_select, story_mode, memory_game
 
 pygame.init()
 
@@ -32,6 +32,7 @@ SCENES = {
     "main_menu": main_menu,
     "level_select": level_select,
     "story_mode": story_mode,
+    "memory_game": memory_game,
 }
 current_scene = "main_menu"
 

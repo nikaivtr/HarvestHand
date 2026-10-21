@@ -41,7 +41,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P1",
+            "id":    "S1P3",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"kapitan": "right"},
@@ -50,7 +50,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P1",
+            "id":    "S1P4",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lola": {"side": "left", "expression": "shocked", "flip": False}},
@@ -59,7 +59,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P1",
+            "id":    "S1P5",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"kapitan": "right"},
@@ -68,7 +68,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P1",
+            "id":    "S1P6",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lola": {"side": "left", "expression": "shocked", "flip": False}},
@@ -77,7 +77,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P2",
+            "id":    "S1P7",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lucas": {"side": "left", "expression": "wrong", "flip": True}},
@@ -86,7 +86,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P1",
+            "id":    "S1P8",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"kapitan": "right"},
@@ -95,7 +95,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P2",
+            "id":    "S1P9",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
@@ -104,7 +104,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P1",
+            "id":    "S1P10",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
@@ -113,7 +113,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P1",
+            "id":    "S1P11",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"kapitan": "right"},
@@ -122,16 +122,16 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P1",
+            "id":    "S1P12",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
-                ("lola", "KUng ganon simulan natin sa pagtatanim ng Monggo upang maluto at maibalik natin ang iyong mga alala kapitan."),
+                ("lola", "Kung ganon simulan natin sa pagtatanim ng Monggo upang maluto at maibalik natin ang iyong mga alala kapitan."),
             ],
         },
         {
-            "id":    "S1P3",
+            "id":    "S1P13",
             "type":  "dialogue",
             "bg":    "background/scenebg_baron.png",
             "dark":  True,
@@ -141,7 +141,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P4",
+            "id":    "S1P14",
             "type":  "dialogue",
             "bg":    "background/scenebg_baron.png",
             "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
@@ -150,7 +150,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P3",
+            "id":    "S1P15",
             "type":  "dialogue",
             "bg":    "background/scenebg_baron.png",
             "dark":  True,
@@ -160,10 +160,10 @@ CHAPTER = {
             ],
         },
         {
-            "id": "S2P21",
+            "id": "S1P16",
             "type": "scene",
             "bg": "background/scenebg_baron.png",
-            "shake": True,   # camera shake on arrival (S2P20 -> S2P21)
+            "shake": True,   # camera shake on arrival (S1P15 -> S1P16)
             "smoke": True,   # smoke rises from the bottom of the screen
 
             "chars": {
@@ -175,7 +175,7 @@ CHAPTER = {
             },
         },
         {
-            "id": "S2P22",
+            "id": "S1P17",
             "type": "dialogue",
             "bg": "background/scenebg_default.png",
 
@@ -191,7 +191,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P4",
+            "id":    "S1P18",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
@@ -207,7 +207,7 @@ CHAPTER = {
         },
 
         {
-            "id":    "S2P0",
+            "id":    "S2P19",
             "type":  "dialogue",
             "day":   1,
             "bg":    "background/scenebg_default.png",
@@ -218,7 +218,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P4",
+            "id":    "S2P20",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
@@ -227,9 +227,9 @@ CHAPTER = {
             ],
         },
 
-        # ── Panel 2 — Tool choice: Dulo for small seed holes ──
+        # ── Panel 21 — Tool-choice setup ──
         {
-            "id":    "S2P1",
+            "id":    "S2P21",
             "type":  "dialogue",
             "day":   1,
             "bg":    "background/scenebg_planter.png",
@@ -239,7 +239,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P4",
+            "id":    "S2P22",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
@@ -254,7 +254,7 @@ CHAPTER = {
             "type": "transition",
         },
         {
-            "id":    "S1P4",
+            "id":    "S2P23",
             "type":  "dialogue",
             "bg":    "background/MonggoSproutbg.jpg",
             "lines": [
@@ -262,13 +262,115 @@ CHAPTER = {
                 ("lucas", "At mukhang sumisibol na ang mga buto ng monggo. Ngayon ay ililipat natin ito sa paso na may lupa para tuluyang tumubo ang mga punla."),
             ],
         },
-        # ── Day 5 transition ───────────────────────────────────
-            {
-                "id":   "day5_fade",
-                "type": "transition",
-            },
         {
-            "id":    "S2P2",
+            "id":    "S2P24",
+            "type":  "dialogue",
+            "bg":    "background/MonggoSproutbg.jpg",
+            "lines": [
+                ("lucas", "May dalawang kagamitan na maaari nating gamitin para mag hukay ng butas sa lupang tataniman para sa mga buto ng monggo."),
+            ],
+        },
+        {
+            "id":    "S2P25",
+            "type":  "dialogue",
+            "day":   1,
+            "bg":    "background/MonggoSproutbg.jpg",
+            "chars": {"kapitan": "right"},
+            "lines": [
+                ("kapitan", "Sa palagay ko dapat maliit na butas lamang ang ating gagamitin upang hindi maibaon ng malalim ang mga buto."),
+            ],
+        },
+         # ── Panel 26 - choices ───────────────
+        {
+            "id":            "S2P26",
+            "type":          "choice",
+            "bg":            "background/MonggoSproutbg.jpg",
+            "question":       "Alin ang tamang kagamitan para gumawa ng maliliit na butas para sa buto ng Monggo?",
+            "retry_question": "Sandali... pakiramdam ko masyadong malalim ang hukay nito para sa ddirektang pagtatanim.",
+            "choices": [
+                # These cards are finished art -- own frame and baked-in
+                # "DULO"/"ASAROL" text -- so no engine panel or label.
+                {"img": "buttons/choice_trowel.png", "label": "", "frame": False},
+                {"img": "buttons/choice_hoe.png",    "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+    # ── Panel 27 - Feedback Correct - Lucas Thumbs up ───────────────
+        {
+            "id":          "S2P27_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Tama! Dulo ang tamang sagot! Mababaw at maingat ang hukay nito, kaya nararapat ito para sa direktang pagtatanim."),
+            ],
+        },
+    # ── Panel 28 - Feedback: Correct — Lola thumbs up ───────────────
+        {
+            "id":         "S2P28_right_2",
+            "type":       "feedback",
+            "if_correct": True,
+            "random_pick": True,
+            "bg":         "background/scenebg_right.png",
+            "chars":           {
+                    "lola": {
+                        "side": "left",
+                        "expression": "thumbs",
+                        "flip": True,
+                    }
+                },
+            "lines": [
+                ("lola", "Magaling, apo! Kapag mababaw lang ang itatanim na buto, sapat na ang Dulo. Hindi natin laging kailangan ng malakas na kasangkapan."),
+            ],
+        },
+
+    # ── Panel 29 ── Feedback: Wrong — Lucas worried ───────────────────
+        {
+            "id":          "S2P29_wrong_1",
+            "type":        "feedback",
+            "if_correct":  False,
+            "random_pick": True,
+            "retry_to_choice": True,
+            "bg":          "background/scenebg_wrong.png",
+            "chars":       {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Sandali... pakiramdam ko masyadong malalim ang hukay nito para sa direktang pagtatanim."),
+            ],
+        },
+    # ── Panel 30 ── Feedback: Wrong — Kapitan warns ───────────────────
+    {
+        "id":              "S2P30_wrong_2",
+        "type":            "feedback",
+        "if_correct":      False,
+        "random_pick":     True,
+        "retry_to_choice": True,
+        "bg":              "background/scenebg_wrong.png",
+        "chars":           {"kapitan_wrong": "right"},
+        "lines": [
+            ("kapitan_wrong", "Mag-ingat. Ang Asarol ay para sa malalim na paghukay. Baka masira natin ang mga buto kung gagamitin natin ito dito. Subukan mong hanapin ang kasanggamit para sa mababaw na hukay."),
+        ],
+    },
+    # ── Day 5 transition ───────────────────────────────────
+        {
+            "id":   "day5_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S2P31",
             "type":  "dialogue",
             "bg":    "background/Monggobg.jpg",
             "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
@@ -277,7 +379,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P2",
+            "id":    "S2P32",
             "type":  "dialogue",
             "bg":    "background/Monggobg.jpg",
             "chars": {"kapitan": "right"},
@@ -285,23 +387,23 @@ CHAPTER = {
                 ("kapitan", "kailangan nating diligan ang mga ito ng malumanay at sapat na tubig."),
             ],
         },
-        # ── Scene 2, Panel 48 - Card Scan Event ──────────────────────
+        # ── Panel 33 - Card Scan Event ──────────────────────
             # TEMPORARY stand-in for the real card scan. The instruction art is
             # drawn on top of the default scene background and the player picks
             # the blue square. This slide type is replaced once the camera-based
             # cardscan feature is wired in.
         {
-            "id": "S2P48",
+            "id": "S2P33",
             "type": "action_challenge",
             "bg": "background/scenebg_default.png",
             "overlay": "background/Action_Challenge-Water.png",
             "dim_inactive": False,
         },
         {
-            "id": "S2P21",
+            "id": "S2P34",
             "type": "scene",
             "bg": "background/baronmonggobgnew.jpg",
-            "shake": True,   # camera shake on arrival (S2P20 -> S2P21)
+            "shake": True,   # camera shake on arrival (S2P33 -> S2P34)
             "smoke": True,   # smoke rises from the bottom of the screen
 
             "chars": {
@@ -313,7 +415,7 @@ CHAPTER = {
             },
         },
         {
-            "id":    "S3P1",
+            "id":    "S2P35",
             "type":  "dialogue",
             "bg":    "background/baronmonggobgnew.jpg",
             "dark":  True,
@@ -328,13 +430,13 @@ CHAPTER = {
             "type": "transition",
         },
         {
-            "id": "S2P26",
+            "id": "S2P36",
             "type": "scene",
             "bg": "background/baronmonggoswarmed.jpg",
-            "shake": True,   # camera shake on arrival (S2P25 -> S2P26)
+            "shake": True,   # camera shake on arrival (S2P35 -> S2P36)
         },
         {
-            "id":    "S3P1",
+            "id":    "S2P37",
             "type":  "dialogue",
             "bg":    "background/baronmonggoswarmed.jpg",
             "dark":  True,
@@ -345,7 +447,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P2",
+            "id":    "S2P38",
             "type":  "dialogue",
             "bg":    "background/baronmonggoswarmed.jpg",
             "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
@@ -354,7 +456,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P2",
+            "id":    "S2P39",
             "type":  "dialogue",
             "bg":    "background/baronmonggoswarmed.jpg",
             "chars": {"kapitan": "right"},
@@ -363,20 +465,20 @@ CHAPTER = {
                 ("kapitan", "Biilis Lucas kunin mo ang Natural na Pestesidyo upang maprotektahan ang mga halaman!"),
             ],
         },
-        # ── Scene 2, Panel 48 - Card Scan Event ──────────────────────
+        # ── Panel 40 - Card Scan Event ──────────────────────
             # TEMPORARY stand-in for the real card scan. The instruction art is
             # drawn on top of the default scene background and the player picks
             # the blue square. This slide type is replaced once the camera-based
             # cardscan feature is wired in.
         {
-            "id": "S2P48",
+            "id": "S2P40",
             "type": "action_challenge",
             "bg": "background/baronmonggoswarmed.jpg",
             "overlay": "naturalpesticidecard.png",
             "dim_inactive": False,
         },
         {
-            "id":    "S2P2",
+            "id":    "S2P41",
             "type":  "dialogue",
             "bg":    "background/baronmonggoswarmed.jpg",
             "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
@@ -386,7 +488,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P2",
+            "id":    "S2P42",
             "type":  "dialogue",
             "bg":    "background/baronmonggobgnew.jpg",
             "chars": {"kapitan": "right"},
@@ -395,7 +497,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S3P1",
+            "id":    "S2P43",
             "type":  "dialogue",
             "bg":    "background/baronmonggobgnew.jpg",
             "dark":  True,
@@ -405,10 +507,10 @@ CHAPTER = {
             ],
         },
         {
-            "id": "S2P21",
+            "id": "S2P44",
             "type": "scene",
             "bg": "background/baronmonggobgnew.jpg",
-            "shake": True,   # camera shake on arrival (S2P20 -> S2P21)
+            "shake": True,   # camera shake on arrival (S2P43 -> S2P44)
             "smoke": True,   # smoke rises from the bottom of the screen
 
             "chars": {
@@ -420,7 +522,7 @@ CHAPTER = {
             },
         },
         {
-            "id":    "S2P2",
+            "id":    "S2P45",
             "type":  "dialogue",
             "bg":    "background/Monggobg.jpg",
             "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
@@ -430,7 +532,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P2",
+            "id":    "S2P46",
             "type":  "dialogue",
             "bg":    "background/Monggobg.jpg",
             "chars": {"kapitan": "right"},
@@ -443,457 +545,162 @@ CHAPTER = {
             "type": "transition",
         },
         {
-            "id":            "S2P3",
-            "type":          "choice",
-            "bg":            "background/baronmonggoswarmed.png",
-            "question":       "Alin ang tamang kagamitan para gumawa ng maliliit na butas para sa buto ng Monggo?",
-            "retry_question": "Hindi pa! Ang Monggo ay nangangailangan ng maliliit at mababaw na butas — hindi malalim na hukay.",
-            "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Dulo"},
-                {"img": "buttons/choice_hoe.png",    "label": "Asarol"},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S2P3_right_1",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "lines": [
-                ("lucas", "Tama! Gamitin ang Dulo para gumawa ng maliliit at mababaw na butas. Ganyan ang tamang simula para sa buto ng Monggo."),
-            ],
-            "chars": {
-                "lucas": {"side": "left", "expression": "thumbs", "flip": True},
-            },
-        },
-        {
-            "id":          "S2P3_right_2",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {"kapitan": "left"},
-            "lines": [
-                ("kapitan", "Nauunawaan ko na. Kailangan ng maliliit na buto ang tamang lalim ng tanim."),
-            ],
-        },
-        {
-            "id":               "S2P3_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":       {
-                "lucas": {"side": "right", "expression": "concerned"},
-            },
-            "lines": [
-                ("lucas", "Hindi pa iyon ang angkop na kagamitan. Subukan ang Dulo para makagawa tayo ng maliliit na butas nang maingat."),
-            ],
-        },
-
-        # ── Panel 3 — Baron tricks: siksikin! ─────────────────
-        {
-            "id":    "S3P1",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "smile"}},
-            "lines": [
-                ("baron", "Ilagay ninyo ang lahat ng buto sa iisang butas! Mag-unahan kayo sa tubig at sustansya — mas madaling masira ang tanim ninyo! HAHAHA!"),
-            ],
-        },
-        {
-            "id":    "S3P2",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": "right"},
-            "lines": [
-                ("kapitan", "Kung pagsisiksikin natin, mas marami agad ang maitatanim. Pero... hindi ba dapat bigyan ng sariling puwang ang bawat isa?"),
-            ],
-        },
-        {
-            "id":            "S3P3",
-            "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "question":       "Dapat bang isiksikin ang lahat ng buto ng Monggo sa isang butas?",
-            "retry_question": "Mag-isip muli! Ano ang mangyayari kung mag-aagawan ang mga buto sa sustansya at tubig?",
-            "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Hindi — bigyan ng espasyo"},
-                {"img": "buttons/choice_hoe.png",    "label": "Oo — isiksikin"},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S3P3_right_1",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {
-                "lucas": {"side": "left", "expression": "thumbs", "flip": True},
-            },
-            "lines": [
-                ("lucas", "Tama. Bawat buto ay nangangailangan ng puwang para sa tubig, liwanag, at sustansya. Kapag maayos ang pagitan, mas madaling alagaan ang buong hanay."),
-            ],
-        },
-        {
-            "id":               "S3P3_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {
-                "lucas": {"side": "right", "expression": "concerned"},
-            },
-            "lines": [
-                ("lucas", "Kapag masyadong siksik ang tanim, mag-aagawan ang mga halaman sa tubig at sustansya. Subukan nating ayusin ang pagitan para maalagaan ang bawat punla."),
-            ],
-        },
-
-        # ── Day 3 transition ───────────────────────────────────
-        {
-            "id":   "day3_fade",
-            "type": "transition",
-        },
-
-        {
-            "id":    "S4P0",
-            "type":  "dialogue",
-            "day":   3,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": "right"},
-            "lines": [
-                ("kapitan", "Inayos ko ang pagitan ng mga buto. Ngayon ay gusto kong diligan agad ang buong taniman para walang maiwan."),
-                ("lucas", "Titingnan muna natin kung ano ang kailangan ng lupa. Ang maingat na pag-aalaga ay hindi nangangahulugang laging gumawa ng higit pa."),
-            ],
-        },
-
-        # ── Panel 4 — Water scan: soften the soil ─────────────
-        {
-            "id":      "S4P1",
-            "type":    "dialogue",
-            "day":     3,
-            "bg":      "background/scenebg_planter.png",
-            "chars":   {"kapitan": "right"},
-            "lines": [
-                ("kapitan", "Tuyo na ang lupa rito, Lucas. Ano ang dapat nating gawin bago tuluyang sumibol ang Monggo?"),
-            ],
-        },
-        {
-            "id":       "S4P2",
-            "type":     "scan",
-            "day":      3,
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": {"side": "left", "expression": "talking", "flip": True}},
-            "active":   "lucas",
-            "card":     "AC-01 Water Card",
-            "dialogue": "Dahan-dahan lang, Kapitan. I-scan ang Water Card para mamasa-masa ang lupa at matulungan ang mga buto na sumibol.",
-            "question": "I-scan ang Water Card para diligan nang sapat ang bagong tanim na Monggo.",
-        },
-
-        {
-            "id": "day7_fade",
-            "type": "transition",
-        },
-        {
-            "id": "S4P3",
+            "id": "S2P47",
             "type": "narration_overlay",
-            "day": 7,
             "bg": "background/scenebg_night.jpg",
+            "dim_inactive": False,
             "overlay": "woodbg.png",
+
             "narration": (
-                "Ilang araw na maingat na sinuri ni Kapitan Ernesto ang lupa. "
-                "Hindi niya diniligan dahil lamang sa kaba. Sa ikapitong araw, "
-                "sumilip ang maliliit na usbong sa hanay ng mga buto."
+                "Limang araw pang dumaan, at  "
+                "araw araw dinidiligan ni lucas ang mga halaman "
+                "Kinaumagahan napansin nyang unti-unti "
+                "na itong lumalago at lumalaki."
             ),
         },
         {
-            "id":    "S4P4",
+            "id":    "S2P48",
             "type":  "dialogue",
-            "day":   7,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {
-                "kapitan": "right",
-                "lucas": {"side": "left", "expression": "talking", "flip": True},
-            },
-            "lines": [
-                ("kapitan", "Akala ko kailangang bantayan ang lahat sa bawat sandali. Pero ang kailangan pala ng mga buto ay tamang pag-aalaga at panahon."),
-                ("kapitan", "May naaalala akong tunog ng kampana sa bulwagan. Kapag naririnig iyon ng mga tao, alam nilang may pagtitipon at may tutulong sa kanila."),
-                ("lucas", "Tama, Kapitan. Hindi ibig sabihin ng paghihintay na pinababayaan natin sila. Patuloy lang nating susuriin ang lupa at mga usbong."),
-            ],
-        },
-
-        # ── Day 25 transition: Baron tempts him to overwater ───
-        {
-            "id":   "day25_fade",
-            "type": "transition",
-        },
-
-        # ── Panel 5 — Trivia: don't overwater ─────────────────
-        {
-            "id":    "S5P1",
-            "type":  "dialogue",
-            "day":   25,
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": "right"},
-            "lines": [
-                ("baron", "Diligin mo ulit! Oras-oras! Kapag hindi mo sila binantayan bawat sandali, mamamatay ang mga iyan — at mabibigo ka na naman sa mga tao mo!"),
-            ],
-        },
-        {
-            "id":    "S5P2",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": "right"},
-            "lines": [
-                ("kapitan", "Basa pa ang lupa matapos ang ulan. Gusto kong tiyaking ligtas ang mga punla, pero baka lalo ko silang mapahamak kung susundin ko siya."),
-            ],
-        },
-        {
-            "id":            "S5P3",
-            "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "question":       "Dapat bang diligan ang halaman kahit basa pa ang lupa mula sa ulan?",
-            "retry_question": "Isipin muli! Ano ang nangyayari sa ugat ng Monggo kapag laging basa ang lupa?",
-            "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Hindi — hayaang matuyo muna"},
-                {"img": "buttons/choice_hoe.png",    "label": "Oo — diligin palagi"},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S5P3_right_1",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars": {
-                "lucas": {"side": "left", "expression": "thumbs", "flip": True},
-                "kapitan": "right",
-            },
-            "lines": [
-                ("lucas", "Tama. Hindi kailangang diligan kapag basa pa ang lupa. Ang pagtingin at paghihintay ay bahagi rin ng pag-aalaga."),
-                ("kapitan", "Kung gayon, hindi ko kailangang kontrolin ang bawat patak. Kailangan kong tingnan ang kalagayan ng lupa at magpasya para sa ikabubuti ng lahat."),
-            ],
-        },
-        {
-            "id":               "S5P3_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {
-                "lucas": {"side": "right", "expression": "concerned"},
-            },
-            "lines": [
-                ("lucas", "Kapag palaging basa ang lupa, maaaring kapusin sa hangin ang mga ugat at mabulok. Hintayin muna nating matuyo nang kaunti."),
-            ],
-        },
-
-        {
-            "id": "day30_fade",
-            "type": "transition",
-        },
-        {
-            "id":    "S5P4",
-            "type":  "dialogue",
-            "day":   30,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": "right"},
-            "lines": [
-                ("kapitan", "Mas luntian na ang mga dahon. May iniwang supot ng pataba sa tabi ng taniman. Sabi ni Baron, iyon daw ang magpapabilis sa paglaki."),
-                ("kapitan", "Pero ayaw kong madaliin ang mga ito kung makakasama naman sa lupa. Ano kaya ang mas maingat na piliin?"),
-            ],
-        },
-        {
-            "id":    "S5P5",
-            "type":  "dialogue",
-            "day":   30,
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "smile"}},
-            "lines": [
-                ("baron", "Gamitin mo ang kemikal na pataba! Mabilis na resulta, walang paghihintay. Hindi ba iyan ang gusto ng isang Kapitan na kailangang patunayan ang sarili?"),
-            ],
-        },
-        {
-            "id":       "S5P6",
-            "type":     "scan",
-            "day":      30,
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": {"side": "left", "expression": "concerned", "flip": True}},
-            "active":   "lucas",
-            "card":     "AC-02 Organic Fertilizer Card",
-            "dialogue": "Hindi kailangang pilitin ang Monggo na lumaki agad. Piliin ang organikong pataba para suportahan ang lupa nang maingat; huwag gamitin ang kemikal na pataba bilang madaling kapalit.",
-            "question": "I-scan ang Organic Fertilizer Card para suportahan nang maingat ang lupa ng Monggo.",
-        },
-        {
-            "id":    "S5P7",
-            "type":  "dialogue",
-            "day":   30,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {
-                "kapitan": "right",
-                "lucas": {"side": "left", "expression": "talking", "flip": True},
-            },
-            "lines": [
-                ("kapitan", "Organikong pataba ang pinili natin. Hindi natin kailangang gumamit ng kemikal para piliting lumaki ang tanim."),
-                ("lucas", "Tama. Kaunti lang ang kailangan. Ang Monggo ay legume, kaya huwag sobrahan sa patabang mayaman sa nitrogen; panatilihing maayos ang lupa."),
-                ("kapitan", "May mga tao akong pinangakuan noon na hindi ko isasapanganib ang kanilang pagkain para lang makapagpakitang-gilas. Hindi ko pa maalala ang lahat, pero alam kong mahalaga iyon."),
-            ],
-        },
-
-        {
-            "id": "day45_fade",
-            "type": "transition",
-        },
-        {
-            "id": "S6P0",
-            "type": "narration_overlay",
-            "day": 45,
-            "bg": "background/scenebg_night.jpg",
-            "overlay": "woodbg.png",
-            "narration": (
-                "Lumipas ang mga linggo. May mga bulaklak at maliliit na pods "
-                "na ang Monggo. Hindi pare-pareho ang laki ng bawat halaman, "
-                "ngunit pantay-pantay ang puwang at pag-aalaga sa hanay. "
-                "Natutuhan ni Kapitan Ernesto na hindi kailangang pilitin "
-                "ang bawat isa para sabay-sabay silang umunlad."
-            ),
-        },
-
-        # ── Day 50 transition (TIME SKIP) ─────────────────────
-        {
-            "id":   "day50_fade",
-            "type": "transition",
-        },
-
-        # ── Panel 6 — Kapitan sees the pods forming ──────────
-        {
-            "id":      "S6P1",
-            "type":    "dialogue",
-            "day":     50,
-            "bg":      "background/scenebg_planter.png",
-            "chars":   {"kapitan": "right"},
-            "lines": [
-                ("kapitan", "May mga pods na! Noong una, akala ko ang pagiging pinuno ay ang mag-utos at tiyaking walang magkakamali. Pero ngayon, nakikita kong mahalaga ring bigyan ng panahon ang bawat isa."),
-                ("kapitan", "Kapag hinog na ang ani, gusto kong tipunin ang mga tao sa bulwagan. May pakiramdam akong may pagkaing inihahanda namin noon para sa lahat."),
-            ],
-        },
-        {
-            "id":       "S6P2",
-            "type":     "dialogue",
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
-            "lines": [
-                ("lucas", "Natututo kang magtiwala sa proseso, Kapitan. Ituloy natin ang pagtingin sa lupa at diligan lamang kapag kailangan."),
-            ],
-        },
-
-        # ── Day 65 transition (TIME SKIP) ─────────────────────
-        {
-            "id":   "day65_fade",
-            "type": "transition",
-        },
-
-        # ── Panel 7 — Harvest readiness ──────────────────────
-        {
-            "id":    "S7P1",
-            "type":  "dialogue",
-            "day":   65,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
-            "lines": [
-                ("lucas", "Kapitan, handa na ang ilan sa mga pods. Alin ang dapat nating anihin?"),
-            ],
-        },
-        {
-            "id":    "S7P2",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": "right"},
-            "lines": [
-                ("kapitan", "Puno at matigas na ang mga butil, at nagsisimula nang matuyo ang pods. Iyon ang dapat hanapin."),
-            ],
-        },
-        {
-            "id":            "S7P3_choice",
-            "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "question":      "Alin ang tamang Monggo pods na handa nang anihin?",
-            "retry_question": "Isipin muli! Ang tamang Monggo ay puno na, malutong, at bahagyang tuyo — hindi pa malambot at patag.",
-            "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Puno, malutong, medyo tuyo na pods"},
-                {"img": "buttons/choice_hoe.png",    "label": "Luntian, patag, malambot pa"},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S7P3_right_1",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {"kapitan": "right"},
-            "lines": [
-                ("kapitan", "Iyan nga! Puno na ang mga butil at bahagyang tuyo ang pods. Handa na ang mga iyan para anihin!"),
-            ],
-        },
-        {
-            "id":               "S7P3_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {
-                "lucas": {"side": "right", "expression": "concerned"},
-            },
-            "lines": [
-                ("lucas", "Hindi pa hinog ang patag at malambot na pods. Hintayin nating mapuno at magsimulang matuyo ang mga ito."),
-            ],
-        },
-
-        # ── Panel 8 — End: Monggo Guisado memory restored ─────
-        {
-            "id":    "S8P1",
-            "type":  "dialogue",
-            "day":   65,
-            "bg":    "background/scenebg_default.png",
-            "chars": {
-                "kapitan": "right",
-                "lucas": {"side": "left", "expression": "talking", "flip": True},
-            },
-            "lines": [
-                ("kapitan", "Ang amoy ng ginisang bawang... kamatis... at Monggo! MONGGO GUISADO! Inihahanda namin ito tuwing nagtitipon ang mga tao sa bulwagan."),
-                ("kapitan", "Hindi lang pala ako namumuno. Tinitiyak kong may makakain ang lahat at walang naiiwan. Iyon ang dahilan kung bakit ako naging Kapitan!"),
-            ],
-        },
-        {
-            "id":    "S8P2",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
+            "bg":    "background/Monggobg.jpg",
             "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
             "lines": [
-                ("lucas", "Hindi lang Monggo ang pinalago natin. Naalala mo kung paano pag-isahin at protektahan ang mga tao sa baryo. Ikalawang alaala na ang naibalik natin."),
-                ("lucas", "Monggo Guisado Memory — UNLOCKED!"),
+                ("lucas", "Mahusay unti unti nang lumalago ang mga pananim!"),
             ],
         },
+         # ── After 5 days ────
         {
-            "id":    "S8P3",
+            "id":   "day5_fade",
+            "type": "transition",
+        },
+        {
+            "id": "S2P49",
+            "type": "scene",
+            "bg": "background/lucasmonggobg.jpg",
+        },
+         # ── Day 30 story sequence ────
+        {
+            "id":   "day30_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S3P50",
             "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/baronmonggobgnew.jpg",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "angry"}},
             "lines": [
-                ("baron", "Isang alaala lang ang naibalik ninyo! Hindi pa tapos ang laban, Kapitan!"),
+                ("baron", "Hehehe... Matitikman nyo ngayon ang aking ganti, buburahin ko ang alala ni Lola Maria kung paano gumawa ng Ginisang Monggo!")
             ],
         },
+        {
+            "id": "S3P51",
+            "type": "scene",
+            "bg": "background/baronmonggobgnew.jpg",
+            "shake": True,   # camera shake on arrival (S3P50 -> S3P51)
+            "smoke": True,   # smoke rises from the bottom of the screen
 
+            "chars": {
+                "baron": {
+                    "side": "center",
+                    "expression": "explosion",
+                    "flip": False,
+                },
+            },
+        },
+        {
+            "id":    "S3P52",
+            "type":  "dialogue",
+            "bg":    "background/monggobgnew.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Magaling! lumago na ang ating mga pananim!"),
+                ("lucas", "Ngayon ay maaari na natin itong anihin!"),
+                ("lucas", "Ihanda na natin ang mga "),
+            ],
+        },
+         {
+            "id": "S3P53",
+            "type": "action_challenge",
+            "bg": "background/monggobgnew.jpg",
+            "overlay": "harvestcardscan.png",
+            "dim_inactive": False,
+        },
+        {
+            "id":    "S3P54",
+            "type":  "dialogue",
+            "bg":    "background/monggobgnew.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Naani na namin ang lahat ng monggo lola!"),
+                ("lucas", "Puwede na nating lutuin ang Ginisang Monggo at matulungang ibalik ang alala ni Kapitan Ernesto!"),
+            ],
+        },
+        {
+            "id":    "S3P55",
+            "type":  "dialogue",
+            "bg":    "background/monggobgnew.jpg",
+            "chars": {"lola": {"side": "left", "expression": "shocked", "flip": False}},
+            "lines": [
+                ("lola", "Apo! Meron akong problema. Hindi ko maalala ang tamang paraan ng pagluluto ng Ginisang Monggo!"),
+                ("lola", "Nagkagulo-gulo ang aking mga listahan ng sangkap."),
+                ("lola", "Kailangan ko ng tulong para maiayos ang mga ito ngunit hindi ko ito maalala."),
+            ],
+        },
+        {
+            "id":    "S3P56",
+            "type":  "dialogue",
+            "bg":    "background/monggobgnew.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "concerned", "flip": True}},
+            "lines": [
+                ("lucas", "Naku! Meron na namang sumpang ginawa si baron."),
+                ("lucas", "Dapat nating tulungan si Lola Maria upang maalala nya ang mga ito."),
+            ],
+        },
+        {
+            "id":    "S3P57",
+            "type":  "dialogue",
+            "bg":    "background/monggobgnew.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Handa na ba kayo?"),
+            ],
+        },
+        {
+            "id": "memory_challenge",
+            "type": "memory_game",
+            "bg": "background/monggobgnew.jpg",
+        },
+        {
+            "id":    "S3P58",
+            "type":  "dialogue",
+            "bg":    "background/monggobgnew.jpg",
+            "chars": {"lola": {"side": "left", "expression": "Celebrates", "flip": False}},
+            "lines": [
+                ("lola", "Magaling! Naaalala ko na ulit paano gawin ang Ginisang Monggo! Hali na kayo at gawin na natin ito!!"),
+            ],
+        },
+        {
+            "id":   "day1_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S1P1",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"kapitan": "right"},
+            "lines": [
+                ("kapitan", "Naalala ko na ang lahat! Ako nga talaga ang kapitan ng ating baryo. Salamat sa tulong nyo Lucas at Lola maria!"),
+                ("kapitan", "Ngayon kailangan na nating tulungan ang iba pa nating mga kasama."),
+            ],
+        },
+        {
+            "id":    "S3P57",
+            "type":  "dialogue",
+            "bg":    "background/monggobgnew.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Puntahan naman natin si Chef Pablo"),
+            ],
+        },
     ],
 }

@@ -40,6 +40,8 @@ _message = ""
 _level_complete = False
 _finale = False
 _last_ticks = 0
+_card_images = []
+_card_back_image = None
 
 _LEVEL_PAIRS = (3, 4, 6, 8, 10)
 _PREVIEW_START_MS = 6000
@@ -58,20 +60,27 @@ _PALETTE = {
     "red": (193, 76, 55),
     "shadow": (43, 36, 23, 95),
 }
-_icon_cache = {}
+_scaled_art_cache = {}
+_scaled_back_cache = {}
 _label_cache = {}
 _shadow_cache = {}
-_ART = (
-    ("Sprout", (79, 156, 77)),
-    ("Flower", (244, 187, 57)),
-    ("Carrot", (232, 123, 47)),
-    ("Tomato", (205, 77, 61)),
-    ("Corn", (244, 201, 66)),
-    ("Berry", (194, 75, 102)),
-    ("Apple", (204, 74, 57)),
-    ("Pumpkin", (224, 127, 45)),
-    ("Lettuce", (99, 164, 84)),
-    ("Watering Can", (78, 143, 188)),
+_CARD_ART = (
+    ("sprout.png", "Sprout", (79, 156, 77)),
+    ("sunflower.png", "Sunflower", (244, 187, 57)),
+    ("carrot.png", "Carrot", (232, 123, 47)),
+    ("tomato.png", "Tomato", (205, 77, 61)),
+    ("corn.png", "Corn", (244, 201, 66)),
+    ("strawberry.png", "Strawberry", (194, 75, 102)),
+    ("apple.png", "Apple", (204, 74, 57)),
+    ("pumpkin.png", "Pumpkin", (224, 127, 45)),
+    ("lettuce.png", "Lettuce", (99, 164, 84)),
+    ("tree.png", "Tree", (69, 130, 63)),
+    ("bee.png", "Bee", (240, 185, 49)),
+    ("butterfly.png", "Butterfly", (156, 104, 184)),
+    ("tractor.png", "Tractor", (194, 68, 52)),
+    ("watering_can.png", "Watering Can", (78, 143, 188)),
+    ("basket.png", "Basket", (161, 111, 57)),
+    ("shovel.png", "Shovel", (112, 132, 145)),
 )
 
 
@@ -124,7 +133,15 @@ def _play(sound):
 
 def start():
     """Begin a fresh run when Chapter 2 reaches its final story panel."""
-    global _background, _level_index, _finale
+    global _background, _level_index, _finale, _card_images, _card_back_image
+    if not _card_images:
+        card_images = [
+            utils.load_img(f"memory-cards/{filename}")
+            for filename, _, _ in _CARD_ART
+        ]
+        card_back_image = utils.load_img("memory-cards/card-back.png")
+        _card_images = card_images
+        _card_back_image = card_back_image
     _background = utils.load_bg("background/Monggobg.jpg", (WIDTH, HEIGHT))
     _level_index = 0
     _finale = False
@@ -201,7 +218,8 @@ def _layout():
     card_w = _grid_card_width(available_w, available_h, gap, card_count, columns)
     card_h = int(card_w / 1.08)
     _font_card_label = _make_font(max(0.018, min(0.03, card_h * 0.0009)))
-    _icon_cache.clear()
+    _scaled_art_cache.clear()
+    _scaled_back_cache.clear()
     _label_cache.clear()
     card_w = min(card_w, int((available_h - gap * (rows - 1)) / rows * 1.08))
     card_h = int(card_w / 1.08)
@@ -562,7 +580,7 @@ def _draw_card(surf, card, now):
 
     radius = max(8, min(draw_rect.width, draw_rect.height) // 12)
     if visual_face_up:
-        border_color = _ART[card["kind"]][1]
+        border_color = _CARD_ART[card["kind"]][2]
         pygame.draw.rect(surf, border_color, draw_rect, border_radius=radius)
         inner = draw_rect.inflate(-6, -6)
         pygame.draw.rect(surf, (255, 249, 227), inner, border_radius=max(6, radius - 2))
@@ -609,49 +627,13 @@ def _draw_card(surf, card, now):
 
 
 def _draw_card_back(surf, rect):
-    center_x = rect.centerx
-    center_y = rect.centery
-    scale = min(rect.width, rect.height) / 140
-    leaf_w = max(6, int(23 * scale))
-    leaf_h = max(5, int(12 * scale))
-    stem_top = center_y - int(24 * scale)
-    pygame.draw.line(
-        surf,
-        (241, 236, 193),
-        (center_x, center_y + int(28 * scale)),
-        (center_x, stem_top),
-        max(2, int(4 * scale)),
-    )
-    pygame.draw.ellipse(
-        surf,
-        (198, 224, 139),
-        pygame.Rect(center_x - leaf_w, stem_top, leaf_w, leaf_h),
-    )
-    pygame.draw.ellipse(
-        surf,
-        (215, 231, 157),
-        pygame.Rect(center_x, stem_top - leaf_h // 2, leaf_w, leaf_h),
-    )
-    pygame.draw.arc(
-        surf,
-        (255, 235, 174),
-        rect.inflate(-int(rect.width * 0.24), -int(rect.height * 0.20)),
-        0.2,
-        2.9,
-        max(1, int(2 * scale)),
-    )
-    for x_offset, y_offset in (
-        (-0.31, -0.32),
-        (0.31, -0.32),
-        (-0.31, 0.32),
-        (0.31, 0.32),
-    ):
-        pygame.draw.circle(
-            surf,
-            (233, 215, 156),
-            (center_x + int(rect.width * x_offset), center_y + int(rect.height * y_offset)),
-            max(2, int(3 * scale)),
-        )
+    inset = rect.inflate(-7, -7)
+    size = inset.size
+    image = _scaled_back_cache.get(size)
+    if image is None:
+        image = pygame.transform.smoothscale(_card_back_image, size)
+        _scaled_back_cache[size] = image
+    surf.blit(image, image.get_rect(center=rect.center))
 
 
 def _draw_art(surf, kind, rect):
@@ -661,17 +643,26 @@ def _draw_art(surf, kind, rect):
         int(rect.width * 0.74),
         int(rect.height * 0.70),
     )
-    canvas = _icon_cache.get(kind)
-    if canvas is None:
-        canvas = pygame.Surface((360, 300), pygame.SRCALPHA)
-        _paint_icon(canvas, kind)
-        _icon_cache[kind] = canvas
-    icon = pygame.transform.smoothscale(canvas, art_rect.size)
-    surf.blit(icon, art_rect)
+    source = _card_images[kind]
+    scale = min(art_rect.width / source.get_width(), art_rect.height / source.get_height())
+    image_size = (
+        max(1, int(source.get_width() * scale)),
+        max(1, int(source.get_height() * scale)),
+    )
+    image = _scaled_art_cache.get((kind, image_size))
+    if image is None:
+        image = pygame.transform.smoothscale(source, image_size)
+        _scaled_art_cache[(kind, image_size)] = image
+    surf.blit(image, image.get_rect(center=art_rect.center))
 
     label = _label_cache.get(kind)
     if label is None:
-        label = _fit(_font_card_label, _ART[kind][0], int(rect.width * 0.82), _PALETTE["ink"])
+        label = _fit(
+            _font_card_label,
+            _CARD_ART[kind][1],
+            int(rect.width * 0.82),
+            _PALETTE["ink"],
+        )
         _label_cache[kind] = label
     surf.blit(label, label.get_rect(center=(rect.centerx, rect.bottom - int(rect.height * 0.11))))
 

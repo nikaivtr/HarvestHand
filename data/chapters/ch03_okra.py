@@ -18,7 +18,7 @@ CHAPTER = {
             "id":   "title",
             "type": "title",
             "bg":   "background/scenebg_default.png",
-            "logo": "logos/ch1logo.png",    # placeholder — replace with ch3 logo
+            "logo": "logos/chapter3.png",    # placeholder — replace with ch3 logo
         },
 
         # ── Panel 1 — Chef Pablo's empty kitchen ───────────────

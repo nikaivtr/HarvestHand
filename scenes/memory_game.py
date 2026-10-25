@@ -42,6 +42,8 @@ _finale = False
 _last_ticks = 0
 _card_images = []
 _card_back_image = None
+_success_callback = None
+_success_action_label = "Continue Story"
 
 _LEVEL_PAIRS = (3, 4, 6, 8, 10)
 _PREVIEW_START_MS = 6000
@@ -98,6 +100,13 @@ def init(width, height, go_to_scene_callback):
     _sound_match = _make_chime((659, 784), 0.22)
     _sound_mismatch = _make_chime((330,), 0.16)
     _sound_complete = _make_chime((523, 659, 784), 0.62)
+
+
+def set_success_action(callback, label):
+    """Configure the finale button for story or mini-game-menu launches."""
+    global _success_callback, _success_action_label
+    _success_callback = callback
+    _success_action_label = label
 
 
 def _make_font(size_fraction):
@@ -258,6 +267,13 @@ def _continue_story():
     _go_to_scene("story_mode")
 
 
+def _finish_success():
+    if _success_callback is not None:
+        _success_callback()
+    else:
+        _continue_story()
+
+
 def _button_rects():
     if _finale:
         button_w = int(WIDTH * 0.20)
@@ -364,7 +380,7 @@ def handle_tap(px, py):
                     _level_index += 1
                     _start_level()
                 elif key == "continue_story":
-                    _continue_story()
+                    _finish_success()
                 elif key == "replay":
                     _start_level()
                 else:
@@ -920,7 +936,7 @@ def _draw_completion(surf):
 
     labels = (
         {
-            "continue_story": "Continue Story",
+            "continue_story": _success_action_label,
             "replay": "Replay Level",
             "level_select": "Level Select",
         }

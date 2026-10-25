@@ -3,6 +3,8 @@ import sys
 import pygame
 
 from scenes import main_menu, level_select, story_mode, memory_game
+from minigames.ingredient_puzzle import scene as ingredient_puzzle
+from minigames import whack_a_pest
 
 pygame.init()
 
@@ -33,6 +35,8 @@ SCENES = {
     "level_select": level_select,
     "story_mode": story_mode,
     "memory_game": memory_game,
+    "ingredient_puzzle": ingredient_puzzle,
+    "whack_a_pest": whack_a_pest,
 }
 current_scene = "main_menu"
 
@@ -84,6 +88,12 @@ while True:
             if active_finger is None:
                 _call("handle_tap", *event.pos)
 
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+            if active_finger is None:
+                fn = getattr(SCENES[current_scene], "handle_rotate", None)
+                if fn:
+                    fn(*event.pos)
+
         if event.type == pygame.MOUSEMOTION and event.buttons[0]:
             if active_finger is None:
                 _call("handle_drag", *event.pos)
@@ -91,6 +101,11 @@ while True:
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             if active_finger is None:
                 _call("handle_release", *event.pos)
+
+        if event.type == pygame.USEREVENT:
+            fn = getattr(SCENES[current_scene], "handle_userevent", None)
+            if fn:
+                fn(event)
 
     SCENES[current_scene].draw(screen)
     pygame.display.flip()

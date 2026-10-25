@@ -38,6 +38,10 @@ DESIGN_H = 1080
 #     CHARACTER_SCALE = (character layer WIDTH in Figma) / 409
 #     (assuming DESIGN_W/DESIGN_H equal your Figma frame size)
 CHARACTER_SCALE = 1.5
+CHARACTER_SCALE_OVERRIDES = {
+    "chef": 1.8,
+}
+CHARACTERS_TOP_ALIGNED = {"chef"}
 
 # Push characters down (design px). Positive = hangs off the
 # bottom of the screen (Figma-style crop). 0 = feet on the edge.
@@ -132,9 +136,14 @@ CHAR_ASSETS = {
         "explosion": "characters/Blight Baron/explosion.png",
     },
 
-    # Old single-image format
-    "chef": "characters/Chef/Chef_Default.png",
-    "chef_thumbs": "characters/Chef/Chef_Default.png",
+    "chef": {
+        "default": "characters/Chef/chef_default_transparent.png",
+        "angry": "characters/Chef/chef_angry_transparent.png",
+        "happy": "characters/Chef/chef_happy_transparent.png",
+        "talking": "characters/Chef/chef_talking_transparent.png",
+        "worried": "characters/Chef/chef_worried_transparent.png",
+    },
+    # Old single-image aliases
     "chef_wrong": "characters/Chef/Chef_Default.png",
     "kapitan": "characters/Kapitan/kapitan_wrong.png",
     "kapitan_wrong": "characters/Kapitan/kapitan_wrong.png",
@@ -210,9 +219,13 @@ class _Char:
         screen_h: int,
         flip_x: bool = False,
         position: float = 0.5,
+        top_aligned: bool = False,
+        character_scale: float = CHARACTER_SCALE,
     ):
         self._screen_w = screen_w
         self._screen_h = screen_h
+        self._top_aligned = top_aligned
+        self._character_scale = character_scale
 
         # design px -> screen px
         self._sx = screen_w / DESIGN_W                       # for x positions
@@ -288,7 +301,7 @@ class _Char:
         """
         self.flip_x = flip_x
 
-        scale = CHARACTER_SCALE * self._ui
+        scale = self._character_scale * self._ui
         w = max(1, int(image.get_width() * scale))
         h = max(1, int(image.get_height() * scale))
 
@@ -301,7 +314,8 @@ class _Char:
         self.h = h
 
         # Bottom-aligned (optionally hanging off the bottom edge)
-        self.y = (self._screen_h - h
+        self.y = (0 if self._top_aligned else
+                  self._screen_h - h
                   + int(CHARACTER_BOTTOM_OFFSET * self._ui))
 
         # Cache the shadow silhouette once per image
@@ -442,6 +456,10 @@ class CharacterLayer:
                 position = spec.get("position", 0.5)
 
             img = self._load(cid, expression)
+            top_aligned = cid in CHARACTERS_TOP_ALIGNED
+            character_scale = CHARACTER_SCALE_OVERRIDES.get(
+                cid, CHARACTER_SCALE
+            )
 
             dim_flag = (
                 spec.get("dim_inactive", False)
@@ -451,12 +469,15 @@ class CharacterLayer:
 
             if cid not in self._chars:
                 self._chars[cid] = _Char(
-                    img, side, self._w, self._h, flip_x, position
+                    img, side, self._w, self._h, flip_x, position,
+                    top_aligned, character_scale,
                 )
             else:
                 char = self._chars[cid]
                 char.side = side
                 char.position = max(0.0, min(1.0, float(position)))
+                char._top_aligned = top_aligned
+                char._character_scale = character_scale
                 char._calculate_zone()
                 char.set_image(img, flip_x)
                 char._calculate_position()

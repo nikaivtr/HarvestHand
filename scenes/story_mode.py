@@ -50,6 +50,8 @@ _shake_surf: pygame.Surface | None = None
 # ── Chapter-complete overlay ──────────────────────────────────
 _chapter_done  = False
 _memory_game_played = False
+_ingredient_puzzle_played = False
+_whack_a_pest_played = False
 _end_buttons   = {}     # {"repeat": Rect, "menu": Rect, "next": Rect}
 _last_bg_surf  = None   # cached last background for the overlay backdrop
 
@@ -270,13 +272,16 @@ def _make_font(size_frac):
 
 def _load_chapter():
     global _engine, _chars, _DAY_TOTAL, _chapter_done, _last_bg_surf
-    global _water_level, _crop_name, _pending_water_scan, _memory_game_played
+    global _water_level, _crop_name, _pending_water_scan
+    global _memory_game_played, _ingredient_puzzle_played, _whack_a_pest_played
     chapter     = chapters_data.load(game_state.selected_chapter)
     _DAY_TOTAL  = chapter.get("total_days", 30)
     _chars      = CharacterLayer(WIDTH, HEIGHT)
     _engine     = StoryEngine(chapter, on_chapter_end=_on_chapter_end)
     _chapter_done = False
     _memory_game_played = False
+    _ingredient_puzzle_played = False
+    _whack_a_pest_played = False
     _last_bg_surf = None
     _water_level  = 1.0
     _crop_name    = chapter.get("crop", "")
@@ -347,8 +352,77 @@ def _launch_memory_game():
 
     _memory_game_played = True
     _chars = None
+    memory_game.set_success_action(
+        _continue_story_after_memory_game,
+        "CONTINUE STORY",
+    )
     memory_game.start()
     _go_to_scene("memory_game")
+
+
+def _continue_story_after_memory_game():
+    resume_after_memory_game()
+    _go_to_scene("story_mode")
+
+
+def _launch_ingredient_puzzle():
+    global _chars, _ingredient_puzzle_played
+    from minigames.ingredient_puzzle import scene as ingredient_puzzle
+
+    _ingredient_puzzle_played = True
+    _chars = None
+    ingredient_puzzle.set_success_action(
+        _continue_story_after_ingredient_puzzle,
+        "CONTINUE STORY",
+    )
+    ingredient_puzzle.start()
+    _go_to_scene("ingredient_puzzle")
+
+
+def _continue_story_after_ingredient_puzzle():
+    resume_after_ingredient_puzzle()
+    _go_to_scene("story_mode")
+
+
+def _launch_whack_a_pest():
+    global _chars, _whack_a_pest_played
+    from minigames import whack_a_pest
+
+    _whack_a_pest_played = True
+    _chars = None
+    whack_a_pest.set_return_callback(
+        _return_from_whack_a_pest,
+        "CONTINUE STORY",
+    )
+    whack_a_pest.start()
+    _go_to_scene("whack_a_pest")
+
+
+def _return_from_whack_a_pest(_scene_name):
+    resume_after_whack_a_pest()
+    _go_to_scene("story_mode")
+
+
+def resume_after_whack_a_pest():
+    global _chars, _chapter_done, _last_ticks
+    if _engine is None:
+        return
+    _chars = CharacterLayer(WIDTH, HEIGHT)
+    _chapter_done = False
+    _last_ticks = pygame.time.get_ticks()
+    _reset_typing()
+    _sync_chars()
+
+
+def resume_after_ingredient_puzzle():
+    global _chars, _chapter_done, _last_ticks
+    if _engine is None:
+        return
+    _chars = CharacterLayer(WIDTH, HEIGHT)
+    _chapter_done = False
+    _last_ticks = pygame.time.get_ticks()
+    _reset_typing()
+    _sync_chars()
 
 
 def resume_after_memory_game():
@@ -1018,6 +1092,8 @@ def _draw_action(surf, dt):
             _engine.tap()
             if not _chapter_done:
                 _sync_chars()
+                if _engine.slide.get("type") == "whack_a_pest" and not _whack_a_pest_played:
+                    _launch_whack_a_pest()
             return
     if _ACTION_WRONG_T > 0.0:
         _ACTION_WRONG_T = max(0.0, _ACTION_WRONG_T - dt)
@@ -1234,6 +1310,14 @@ def handle_tap(px, py):
         _launch_memory_game()
         return
 
+    if s["type"] == "ingredient_puzzle" and not _ingredient_puzzle_played:
+        _launch_ingredient_puzzle()
+        return
+
+    if s["type"] == "whack_a_pest" and not _whack_a_pest_played:
+        _launch_whack_a_pest()
+        return
+
     # Complete typing on first tap for dialogue/feedback
     if s["type"] in ("dialogue", "end", "feedback"):
         if not _typing_done:
@@ -1268,6 +1352,14 @@ def handle_tap(px, py):
         _sync_chars()
         if _engine.slide.get("type") == "memory_game" and not _memory_game_played:
             _launch_memory_game()
+            return
+
+        if _engine.slide.get("type") == "ingredient_puzzle" and not _ingredient_puzzle_played:
+            _launch_ingredient_puzzle()
+            return
+
+        if _engine.slide.get("type") == "whack_a_pest" and not _whack_a_pest_played:
+            _launch_whack_a_pest()
             return
 
     # The chapter may have ended without slide_idx changing (e.g. all
@@ -1389,6 +1481,18 @@ def draw(surf):
 
     if stype == "memory_game":
         _draw_memory_game_return(target)
+        _blit_shaken(surf)
+        _finish_fade_in(surf, dt)
+        return
+
+    if stype == "ingredient_puzzle":
+        _draw_ingredient_puzzle_return(target)
+        _blit_shaken(surf)
+        _finish_fade_in(surf, dt)
+        return
+
+    if stype == "whack_a_pest":
+        _draw_whack_a_pest_return(target)
         _blit_shaken(surf)
         _finish_fade_in(surf, dt)
         return
@@ -1537,6 +1641,60 @@ def _draw_memory_game_return(surf):
         )
     surf.blit(title, title.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.42))))
     hint = _font_body.render("Tap to continue Chapter 2.", True, _HINT_COLOR)
+    if hint.get_width() > title_width:
+        hint = pygame.transform.smoothscale(
+            hint,
+            (title_width, int(hint.get_height() * title_width / hint.get_width())),
+        )
+    surf.blit(hint, hint.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.55))))
+
+
+def _draw_ingredient_puzzle_return(surf):
+    panel = pygame.Rect(
+        int(WIDTH * 0.16),
+        int(HEIGHT * 0.30),
+        int(WIDTH * 0.68),
+        int(HEIGHT * 0.38),
+    )
+    pygame.draw.rect(surf, _DBOX_FILL, panel, border_radius=24)
+    pygame.draw.rect(surf, _DBOX_BORDER, panel, width=4, border_radius=24)
+
+    title = _make_font(0.075).render("Ingredient Challenge Complete!", True, _DBOX_TEXT)
+    title_width = int(panel.width * 0.9)
+    if title.get_width() > title_width:
+        title = pygame.transform.smoothscale(
+            title,
+            (title_width, int(title.get_height() * title_width / title.get_width())),
+        )
+    surf.blit(title, title.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.42))))
+    hint = _font_body.render("Tap to continue Chapter 3.", True, _HINT_COLOR)
+    if hint.get_width() > title_width:
+        hint = pygame.transform.smoothscale(
+            hint,
+            (title_width, int(hint.get_height() * title_width / hint.get_width())),
+        )
+    surf.blit(hint, hint.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.55))))
+
+
+def _draw_whack_a_pest_return(surf):
+    panel = pygame.Rect(
+        int(WIDTH * 0.16),
+        int(HEIGHT * 0.30),
+        int(WIDTH * 0.68),
+        int(HEIGHT * 0.38),
+    )
+    pygame.draw.rect(surf, _DBOX_FILL, panel, border_radius=24)
+    pygame.draw.rect(surf, _DBOX_BORDER, panel, width=4, border_radius=24)
+
+    title = _make_font(0.075).render("Whack-a-Pest Complete!", True, _DBOX_TEXT)
+    title_width = int(panel.width * 0.9)
+    if title.get_width() > title_width:
+        title = pygame.transform.smoothscale(
+            title,
+            (title_width, int(title.get_height() * title_width / title.get_width())),
+        )
+    surf.blit(title, title.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.42))))
+    hint = _font_body.render("Tap to continue Chapter 4.", True, _HINT_COLOR)
     if hint.get_width() > title_width:
         hint = pygame.transform.smoothscale(
             hint,

@@ -75,7 +75,8 @@ class StoryEngine:
                 return self._advance()
 
         if s["type"] in ("title", "transition", "scene", "memory_game",
-                         "action_challenge", "narration_overlay"):
+                         "ingredient_puzzle", "whack_a_pest", "action_challenge",
+                         "narration_overlay"):
             return self._advance()
 
         if s["type"] == "scan":

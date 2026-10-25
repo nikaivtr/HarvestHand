@@ -286,7 +286,7 @@ CHAPTER = {
             "type":          "choice",
             "bg":            "background/MonggoSproutbg.jpg",
             "question":       "Alin ang tamang kagamitan para gumawa ng maliliit na butas para sa buto ng Monggo?",
-            "retry_question": "Sandali... pakiramdam ko masyadong malalim ang hukay nito para sa ddirektang pagtatanim.",
+            "retry_question": "Sandali... pakiramdam ko masyadong malalim ang hukay nito para sa direktang pagtatanim.",
             "choices": [
                 # These cards are finished art -- own frame and baked-in
                 # "DULO"/"ASAROL" text -- so no engine panel or label.
@@ -594,7 +594,7 @@ CHAPTER = {
             "day":   30,
             "bg":    "background/baronmonggobgnew.jpg",
             "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "angry"}},
+            "chars": {"baron": {"side": "right", "expression": "smile"}},
             "lines": [
                 ("baron", "Hehehe... Matitikman nyo ngayon ang aking ganti, buburahin ko ang alala ni Lola Maria kung paano gumawa ng Ginisang Monggo!")
             ],

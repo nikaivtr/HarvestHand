@@ -13,7 +13,7 @@ import pygame
 
 import config
 import utils
-from popups import leaderboards, info, settings
+from popups import leaderboards, info, settings, minigames
 
 WIDTH = 0
 HEIGHT = 0
@@ -50,12 +50,23 @@ def init(width, height, go_to_scene_callback):
     #  BUTTON SIZES & POSITIONS ← adjust these to reposition/resize
     # ════════════════════════════════════════════════════════════════════
 
-    # Play button (center)
-    play_w  = int(WIDTH * 0.35)
-    play_cx = WIDTH // 2
+    # Center the visible artwork as a pair, excluding transparent button-image margins.
+    play_w = int(WIDTH * 0.27)
+    mg_w = int(WIDTH * 0.13)
+    button_gap = int(WIDTH * 0.02)
+    play_visible_left = 348 / 1366
+    play_visible_width = 679 / 1366
+    group_w = round(play_w * play_visible_width) + button_gap + mg_w
+    group_left = (WIDTH - group_w) // 2
     play_cy = int(HEIGHT * 0.77)
     play_img  = utils.load_img("buttons/btn_play.png", utils.btn_size(play_w))
-    play_rect = play_img.get_rect(center=(play_cx, play_cy))
+    play_rect = play_img.get_rect(
+        topleft=(
+            round(group_left - play_w * play_visible_left),
+            round(play_cy - play_img.get_height() * (386.5 / 768)),
+        )
+    )
+    play_hit_rect = play_img.get_bounding_rect(min_alpha=10).move(play_rect.topleft)
 
     # Left-side icon buttons (leaderboard, info, settings)
     icon_w   = int(WIDTH * 0.12)
@@ -72,6 +83,16 @@ def init(width, height, go_to_scene_callback):
     info_rect        = info_img.get_rect(center=(icon_x, icon_top + _ih + icon_gap))
     settings_rect    = settings_img.get_rect(center=(icon_x, icon_top + (_ih + icon_gap) * 2))
 
+    # Minigames button (right side, using btn_minigames with background removed)
+    mg_raw = pygame.image.load(config.IMG_DIR + "buttons/btn_minigames_nobg.png").convert_alpha()
+    mg_aspect = mg_raw.get_width() / mg_raw.get_height()
+    mg_h = int(mg_w / mg_aspect)
+    minigames_img = pygame.transform.smoothscale(mg_raw, (mg_w, mg_h))
+    minigames_rect = minigames_img.get_rect(
+        midleft=(group_left + round(play_w * play_visible_width) + button_gap, play_cy)
+    )
+    minigames_hit_rect = minigames_img.get_bounding_rect(min_alpha=10).move(minigames_rect.topleft)
+
     # Close (X) button — top-right
     close_w  = int(WIDTH * 0.12)
     close_rx = int(WIDTH * 0.992)
@@ -82,10 +103,11 @@ def init(width, height, go_to_scene_callback):
     # ════════════════════════════════════════════════════════════════════
 
     main_menu_buttons = [
-        {"img": play_img,        "rect": play_rect,        "cb": _on_play,        "pressed_at": 0},
+        {"img": play_img,        "rect": play_rect,        "hit_rect": play_hit_rect, "cb": _on_play, "pressed_at": 0},
         {"img": leaderboard_img, "rect": leaderboard_rect, "cb": _on_leaderboard, "pressed_at": 0},
         {"img": info_img,        "rect": info_rect,        "cb": _on_info,        "pressed_at": 0},
         {"img": settings_img,    "rect": settings_rect,    "cb": _on_settings,    "pressed_at": 0},
+        {"img": minigames_img,   "rect": minigames_rect,  "hit_rect": minigames_hit_rect, "cb": _on_minigames, "pressed_at": 0},
         {"img": close_img,       "rect": close_rect,       "cb": _on_close,       "pressed_at": 0},
     ]
 
@@ -95,6 +117,7 @@ def init(width, height, go_to_scene_callback):
     leaderboards.init(WIDTH, HEIGHT, _close_popup)
     info.init(WIDTH, HEIGHT, _close_popup)
     settings.init(WIDTH, HEIGHT, _close_popup)
+    minigames.init(WIDTH, HEIGHT, _close_popup, _launch_minigame)
 
 
 # ── Popup open/close ─────────────────────────────────────────────────────────
@@ -113,12 +136,38 @@ def _on_play():        _go_to_scene("level_select")
 def _on_leaderboard():  _open_popup("leaderboard")
 def _on_info():          _open_popup("info")
 def _on_settings():     _open_popup("settings")
+def _on_minigames():    _open_popup("minigames")
 def _on_close():        pygame.quit(); sys.exit()
+
+def _launch_minigame(name):
+    _close_popup()
+    if name == "memory_game":
+        from scenes import memory_game
+        memory_game.set_success_action(_return_to_minigames, "SELECT MINI-GAMES")
+        memory_game.start()
+        _go_to_scene("memory_game")
+    elif name == "ingredient_puzzle":
+        from minigames.ingredient_puzzle import scene as ip
+        ip.set_success_action(_return_to_minigames, "SELECT MINI-GAMES")
+        ip.start()
+        _go_to_scene("ingredient_puzzle")
+    elif name == "whack_a_pest":
+        from minigames import whack_a_pest
+        whack_a_pest.set_return_callback(_return_to_minigames, "SELECT MINI-GAMES")
+        whack_a_pest.start()
+        _go_to_scene("whack_a_pest")
+
+
+def _return_to_minigames(_scene_name=None):
+    _open_popup("minigames")
+    _go_to_scene("main_menu")
 
 
 # ── Tap handling ───────────────────────────────────────────────────────────────
 def _hit_rect(btn):
-    """Expanded hit-rect with tap padding on all sides."""
+    """Use visible art bounds for the main pair and padded bounds for icon buttons."""
+    if "hit_rect" in btn:
+        return btn["hit_rect"]
     r = btn["rect"]
     return pygame.Rect(r.x - TAP_PAD, r.y - TAP_PAD, r.width + TAP_PAD * 2, r.height + TAP_PAD * 2)
 
@@ -139,8 +188,20 @@ def handle_tap(px, py):
         info.handle_tap(px, py)
     elif active_popup == "settings":
         settings.handle_tap(px, py)
+    elif active_popup == "minigames":
+        minigames.handle_tap(px, py)
     else:
         _handle_button_tap(px, py)
+
+
+def handle_drag(px, py):
+    if active_popup == "minigames":
+        minigames.handle_drag(px, py)
+
+
+def handle_release(px, py):
+    if active_popup == "minigames":
+        minigames.handle_release(px, py)
 
 
 # ── Drawing ────────────────────────────────────────────────────────────────────
@@ -168,3 +229,5 @@ def draw(surf):
         info.draw(surf)
     elif active_popup == "settings":
         settings.draw(surf)
+    elif active_popup == "minigames":
+        minigames.draw(surf)

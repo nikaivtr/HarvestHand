@@ -718,5 +718,9 @@ CHAPTER = {
                 ("lucas", "Puntahan naman natin si Chef Pablo"),
             ],
         },
+        {
+            "id":   "end_fade",
+            "type": "transition",
+        },
     ],
 }

@@ -1099,5 +1099,9 @@ CHAPTER = {
                 ("lucas", "Saan tayo nagkamali?"),
             ],
         },
+        {
+            "id":   "end_fade",
+            "type": "transition",
+        },
     ],
 }

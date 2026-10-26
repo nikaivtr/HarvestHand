@@ -1550,5 +1550,9 @@ CHAPTER = {
                 ("baron", "Nakakainis kang bata ka! Paano mo nalalaman ang mga ito?! Humanda ka sa pagbabalik ko!"),
             ],
         },
+        {
+            "id":   "end_fade",
+            "type": "transition",
+        },
     ],
 }

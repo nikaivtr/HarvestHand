@@ -103,7 +103,7 @@ def init(width, height, close_popup_callback, launch_callback=None):
         min(int(HEIGHT * 0.34), max(80, _viewport.height - 190)),
     )
 
-    close_size = max(44, int(min(WIDTH, HEIGHT) * 0.075))
+    close_size = max(56, int(min(WIDTH, HEIGHT) * 0.095))
     close_source = pygame.image.load(
         os.path.join(config.IMG_DIR, "buttons", "btn_close.png")
     ).convert_alpha()

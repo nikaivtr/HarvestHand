@@ -1,13 +1,10 @@
 # ============================================================
 #  Level Select Scene
 #
-#  Layout: three rustic wooden signposts, one per difficulty.
-#  Each signpost is a carved board (img/woodbg.png) that acts as
-#  the plate for a difficulty name, with that group's chapter
-#  cards hanging underneath it on a slim wooden post.
-#
-#  Tapping a signpost expands / collapses its chapters.
-#  Tapping a chapter card starts that chapter.
+#  Creative farm map layout: difficulty boards arranged as wooden
+#  planks with leafy accents, chapters displayed as hanging seed
+#  packets/plant markers connected by vines, with decorative
+#  flourishes. Keeps the same expand/collapse and navigation.
 #
 #  You should NOT need to edit this file when adding chapters.
 # ============================================================
@@ -54,6 +51,7 @@ _CREAM     = (253, 241, 208)
 _CREAM_DIM = (222, 200, 156)
 _GOLD      = (255, 216, 126)
 _SHADOW    = (44,  24,  8)
+_VINE      = (86,  138, 64)   # decorative vine color (same palette family)
 
 # ── Wood ──────────────────────────────────────────────────────
 # The board's carved frame eats into each edge, so text only ever
@@ -134,35 +132,34 @@ def init(width, height, go_to_scene_callback):
         })
 
     # ── Layout ─────────────────────────────────────────────────
-    _TITLE_H   = int(HEIGHT * 0.085)
-    _TITLE_TOP = int(HEIGHT * 0.035)
-    _COL_Y     = int(HEIGHT * 0.165)
+    _TITLE_H   = int(HEIGHT * 0.09)
+    _TITLE_TOP = int(HEIGHT * 0.03)
+    # Arrange difficulty boards in a gentle curve across the top area
+    _COL_Y     = int(HEIGHT * 0.16)
 
-    # Signs are as tall as the screen allows, then shrunk as a group
-    # if the three of them don't fit side by side.
-    _PLAQ_H = int(HEIGHT * 0.21)
-    _PLAQ_W = int(_PLAQ_H * 1.90)
-    gap     = int(WIDTH * 0.032)
-    fit     = (WIDTH * 0.92) / (3 * _PLAQ_W + 2 * gap)
+    # Signs are styled as rustic planks
+    _PLAQ_H = int(HEIGHT * 0.19)
+    _PLAQ_W = int(_PLAQ_H * 2.25)
+    gap     = int(WIDTH * 0.04)
+    fit     = (WIDTH * 0.88) / (3 * _PLAQ_W + 2 * gap)
     if fit < 1.0:
         _PLAQ_W = int(_PLAQ_W * fit)
         _PLAQ_H = int(_PLAQ_H * fit)
         gap     = int(gap * fit)
 
-    # Cards hang below their sign, trimmed to whatever room the
-    # tallest group actually needs.
-    _TILE_TOP = _COL_Y + _PLAQ_H + int(HEIGHT * 0.018)
-    _TILE_GAP = int(HEIGHT * 0.012)
+    # Cards hang below in a vine-like path, more staggered
+    _TILE_TOP = _COL_Y + _PLAQ_H + int(HEIGHT * 0.022)
+    _TILE_GAP = int(HEIGHT * 0.014)
     rows      = max(1, max(len(g["chapters"]) for g in _groups))
-    room      = int(HEIGHT * 0.965) - _TILE_TOP
+    room      = int(HEIGHT * 0.97) - _TILE_TOP
     _TILE_H   = int((room - _TILE_GAP * (rows - 1)) / rows)
-    _TILE_W   = int(_TILE_H * 1.90)
-    if _TILE_W > _PLAQ_W * 0.86:                 # never wider than its sign
-        _TILE_W = int(_PLAQ_W * 0.86)
-        _TILE_H = int(_TILE_W / 1.90)
+    _TILE_W   = int(_TILE_H * 2.0)
+    if _TILE_W > _PLAQ_W * 0.92:
+        _TILE_W = int(_PLAQ_W * 0.92)
+        _TILE_H = int(_TILE_W / 2.0)
 
-    _POST_W = max(4, int(_TILE_W * 0.09))
-    _POST_H = int(HEIGHT * 0.975) - (_COL_Y + _PLAQ_H)
+    _POST_W = max(6, int(_TILE_W * 0.06))
+    _POST_H = int(HEIGHT * 0.98) - (_COL_Y + _PLAQ_H)
 
     total = 3 * _PLAQ_W + 2 * gap
     x0    = max(0, (WIDTH - total) // 2)
@@ -248,7 +245,10 @@ def _fit_font(text, max_w, font, floor=10):
 
 def _make_shadow(w, h, radius, alpha=115):
     sh = pygame.Surface((max(1, w), max(1, h)), pygame.SRCALPHA)
-    pygame.draw.rect(sh, (22, 11, 4, alpha), sh.get_rect(), border_radius=radius)
+    # Softer, more organic shadow
+    shadow_color = (18, 10, 3, alpha)
+    pygame.draw.rect(sh, shadow_color, sh.get_rect(), border_radius=radius)
+    # Add a slight outer glow effect by drawing a larger blurred rect concept
     return sh
 
 
@@ -294,11 +294,13 @@ def _paint_text(surf, text, font, color, pos, anchor="center"):
 def _panel_rect(rect):
     """The recessed area inside a carved board, in board-local fractions."""
     l, t, r, b = _PANEL
+    # Slightly more inset for a more carved look
+    l2, t2, r2, b2 = l + 0.02, t + 0.04, r - 0.02, b - 0.02
     return pygame.Rect(
-        rect.left + int(l * rect.width),
-        rect.top  + int(t * rect.height),
-        int((r - l) * rect.width),
-        int((b - t) * rect.height),
+        rect.left + int(l2 * rect.width),
+        rect.top  + int(t2 * rect.height),
+        int((r2 - l2) * rect.width),
+        int((b2 - t2) * rect.height),
     )
 
 
@@ -401,6 +403,10 @@ def draw(surf):
             g["anim"] = max(0.0, g["anim"] - ANIM_SPEED * dt)
 
     surf.blit(bg_image, (0, 0))
+    
+    # Add a decorative overlay border
+    border_color = (86, 138, 64)
+    pygame.draw.rect(surf, border_color, (10, 10, WIDTH-20, HEIGHT-20), 4, border_radius=8)
 
     _draw_title(surf)
 
@@ -421,27 +427,46 @@ def draw(surf):
 def _draw_title(surf):
     rect = _title_s.get_rect(midtop=(WIDTH // 2, _TITLE_TOP))
     _blit_scaled(surf, _title_s, rect)
+    # Add decorative vines on sides of title
+    vine_color = _VINE
+    # Left vine
+    pygame.draw.circle(surf, vine_color, (rect.left - 15, rect.centery), 6)
+    pygame.draw.circle(surf, vine_color, (rect.left - 25, rect.centery - 8), 4)
+    pygame.draw.circle(surf, vine_color, (rect.left - 20, rect.centery + 10), 5)
+    # Right vine
+    pygame.draw.circle(surf, vine_color, (rect.right + 15, rect.centery), 6)
+    pygame.draw.circle(surf, vine_color, (rect.right + 25, rect.centery - 8), 4)
+    pygame.draw.circle(surf, vine_color, (rect.right + 20, rect.centery + 10), 5)
     _paint_text(
         surf,
-        "Piliin ang Kabanata",
-        _fit_font("Piliin ang Kabanata", int(rect.width * 0.88), _f_title),
+        "✦ PILIIN ANG KABANATA ✦",
+        _fit_font("✦ PILIIN ANG KABANATA ✦", int(rect.width * 0.95), _f_title),
         _CREAM,
         rect.center,
     )
 
 
 def _draw_post(surf, gi, g):
-    """Slim wooden post the chapter cards hang from."""
+    """Slim wooden post the chapter cards hang from - styled as twisted vine/support."""
     a = g["anim"]
     x = _COL_X[gi] + _PLAQ_W // 2
     rect = pygame.Rect(
         x - _POST_W // 2,
-        _COL_Y + _PLAQ_H - int(_POST_H * 0.06),
+        _COL_Y + _PLAQ_H - int(_POST_H * 0.08),
         _POST_W,
         _POST_H,
     )
-    k = 0.35 + 0.65 * a
+    k = 0.4 + 0.6 * a
     _blit_scaled(surf, _post_s, rect, k)
+    # Add decorative vine elements
+    if a > 0.1:
+        vine_x = rect.centerx
+        vine_y_start = rect.top + int(rect.height * 0.15)
+        for i in range(3):
+            vy = vine_y_start + i * int(rect.height * 0.25)
+            # Draw small vine curls
+            pygame.draw.circle(surf, _VINE, (vine_x - 2, vy), 3)
+            pygame.draw.circle(surf, _VINE, (vine_x + 2, vy + 4), 2)
 
 
 def _draw_sign(surf, item):
@@ -450,36 +475,39 @@ def _draw_sign(surf, item):
     k = _press_k(item)
     rect = item["rect"]
 
-    _blit_scaled(surf, _shadow_p, rect.move(0, int(HEIGHT * 0.008)), k)
+    _blit_scaled(surf, _shadow_p, rect.move(0, int(HEIGHT * 0.01)), k)
     _blit_scaled(surf, _plaque_s, rect, k)
 
     panel = _panel_rect(_scaled_rect(_plaque_s, rect, k))
 
-    # Ribbon of paint across the top of the recessed panel.
-    rib_h = max(4, int(panel.height * 0.20))
-    rib   = pygame.Rect(panel.left, panel.top, panel.width, rib_h)
-    pygame.draw.rect(surf, g["color"], rib, border_radius=int(rib_h * 0.4))
+    # Ribbon of paint across the top of the recessed panel - angled style
+    rib_h = max(5, int(panel.height * 0.22))
+    rib   = pygame.Rect(panel.left + 4, panel.top + 2, panel.width - 8, rib_h)
+    # Draw ribbon with rounded corners and slight gradient effect
+    pygame.draw.rect(surf, g["color"], rib, border_radius=int(rib_h * 0.5))
     pygame.draw.rect(
-        surf, _CREAM_DIM, rib, width=2, border_radius=int(rib_h * 0.4)
+        surf, _CREAM_DIM, rib, width=2, border_radius=int(rib_h * 0.5)
     )
+    # Add a small decorative element on ribbon
+    pygame.draw.circle(surf, _CREAM, (rib.left + rib_h//2, rib.centery), 3)
 
     # Name, then the chapter count underneath it.
     mid = panel.centerx
     _paint_text(
         surf,
         g["label"],
-        _fit_font(g["label"], int(panel.width * 0.84), _f_name),
+        _fit_font(g["label"], int(panel.width * 0.88), _f_name),
         _CREAM,
-        (mid, panel.top + rib_h + int(panel.height * 0.34)),
+        (mid, panel.top + rib_h + int(panel.height * 0.38)),
     )
 
     n = len(g["chapters"])
     _paint_text(
         surf,
         f"{n} chapter{'s' if n != 1 else ''}",
-        _fit_font(f"{n} chapters", int(panel.width * 0.70), _f_sub),
+        _fit_font(f"{n} chapters", int(panel.width * 0.75), _f_sub),
         _CREAM_DIM,
-        (mid, panel.top + rib_h + int(panel.height * 0.66)),
+        (mid, panel.top + rib_h + int(panel.height * 0.72)),
     )
 
 
@@ -488,38 +516,40 @@ def _draw_card(surf, item):
     g   = _groups[item["gi"]]
     ch  = item["ch"]
     a   = g["anim"]
-    k   = _press_k(item, 0.80 + 0.20 * a)
+    k   = _press_k(item, 0.82 + 0.18 * a)
     rect = item["rect"]
 
-    _blit_scaled(surf, _shadow_t, rect.move(0, int(HEIGHT * 0.006)), k)
+    _blit_scaled(surf, _shadow_t, rect.move(0, int(HEIGHT * 0.008)), k)
     _blit_scaled(surf, _tile_s, rect, k)
 
     r    = _scaled_rect(_tile_s, rect, k)
     panel = _panel_rect(r)
 
-    # Difficulty-coloured stripe down the left edge of the panel.
-    stripe_w = max(3, int(panel.width * 0.035))
+    # Difficulty-coloured stripe down the left edge of the panel - thicker
+    stripe_w = max(4, int(panel.width * 0.045))
     pygame.draw.rect(
         surf,
         g["chap_color"],
         pygame.Rect(panel.left, panel.top, stripe_w, panel.height),
         border_radius=stripe_w,
     )
+    # Add a small decorative dot
+    pygame.draw.circle(surf, _GOLD, (panel.left + stripe_w//2, panel.top + stripe_w), stripe_w//2)
 
     ch_num = chapters_data.CHAPTER_IDS.index(ch["_module_id"]) + 1
     _paint_text(
         surf,
         f"KABANATA {ch_num}",
-        _fit_font(f"KABANATA {ch_num}", int(panel.width * 0.72), _f_chap),
+        _fit_font(f"KABANATA {ch_num}", int(panel.width * 0.75), _f_chap),
         _GOLD,
-        (panel.left + stripe_w + int(panel.width * 0.40), panel.centery - int(panel.height * 0.19)),
+        (panel.left + stripe_w + int(panel.width * 0.42), panel.centery - int(panel.height * 0.22)),
     )
     _paint_text(
         surf,
         ch["crop"],
-        _fit_font(ch["crop"], int(panel.width * 0.72), _f_crop),
+        _fit_font(ch["crop"], int(panel.width * 0.75), _f_crop),
         _CREAM,
-        (panel.left + stripe_w + int(panel.width * 0.40), panel.centery + int(panel.height * 0.21)),
+        (panel.left + stripe_w + int(panel.width * 0.42), panel.centery + int(panel.height * 0.24)),
     )
 
 

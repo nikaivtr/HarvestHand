@@ -13,7 +13,7 @@ import pygame
 
 import config
 import utils
-from popups import leaderboards, info, settings, minigames
+from popups import leaderboards, info, settings, minigames, card_scan
 
 WIDTH = 0
 HEIGHT = 0
@@ -71,17 +71,19 @@ def init(width, height, go_to_scene_callback):
     # Left-side icon buttons (leaderboard, info, settings)
     icon_w   = int(WIDTH * 0.12)
     icon_x   = int(WIDTH * 0.054)
-    icon_top = int(HEIGHT * 0.64)
+    icon_top = int(HEIGHT * 0.48)
     icon_gap = int(HEIGHT * 0.020)
 
     _iw, _ih = utils.btn_size(icon_w)
     leaderboard_img = utils.load_img("buttons/btn_leaderboard.png", (_iw, _ih))
     info_img        = utils.load_img("buttons/btn_info.png",        (_iw, _ih))
     settings_img    = utils.load_img("buttons/btn_settings.png",    (_iw, _ih))
+    cardscan_img    = utils.load_img("buttons/cardscan.png",        (_iw, _ih))
 
-    leaderboard_rect = leaderboard_img.get_rect(center=(icon_x, icon_top))
-    info_rect        = info_img.get_rect(center=(icon_x, icon_top + _ih + icon_gap))
-    settings_rect    = settings_img.get_rect(center=(icon_x, icon_top + (_ih + icon_gap) * 2))
+    cardscan_rect    = cardscan_img.get_rect(center=(icon_x, icon_top))
+    leaderboard_rect = leaderboard_img.get_rect(center=(icon_x, icon_top + _ih + icon_gap))
+    info_rect        = info_img.get_rect(center=(icon_x, icon_top + (_ih + icon_gap) * 2))
+    settings_rect    = settings_img.get_rect(center=(icon_x, icon_top + (_ih + icon_gap) * 3))
 
     # Minigames button (right side, using btn_minigames with background removed)
     mg_raw = pygame.image.load(config.IMG_DIR + "buttons/btn_minigames_nobg.png").convert_alpha()
@@ -104,9 +106,10 @@ def init(width, height, go_to_scene_callback):
 
     main_menu_buttons = [
         {"img": play_img,        "rect": play_rect,        "hit_rect": play_hit_rect, "cb": _on_play, "pressed_at": 0},
-        {"img": leaderboard_img, "rect": leaderboard_rect, "cb": _on_leaderboard, "pressed_at": 0},
-        {"img": info_img,        "rect": info_rect,        "cb": _on_info,        "pressed_at": 0},
-        {"img": settings_img,    "rect": settings_rect,    "cb": _on_settings,    "pressed_at": 0},
+        {"img": cardscan_img,    "rect": cardscan_rect,    "hit_rect": cardscan_rect, "cb": _on_card_scan,   "pressed_at": 0},
+        {"img": leaderboard_img, "rect": leaderboard_rect, "hit_rect": leaderboard_rect, "cb": _on_leaderboard, "pressed_at": 0},
+        {"img": info_img,        "rect": info_rect,        "hit_rect": info_rect, "cb": _on_info,        "pressed_at": 0},
+        {"img": settings_img,    "rect": settings_rect,    "hit_rect": settings_rect, "cb": _on_settings,    "pressed_at": 0},
         {"img": minigames_img,   "rect": minigames_rect,  "hit_rect": minigames_hit_rect, "cb": _on_minigames, "pressed_at": 0},
         {"img": close_img,       "rect": close_rect,       "cb": _on_close,       "pressed_at": 0},
     ]
@@ -118,6 +121,7 @@ def init(width, height, go_to_scene_callback):
     info.init(WIDTH, HEIGHT, _close_popup)
     settings.init(WIDTH, HEIGHT, _close_popup)
     minigames.init(WIDTH, HEIGHT, _close_popup, _launch_minigame)
+    card_scan.init(WIDTH, HEIGHT, _close_popup)
 
 
 # ── Popup open/close ─────────────────────────────────────────────────────────
@@ -136,6 +140,7 @@ def _on_play():        _go_to_scene("level_select")
 def _on_leaderboard():  _open_popup("leaderboard")
 def _on_info():          _open_popup("info")
 def _on_settings():     _open_popup("settings")
+def _on_card_scan():    _open_popup("card_scan")
 def _on_minigames():    _open_popup("minigames")
 def _on_close():        pygame.quit(); sys.exit()
 
@@ -195,6 +200,8 @@ def handle_tap(px, py):
         settings.handle_tap(px, py)
     elif active_popup == "minigames":
         minigames.handle_tap(px, py)
+    elif active_popup == "card_scan":
+        card_scan.handle_tap(px, py)
     else:
         _handle_button_tap(px, py)
 
@@ -236,3 +243,5 @@ def draw(surf):
         settings.draw(surf)
     elif active_popup == "minigames":
         minigames.draw(surf)
+    elif active_popup == "card_scan":
+        card_scan.draw(surf)

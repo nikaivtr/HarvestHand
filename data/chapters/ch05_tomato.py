@@ -351,7 +351,7 @@ CHAPTER = {
         {
             "id":    "S2P5",
             "type":  "dialogue",
-            "bg":    "background/baronsquashbg.jpg",
+            "bg":    "background/barontomatobg.jpg",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "smile"}},
             "lines": [
@@ -362,7 +362,7 @@ CHAPTER = {
         {
             "id":    "S2P3",
             "type":  "dialogue",
-            "bg":    "background/tomatobg1.jpg",
+            "bg":    "background/barontomatobg.jpg",
             "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
             "lines": [
                 ("lucas", "Andito na na naman Baron!"),
@@ -372,7 +372,7 @@ CHAPTER = {
         {
             "id":    "S2P5",
             "type":  "dialogue",
-            "bg":    "background/baronsquashbg.jpg",
+            "bg":    "background/barontomatobg.jpg",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "smile"}},
             "lines": [
@@ -383,7 +383,7 @@ CHAPTER = {
         {
             "id":    "S2P3",
             "type":  "dialogue",
-            "bg":    "background/tomatobg1.jpg",
+            "bg":    "background/barontomatobg.jpg",
             "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
             "lines": [
                 ("lucas", "Ano na naman ang binabalak mo Baron?"),
@@ -393,7 +393,7 @@ CHAPTER = {
         {
             "id":    "S2P5",
             "type":  "dialogue",
-            "bg":    "background/baronsquashbg.jpg",
+            "bg":    "background/barontomatobg.jpg",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "laugh"}},
             "lines": [
@@ -430,6 +430,6 @@ CHAPTER = {
                 ("lucas", "Delikado ang mga halaman nito! Ano ang gagawin ko?"),
             ],
         },
-        
+
     ],
 }

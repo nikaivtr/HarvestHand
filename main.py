@@ -5,6 +5,7 @@ import pygame
 from scenes import main_menu, level_select, story_mode, memory_game
 from minigames.ingredient_puzzle import scene as ingredient_puzzle
 from minigames import whack_a_pest
+from minigames import tomato_seed_extraction
 
 pygame.init()
 
@@ -37,6 +38,7 @@ SCENES = {
     "memory_game": memory_game,
     "ingredient_puzzle": ingredient_puzzle,
     "whack_a_pest": whack_a_pest,
+    "tomato_seed_extraction": tomato_seed_extraction,
 }
 current_scene = "main_menu"
 
@@ -74,6 +76,8 @@ while True:
             if active_finger is None:
                 active_finger = event.finger_id
                 _call("handle_tap", int(event.x * WIDTH), int(event.y * HEIGHT))
+            else:
+                _call("handle_additional_tap", int(event.x * WIDTH), int(event.y * HEIGHT))
 
         if event.type == pygame.FINGERMOTION:
             if event.finger_id == active_finger:

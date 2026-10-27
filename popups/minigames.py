@@ -57,6 +57,13 @@ _GAME_DATA = (
         "image": os.path.join(config.IMG_DIR, "minigames", "whackapestgame.jpg"),
         "color": (91, 145, 75),
     },
+    {
+        "id": "tomato_seed_extraction",
+        "name": "Tomato Seed Extraction",
+        "desc": "Slice tomatoes and extract their seeds.",
+        "image": os.path.join(config.IMG_DIR, "minigames", "tomatoseedextractiongame.jpg"),
+        "color": (165, 58, 43),
+    },
 )
 
 

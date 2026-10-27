@@ -1,0 +1,1620 @@
+{
+  "source": "img/Tomato Seed Extraction Minigame Sprite Sheet.png",
+  "size": [
+    1312,
+    1199
+  ],
+  "sprites": [
+    {
+      "id": "comp_000",
+      "category": "extracted",
+      "crop": [
+        8,
+        7,
+        653,
+        49
+      ],
+      "padded_crop": [
+        4,
+        3,
+        661,
+        57
+      ],
+      "output": "comp_000.png",
+      "alias": "sheet_title_band.png",
+      "area": 27395,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_001",
+      "category": "extracted",
+      "crop": [
+        10,
+        68,
+        1294,
+        233
+      ],
+      "padded_crop": [
+        6,
+        64,
+        1302,
+        241
+      ],
+      "output": "comp_001.png",
+      "alias": "background_band_top.png",
+      "area": 8758,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_002",
+      "category": "extracted",
+      "crop": [
+        210,
+        104,
+        148,
+        150
+      ],
+      "padded_crop": [
+        206,
+        100,
+        156,
+        158
+      ],
+      "output": "comp_002.png",
+      "alias": "tomato_cut_guide.png",
+      "area": 17225,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_003",
+      "category": "extracted",
+      "crop": [
+        395,
+        104,
+        139,
+        150
+      ],
+      "padded_crop": [
+        391,
+        100,
+        147,
+        158
+      ],
+      "output": "comp_003.png",
+      "alias": "tomato_slicing.png",
+      "area": 16359,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_004",
+      "category": "extracted",
+      "crop": [
+        1131,
+        107,
+        155,
+        141
+      ],
+      "padded_crop": [
+        1127,
+        103,
+        163,
+        149
+      ],
+      "output": "comp_004.png",
+      "alias": "tomato_seed_removed.png",
+      "area": 17761,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_005",
+      "category": "extracted",
+      "crop": [
+        33,
+        108,
+        139,
+        146
+      ],
+      "padded_crop": [
+        29,
+        104,
+        147,
+        154
+      ],
+      "output": "comp_005.png",
+      "alias": "tomato_whole.png",
+      "area": 15687,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_006",
+      "category": "extracted",
+      "crop": [
+        952,
+        108,
+        146,
+        137
+      ],
+      "padded_crop": [
+        948,
+        104,
+        154,
+        145
+      ],
+      "output": "comp_006.png",
+      "alias": "tomato_seed_highlighted.png",
+      "area": 15958,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_007",
+      "category": "extracted",
+      "crop": [
+        566,
+        109,
+        93,
+        131
+      ],
+      "padded_crop": [
+        562,
+        105,
+        101,
+        139
+      ],
+      "output": "comp_007.png",
+      "alias": "tomato_just_sliced_left.png",
+      "area": 9599,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_008",
+      "category": "extracted",
+      "crop": [
+        665,
+        109,
+        87,
+        130
+      ],
+      "padded_crop": [
+        661,
+        105,
+        95,
+        138
+      ],
+      "output": "comp_008.png",
+      "alias": "tomato_just_sliced_right.png",
+      "area": 8849,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_009",
+      "category": "extracted",
+      "crop": [
+        779,
+        111,
+        138,
+        131
+      ],
+      "padded_crop": [
+        775,
+        107,
+        146,
+        139
+      ],
+      "output": "comp_009.png",
+      "alias": "tomato_cut_open.png",
+      "area": 14873,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_010",
+      "category": "extracted",
+      "crop": [
+        10,
+        316,
+        722,
+        234
+      ],
+      "padded_crop": [
+        6,
+        312,
+        730,
+        242
+      ],
+      "output": "comp_010.png",
+      "alias": "background_band_1.png",
+      "area": 8172,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_011",
+      "category": "extracted",
+      "crop": [
+        741,
+        317,
+        563,
+        233
+      ],
+      "padded_crop": [
+        737,
+        313,
+        571,
+        241
+      ],
+      "output": "comp_011.png",
+      "alias": "background_band_2.png",
+      "area": 10123,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_012",
+      "category": "extracted",
+      "crop": [
+        571,
+        353,
+        129,
+        153
+      ],
+      "padded_crop": [
+        567,
+        349,
+        137,
+        161
+      ],
+      "output": "comp_012.png",
+      "alias": "knife_slice_effect.png",
+      "area": 4923,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_013",
+      "category": "extracted",
+      "crop": [
+        991,
+        357,
+        80,
+        136
+      ],
+      "padded_crop": [
+        987,
+        353,
+        88,
+        144
+      ],
+      "output": "comp_013.png",
+      "alias": "tweezers_grabbing.png",
+      "area": 3253,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_014",
+      "category": "extracted",
+      "crop": [
+        1107,
+        357,
+        73,
+        127
+      ],
+      "padded_crop": [
+        1103,
+        353,
+        81,
+        135
+      ],
+      "output": "comp_014.png",
+      "alias": "tweezers_holding_seed.png",
+      "area": 2794,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_015",
+      "category": "extracted",
+      "crop": [
+        1212,
+        357,
+        61,
+        126
+      ],
+      "padded_crop": [
+        1208,
+        353,
+        69,
+        134
+      ],
+      "output": "comp_015.png",
+      "alias": "tweezers_pulling_seed.png",
+      "area": 2715,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_016",
+      "category": "extracted",
+      "crop": [
+        760,
+        361,
+        80,
+        131
+      ],
+      "padded_crop": [
+        756,
+        357,
+        88,
+        139
+      ],
+      "output": "comp_016.png",
+      "alias": "tweezers_idle.png",
+      "area": 3236,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_017",
+      "category": "extracted",
+      "crop": [
+        873,
+        361,
+        81,
+        132
+      ],
+      "padded_crop": [
+        869,
+        357,
+        89,
+        140
+      ],
+      "output": "comp_017.png",
+      "alias": "tweezers_moving.png",
+      "area": 3278,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_018",
+      "category": "extracted",
+      "crop": [
+        26,
+        362,
+        102,
+        138
+      ],
+      "padded_crop": [
+        22,
+        358,
+        110,
+        146
+      ],
+      "output": "comp_018.png",
+      "alias": "knife_idle.png",
+      "area": 3479,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_019",
+      "category": "extracted",
+      "crop": [
+        159,
+        362,
+        116,
+        134
+      ],
+      "padded_crop": [
+        155,
+        358,
+        124,
+        142
+      ],
+      "output": "comp_019.png",
+      "alias": "knife_move_01.png",
+      "area": 3661,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_020",
+      "category": "extracted",
+      "crop": [
+        294,
+        364,
+        94,
+        137
+      ],
+      "padded_crop": [
+        290,
+        360,
+        102,
+        145
+      ],
+      "output": "comp_020.png",
+      "alias": "knife_move_02.png",
+      "area": 3254,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_021",
+      "category": "extracted",
+      "crop": [
+        431,
+        365,
+        84,
+        136
+      ],
+      "padded_crop": [
+        427,
+        361,
+        92,
+        144
+      ],
+      "output": "comp_021.png",
+      "alias": "knife_move_03.png",
+      "area": 2922,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_022",
+      "category": "extracted",
+      "crop": [
+        616,
+        385,
+        93,
+        108
+      ],
+      "padded_crop": [
+        612,
+        381,
+        101,
+        116
+      ],
+      "output": "comp_022.png",
+      "alias": null,
+      "area": 1272,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_023",
+      "category": "extracted",
+      "crop": [
+        10,
+        564,
+        645,
+        198
+      ],
+      "padded_crop": [
+        6,
+        560,
+        653,
+        206
+      ],
+      "output": "comp_023.png",
+      "alias": "momentum_normal.png",
+      "area": 4794,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_024",
+      "category": "extracted",
+      "crop": [
+        670,
+        566,
+        634,
+        196
+      ],
+      "padded_crop": [
+        666,
+        562,
+        642,
+        204
+      ],
+      "output": "comp_024.png",
+      "alias": "momentum_steady.png",
+      "area": 9282,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_025",
+      "category": "extracted",
+      "crop": [
+        424,
+        609,
+        88,
+        81
+      ],
+      "padded_crop": [
+        420,
+        605,
+        96,
+        89
+      ],
+      "output": "comp_025.png",
+      "alias": "seed_held_in_tweezers.png",
+      "area": 2819,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_026",
+      "category": "extracted",
+      "crop": [
+        152,
+        611,
+        80,
+        85
+      ],
+      "padded_crop": [
+        148,
+        607,
+        88,
+        93
+      ],
+      "output": "comp_026.png",
+      "alias": "seed_highlighted.png",
+      "area": 1253,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_027",
+      "category": "extracted",
+      "crop": [
+        1010,
+        614,
+        115,
+        106
+      ],
+      "padded_crop": [
+        1006,
+        610,
+        123,
+        114
+      ],
+      "output": "comp_027.png",
+      "alias": "container_three_seeds.png",
+      "area": 8481,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_028",
+      "category": "extracted",
+      "crop": [
+        1162,
+        614,
+        116,
+        106
+      ],
+      "padded_crop": [
+        1158,
+        610,
+        124,
+        114
+      ],
+      "output": "comp_028.png",
+      "alias": "container_full.png",
+      "area": 8726,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_029",
+      "category": "extracted",
+      "crop": [
+        854,
+        615,
+        114,
+        105
+      ],
+      "padded_crop": [
+        850,
+        611,
+        122,
+        113
+      ],
+      "output": "comp_029.png",
+      "alias": "container_one_seed.png",
+      "area": 8251,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_030",
+      "category": "extracted",
+      "crop": [
+        698,
+        616,
+        112,
+        104
+      ],
+      "padded_crop": [
+        694,
+        612,
+        120,
+        112
+      ],
+      "output": "comp_030.png",
+      "alias": "container_empty.png",
+      "area": 7775,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_031",
+      "category": "extracted",
+      "crop": [
+        159,
+        620,
+        65,
+        69
+      ],
+      "padded_crop": [
+        155,
+        616,
+        73,
+        77
+      ],
+      "output": "comp_031.png",
+      "alias": null,
+      "area": 1164,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_032",
+      "category": "extracted",
+      "crop": [
+        289,
+        621,
+        59,
+        68
+      ],
+      "padded_crop": [
+        285,
+        617,
+        67,
+        76
+      ],
+      "output": "comp_032.png",
+      "alias": "seed_grabbed.png",
+      "area": 2920,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_033",
+      "category": "extracted",
+      "crop": [
+        173,
+        628,
+        37,
+        53
+      ],
+      "padded_crop": [
+        169,
+        624,
+        45,
+        61
+      ],
+      "output": "comp_033.png",
+      "alias": null,
+      "area": 1461,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_034",
+      "category": "extracted",
+      "crop": [
+        51,
+        631,
+        36,
+        50
+      ],
+      "padded_crop": [
+        47,
+        627,
+        44,
+        58
+      ],
+      "output": "comp_034.png",
+      "alias": "seed_normal.png",
+      "area": 1328,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_035",
+      "category": "extracted",
+      "crop": [
+        576,
+        641,
+        35,
+        43
+      ],
+      "padded_crop": [
+        572,
+        637,
+        43,
+        51
+      ],
+      "output": "comp_035.png",
+      "alias": "seed_extracted.png",
+      "area": 1088,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_036",
+      "category": "extracted",
+      "crop": [
+        651,
+        774,
+        345,
+        190
+      ],
+      "padded_crop": [
+        647,
+        770,
+        353,
+        198
+      ],
+      "output": "comp_036.png",
+      "alias": "cutting_guide.png",
+      "area": 5042,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_037",
+      "category": "extracted",
+      "crop": [
+        1006,
+        774,
+        298,
+        190
+      ],
+      "padded_crop": [
+        1002,
+        770,
+        306,
+        198
+      ],
+      "output": "comp_037.png",
+      "alias": "effect_sparkles.png",
+      "area": 6412,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_038",
+      "category": "extracted",
+      "crop": [
+        10,
+        775,
+        631,
+        188
+      ],
+      "padded_crop": [
+        6,
+        771,
+        639,
+        196
+      ],
+      "output": "comp_038.png",
+      "alias": "momentum_too_slow.png",
+      "area": 7865,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_039",
+      "category": "extracted",
+      "crop": [
+        832,
+        800,
+        144,
+        128
+      ],
+      "padded_crop": [
+        828,
+        796,
+        152,
+        136
+      ],
+      "output": "comp_039.png",
+      "alias": "feedback_pickup.png",
+      "area": 10586,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_040",
+      "category": "extracted",
+      "crop": [
+        674,
+        818,
+        111,
+        115
+      ],
+      "padded_crop": [
+        670,
+        814,
+        119,
+        123
+      ],
+      "output": "comp_040.png",
+      "alias": "cut_success.png",
+      "area": 9801,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_041",
+      "category": "extracted",
+      "crop": [
+        1029,
+        835,
+        57,
+        58
+      ],
+      "padded_crop": [
+        1025,
+        831,
+        65,
+        66
+      ],
+      "output": "comp_041.png",
+      "alias": "feedback_success.png",
+      "area": 2390,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_042",
+      "category": "extracted",
+      "crop": [
+        1127,
+        836,
+        54,
+        55
+      ],
+      "padded_crop": [
+        1123,
+        832,
+        62,
+        63
+      ],
+      "output": "comp_042.png",
+      "alias": "feedback_failure.png",
+      "area": 2042,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_043",
+      "category": "extracted",
+      "crop": [
+        1225,
+        836,
+        54,
+        55
+      ],
+      "padded_crop": [
+        1221,
+        832,
+        62,
+        63
+      ],
+      "output": "comp_043.png",
+      "alias": "momentum_too_fast.png",
+      "area": 548,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_044",
+      "category": "extracted",
+      "crop": [
+        1231,
+        841,
+        42,
+        45
+      ],
+      "padded_crop": [
+        1227,
+        837,
+        50,
+        53
+      ],
+      "output": "comp_044.png",
+      "alias": "failure_icon.png",
+      "area": 1399,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_045",
+      "category": "extracted",
+      "crop": [
+        350,
+        857,
+        143,
+        28
+      ],
+      "padded_crop": [
+        346,
+        853,
+        151,
+        36
+      ],
+      "output": "comp_045.png",
+      "alias": null,
+      "area": 3077,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_046",
+      "category": "extracted",
+      "crop": [
+        21,
+        858,
+        168,
+        27
+      ],
+      "padded_crop": [
+        17,
+        854,
+        176,
+        35
+      ],
+      "output": "comp_046.png",
+      "alias": "effect_motion_lines.png",
+      "area": 3456,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_047",
+      "category": "extracted",
+      "crop": [
+        206,
+        858,
+        126,
+        26
+      ],
+      "padded_crop": [
+        202,
+        854,
+        134,
+        34
+      ],
+      "output": "comp_047.png",
+      "alias": null,
+      "area": 2529,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_048",
+      "category": "extracted",
+      "crop": [
+        510,
+        858,
+        121,
+        27
+      ],
+      "padded_crop": [
+        506,
+        854,
+        129,
+        35
+      ],
+      "output": "comp_048.png",
+      "alias": null,
+      "area": 2407,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_049",
+      "category": "extracted",
+      "crop": [
+        10,
+        976,
+        397,
+        197
+      ],
+      "padded_crop": [
+        6,
+        972,
+        405,
+        205
+      ],
+      "output": "comp_049.png",
+      "alias": "result_success_screen.png",
+      "area": 5939,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_050",
+      "category": "extracted",
+      "crop": [
+        416,
+        976,
+        420,
+        199
+      ],
+      "padded_crop": [
+        412,
+        972,
+        428,
+        207
+      ],
+      "output": "comp_050.png",
+      "alias": "result_failure_screen.png",
+      "area": 5560,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_051",
+      "category": "extracted",
+      "crop": [
+        845,
+        976,
+        459,
+        199
+      ],
+      "padded_crop": [
+        841,
+        972,
+        467,
+        207
+      ],
+      "output": "comp_051.png",
+      "alias": "result_extra.png",
+      "area": 5892,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_052",
+      "category": "extracted",
+      "crop": [
+        431,
+        1010,
+        189,
+        151
+      ],
+      "padded_crop": [
+        427,
+        1006,
+        197,
+        159
+      ],
+      "output": "comp_052.png",
+      "alias": "effect_tomato_juice.png",
+      "area": 28263,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_053",
+      "category": "extracted",
+      "crop": [
+        644,
+        1010,
+        180,
+        152
+      ],
+      "padded_crop": [
+        640,
+        1006,
+        188,
+        160
+      ],
+      "output": "comp_053.png",
+      "alias": "effect_sparkles_alt.png",
+      "area": 26993,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_054",
+      "category": "extracted",
+      "crop": [
+        166,
+        1015,
+        72,
+        91
+      ],
+      "padded_crop": [
+        162,
+        1011,
+        80,
+        99
+      ],
+      "output": "comp_054.png",
+      "alias": "icon_tweezers.png",
+      "area": 2114,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_055",
+      "category": "extracted",
+      "crop": [
+        39,
+        1017,
+        72,
+        91
+      ],
+      "padded_crop": [
+        35,
+        1013,
+        80,
+        99
+      ],
+      "output": "comp_055.png",
+      "alias": "icon_knife.png",
+      "area": 1989,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_056",
+      "category": "extracted",
+      "crop": [
+        301,
+        1027,
+        83,
+        40
+      ],
+      "padded_crop": [
+        297,
+        1023,
+        91,
+        48
+      ],
+      "output": "comp_056.png",
+      "alias": null,
+      "area": 696,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    },
+    {
+      "id": "comp_057",
+      "category": "extracted",
+      "crop": [
+        1218,
+        1050,
+        54,
+        56
+      ],
+      "padded_crop": [
+        1214,
+        1046,
+        62,
+        64
+      ],
+      "output": "comp_057.png",
+      "alias": "success_icon.png",
+      "area": 2325,
+      "avg_color": null,
+      "transparent": true,
+      "status": "extracted",
+      "validation": "ok"
+    }
+  ],
+  "runtime_asset_overrides": {
+    "tomato_whole.png": {
+      "component": "comp_005",
+      "source_crop": [
+        29,
+        104,
+        147,
+        154
+      ],
+      "background": "edge-connected near-white and detached lower ground shadows removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "tomato_cut_guide.png": {
+      "component": "comp_002",
+      "source_crop": [
+        206,
+        100,
+        156,
+        158
+      ],
+      "background": "edge-connected near-white and detached lower ground shadows removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "tomato_slicing.png": {
+      "component": "comp_003",
+      "source_crop": [
+        391,
+        100,
+        147,
+        158
+      ],
+      "background": "edge-connected near-white and detached lower ground shadows removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "tomato_cut_open.png": {
+      "component": "comp_009",
+      "source_crop": [
+        775,
+        107,
+        146,
+        139
+      ],
+      "background": "edge-connected near-white and detached lower ground shadows removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "tomato_seed_highlighted.png": {
+      "component": "comp_006",
+      "source_crop": [
+        948,
+        104,
+        154,
+        145
+      ],
+      "background": "edge-connected near-white and detached lower ground shadows removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "tomato_seed_removed.png": {
+      "component": "comp_004",
+      "source_crop": [
+        1127,
+        103,
+        163,
+        149
+      ],
+      "background": "edge-connected near-white and detached lower ground shadows removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "knife_idle.png": {
+      "component": "comp_018",
+      "source_crop": [
+        22,
+        358,
+        110,
+        146
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "knife_move_01.png": {
+      "component": "comp_019",
+      "source_crop": [
+        155,
+        358,
+        124,
+        142
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "knife_move_02.png": {
+      "component": "comp_020",
+      "source_crop": [
+        290,
+        360,
+        102,
+        145
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "knife_move_03.png": {
+      "component": "comp_021",
+      "source_crop": [
+        427,
+        361,
+        92,
+        144
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "knife_slice_effect.png": {
+      "component": "comp_012",
+      "source_crop": [
+        567,
+        349,
+        137,
+        161
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "tweezers_grabbing.png": {
+      "component": "comp_013",
+      "source_crop": [
+        987,
+        353,
+        88,
+        144
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "tweezers_holding_seed.png": {
+      "component": "comp_014",
+      "source_crop": [
+        1103,
+        353,
+        81,
+        135
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "tweezers_pulling_seed.png": {
+      "component": "comp_015",
+      "source_crop": [
+        1208,
+        353,
+        69,
+        134
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "tweezers_idle.png": {
+      "component": "comp_016",
+      "source_crop": [
+        756,
+        357,
+        88,
+        139
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "tweezers_moving.png": {
+      "component": "comp_017",
+      "source_crop": [
+        869,
+        357,
+        89,
+        140
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "seed_normal.png": {
+      "component": "comp_034",
+      "source_crop": [
+        47,
+        627,
+        44,
+        58
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "seed_highlighted.png": {
+      "component": "comp_026",
+      "source_crop": [
+        148,
+        607,
+        88,
+        93
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "seed_grabbed.png": {
+      "component": "comp_032",
+      "source_crop": [
+        285,
+        617,
+        67,
+        76
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "seed_held_in_tweezers.png": {
+      "component": "comp_025",
+      "source_crop": [
+        420,
+        605,
+        96,
+        89
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "seed_extracted.png": {
+      "component": "comp_035",
+      "source_crop": [
+        572,
+        637,
+        43,
+        51
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "feedback_success.png": {
+      "component": "comp_041",
+      "source_crop": [
+        1025,
+        831,
+        65,
+        66
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "feedback_failure.png": {
+      "component": "comp_042",
+      "source_crop": [
+        1123,
+        832,
+        62,
+        63
+      ],
+      "background": "edge-connected near-white removed; interior white details preserved",
+      "validation": "visually reviewed and remapped"
+    },
+    "tomato_just_sliced.png": {
+      "components": [
+        "comp_007",
+        "comp_008"
+      ],
+      "source_crops": [
+        [
+          562,
+          105,
+          101,
+          139
+        ],
+        [
+          661,
+          105,
+          95,
+          138
+        ]
+      ],
+      "background": "edge-connected near-white and detached lower ground shadows removed; interior white details preserved",
+      "validation": "left and right halves composited with alpha"
+    }
+  }
+}

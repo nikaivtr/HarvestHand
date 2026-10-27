@@ -112,6 +112,7 @@ CHAR_ASSETS = {
         "defense": "characters/Lucas/Lucas-defense.png",
         "determined": "characters/Lucas/Lucas-determined.png",
         "waters": "characters/Lucas/Lucas-waters.png",
+        "cold": "characters/Lucas/lucas-freezing.png"
     },
 
     "lola": {

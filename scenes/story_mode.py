@@ -52,6 +52,7 @@ _chapter_done  = False
 _memory_game_played = False
 _ingredient_puzzle_played = False
 _whack_a_pest_played = False
+_tomato_seed_extraction_played = False
 _end_buttons   = {}     # {"repeat": Rect, "menu": Rect, "next": Rect}
 _last_bg_surf  = None   # cached last background for the overlay backdrop
 
@@ -274,6 +275,7 @@ def _load_chapter():
     global _engine, _chars, _DAY_TOTAL, _chapter_done, _last_bg_surf
     global _water_level, _crop_name, _pending_water_scan
     global _memory_game_played, _ingredient_puzzle_played, _whack_a_pest_played
+    global _tomato_seed_extraction_played
     chapter     = chapters_data.load(game_state.selected_chapter)
     _DAY_TOTAL  = chapter.get("total_days", 30)
     _chars      = CharacterLayer(WIDTH, HEIGHT)
@@ -282,6 +284,7 @@ def _load_chapter():
     _memory_game_played = False
     _ingredient_puzzle_played = False
     _whack_a_pest_played = False
+    _tomato_seed_extraction_played = False
     _last_bg_surf = None
     _water_level  = 1.0
     _crop_name    = chapter.get("crop", "")
@@ -404,6 +407,38 @@ def _return_from_whack_a_pest(_scene_name):
 
 
 def resume_after_whack_a_pest():
+    global _chars, _chapter_done, _last_ticks
+    if _engine is None:
+        return
+    _chars = CharacterLayer(WIDTH, HEIGHT)
+    _chapter_done = False
+    _last_ticks = pygame.time.get_ticks()
+
+
+def _launch_tomato_seed_extraction():
+    global _chars, _tomato_seed_extraction_played
+    from minigames import tomato_seed_extraction
+
+    _tomato_seed_extraction_played = True
+    _chars = None
+    tomato_seed_extraction.set_success_action(
+        _return_from_tomato_seed_extraction,
+        "CONTINUE STORY",
+    )
+    tomato_seed_extraction.set_return_callback(
+        _return_from_tomato_seed_extraction,
+        "CONTINUE STORY",
+    )
+    tomato_seed_extraction.start()
+    _go_to_scene("tomato_seed_extraction")
+
+
+def _return_from_tomato_seed_extraction(_scene_name):
+    resume_after_tomato_seed_extraction()
+    _go_to_scene("story_mode")
+
+
+def resume_after_tomato_seed_extraction():
     global _chars, _chapter_done, _last_ticks
     if _engine is None:
         return
@@ -1318,6 +1353,10 @@ def handle_tap(px, py):
         _launch_whack_a_pest()
         return
 
+    if s["type"] == "tomato_seed_extraction" and not _tomato_seed_extraction_played:
+        _launch_tomato_seed_extraction()
+        return
+
     # Complete typing on first tap for dialogue/feedback
     if s["type"] in ("dialogue", "end", "feedback"):
         if not _typing_done:
@@ -1360,6 +1399,10 @@ def handle_tap(px, py):
 
         if _engine.slide.get("type") == "whack_a_pest" and not _whack_a_pest_played:
             _launch_whack_a_pest()
+            return
+
+        if _engine.slide.get("type") == "tomato_seed_extraction" and not _tomato_seed_extraction_played:
+            _launch_tomato_seed_extraction()
             return
 
     # The chapter may have ended without slide_idx changing (e.g. all
@@ -1493,6 +1536,12 @@ def draw(surf):
 
     if stype == "whack_a_pest":
         _draw_whack_a_pest_return(target)
+        _blit_shaken(surf)
+        _finish_fade_in(surf, dt)
+        return
+
+    if stype == "tomato_seed_extraction":
+        _draw_tomato_seed_extraction_return(target)
         _blit_shaken(surf)
         _finish_fade_in(surf, dt)
         return
@@ -1695,6 +1744,33 @@ def _draw_whack_a_pest_return(surf):
         )
     surf.blit(title, title.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.42))))
     hint = _font_body.render("Tap to continue Chapter 4.", True, _HINT_COLOR)
+    if hint.get_width() > title_width:
+        hint = pygame.transform.smoothscale(
+            hint,
+            (title_width, int(hint.get_height() * title_width / hint.get_width())),
+        )
+    surf.blit(hint, hint.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.55))))
+
+
+def _draw_tomato_seed_extraction_return(surf):
+    panel = pygame.Rect(
+        int(WIDTH * 0.16),
+        int(HEIGHT * 0.30),
+        int(WIDTH * 0.68),
+        int(HEIGHT * 0.38),
+    )
+    pygame.draw.rect(surf, _DBOX_FILL, panel, border_radius=24)
+    pygame.draw.rect(surf, _DBOX_BORDER, panel, width=4, border_radius=24)
+
+    title = _make_font(0.075).render("Tomato Seed Extraction Complete!", True, _DBOX_TEXT)
+    title_width = int(panel.width * 0.9)
+    if title.get_width() > title_width:
+        title = pygame.transform.smoothscale(
+            title,
+            (title_width, int(title.get_height() * title_width / title.get_width())),
+        )
+    surf.blit(title, title.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.42))))
+    hint = _font_body.render("Tap to continue Chapter 5.", True, _HINT_COLOR)
     if hint.get_width() > title_width:
         hint = pygame.transform.smoothscale(
             hint,

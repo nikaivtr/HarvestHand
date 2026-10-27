@@ -156,6 +156,11 @@ def _launch_minigame(name):
         whack_a_pest.set_return_callback(_return_to_minigames, "SELECT MINI-GAMES")
         whack_a_pest.start()
         _go_to_scene("whack_a_pest")
+    elif name == "tomato_seed_extraction":
+        from minigames import tomato_seed_extraction
+        tomato_seed_extraction.set_return_callback(_return_to_minigames, "SELECT MINI-GAMES")
+        tomato_seed_extraction.start()
+        _go_to_scene("tomato_seed_extraction")
 
 
 def _return_to_minigames(_scene_name=None):

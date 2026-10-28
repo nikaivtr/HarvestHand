@@ -86,7 +86,7 @@ CHAPTER = {
         {
             "id":            "S1P7",
             "type":          "choice",
-            "day":   1,
+            "day":   55,
             "bg":            "background/scenebg_default.png",
             "question":       "Alin ang tamang kagamitan para gumawa ng maliliit na butas para sa buto ng Kalabasa?",
             "retry_question": "Sandali... pakiramdam ko masyadong malalim ang hukay nito para sa direktang pagtatanim.",

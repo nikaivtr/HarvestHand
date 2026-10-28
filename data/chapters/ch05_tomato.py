@@ -254,7 +254,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P2",
+            "id":    "S2P4",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
@@ -263,7 +263,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P3",
+            "id":    "S2P5",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
@@ -272,7 +272,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P2",
+            "id":    "S2P6",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
@@ -282,7 +282,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P3",
+            "id":    "S2P7",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
@@ -295,7 +295,7 @@ CHAPTER = {
             "type": "transition",
         },
         {
-            "id": "S2P1",
+            "id": "S2P8",
             "type": "scene",
             "bg": "background/lucastomato2.jpg",
         },
@@ -305,7 +305,7 @@ CHAPTER = {
             "type": "transition",
         },
         {
-            "id": "S2P1",
+            "id": "S2P9",
             "type": "narration_overlay",
             "day": 10,
             "bg": "background/scenebg_default.png",
@@ -324,7 +324,7 @@ CHAPTER = {
             "type": "transition",
         },
         {
-            "id":    "S2P3",
+            "id":    "S2P10",
             "type":  "dialogue",
             "bg":    "background/tomatobg1.jpg",
             "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
@@ -334,7 +334,7 @@ CHAPTER = {
             ],
         },
         {
-            "id": "S2P4",
+            "id": "S2P11",
             "type": "scene",
             "bg": "background/barontomatobg.jpg",
             "shake": True,  
@@ -349,7 +349,7 @@ CHAPTER = {
             },
         },
         {
-            "id":    "S2P5",
+            "id":    "S2P12",
             "type":  "dialogue",
             "bg":    "background/barontomatobg.jpg",
             "dark":  True,
@@ -360,7 +360,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P3",
+            "id":    "S2P13",
             "type":  "dialogue",
             "bg":    "background/barontomatobg.jpg",
             "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
@@ -370,7 +370,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P5",
+            "id":    "S2P14",
             "type":  "dialogue",
             "bg":    "background/barontomatobg.jpg",
             "dark":  True,
@@ -381,7 +381,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P3",
+            "id":    "S2P15",
             "type":  "dialogue",
             "bg":    "background/barontomatobg.jpg",
             "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
@@ -391,7 +391,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S2P5",
+            "id":    "S2P16",
             "type":  "dialogue",
             "bg":    "background/barontomatobg.jpg",
             "dark":  True,
@@ -402,7 +402,7 @@ CHAPTER = {
             ],
         },
         {
-            "id": "S2P4",
+            "id": "S2P17",
             "type": "scene",
             "bg": "background/barontomatobg.jpg",
             "shake": True,   
@@ -421,7 +421,7 @@ CHAPTER = {
             "type": "transition",
         },
         {
-            "id":    "S2P3",
+            "id":    "S2P18",
             "type":  "dialogue",
             "bg":    "background/tomatobgsnow.jpg",
             "chars": {"lucas": {"side": "left", "expression": "cold", "flip": True}},
@@ -430,6 +430,205 @@ CHAPTER = {
                 ("lucas", "Delikado ang mga halaman nito! Ano ang gagawin ko?"),
             ],
         },
-
+        {
+            "id":            "S1P19",
+            "type":          "choice",
+            "day":   10,
+            "bg":            "background/scenebg_default.png",
+            "question":       "Naging malamig ang klima sa baryo, kailangan ng tulong ni lucas na masalba ang mga halaman. Alin sa dalawa ang tamang gamit upang mapanatiling mainit ang lupang pinagtaniman ng mga kamatis?",
+            "retry_question": "Sandali, pakiramdam ko masyadong mainit ang gamit na ito....",
+            "choices": [
+                {"img": "buttons/choice_heatmats.png", "label": "", "frame": False},
+                {"img": "buttons/choice_fire.png",    "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        # ── Panel 20 - Feedback Correct - Lucas Thumbs up ───────────────
+        {
+            "id":          "S2P20_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Magaling! Ang heat mats at light source ay maaaring gamitin upang mapainit ang mga halaman."),
+            ],
+        },
+        # ── Panel 21 - Feedback: Correct — Lola thumbs up ───────────────
+        {
+            "id":         "S2P21_right_2",
+            "type":       "feedback",
+            "if_correct": True,
+            "random_pick": True,
+            "bg":         "background/scenebg_right.png",
+            "chars":           {
+                    "lola": {
+                        "side": "left",
+                        "expression": "thumbs",
+                        "flip": True,
+                    }
+                },
+            "lines": [
+                ("lola", "Magaling, apo! Hindi kailangang gumamit ng mga delikadong kagamitan para lang mapangalagaan ang mga halaman."),
+            ],
+        },
+        # ── Panel 22 ── Feedback: Wrong — Lucas worried ───────────────────
+        {
+            "id":          "S2P22_wrong_1",
+            "type":        "feedback",
+            "if_correct":  False,
+            "random_pick": True,
+            "retry_to_choice": True,
+            "bg":          "background/scenebg_wrong.png",
+            "chars":       {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Napakadelikado nito, maaari masunog ang bodega dahil sa apoy! Hindi ito ang kagamitang dapat gagamitin natin."),
+            ],
+        },
+        # ── Panel 23 ── Feedback: Wrong — Kapitan warns ───────────────────
+        {
+            "id":              "S2P23_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Magingat sa pag gamit ng apoy!. Ito ay nakakasunog at napaka delikado ng mga ito."),
+            ],
+        },
+        {
+            "id":   "day10_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S2P24",
+            "type":  "dialogue",
+            "bg":    "background/tomatobgsnow.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "cold", "flip": True}},
+            "lines": [
+                ("lucas", "Magaling, magiging epektibo na ito para mapainit ang mga halaman."),
+            ],
+        },
+        {
+            "id":   "day10_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S2P25",
+            "type":  "dialogue",
+            "bg":    "background/baronairconbg.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "cold", "flip": True}},
+            "lines": [
+                ("lucas", "Ang lamig!"),
+                ("lucas", "Papaano ko mapapawalang bisa ang ginawa ni baron?"),
+            ],
+        },
+         # ── Scene 2, Panel 26 - choices ───────────────
+        {
+            "id":            "S2P26",
+            "type":          "choice",
+            "bg":            "background/baronairconbg.jpg",
+            "question":       "Parang may isang kagamitan ang tumatakip sa araw. Kaya siguro napaka lamig. Dapat ba natin itong alisin?",
+            "retry_question": "Nagkamali ata tayo ng ating piniling sagot. Basahin nating maigi at intindihin ang tanong bago pumili ng sagot.",
+            "choices": [
+                {"img": "buttons/choice1.png", "frame": False},
+                {"img": "buttons/choice3.png", "frame": False},
+            ],
+            "correct": 0,
+        },
+        # ── Scene 2, Panel 27 - Feedback Correct - Lucas Thumbs up ───────────────
+        {
+            "id":          "S2P27_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Tama! Kailangan nating alisin ang Airconditioner upang maibalik natin ang init sa baryo."),
+            ],
+        },              
+        # ── Scene 2, Panel 28 -Feedback: Correct — Lola thumbs up ───────────────
+        {
+            "id":         "S2P28_right_2",
+            "type":       "feedback",
+            "if_correct": True,
+            "random_pick": True,
+            "bg":         "background/scenebg_right.png",
+            "chars":           {
+                    "lola": {
+                        "side": "left",
+                        "expression": "thumbs",
+                        "flip": True,
+                    }
+                },
+            "lines": [
+                ("lola", "Magaling apo! Hindi uso ang snow sa Pilipinas."),
+            ],
+        },
+        # ── Scene 2, Panel 29 ── Feedback: Wrong — Lucas worried ───────────────────
+        {
+            "id":          "S2P29_wrong_1",
+            "type":        "feedback",
+            "if_correct":  False,
+            "random_pick": True,
+            "retry_to_choice": True,
+            "bg":          "background/scenebg_wrong.png",
+            "chars":       {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Huwag! Kung mananatili sa malamig na klima ang baryo, masisisra ang mga pananim, at masyadong delikado sa kalusugan."),
+            ],
+        }, 
+        # ── Scene 2, Panel 30 ── Feedback: Wrong — Kapitan warns ───────────────────
+        {
+            "id":              "S2P30_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "baron": {
+                    "side": "right",
+                    "expression": "laugh",
+                    "flip": False,
+                    }
+                },
+            "lines": [
+                ("baron", "HA! Tamang-tama! Manatili sila sa lamig!"),
+            ],
+        },
+        {
+            "id":   "day10_fade",
+            "type": "transition",
+        },
+        
     ],
 }

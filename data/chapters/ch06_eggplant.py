@@ -19,7 +19,7 @@ CHAPTER = {
             "id":   "title",
             "type": "title",
             "bg":   "background/scenebg_default.png",
-            "logo": "logos/ch1logo.png",
+            "logo": "logos/chapter6.png",
         },
 
         # ── Panel 1 — Kapitan lost his purpose ────────────────
@@ -29,16 +29,27 @@ CHAPTER = {
             "bg":    "background/scenebg_default.png",
             "chars": {"kapitan": "right"},
             "lines": [
-                ("kapitan", "Lucas... bakit ba mahalaga ang barangay hall? Nakalimutan ko pati kung para saan ako naging Kapitan ng baryong ito."),
+                ("kapitan", "Lucas mayroon bang pamamaraan sa pagtatanim ang puwedeng gamitin para mas lumago at maging makinang ang aking pananim na talong?"),
             ],
         },
         {
-            "id":    "S1P2",
+            "id":    "S2P3",
+            "type":  "dialogue",
+            "bg":    "background/tomatobgsnow.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "cold", "flip": True}},
+            "lines": [
+                ("lucas", "Bakit po?"),
+                ("lucas", "Anong problema sa mga pananim nyong talong?"),
+            ],
+        },
+        {
+            "id":    "S1P1",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": "left"},
+            "chars": {"kapitan": "right"},
             "lines": [
-                ("lucas", "Doon tayo nagtitipon, Kapitan — kumakain, nagpaplano, naghihilom. Tandaan natin ito gamit ang Talong. Sundan mo ako."),
+                ("kapitan", "Sa palagay ko ang mga ito ay hindi talaga nakakakuha ng sapat na nutrisyon."),
+                ("kapitan", "Masyado kasing makulubot ang mga "),
             ],
         },
 

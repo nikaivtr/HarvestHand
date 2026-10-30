@@ -854,7 +854,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S3P16",
+            "id":    "S3P21",
             "type":  "dialogue",
             "bg":    "background/squashgrownbg.jpg",
             "chars": {"chef": {"side": "right", "expression": "happy", "flip": False}},

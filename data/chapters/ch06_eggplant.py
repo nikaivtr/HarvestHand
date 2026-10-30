@@ -43,7 +43,7 @@ CHAPTER = {
             ],
         },
         {
-            "id":    "S1P1",
+            "id":    "S1P4",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
             "chars": {"kapitan": "right"},

@@ -36,7 +36,7 @@ CHAPTER = {
             "id":    "S1P2",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Ano naman po ito lola?"),
             ],
@@ -54,7 +54,7 @@ CHAPTER = {
             "id":    "S1P4",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Siguro naman ay may mga sangkap na alam nyo parin po kahit ngayon."),
             ],
@@ -72,7 +72,7 @@ CHAPTER = {
             "id":    "S1P6",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Bakit naman po?"),
             ],
@@ -90,7 +90,7 @@ CHAPTER = {
             "id":    "S1P8",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Meron po ba tayong hinog na mga kamatis lola?"),
             ],
@@ -109,7 +109,7 @@ CHAPTER = {
             "id":    "S1P10",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Hindi na po ba natin ito mapapakinabangan lola?"),
             ],
@@ -129,7 +129,7 @@ CHAPTER = {
             "id":    "S1P12",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Tara po lola, tutulungan po kita."),
             ],
@@ -147,7 +147,7 @@ CHAPTER = {
             "id":    "S1P14",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Okay po lola."),
             ],
@@ -169,7 +169,7 @@ CHAPTER = {
             "id":    "S1P16",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Eto na po lola."),
             ],
@@ -184,9 +184,9 @@ CHAPTER = {
             "id":    "S1P17",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
-                ("lucas", "Phew! Nakura rin natin sa wakas ang mga buto ng kamatis Lola."),
+                ("lucas", "Phew! Nakuha rin natin sa wakas ang mga buto ng kamatis Lola."),
                 ("lucas", "Ano na po ang susunod nito?"),
             ],
         },
@@ -203,7 +203,7 @@ CHAPTER = {
             "id":    "S1P19",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Ang tawag sa gagawin natin ay fermintation."),
                 ("lucas", "Kung saan gumagamit tayo ng lalagyang selyado at tubig para ma break-down ang germination-inhibiting gel mula sa pulp ng kamatis."),
@@ -248,7 +248,7 @@ CHAPTER = {
             "id":    "S2P3",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Sige po lola Maria, maghuhukay na po ako."),
             ],
@@ -266,7 +266,7 @@ CHAPTER = {
             "id":    "S2P5",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Silungan po? Bakit po?"),
             ],
@@ -285,7 +285,7 @@ CHAPTER = {
             "id":    "S2P7",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("lucas", "Sigi po lola, ihahanda ko lang po ang mga gamit."),
             ],
@@ -629,6 +629,858 @@ CHAPTER = {
             "id":   "day10_fade",
             "type": "transition",
         },
-        
+        # ── Scene 3 — The warmth returns ───────────────────────
+        {
+            "id":    "S3P1",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Mainit na ulit ang hangin, apo. Salamat at nawala na ang kakaibang lamig."),
+            ],
+        },
+        {
+            "id":    "S3P2",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
+            "lines": [
+                ("lucas", "Opo, lola. Mabuti na lang po at hindi nalanta ang mga punla."),
+            ],
+        },
+        {
+            "id":    "S3P3",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Matatag sila dahil sa maayos mong pag-aalaga."),
+                ("lola", "Hindi ko akalaing makikita kong muling tumutubo ang mga kamatis sa ating bakuran."),
+            ],
+        },
+        {
+            "id":    "S3P4",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
+            "lines": [
+                ("lucas", "Kailan po natin sila ililipat sa hardin?"),
+            ],
+        },
+        {
+            "id":    "S3P5",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Hindi pa ngayon, apo. Hihintayin muna nating magkaroon sila ng dalawang pares ng tunay na dahon."),
+                ("lola", "Ang unang dalawang dahon ay pang-umpisa lamang. Ang tunay na dahon ay mas mahaba at may bingot-bingot na gilid."),
+            ],
+        },
+        {
+            "id":    "S3P6",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
+            "lines": [
+                ("lucas", "Ibig sabihin po, hudyat iyon na sapat na ang lakas ng kanilang mga ugat?"),
+            ],
+        },
+        {
+            "id":    "S3P7",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lola": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lola", "Tama ka, Lucas! Mabilis kang matuto."),
+                ("lola", "Sa mga susunod na araw, ilalabas natin sila sa araw nang ilang oras lamang bawat araw. Hardening off ang tawag dito."),
+                ("lola", "Sa ganitong paraan, masasanay silang unti-unti bago natin itanim sa lupa."),
+            ],
+        },
+        {
+            "id":   "day21_fade",
+            "type": "transition",
+        },
+        {
+            "id": "S3P8",
+            "type": "narration_overlay",
+            "day": 21,
+            "bg": "background/scenebg_default.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "21 araw na ang lumipas. "
+                "Araw-araw na inilabas ni Lucas ang mga punla sa sikat ng araw, "
+                "ilang oras lamang sa simula, hanggang sa masanay ang mga ito. "
+                "Ngayon, may dalawang pares na sila ng tunay na dahon."
+            ),
+        },
+ 
+        # ── Transplanting (indirect planting) ──────────────────
+        {
+            "id":    "S3P9",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Handa na sila, apo. Maaari na nating ilipat ang mga punla sa hardin."),
+                ("lola", "Maghukay ka ng butas na may layong dalawang talampakan sa bawat isa, para hindi sila magsiksikan."),
+            ],
+        },
+        {
+            "id":    "S3P10",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
+            "lines": [
+                ("lucas", "Sige po, lola. Ngayon, puwede na po akong maghukay!"),
+                ("lucas", "Gaano po kalalim ang dapat kong hukayin?"),
+            ],
+        },
+        {
+            "id":    "S3P11",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Sapat na ang lalim para matabunan ang tangkay hanggang sa ibaba ng mga unang dahon."),
+                ("lola", "Tutubo ang mga dagdag na ugat mula sa nakabaong tangkay, kaya lalong titibay ang halaman."),
+            ],
+        },
+        {
+            "id":    "S3P12",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
+            "lines": [
+                ("lucas", "Kaya po pala hindi natin itinanim nang direkta ang mga buto sa hardin."),
+                ("lucas", "Mas ligtas po silang alagaan habang maliliit pa, at saka lang natin sila inilipat."),
+            ],
+        },
+        {
+            "id":    "S3P13",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lola": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lola", "Tama! Indirect planting ang tawag diyan, apo."),
+                ("lola", "Diligan mo sila nang marahan. Mas mainam kung hapon o maulap ang langit, para hindi sila mabigla sa init."),
+            ],
+        },
+        {
+            "id":    "S3P14",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "thumbs", "flip": False}},
+            "lines": [
+                ("lucas", "Ayan po, lola! Nakatanim na ang lahat. Mukhang masaya na silang nasa hardin."),
+            ],
+        },
+ 
+        # ── Companion planting ─────────────────────────────────
+        {
+            "id":    "S3P15",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg1.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "May isa pa tayong gagawin, Lucas. Ang kamatis ay mas masaya kapag may kasamang kaibigang halaman."),
+                ("lola", "Ang mga ito ay maaaring magtaboy ng peste at tumulong sa paglaki ng ating mga pananim."),
+            ],
+        },
+        {
+            "id":            "S3P16",
+            "type":          "choice",
+            "day":           21,
+            "bg":            "background/scenebg_default.png",
+            "question":       "May dalawang halamang puwedeng itanim sa tabi ng mga kamatis. Alin ang mas mainam na kasama nito upang maitaboy ang mga peste?",
+            "retry_question": "Hmm, baka may peste pang naaakit ng halamang iyan. Pag-isipan natin ulit.",
+            "choices": [
+                {"img": "buttons/choice_basil.png", "label": "", "frame": False},
+                {"img": "buttons/choice_corn.png",  "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S3P17_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "right",
+                    "expression": "thumbs",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Tama! Ang balanoy ay may matapang na amoy na nagtataboy ng mga langaw at uod na kumakain ng kamatis."),
+            ],
+        },
+        {
+            "id":         "S3P18_right_2",
+            "type":       "feedback",
+            "if_correct": True,
+            "random_pick": True,
+            "bg":         "background/scenebg_right.png",
+            "chars":           {
+                    "lola": {
+                        "side": "left",
+                        "expression": "thumbs",
+                        "flip": True,
+                    }
+                },
+            "lines": [
+                ("lola", "Magaling, apo! Magkaibigan ang balanoy at kamatis. Pareho silang mahilig sa araw at sa regular na pagdilig."),
+            ],
+        },
+        {
+            "id":          "S3P19_wrong_1",
+            "type":        "feedback",
+            "if_correct":  False,
+            "random_pick": True,
+            "retry_to_choice": True,
+            "bg":          "background/scenebg_wrong.png",
+            "chars":       {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Ang mais ay dinadapuan ng parehong uod na kumakain din ng kamatis. Mas lalo lang silang darami."),
+            ],
+        },
+        {
+            "id":              "S3P20_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "baron": {
+                    "side": "right",
+                    "expression": "laugh",
+                    "flip": False,
+                    }
+                },
+            "lines": [
+                ("baron", "HAHAHA! Ilagay mo iyan! Kapag maraming uod, mas masaya!"),
+            ],
+        },
+        {
+            "id":    "S3P21",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
+            "lines": [
+                ("lucas", "Itatanim ko po ang balanoy sa tabi ng bawat kamatis, lola."),
+            ],
+        },
+        {
+            "id":    "S3P22",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Maglalagay rin tayo ng ilang marigold sa gilid ng hardin. Pinaniniwalaang naitataboy nila ang mga maliliit na uod sa lupa."),
+                ("lola", "Ngayon, may bantay na ang ating mga kamatis."),
+            ],
+        },
+ 
+        # ── Staking ────────────────────────────────────────────
+        {
+            "id":   "day35_fade",
+            "type": "transition",
+        },
+        {
+            "id": "S3P23",
+            "type": "narration_overlay",
+            "day": 35,
+            "bg": "background/scenebg_default.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "35 araw na ang lumipas. "
+                "Mabilis na tumangkad ang mga kamatis, "
+                "at may mga unang bulaklak nang lumilitaw sa kanilang mga sanga."
+            ),
+        },
+        {
+            "id":    "S3P24",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "afraid", "flip": False}},
+            "lines": [
+                ("lucas", "Lola! Yumuyuko na po ang mga halaman at halos dumikit na sa lupa ang ilang sanga!"),
+            ],
+        },
+        {
+            "id":    "S3P25",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Huwag kang mag-alala, apo. Natural lang iyan sa mga halamang kamatis."),
+                ("lola", "Kapag bumigat sila sa bulaklak at bunga, hindi na kaya ng kanilang tangkay na tumayo nang mag-isa."),
+                ("lola", "Kailangan na nating suportahan sila."),
+            ],
+        },
+        {
+            "id":    "S3P26",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
+            "lines": [
+                ("lucas", "Ano po ang dapat kong gamitin, lola?"),
+            ],
+        },
+        {
+            "id":            "S3P27",
+            "type":          "choice",
+            "day":           35,
+            "bg":            "background/scenebg_default.png",
+            "question":       "Kailangan ni Lucas ng pangsuporta sa mga halamang kamatis. Alin ang tamang paraan ng pagsuporta?",
+            "retry_question": "Sandali, baka masaktan ang halaman sa paraang iyan. Subukan nating muli.",
+            "choices": [
+                {"img": "buttons/choice_stake.png", "label": "", "frame": False},
+                {"img": "buttons/choice_wire.png",  "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S3P28_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "right",
+                    "expression": "thumbs",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Tama! Itatali natin ang tangkay sa kawayan gamit ang malambot na tela, at hindi ito hihigpitan."),
+            ],
+        },
+        {
+            "id":         "S3P29_right_2",
+            "type":       "feedback",
+            "if_correct": True,
+            "random_pick": True,
+            "bg":         "background/scenebg_right.png",
+            "chars":           {
+                    "lola": {
+                        "side": "left",
+                        "expression": "thumbs",
+                        "flip": True,
+                    }
+                },
+            "lines": [
+                ("lola", "Magaling, apo! Dahil nakataas ang mga bunga, hindi sila mabubulok sa basang lupa at mas makakadaan ang hangin."),
+            ],
+        },
+        {
+            "id":          "S3P30_wrong_1",
+            "type":        "feedback",
+            "if_correct":  False,
+            "random_pick": True,
+            "retry_to_choice": True,
+            "bg":          "background/scenebg_wrong.png",
+            "chars":       {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Ang manipis na alambre na mahigpit ang pagkakatali ay maaaring humiwa sa malambot na tangkay."),
+            ],
+        },
+        {
+            "id":              "S3P31_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Mag-ingat sa pagtali! Ang masikip na tali ay nakakasugat sa halaman at hindi nito hahayaang lumaki ang tangkay."),
+            ],
+        },
+        {
+            "id":    "S3P32",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "thumbs", "flip": False}},
+            "lines": [
+                ("lucas", "Ayan po! Tuwid na tuwid na ang mga kamatis, lola."),
+                ("lucas", "Parang mga batang sundalo na handang lumaban."),
+            ],
+        },
+        {
+            "id":    "S3P33",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Hehe, tama ka. Habang naglalagay ka ng mga tali, hindi na nanginginig ang kamay ko sa tuwa."),
+                ("lola", "Ikaw na ang nagtuturo sa akin ngayon, apo."),
+            ],
+        },
+ 
+        # ── Pruning ────────────────────────────────────────────
+        {
+            "id":   "day45_fade",
+            "type": "transition",
+        },
+        {
+            "id": "S3P34",
+            "type": "narration_overlay",
+            "day": 45,
+            "bg": "background/scenebg_default.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "45 araw na ang lumipas. "
+                "Umaabot na ang mga kamatis sa baywang ni Lucas, "
+                "ngunit napakarami na ring dahon at mga bagong sanga ang tumutubo."
+            ),
+        },
+        {
+            "id":    "S3P35",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
+            "lines": [
+                ("lucas", "Lola, parang gubat na po ang mga kamatis. Ang daming bagong sanga!"),
+                ("lucas", "Hindi po kaya sila mahirapang huminga?"),
+            ],
+        },
+        {
+            "id":    "S3P36",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Magandang obserbasyon, Lucas. Kapag sobrang siksik ang mga dahon, naiipon ang halumigmig at madaling dapuan ng sakit ang halaman."),
+                ("lola", "Pati ang lakas ng halaman ay napupunta sa mga dahon at sanga sa halip na sa mga bunga."),
+                ("lola", "Kaya kailangan nating gawin ang pruning."),
+            ],
+        },
+        {
+            "id":    "S3P37",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
+            "lines": [
+                ("lucas", "Pruning po? Ano po ang puputulin ko?"),
+            ],
+        },
+        {
+            "id":    "S3P38",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Hanapin mo ang maliliit na sanga na tumutubo sa pagitan ng pangunahing tangkay at ng malaking sanga."),
+                ("lola", "Sucker ang tawag sa mga iyon. Kapag nasa umaga at tuyo ang halaman, ligtas silang putulin gamit ang malinis na gunting."),
+            ],
+        },
+        {
+            "id":            "S3P39",
+            "type":          "choice",
+            "day":           45,
+            "bg":            "background/scenebg_default.png",
+            "question":       "Maingat na lumapit si Lucas sa halaman. Alin sa dalawa ang dapat niyang putulin upang maging mas malusog ang halamang kamatis?",
+            "retry_question": "Sandali, baka maapektuhan ang magiging bunga natin kapag iyan ang pinutol. Subukan ulit.",
+            "choices": [
+                {"img": "buttons/choice_sucker.png", "label": "", "frame": False},
+                {"img": "buttons/choice_flower.png", "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S3P40_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "right",
+                    "expression": "thumbs",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Tama! Ang mga sucker ang puputulin natin upang mapunta ang lakas ng halaman sa mga bunga."),
+            ],
+        },
+        {
+            "id":         "S3P41_right_2",
+            "type":       "feedback",
+            "if_correct": True,
+            "random_pick": True,
+            "bg":         "background/scenebg_right.png",
+            "chars":           {
+                    "lola": {
+                        "side": "left",
+                        "expression": "thumbs",
+                        "flip": True,
+                    }
+                },
+            "lines": [
+                ("lola", "Magaling, apo! Putulin mo na rin ang mga dahong dumidikit sa lupa para hindi sila mahawaan ng sakit."),
+            ],
+        },
+        {
+            "id":          "S3P42_wrong_1",
+            "type":        "feedback",
+            "if_correct":  False,
+            "random_pick": True,
+            "retry_to_choice": True,
+            "bg":          "background/scenebg_wrong.png",
+            "chars":       {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Mga bulaklak ang magiging bunga. Kapag pinutol ko sila, mawawalan tayo ng kamatis."),
+            ],
+        },
+        {
+            "id":              "S3P43_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Huwag putulin ang mga bulaklak! Sila ang magiging prutas ng halaman."),
+            ],
+        },
+        {
+            "id":    "S3P44",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "thumbs", "flip": False}},
+            "lines": [
+                ("lucas", "Ayan po! Mas maluwag at mas maaliwalas na ang mga halaman."),
+                ("lucas", "Madali nang dumaan ang hangin at sikat ng araw sa pagitan ng mga dahon."),
+            ],
+        },
+ 
+        # ── The Blight Baron returns ───────────────────────────
+        {
+            "id":   "day55_fade",
+            "type": "transition",
+        },
+        {
+            "id": "S3P45",
+            "type": "narration_overlay",
+            "day": 55,
+            "bg": "background/scenebg_default.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "55 araw na ang lumipas. "
+                "Namumunga na ang mga kamatis ni Lucas, "
+                "ngunit may nagbabantang dumating sa baryo."
+            ),
+        },
+        {
+            "id": "S3P46",
+            "type": "scene",
+            "bg": "background/barontomatobg2.jpg",
+            "shake": True,
+            "smoke": True,   # smoke rises from the bottom of the screen
+ 
+            "chars": {
+                "baron": {
+                    "side": "center",
+                    "expression": "explosion",
+                    "flip": False,
+                },
+            },
+        },
+        {
+            "id":    "S3P47",
+            "type":  "dialogue",
+            "bg":    "background/barontomatobg2.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "smile"}},
+            "lines": [
+                ("baron", "Hindi mo ako matatakasan, bata!"),
+                ("baron", "Ang gaganda ng mga kamatis mo, sayang kung masisira ang mga iyan."),
+            ],
+        },
+        {
+            "id":    "S3P48",
+            "type":  "dialogue",
+            "bg":    "background/barontomatobg2.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
+            "lines": [
+                ("lucas", "Baron! Ano na namang plano mo sa mga halaman ko?"),
+            ],
+        },
+        {
+            "id":    "S3P49",
+            "type":  "dialogue",
+            "bg":    "background/barontomatobg2.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "laugh"}},
+            "lines": [
+                ("baron", "Ulan! Ulan! Ulan! At halumigmig na kakapit sa bawat dahon!"),
+                ("baron", "Hayaan mong dumating ang amag at blight, at magdilim ang bawat kamatis mo. HAHAHAHAHA!"),
+            ],
+        },
+        {
+            "id": "S3P50",
+            "type": "scene",
+            "bg": "background/barontomatobg2.jpg",
+            "shake": True,
+            "smoke": True,   # smoke rises from the bottom of the screen
+ 
+            "chars": {
+                "baron": {
+                    "side": "center",
+                    "expression": "explosion",
+                    "flip": False,
+                },
+            },
+        },
+        {
+            "id":   "day55b_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S3P51",
+            "type":  "dialogue",
+            "bg":    "background/barontomatobg2.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "afraid", "flip": False}},
+            "lines": [
+                ("lucas", "Lola! May mga itim na batik sa ilang dahon, at basang-basa ang buong hardin!"),
+            ],
+        },
+        {
+            "id":    "S3P52",
+            "type":  "dialogue",
+            "bg":    "background/barontomatobg2.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Blight ang tawag diyan, apo. Dumarami ito kapag basa at siksik ang mga dahon."),
+                ("lola", "Pero huwag kang mataranta. Naaalala ko ang tinuro sa akin ng lolo mo noon."),
+            ],
+        },
+        {
+            "id":    "S3P53",
+            "type":  "dialogue",
+            "bg":    "background/barontomatobg2.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Putulin at itapon sa malayo ang mga dahong may batik para hindi na kumalat."),
+                ("lola", "Diligan ang ugat sa umaga, at iwasang mabasa ang mga dahon."),
+                ("lola", "Maglagay din tayo ng dayami sa lupa para hindi tumalsik sa dahon ang putik kapag umuulan."),
+            ],
+        },
+        {
+            "id": "S3P54",
+            "type": "action_challenge",
+            "bg": "background/tomatobg2.jpg",
+            "overlay": "weedremovalcard.png",
+            "dim_inactive": False,
+        },
+        {
+            "id":    "S3P55",
+            "type":  "dialogue",
+            "bg":    "background/barontomatobg2.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
+            "lines": [
+                ("lucas", "Sige po, lola. Gagawin ko po ito nang maingat."),
+                ("lucas", "Buti na lang po at pinutol natin ang mga sucker at itinali natin ang mga kamatis sa kawayan. Hindi na gaanong siksik at nakataas ang mga halaman."),
+            ],
+        },
+        {
+            "id":   "day60_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S3P56",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg2.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Lola, nakaligtas po ang halos lahat ng halaman. Wala nang kumalat na batik sa mga bagong dahon!"),
+            ],
+        },
+        {
+            "id":    "S3P57",
+            "type":  "dialogue",
+            "bg":    "background/barontomatobg2.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "smile"}},
+            "lines": [
+                ("baron", "Ano?! Imposible ito! Dapat ay nalanta na ang mga iyan!"),
+            ],
+        },
+        {
+            "id":    "S3P58",
+            "type":  "dialogue",
+            "bg":    "background/barontomatobg2.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Hindi na ako natatakot sa iyo, Baron."),
+                ("lucas", "Alam ko na kung paano alagaan ang bawat halaman, at hindi ko sila iiwan."),
+            ],
+        },
+        {
+            "id":    "S3P59",
+            "type":  "dialogue",
+            "bg":    "background/barontomatobg2.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "angry"}},
+            "lines": [
+                ("baron", "Hmp! Pagbibigyan kita ngayon, bata. Pero hindi pa tapos ang laban natin!"),
+            ],
+        },
+        {
+            "id": "S3P60",
+            "type": "scene",
+            "bg": "background/barontomatobg2.jpg",
+            "shake": True,
+            "smoke": True,   # smoke rises from the bottom of the screen
+ 
+            "chars": {
+                "baron": {
+                    "side": "center",
+                    "expression": "explosion",
+                    "flip": False,
+                },
+            },
+        },
+ 
+        # ── Harvest and the Kamatis Sarciado memory ────────────
+        {
+            "id":   "day75_fade",
+            "type": "transition",
+        },
+        {
+            "id": "S3P61",
+            "type": "narration_overlay",
+            "day": 75,
+            "bg": "background/scenebg_default.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "75 araw na ang lumipas mula nang unang kunin ni Lucas "
+                "ang mga buto mula sa luma nilang kamatis. "
+                "Ngayon, pulang-pula at makinang na ang mga bunga sa hardin."
+            ),
+        },
+        {
+            "id":    "S3P62",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg3.jpg",
+            "chars": {"lucas": {"side": "right", "expression": "thumbs", "flip": False}},
+            "lines": [
+                ("lucas", "Lola, tingnan po ninyo! Pulang-pula at makinang na ang mga kamatis!"),
+                ("lucas", "Katulad po ito ng mga kamatis na pinipili ni Lolo."),
+            ],
+        },
+        {
+            "id":    "S3P63",
+            "type":  "dialogue",
+            "bg":    "background/tomatobg3.jpg",
+            "chars": {"lola": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lola", "Napakaganda nila, apo. Dahan-dahan mong pitasin at huwag mong pipigain."),
+                ("lola", "Kapag handa na, madaling kumakalas ang bunga sa tangkay."),
+            ],
+        },
+        {
+            "id": "S3P64",
+            "type": "action_challenge",
+            "bg": "background/tomatobg3.jpg",
+            "overlay": "harvestcardscan.png",
+            "dim_inactive": False,
+        },
+        {
+            "id":    "S3P65",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Ah! Naaalala ko na! Ang lutuing ito ay tinatawag na Kamatis na Sarciado!"),
+                ("lola", "Iginigisa ito ng lolo mo kasama ang bawang at sibuyas, saka hahaluan ng binating itlog."),
+            ],
+        },
+        {
+            "id":    "S3P66",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
+            "lines": [
+                ("lucas", "Sarciado po pala! Matutulungan ko po kayong magluto, lola."),
+            ],
+        },
+        {
+            "id":    "S3P67",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Alam mo, Lucas, sinabi ng lolo mo na ang tamang paghihintay ang nagbibigay ng tunay na lasa sa pagkain."),
+                ("lola", "Ngayon, naiintindihan ko na ang ibig niyang sabihin."),
+            ],
+        },
+        {
+            "id":    "S3P68",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "right", "expression": "thumbs", "flip": False}},
+            "lines": [
+                ("lucas", "Hindi lang po ang mga kamatis ang lumago, lola. Mas marami rin po akong natutunan."),
+                ("lucas", "Tara na po, magluto na tayo. Itatabi ko rin po ang ilang buto para sa susunod na taniman."),
+            ],
+        },
+        {
+            "id":    "S3P69",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lola": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lola", "Napakabait at napakatalino ng apo ko. Siguradong ipinagmamalaki ka ng lolo mo."),
+            ],
+        },
+        {
+            "id": "S3P70",
+            "type": "narration_overlay",
+            "day": 75,
+            "bg": "background/scenebg_default.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "Muling nagkaroon ng amoy ng bawang at kamatis ang munting kusina ni Lola Maria. "
+                "Naibalik na ang Kamatis Sarciado Memory."
+            ),
+        },
     ],
 }

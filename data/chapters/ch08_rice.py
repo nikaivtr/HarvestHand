@@ -12,264 +12,883 @@ CHAPTER = {
     "level":      "advanced",
     "memory":     "Bigas Memory",
     "total_days": 113,
-
+ 
     "slides": [
-
+ 
         # ── Title card ─────────────────────────────────────────
         {
             "id":   "title",
             "type": "title",
             "bg":   "background/scenebg_default.png",
-            "logo": "logos/ch1logo.png",
+            "logo": "chapter8.png",
         },
-
-        # ── Panel 1 — Baron's Time-Warp Hex ───────────────────
+ 
+        # ── Scene 1 — Baron's Time-Warp Hex ────────────────────
         {
             "id":    "S1P1",
             "type":  "dialogue",
             "bg":    "background/scenebg_baron.png",
             "dark":  True,
-            "chars": {"baron": "right"},
+            "chars": {"baron": {"side": "right", "expression": "smile"}},
             "lines": [
-                ("baron", "Kung hindi kayo natinag ng panahon, tatinagin ko kayo ng ORAS! Mula ngayon, tatlumpung segundo lang bawat galaw! Bilisan ninyo kung kaya!"),
+                ("baron", "Kumusta, Lucas? Kumusta, Lola Maria? Narinig kong marami na kayong naibalik na alaala."),
+                ("baron", "Ngunit ang palay ang pinakamahirap sa lahat ng pananim. Tingnan natin kung kakayanin ninyo ito!"),
             ],
         },
         {
             "id":    "S1P2",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lola": "left"},
+            "bg":    "background/scenebg_baron.png",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "laugh"}},
             "lines": [
-                ("lola", "Palay ang puso ng ating baryo, apo. Kung ito ang pinakamahirap, kailangan nating igalang ito nang mabuti. Maingat, maingat."),
+                ("baron", "Narito ang aking sumpa ng oras! Mula ngayon, tatlumpung segundo lamang ang makukuha ninyo sa bawat mahalagang kilos!"),
+                ("baron", "Bilisan ninyo, kung kaya ninyo! HAHAHAHAHAHA!"),
             ],
         },
         {
-            "id":    "S1P3",
+            "id": "S1P3",
+            "type": "scene",
+            "bg": "background/scenebg_baron.png",
+            "shake": True,
+            "smoke": True,   # smoke rises from the bottom of the screen
+ 
+            "chars": {
+                "baron": {
+                    "side": "center",
+                    "expression": "explosion",
+                    "flip": False,
+                },
+            },
+        },
+        {
+            "id":    "S1P4",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": "left"},
+            "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
             "lines": [
-                ("lucas", "Handa na tayo, Lola. Tara, bilisan natin — at huwag mag-alala. Bawat hakbang natin, may tama."),
+                ("lucas", "Tatlumpung segundo lang po? Lola, napakarami pong dapat gawin sa palayan!"),
             ],
         },
-
-        # ── Panel 2 — Trivia: soak seeds to break dormancy ────
         {
-            "id":    "S2P1",
+            "id":    "S1P5",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lola": "left"},
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
-                ("lola", "Ibabad muna sa tubig ang mga buto ng palay — dalawampu't apat na oras — bago itanim. Para mas mabilis sumibol."),
+                ("lola", "Huminahon ka, apo. Ang palay ang puso ng ating baryo, kaya dapat natin itong igalang."),
+                ("lola", "Hindi kailangang magmadali ang taong handa. Ang tamang kaalaman ang magpapabilis ng ating mga kamay."),
             ],
         },
         {
-            "id":            "S2P2",
+            "id":    "S1P6",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
+            "lines": [
+                ("lucas", "Tama po kayo, Lola. Marami na po akong natutunan sa kamatis at sa talong."),
+                ("lucas", "Haharapin po natin ito nang maingat at may tamang hakbang."),
+            ],
+        },
+        {
+            "id":    "S1P7",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lola": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lola", "Iyan ang apo ko! Simulan natin sa mga buto."),
+            ],
+        },
+        {
+            "id":    "S1P8",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Bago natin ihasik ang mga buto ng palay, may kailangan muna tayong gawin sa mga ito."),
+            ],
+        },
+        {
+            "id":    "S1P9",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Ano po iyon, Lola?"),
+            ],
+        },
+ 
+        # ── Seed soaking — choice ──────────────────────────────
+        {
+            "id":            "S1P10",
             "type":          "choice",
             "bg":            "background/scenebg_default.png",
-            "question":       "Totoo ba na ang pagbabad ng buto ay nagpapalabas ng pagtulog nito para mas mabilis sumibol?",
-            "retry_question": "Isipin muli! Ano ang ginagawa ng tubig sa loob ng buto ng palay?",
+            "question":       "Handa nang ihasik nina Lucas at Lola Maria ang mga buto ng palay. Ano ang dapat nilang gawin sa mga buto bago ito ihasik?",
+            "retry_question": "Sandali, isipin natin kung ano ang kailangan ng buto para magsimulang sumibol. Subukan nating muli.",
             "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Totoo — nagigising ang buto"},
-                {"img": "buttons/choice_hoe.png",    "label": "Mali — walang epekto ang pagbabad"},
+                {"img": "buttons/choice_soak_seeds.png", "label": "", "frame": False},
+                {"img": "buttons/choice_dry_seeds.png",  "label": "", "frame": False},
             ],
             "correct": 0,
         },
         {
-            "id":          "S2P2_right_1",
+            "id":          "S1P10_right_1",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lola_thumbs": "left"},
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lola_thumbs", "Tama! Ang pagbabad ay nagigising ang buto mula sa pagtulog nito — tatlong araw na hintay, naiiwasan sa isang gabing pagbabad!"),
+                ("lucas", "Tama! Pumapasok ang tubig sa loob ng buto at ginigising ito, kaya mas mabilis at mas pantay ang pagsibol."),
             ],
         },
         {
-            "id":               "S2P2_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
+            "id":          "S1P10_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lola": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_wrong", "Mali! Ang tubig ay pumapasok sa buto at ginigising ang proseso ng pagsisibol. Malaking pagkakaiba nito sa bilis ng pag-ani."),
+                ("lola", "Magaling, apo! Kaya laging ibinababad ng lolo mo ang binhi bago ito ihasik."),
             ],
         },
-
-        # ── Day 1 transition ───────────────────────────────────
+        {
+            "id":              "S1P10_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Kapag tuyo ang buto at agad itong inihasik, mabagal at hindi pantay ang pagsibol nito."),
+            ],
+        },
+        {
+            "id":              "S1P10_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "baron": {
+                    "side": "right",
+                    "expression": "laugh",
+                    "flip": False,
+                    }
+                },
+            "lines": [
+                ("baron", "HAHAHA! Ihasik ninyo agad! Mas marami ang hindi tutubo!"),
+            ],
+        },
+        {
+            "id":    "S1P11",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Ibabad natin ang mga buto sa malinis na tubig sa loob ng dalawampu't apat na oras."),
+                ("lola", "Pagkatapos, ibabalot natin ang mga ito sa basang sako sa loob ng isa pang araw, hanggang sa lumitaw ang maliliit na puting usbong."),
+            ],
+        },
+ 
+        # ── Day 1 — Seedbed, plowing and harrowing ─────────────
         {
             "id":   "day1_fade",
             "type": "transition",
         },
-
-        # ── Panel 3 — Tool: Asarol for plowing (TIMER) ────────
         {
-            "id":    "S3P1",
+            "id": "S2P1",
+            "type": "narration_overlay",
+            "day": 1,
+            "bg": "background/scenebg_planter.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "Unang araw ng pagtatanim. "
+                "Ihinasik nina Lucas at Lola Maria ang mga sumibol na buto sa seedbed, "
+                "isang maliit na bahagi ng palayan kung saan muna palalakihin ang mga punla."
+            ),
+        },
+        {
+            "id":    "S2P2",
             "type":  "dialogue",
             "day":   1,
             "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": "left"},
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
-                ("lucas", "Kailangan nating basagin ang matigas na lupa ng palayan, Lola — bilis! Ang Baron ay nagbibilang ng segundo!"),
+                ("lola", "Aabutin ng halos dalawampung araw bago maging handa ang mga punla."),
+                ("lola", "Habang naghihintay tayo, ihahanda natin ang palayan."),
             ],
         },
         {
-            "id":            "S3P2",
+            "id":    "S2P3",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_planter.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Ano po ang uunahin natin, Lola?"),
+            ],
+        },
+        {
+            "id":    "S2P4",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_planter.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Babasagin muna natin ang matigas na lupa upang lumuwag ito. Plowing ang tawag dito."),
+                ("lola", "Noon, araro at kalabaw ang gamit ng lolo mo. Ngunit sa maliit nating palayan, sapat na ang tamang kagamitang pang-kamay."),
+            ],
+        },
+        {
+            "id":    "S2P5",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_baron.png",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "angry"}},
+            "lines": [
+                ("baron", "Tatlumpung segundo, bata! Pumili ka na!"),
+            ],
+        },
+        {
+            "id":    "S2P6",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_planter.png",
+            "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
+            "lines": [
+                ("lucas", "Heto na po ang sumpa! Kailangan ko pong pumili agad!"),
+            ],
+        },
+ 
+        # ── Plowing — choice (TIMER) ───────────────────────────
+        {
+            "id":            "S2P7",
             "type":          "choice",
+            "day":           1,
             "bg":            "background/scenebg_planter.png",
             "timer":         True,
-            "question":       "Alin ang tamang kagamitan para basagin ang matigas na lupa ng palayan (plowing)?",
-            "retry_question": "Mabilis! Anong kagamitan ang nakaka-basag ng matigas na lupa?",
+            "question":       "Bilis! Alin ang tamang kagamitan para basagin ang matigas na lupa ng palayan?",
+            "retry_question": "Mabilis! Aling kagamitan ang may lakas na makabasag ng matigas na lupa?",
             "choices": [
-                {"img": "buttons/choice_hoe.png",    "label": "Asarol — para sa plowing"},
-                {"img": "buttons/choice_trowel.png", "label": "Gunting — para sa paggupit"},
+                {"img": "buttons/choice_hoe.png",    "label": "", "frame": False},
+                {"img": "buttons/choice_trowel.png", "label": "", "frame": False},
             ],
             "correct": 0,
         },
         {
-            "id":          "S3P2_right_1",
+            "id":          "S2P7_right_1",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lucas_thumbs": "left"},
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_thumbs", "Tama at mabilis! Ang Asarol ang tamang kagamitan para sa plowing — paghahanda ng lupa ng palayan."),
+                ("lucas", "Tama at mabilis! Ang asarol ang tamang kagamitan sa pagbasag ng matigas na lupa ng palayan."),
             ],
         },
         {
-            "id":               "S3P2_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
+            "id":          "S2P7_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lola": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_wrong", "Mabilis! Ang Gunting ay hindi para sa lupa — para sa mga dahon iyon. Piliin ang tamang kagamitan para sa plowing!"),
+                ("lola", "Magaling, apo! Malapad at matibay ang asarol, kaya nito ang matigas na lupa."),
             ],
         },
-
-        # ── Panel 4 — Weed removal scan: harrowing (TIMER) ───
         {
-            "id":       "S4P1",
+            "id":              "S2P7_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Masyadong maliit ang dulo para sa ganito kalaking palayan. Humanap tayo ng mas malakas na kagamitan!"),
+            ],
+        },
+        {
+            "id":              "S2P7_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "baron": {
+                    "side": "right",
+                    "expression": "laugh",
+                    "flip": False,
+                    }
+                },
+            "lines": [
+                ("baron", "HAHAHA! Naubos na ang oras ninyo! Mag-isip kayo nang mas mabilis!"),
+            ],
+        },
+        {
+            "id":    "S2P8",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_planter.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Susunod, pantayin natin ang putik at tanggalin ang mga ugat ng damo bago tayo magtanim ng mga punla."),
+                ("lola", "Harrowing ang tawag dito. Kapag hindi ito ginawa, aagawan ng damo ang palay sa sustansya."),
+            ],
+        },
+ 
+        # ── Harrowing — Weed Removal Card scan (TIMER) ─────────
+        {
+            "id":       "S2P9",
             "type":     "scan",
+            "day":      1,
             "bg":       "background/scenebg_planter.png",
-            "chars":    {"lola": "left"},
+            "chars":    {"lola": {"side": "left", "expression": "default", "flip": False}},
             "active":   "lola",
             "timer":    True,
             "card":     "AC-03 Weed Removal Card",
-            "dialogue": "Lola: Pantayin natin ang lupa, alisin ang ugat ng damo, bago tayo mag-transplant! I-scan ang Weed Removal Card, mabilis!",
+            "dialogue": "Lola: Pantayin natin ang lupa at alisin ang mga ugat ng damo bago tayo magtanim, apo! I-scan ang Weed Removal Card, bilis!",
             "question": "Scan the Weed Removal Card to harrow the paddy — level the soil and clear weed roots before transplanting.",
         },
-
-        # ── Day 20 transition (TIME SKIP) ─────────────────────
+        {
+            "id":    "S2P10",
+            "type":  "dialogue",
+            "bg":    "background/ricebg.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Pantay na pantay na po ang palayan, Lola! Parang malambot na higaan para sa mga punla."),
+            ],
+        },
+ 
+        # ── Day 20 — Transplanting ─────────────────────────────
         {
             "id":   "day20_fade",
             "type": "transition",
         },
-
-        # ── Panel 5 — Transplant seedlings (TIMER) ────────────
         {
-            "id":    "S5P1",
+            "id": "S3P1",
+            "type": "narration_overlay",
+            "day": 20,
+            "bg": "background/ricebg.jpg",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "20 araw na ang lumipas. "
+                "Matitibay na at malalago ang mga punla sa seedbed, "
+                "at handa na rin ang palayan na tatanggap sa kanila."
+            ),
+        },
+        {
+            "id":    "S3P2",
             "type":  "dialogue",
             "day":   20,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": "left"},
+            "bg":    "background/ricebg.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
-                ("lucas", "Ilipat na ang mga seedlings sa putik, Lola — tuwid ang hilera para makadaan ang hangin at maiwasan ang sakit!"),
+                ("lola", "Dahan-dahan mong hugutin ang mga punla, apo, at huwag mong kalimutang isama ang putik sa kanilang mga ugat."),
+                ("lola", "Dalawa hanggang tatlong punla sa bawat butas, at mababaw lamang ang pagkakatanim."),
             ],
         },
         {
-            "id":            "S5P2",
+            "id":    "S3P3",
+            "type":  "dialogue",
+            "bg":    "background/ricebg.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
+            "lines": [
+                ("lucas", "Opo, Lola. Ngayon po, kailangan kong pumili agad kung paano ko sila itatanim!"),
+            ],
+        },
+ 
+        # ── Transplanting — choice (TIMER) ─────────────────────
+        {
+            "id":            "S3P4",
             "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
+            "day":           20,
+            "bg":            "background/ricebg.jpg",
             "timer":         True,
-            "question":       "Alin ang tamang kagamitan para itanim ang mga palay seedlings nang isa-isa sa putik nang tuwid?",
-            "retry_question": "Mabilis! Anong kagamitan ang maingat sa pagtatanim ng isa-isang seedlings?",
+            "question":       "Bilis! Paano dapat itanim ang mga punla ng palay sa palayan?",
+            "retry_question": "Mabilis! Isipin kung paano makakadaan ang hangin at sikat ng araw sa mga halaman.",
             "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Dulo — maingat, isa-isa"},
-                {"img": "buttons/choice_hoe.png",    "label": "Asarol — para sa malalim na hukay"},
+                {"img": "buttons/choice_straight_rows.png",   "label": "", "frame": False},
+                {"img": "buttons/choice_scattered_rows.png",  "label": "", "frame": False},
             ],
             "correct": 0,
         },
         {
-            "id":          "S5P2_right_1",
+            "id":          "S3P4_right_1",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lucas_thumbs": "left"},
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_thumbs", "Tama! Ang Dulo ang tamang kagamitan para itanim ang bawat palay seedlings nang tumpak at maingat sa putik."),
+                ("lucas", "Tama at mabilis! Sa tuwid na hilera, nakakadaan ang hangin at sikat ng araw, at mas madaling bunutan ng damo."),
             ],
         },
         {
-            "id":               "S5P2_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
+            "id":          "S3P4_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lola": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_wrong", "Ang Asarol ay masyadong malawak para sa maingat na pagtatanim ng isa-isang palay seedlings. Subukan muli!"),
+                ("lola", "Magaling, apo! Ang tuwid na hilera ay nakakatulong ding maiwasan ang sakit na dulot ng sobrang siksik na tanim."),
             ],
         },
-
-        # ── Panel 6 — Water scan: flood the paddy (TIMER) ─────
         {
-            "id":       "S6P1",
+            "id":              "S3P4_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Kapag magulo at siksik ang tanim, mahirap itong alagaan at madaling dapuan ng sakit."),
+            ],
+        },
+        {
+            "id":              "S3P4_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "baron": {
+                    "side": "right",
+                    "expression": "laugh",
+                    "flip": False,
+                    }
+                },
+            "lines": [
+                ("baron", "HAHAHA! Itanim ninyo kung saan-saan! Mas magulo, mas masaya!"),
+            ],
+        },
+        {
+            "id":    "S3P5",
+            "type":  "dialogue",
+            "bg":    "background/ricebg.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Ngayon, papasukin na natin ang tubig sa palayan. Mababaw lamang ang kailangan natin."),
+            ],
+        },
+ 
+        # ── Water level — Water Card scan (TIMER) ──────────────
+        {
+            "id":       "S3P6",
             "type":     "scan",
             "day":      20,
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lola": "left"},
+            "bg":       "background/ricebg.jpg",
+            "chars":    {"lola": {"side": "left", "expression": "default", "flip": False}},
             "active":   "lola",
             "timer":    True,
             "card":     "AC-01 Water Card",
-            "dialogue": "Lola: Buksan ang tubig sa tamang antas, apo — hindi sapaw, hindi rin tuyo. I-scan ang Water Card ngayon!",
+            "dialogue": "Lola: Papasukin natin ang tubig sa tamang lalim, apo. Hindi sobrang lalim at hindi rin tuyo. I-scan ang Water Card ngayon din!",
             "question": "Scan the Water Card to flood the rice paddy to the correct water level.",
         },
-
-        # ── Day 30 transition (TIME SKIP) ─────────────────────
+        {
+            "id":    "S3P7",
+            "type":  "dialogue",
+            "bg":    "background/ricebg2.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Kapag mababaw ang tubig, hindi malulunod ang mga punla, at mas madali silang sumuwi."),
+            ],
+        },
+ 
+        # ── Day 25 — Golden apple snails ───────────────────────
+        {
+            "id":   "day25_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S4P1",
+            "type":  "dialogue",
+            "day":   25,
+            "bg":    "background/ricebg2.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "laugh"}},
+            "lines": [
+                ("baron", "Naghanda ako ng aking mga bagong kasama! Mga GOLDEN APPLE SNAILS!"),
+                ("baron", "Uubusin ng aking mga kuhol ang mga bagong tanim ninyong palay! HAHAHAHA!"),
+            ],
+        },
+        {
+            "id":    "S4P2",
+            "type":  "dialogue",
+            "bg":    "background/ricebg3.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
+            "lines": [
+                ("lucas", "Lola! May mga kulay-rosas na itlog sa mga tangkay, at kinakain ng mga kuhol ang mga murang punla!"),
+            ],
+        },
+        {
+            "id":    "S4P3",
+            "type":  "dialogue",
+            "bg":    "background/ricebg3.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Huwag kang mataranta, apo. Ang mga bagong tanim ang pinakamadaling masira ng golden apple snail."),
+                ("lola", "May paraan tayong hindi gumagamit ng lason."),
+            ],
+        },
+ 
+        # ── Golden snails — choice ─────────────────────────────
+        {
+            "id":            "S4P4",
+            "type":          "choice",
+            "day":           25,
+            "bg":            "background/ricebg3.jpg",
+            "question":       "Dumarami ang mga golden apple snail sa palayan. Alin ang mas ligtas at mas napapanatiling paraan ng pagkontrol sa kanila?",
+            "retry_question": "Sandali, baka makasama sa ibang buhay sa palayan ang paraang iyon. Pag-isipan natin muli.",
+            "choices": [
+                {"img": "buttons/choice_handpick_ducks.png",  "label": "", "frame": False},
+                {"img": "buttons/choice_chemical_spray.png",  "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S4P4_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Tama! Pupulutin natin ang mga kuhol at ang kanilang mga itlog, at ipapakain natin ang mga kuhol sa mga bibe."),
+            ],
+        },
+        {
+            "id":          "S4P4_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lola": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lola", "Magaling, apo! Nawawala ang peste at nabubusog pa ang ating mga bibe. Walang nasasayang."),
+            ],
+        },
+        {
+            "id":              "S4P4_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Ang kemikal na lason ay maaaring makasama rin sa mga isda at palaka sa palayan."),
+            ],
+        },
+        {
+            "id":              "S4P4_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Mag-ingat sa paggamit ng lason! Madali itong kumalat sa tubig ng palayan at makasama sa lahat ng nakatira roon."),
+            ],
+        },
+ 
+        # ── Day 30 — Baron's synthetic fertilizer ──────────────
         {
             "id":   "day30_fade",
             "type": "transition",
         },
-
-        # ── Panel 7 — Reject synthetic fertilizer ─────────────
+        {
+            "id":    "S5P1",
+            "type":  "dialogue",
+            "day":   30,
+            "bg":    "background/ricebg4.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "smile"}},
+            "lines": [
+                ("baron", "Heto ang regalo ko sa inyo! Isang sakong sintetikong urea!"),
+                ("baron", "Isaboy ninyo ang buong sako, at tataas agad ang inyong mga palay!"),
+            ],
+        },
+        {
+            "id":    "S5P2",
+            "type":  "dialogue",
+            "bg":    "background/ricebg4.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "defense", "flip": True}},
+            "lines": [
+                ("lucas", "Huwag po, Lola! Kapag sobra ang kemikal na pataba, dadaloy ito sa tubig ng palayan at makakasama sa mga isda, mga palaka, at sa lupa."),
+            ],
+        },
+        {
+            "id":    "S5P3",
+            "type":  "dialogue",
+            "bg":    "background/ricebg4.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Tama ka, apo. Hindi ang pinakamabilis ang hanap natin, kundi ang tamang pagkain para sa lupa at sa halaman."),
+                ("lola", "Ano ang gagawin natin sa regalong ito ni Baron?"),
+            ],
+        },
+        {
+            "id":            "S5P4",
+            "type":          "choice",
+            "day":           30,
+            "bg":            "background/ricebg4.jpg",
+            "question":       "Inalok ni Baron ang mag-lola ng isang sakong sintetikong urea. Ano ang dapat nilang gawin dito?",
+            "retry_question": "Sandali, baka masira ang buong palayan kapag iyan ang ginawa natin. Subukan nating muli.",
+            "choices": [
+                {"img": "buttons/choice_decline_sack.png", "label": "", "frame": False},
+                {"img": "buttons/choice_pour_sack.png",    "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S5P4_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Tama! Tatanggihan natin ang sako at gagamit tayo ng mas ligtas na organikong pataba para sa palayan."),
+            ],
+        },
+        {
+            "id":          "S5P4_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lola": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lola", "Magaling, apo! Mas mainam ang dahan-dahang pagpapakain sa lupa kaysa sa biglaang sobrang pataba."),
+            ],
+        },
+        {
+            "id":              "S5P4_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Kapag isinaboy natin ang buong sako, maaaring masira ang tubig ng palayan at mapahamak ang mga isda at palaka."),
+            ],
+        },
+        {
+            "id":              "S5P4_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "baron": {
+                    "side": "right",
+                    "expression": "laugh",
+                    "flip": False,
+                    }
+                },
+            "lines": [
+                ("baron", "HA! Isaboy ninyo lahat! Mas marami, mas mabilis na masisira ang palayan ninyo!"),
+            ],
+        },
+        {
+            "id":    "S5P5",
+            "type":  "dialogue",
+            "bg":    "background/ricebg4.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "angry"}},
+            "lines": [
+                ("baron", "Hmp! Mga matitigas ang ulo! Tingnan natin kung hanggang kailan kayo tatagal!"),
+            ],
+        },
+ 
+        # ── Day 35 — Organic fertilizer ────────────────────────
+        {
+            "id":   "day35_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S6P1",
+            "type":  "dialogue",
+            "day":   35,
+            "bg":    "background/ricebg4.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Lola, nagsusuwi na po ang mga palay! Parami nang parami ang mga bagong usbong sa bawat puno."),
+            ],
+        },
+        {
+            "id":    "S6P2",
+            "type":  "dialogue",
+            "bg":    "background/ricebg4.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Ibig sabihin, malakas ang mga halaman, ngunit kailangan nila ng sapat na pagkain."),
+                ("lola", "Gagamitin natin ang compost mula sa dayami ng nakaraang ani, at dadagdagan natin ng vermicast na ibinigay ni Kapitan."),
+            ],
+        },
+        {
+            "id":       "S6P3",
+            "type":     "scan",
+            "day":      35,
+            "bg":       "background/ricebg4.jpg",
+            "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
+            "active":   "lucas",
+            "timer":    True,
+            "card":     "AC-02 Fertilizer Card",
+            "dialogue": "Lucas: I-scan natin ang Fertilizer Card, Lola, para piliin ang organikong pataba na ligtas para sa palayan. Bilis!",
+            "question": "Scan the Fertilizer Card to choose organic fertilizer safe for the rice paddy ecosystem.",
+        },
+        {
+            "id":    "S6P4",
+            "type":  "dialogue",
+            "bg":    "background/ricebg4.jpg",
+            "chars": {"lola": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lola", "Ayan, apo! Hindi nasira ang tubig, at buhay na buhay pa rin ang mga palaka at isda sa ating palayan."),
+            ],
+        },
+ 
+        # ── Day 45 — Weeding ───────────────────────────────────
+        {
+            "id":   "day45_fade",
+            "type": "transition",
+        },
         {
             "id":    "S7P1",
             "type":  "dialogue",
-            "day":   30,
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": "right"},
+            "day":   45,
+            "bg":    "background/ricebg5.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "concerned", "flip": True}},
             "lines": [
-                ("baron", "Heto, gumamit kayo ng synthetic urea na ito! Mabilis kayong matatapos — at mabilis din ang pagkasira ng inyong ecosystem!"),
+                ("lucas", "Lola, tumutubo na naman po ang mga damo sa pagitan ng mga hilera ng palay."),
+                ("lucas", "Aagawan nila ng sustansya ang mga suwi."),
             ],
         },
         {
             "id":    "S7P2",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": "left"},
+            "bg":    "background/ricebg5.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
-                ("lucas", "Huwag, Lola! Ang synthetic urea ay lalasunin ang mga palaka at isda sa ating palayan — at ang buong ecosystem natin!"),
+                ("lola", "Tanggalin natin ang mga ito, apo. Ngunit dahan-dahan lamang para hindi masira ang mga puno ng palay."),
             ],
         },
+ 
+        # ── Weeding — choice (TIMER) ───────────────────────────
         {
             "id":            "S7P3",
             "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "question":       "Saan dapat itapon ang synthetic urea na ibinigay ng Baron?",
-            "retry_question": "Isipin muli! Ang synthetic urea ay makakalason sa ating palayan at sa mga hayop dito.",
+            "day":           45,
+            "bg":            "background/ricebg5.jpg",
+            "timer":         True,
+            "question":       "Bilis! Alin ang tamang kagamitan para maingat na alisin ang damo sa pagitan ng mga puno ng palay?",
+            "retry_question": "Mabilis! Kailangan ng kagamitang tumpak at hindi makakasira sa mga puno ng palay.",
             "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Basurahan — protektahan ang ecosystem"},
-                {"img": "buttons/choice_hoe.png",    "label": "Sa palayan — para mabilis"},
+                {"img": "buttons/choice_trowel.png", "label": "", "frame": False},
+                {"img": "buttons/choice_hoe.png",    "label": "", "frame": False},
             ],
             "correct": 0,
         },
@@ -279,89 +898,213 @@ CHAPTER = {
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lucas_thumbs": "left"},
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_thumbs", "Tama! Rice straw compost na lang ang sikreto natin — hindi kemikal. Protektahan natin ang mga palaka at isda sa ating palayan!"),
+                ("lucas", "Tama at mabilis! Maliit at tumpak ang dulo, kaya maaalis natin ang damo nang hindi nasisira ang mga suwi."),
             ],
         },
         {
-            "id":               "S7P3_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
+            "id":          "S7P3_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lola": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_wrong", "Hindi! Ang synthetic urea ay maaaring patayin ang mga buhay na hayop sa palayan at makakalason sa ating pagkain."),
+                ("lola", "Magaling, apo! Maingat ang kamay mo, kaya hindi nasaktan ang mga palay."),
             ],
         },
-
-        # ── Day 35 transition ─────────────────────────────────
         {
-            "id":   "day35_fade",
+            "id":              "S7P3_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Masyadong malapad ang asarol at maaaring masira ang mga puno ng palay sa pagitan ng hilera."),
+            ],
+        },
+        {
+            "id":              "S7P3_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Mag-ingat! Ang malapad na kagamitan ay madaling makasugat sa mga ugat ng palay."),
+            ],
+        },
+ 
+        # ── Day 96 — Pre-harvest drainage ──────────────────────
+        {
+            "id":   "day96_fade",
             "type": "transition",
         },
-
-        # ── Panel 8 — Fertilizer choice: Organic vs Chemical (TIMER) ──
         {
             "id":    "S8P1",
             "type":  "dialogue",
-            "day":   35,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": "left"},
+            "day":   96,
+            "bg":    "background/ricebg5.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "laugh"}},
             "lines": [
-                ("lucas", "Lola, oras na para pakainin ang buong palayan — alin ang pipiliin natin para maging malusog ang lupa ng palay?"),
+                ("baron", "Baha! Bibigyan ko ng tubig ang palayan ninyo hanggang sa huling araw!"),
+                ("baron", "Hayaan ninyong lumubog ang bawat butil! HAHAHAHA!"),
             ],
         },
         {
-            "id":       "S8P2",
-            "type":     "scan",
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": "left"},
-            "active":   "lucas",
-            "timer":    True,
-            "card":     "AC-02 Fertilizer Card",
-            "dialogue": "I-scan ang Fertilizer Card para piliin ang tamang pataba para sa malusog na palayan — bilis!",
-            "question": "Scan the Fertilizer Card to choose organic fertilizer safe for the rice paddy ecosystem.",
+            "id":    "S8P2",
+            "type":  "dialogue",
+            "bg":    "background/ricebg6.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Malapit nang mahinog ang palay, apo. Kailangan na nating gawin ang isang mahalagang hakbang."),
+            ],
         },
-
-        # ── Day 50 transition (TIME SKIP) ─────────────────────
         {
-            "id":   "day50_fade",
+            "id":            "S8P3",
+            "type":          "choice",
+            "day":           96,
+            "bg":            "background/ricebg6.jpg",
+            "question":       "Halos dalawang linggo na lang bago ang pag-ani. Ano ang dapat gawin sa tubig sa palayan?",
+            "retry_question": "Sandali, isipin natin kung ano ang kailangan ng lupa at ng mga butil bago anihin. Subukan nating muli.",
+            "choices": [
+                {"img": "buttons/choice_drain_field.png", "label": "", "frame": False},
+                {"img": "buttons/choice_flood_field.png", "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S8P3_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Tama! Pinatutuyo natin ang palayan para tumigas ang lupa at mas madali tayong makapag-ani."),
+            ],
+        },
+        {
+            "id":          "S8P3_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lola": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lola", "Magaling, apo! Mas pantay rin ang paghinog ng mga butil kapag pinatuyo ang palayan bago anihin."),
+            ],
+        },
+        {
+            "id":              "S8P3_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Kapag basa pa ang lupa, mahirap ang pag-ani at maaaring mabulok ang ilang butil."),
+            ],
+        },
+        {
+            "id":              "S8P3_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "baron": {
+                    "side": "right",
+                    "expression": "laugh",
+                    "flip": False,
+                    }
+                },
+            "lines": [
+                ("baron", "HAHAHA! Bahain ninyo hanggang huli! Mas mahirap anihin, mas masaya!"),
+            ],
+        },
+ 
+        # ── Day 110 — Harvest ──────────────────────────────────
+        {
+            "id":   "day110_fade",
             "type": "transition",
         },
-
-        # ── Panel 9 — Golden snails ────────────────────────────
         {
             "id":    "S9P1",
             "type":  "dialogue",
-            "day":   50,
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": "right"},
+            "day":   110,
+            "bg":    "background/ricebg7.jpg",
+            "chars": {"lola": {"side": "left", "expression": "celebrates", "flip": False}},
             "lines": [
-                ("baron", "GOLDEN APPLE SNAILS — heto na ang aking pinaghandang pest! Kainin na ng aking mga kuhol ang inyong palay!"),
+                ("lola", "Tingnan mo, apo! Kulay ginto na ang palay at nakayuko na sa bigat ng mga butil."),
+                ("lola", "Oras na para umani!"),
             ],
         },
         {
             "id":    "S9P2",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lola": "left"},
+            "bg":    "background/ricebg7.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "lines": [
-                ("lola", "Pulutin lang natin sila nang kamay, apo, at ipakain sa ating mga bibe. Mas mabuti pa sa kahit anong lason!"),
+                ("lucas", "Kailangan ko pong pumili agad ng palay na handa nang anihin, Lola. Hindi po ako magkakamali!"),
             ],
         },
+ 
+        # ── Harvest — choice (TIMER) ───────────────────────────
         {
             "id":            "S9P3",
             "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "question":       "Totoo ba na ang pag-pulot ng golden apple snails gamit ang kamay at pagpakain sa mga bibe ay sustainable pest control?",
-            "retry_question": "Isipin muli! Ano ang pinakamabuting paraan para kontrolin ang golden snails nang hindi gumagamit ng lason?",
+            "day":           110,
+            "bg":            "background/ricebg7.jpg",
+            "timer":         True,
+            "question":       "Bilis! Alin ang palay na handa nang anihin?",
+            "retry_question": "Mabilis! Ang handa nang anihing palay ay kulay ginto at nakayuko sa bigat ng butil.",
             "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Totoo — sustainable at eco-friendly"},
-                {"img": "buttons/choice_hoe.png",    "label": "Mali — kailangan ng kemikal na lason"},
+                {"img": "buttons/choice_rice_golden.png", "label": "", "frame": False},
+                {"img": "buttons/choice_rice_green.png",  "label": "", "frame": False},
             ],
             "correct": 0,
         },
@@ -371,114 +1114,224 @@ CHAPTER = {
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lola_thumbs": "left"},
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lola_thumbs", "Tama! Ang pag-pulot at pagpakain sa mga bibe ay sustainable — walang nasayang, pagkain pa ng bibe ang dating pest!"),
+                ("lucas", "Tama at mabilis! Kulay ginto at nakayuko ang palay na puno ng butil at handa nang anihin."),
             ],
         },
         {
-            "id":               "S9P3_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
-            "lines": [
-                ("lucas_wrong", "Hindi kailangan ng kemikal! Ang mga bibe ang natural na kontrol sa mga golden snail — mas ligtas at mas mabilis pa!"),
-            ],
-        },
-
-        # ── Day 55 transition (TIME SKIP) ─────────────────────
-        {
-            "id":   "day55_fade",
-            "type": "transition",
-        },
-
-        # ── Panel 10 — Mid-season weeding (TIMER) ─────────────
-        {
-            "id":    "S10P1",
-            "type":  "dialogue",
-            "day":   55,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": "left"},
-            "lines": [
-                ("lucas", "Tanggalin natin ang damo sa pagitan ng mga puno ng palay, Lola — bago pa makinig nito ng sustansya!"),
-            ],
-        },
-        {
-            "id":            "S10P2",
-            "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "timer":         True,
-            "question":       "Alin ang tamang kagamitan para maingat na alisin ang damo sa pagitan ng mga puno ng palay?",
-            "retry_question": "Mabilis! Kailangan ng tumpak na kagamitan para sa gitna ng mga puno ng palay.",
-            "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Dulo — tumpak sa pagitan ng palay"},
-                {"img": "buttons/choice_hoe.png",    "label": "Kalaykay — malawak, baka masira ang palay"},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S10P2_right_1",
+            "id":          "S9P3_right_2",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lucas_thumbs": "left"},
+            "chars":       {
+                "lola": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_thumbs", "Tama at mabilis! Ang Dulo ang tamang kagamitan para maingat na alisin ang damo sa pagitan ng mga puno ng palay."),
+                ("lola", "Magaling, apo! Ang tamang pagpili ng oras ng pag-ani ay nagbibigay ng pinakamasarap at pinakamaraming bigas."),
             ],
         },
         {
-            "id":               "S10P2_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
+            "id":              "S9P3_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
             "lines": [
-                ("lucas_wrong", "Ang Kalaykay ay masyadong malawak at maaaring masira ang mga puno ng palay. Gamitin ang mas tumpak na kagamitan!"),
+                ("lucas", "Naku po! Berde pa ang mga butil na iyan, kaya hindi pa sila ganap na hinog."),
             ],
         },
-
-        # ── Day 96 transition (TIME SKIP) ─────────────────────
         {
-            "id":   "day96_fade",
+            "id":              "S9P3_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "baron": {
+                    "side": "right",
+                    "expression": "laugh",
+                    "flip": False,
+                    }
+                },
+            "lines": [
+                ("baron", "HAHAHA! Anihin ninyo na kahit berde pa! Mas kaunti ang bigas ninyo!"),
+            ],
+        },
+        {
+            "id":       "S9P4",
+            "type":     "scan",
+            "day":      110,
+            "bg":       "background/ricebg7.jpg",
+            "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
+            "active":   "lucas",
+            "timer":    True,
+            "card":     "AC-05 Harvest Card",
+            "dialogue": "Lucas: Napili na po natin ang tamang palay, Lola! I-scan natin ang Harvest Card para makumpirma ang pag-aani. Bilis!",
+            "question": "Scan the Harvest Card to confirm the golden, bowing-down rice stalks are ready to harvest.",
+        },
+        {
+            "id":    "S9P5",
+            "type":  "dialogue",
+            "bg":    "background/ricebg7.jpg",
+            "chars": {"lola": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lola", "Gagapasin natin ang mga uhay gamit ang karit, apo, at ihihiwalay natin ang mga butil sa tangkay."),
+            ],
+        },
+ 
+        # ── Sun-drying ─────────────────────────────────────────
+        {
+            "id":    "S10P1",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "angry"}},
+            "lines": [
+                ("baron", "Ipasok ninyo na agad sa sako habang basa pa! Mabubulok na iyan kung maghihintay pa kayo!"),
+            ],
+        },
+        {
+            "id":    "S10P2",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lola": {"side": "left", "expression": "angry", "flip": False}},
+            "lines": [
+                ("lola", "Huwag kang maniwala sa kaniya, apo! Ang basang palay sa saradong sako ay aamagin."),
+            ],
+        },
+        {
+            "id":            "S10P3",
+            "type":          "choice",
+            "bg":            "background/scenebg_default.png",
+            "question":       "Bagong gapas ang palay at basa pa ang mga butil. Ano ang dapat gawin dito bago itago?",
+            "retry_question": "Sandali, isipin natin kung ano ang nangyayari sa basang butil sa loob ng saradong sako. Subukan nating muli.",
+            "choices": [
+                {"img": "buttons/choice_sun_dry.png", "label": "", "frame": False},
+                {"img": "buttons/choice_wet_sack.png", "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S10P3_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lola": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lola", "Tama! Pinatutuyo natin ang palay sa araw para hindi ito amagin. Ang amag ay maaaring gumawa ng aflatoxin, isang lason na mapanganib sa kakain."),
+            ],
+        },
+        {
+            "id":          "S10P3_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Magaling! Ilalatag po natin ang palay sa malinis na trapal at hahaluin natin ito paminsan-minsan para pantay ang pagkatuyo."),
+            ],
+        },
+        {
+            "id":              "S10P3_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Ang basang palay sa saradong sako ay aamagin, at mapanganib itong kainin."),
+            ],
+        },
+        {
+            "id":              "S10P3_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Huwag munang itago! Ang kahalumigmigan sa loob ng sako ay nagpapabilis ng pagkabulok."),
+            ],
+        },
+ 
+        # ── Day 113 — Safe storage, the hex breaks ─────────────
+        {
+            "id":   "day113_fade",
             "type": "transition",
         },
-
-        # ── Panel 11 — Pre-harvest drainage ───────────────────
         {
             "id":    "S11P1",
             "type":  "dialogue",
-            "day":   96,
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": "right"},
+            "day":   113,
+            "bg":    "background/scenebg_default.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("baron", "Baha! Bibahain ko ulit ang palayan ngayon! Hayaan ang tubig na tumaas sa huli!"),
+                ("kapitan", "Lucas! Lola Maria! Narinig kong tapos na kayong magpatuyo ng palay."),
+                ("kapitan", "May bodega sa barangay hall na puwedeng paglagyan ng inyong ani."),
             ],
         },
         {
             "id":    "S11P2",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lola": "left"},
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
             "lines": [
-                ("lola", "Patuyuin muna ang lupa, apo — dalawang linggo bago mag-ani — para tumigas ang lupa at hindi masira ang makinarya at butil."),
+                ("lucas", "Salamat po, Kapitan! Ngunit kailangan po nating ihanda nang tama ang pag-iimbak nito."),
             ],
         },
         {
             "id":            "S11P3",
             "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "question":       "Ano ang dapat gawin dalawang linggo bago anihin ang palay?",
-            "retry_question": "Isipin muli! Bakit kailangan patigas ng lupa bago mag-ani ng palay?",
+            "day":           113,
+            "bg":            "background/scenebg_default.png",
+            "question":       "Paano dapat itago ang tuyong palay para manatili itong ligtas at malinis?",
+            "retry_question": "Sandali, isipin natin kung paano mapipigilan ang daga at kahalumigmigan. Subukan nating muli.",
             "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Patuyuin ang tubig — patigas ang lupa"},
-                {"img": "buttons/choice_hoe.png",    "label": "Baha pa lalo para mas madaling maani"},
+                {"img": "buttons/choice_sealed_raised.png", "label": "", "frame": False},
+                {"img": "buttons/choice_open_basket.png",   "label": "", "frame": False},
             ],
             "correct": 0,
         },
@@ -488,219 +1341,150 @@ CHAPTER = {
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lucas_thumbs": "left"},
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_thumbs", "Tama! Sa basang lupa, masasira ang makinarya at mabubulok ang butil ng palay. Patuyuin muna ang palayan bago mag-ani!"),
+                ("lucas", "Tama! Ang saradong sako na nakataas mula sa sahig ay iniingatan ang palay laban sa daga at sa halumigmig ng sahig."),
             ],
         },
         {
-            "id":               "S11P3_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
-            "lines": [
-                ("lucas_wrong", "Huwag maniwala kay Baron! Sa laging basang palayan, masisira ang mga makinarya at mabubulok ang ating palay."),
-            ],
-        },
-
-        # ── Day 110 transition (TIME SKIP) ────────────────────
-        {
-            "id":   "day110_fade",
-            "type": "transition",
-        },
-
-        # ── Panel 12 — Harvest scan (TIMER) ───────────────────
-        {
-            "id":    "S12P1",
-            "type":  "dialogue",
-            "day":   110,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lola": "left"},
-            "lines": [
-                ("lola", "Kulay ginto na ang palay at nakayuko na sa bigat ng butil... oras na, apo. I-scan natin ngayon!"),
-            ],
-        },
-        {
-            "id":            "S12P2_choice",
-            "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "timer":         True,
-            "question":      "Alin ang tamang palay na handa nang anihin? (30 segundo!)",
-            "retry_question": "Mabilis! Ang tamang palay ay gintong kulay at nakayuko sa bigat ng butil — hindi berde at tuwid.",
-            "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Gintong butil, nakayuko sa bigat"},
-                {"img": "buttons/choice_hoe.png",    "label": "Berde pa ang butil, tuwid ang tangkay"},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S12P2_right_1",
+            "id":          "S11P3_right_2",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lola_thumbs": "left"},
+            "chars":       {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("lola_thumbs", "Tama at mabilis! Ginto at nakayuko — puno ng butil, handa nang anihin!"),
+                ("kapitan", "Magaling, Lucas! Ang maayos na imbakan ang huling hakbang para siguradong ligtas ang ating pagkain."),
             ],
         },
         {
-            "id":               "S12P2_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
+            "id":              "S11P3_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
             "lines": [
-                ("lucas_wrong", "Hindi pa! Berde pa iyan — kailangan pang lumutog ang butil at maging ginto bago anihin. Mabilis!"),
+                ("lucas", "Naku po! Ang bukas na basket sa lupa ay madaling maabot ng daga at ng halumigmig."),
             ],
         },
         {
-            "id":       "S12P2",
-            "type":     "scan",
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": "left"},
-            "active":   "lucas",
-            "timer":    True,
-            "card":     "AC-05 Harvest Card",
-            "dialogue": "Napili mo na ang tamang palay! I-scan ang Harvest Card para ma-confirm ang pag-aani — bilis!",
-            "question": "Scan the Harvest Card to confirm the golden, bowing-down rice stalks are ready to harvest.",
-        },
-
-        # ── Panel 13 — Sun drying ──────────────────────────────
-        {
-            "id":    "S13P1",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": "right"},
+            "id":              "S11P3_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
             "lines": [
-                ("baron", "Ipasok na agad sa sako habang basa! Bilisan niyo, mabibulok na siya!"),
+                ("kapitan_wrong", "Mag-ingat! Mawawala ang buong ani natin kapag nakapasok ang mga daga at ang halumigmig."),
             ],
         },
-        {
-            "id":    "S13P2",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lola": "left"},
-            "lines": [
-                ("lola", "Huwag maniwala, apo! Ang basang palay sa kulob na sako ay aamagin at lalasunin ang lahat ng kakain nito."),
-            ],
-        },
-        {
-            "id":            "S13P3",
-            "type":          "choice",
-            "bg":            "background/scenebg_default.png",
-            "question":       "Totoo ba na ang palay ay kailangan munang matuyo sa araw bago itago sa sako?",
-            "retry_question": "Isipin muli! Ano ang mangyayari sa basang palay na agad na inilagay sa kulob na lalagyan?",
-            "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Totoo — iiwasan ang mapanganib na amag"},
-                {"img": "buttons/choice_hoe.png",    "label": "Mali — diretso sa sako habang basa"},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S13P3_right_1",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {"lola_thumbs": "left"},
-            "lines": [
-                ("lola_thumbs", "Tama! Ang sun-drying ay nagpoprotekta laban sa mapanganib na aflatoxin — isang uri ng amag na nakamamatay. Siguraduhing tuyo bago itago!"),
-            ],
-        },
-        {
-            "id":               "S13P3_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
-            "lines": [
-                ("lucas_wrong", "Huwag pakinggan si Baron! Ang basang palay ay aamagin at makakalason sa lahat. Ipatuyo muna sa araw!"),
-            ],
-        },
-
-        # ── Day 113 transition ────────────────────────────────
         {
             "id":   "day113_fade",
             "type": "transition",
         },
-
-        # ── Panel 14 — Safe storage ───────────────────────────
         {
-            "id":    "S14P1",
+            "id":    "S11P4",
             "type":  "dialogue",
-            "day":   113,
-            "bg":    "background/scenebg_default.png",
-            "chars": {"kapitan": "right"},
+            "bg":    "background/storage.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "nervous"}},
             "lines": [
-                ("kapitan", "Saan natin itatago ito na ligtas sa mga daga at insekto, Lola? Kailangan ng tamang lugar para sa ating ani."),
+                ("baron", "Imposible! Natapos ninyo ang lahat ng gawain, at hindi kayo nagmadali!"),
+                ("baron", "Paanong hindi tumalab ang sumpa ng oras?"),
             ],
         },
         {
-            "id":            "S14P2",
-            "type":          "choice",
-            "bg":            "background/scenebg_default.png",
-            "question":       "Paano dapat itago ang tuyong palay para manatiling ligtas at malinis?",
-            "retry_question": "Isipin muli! Paano mapipigilan ang daga at kahalumigmigan mula sa ating tuyong palay?",
-            "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Saradong sako, itaas mula sa sahig"},
-                {"img": "buttons/choice_hoe.png",    "label": "Bukas na basket sa lupa"},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S14P2_right_1",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {"lucas_thumbs": "left"},
-            "lines": [
-                ("lucas_thumbs", "Tama! Ang naka-angat na imbakan ay nagpoprotekta sa palay mula sa daga at kahalumigmigan ng sahig. Food safety ang huling hakbang!"),
-            ],
-        },
-        {
-            "id":               "S14P2_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
-            "lines": [
-                ("lucas_wrong", "Ang bukas na basket sa lupa ay madaling maabot ng daga at mabibigo ng kahalumigmigan. Kailangan ng saradong lalagyan na nakataas!"),
-            ],
-        },
-
-        # ── Panel 15 — End: Bigas memory ──────────────────────
-        {
-            "id":    "S15P1",
+            "id":    "S11P5",
             "type":  "dialogue",
-            "day":   113,
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lola": "left"},
+            "bg":    "background/storage.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "lines": [
-                ("lola", "Bigas... para sa sinangag, para sa kanin sa aming handaan... Naaalala ko na! Lahat ng inihanda ko para sa pamilya, simula pa noong bata pa ang iyong ina!"),
+                ("lucas", "Hindi po kami nagmadali, Baron. Naghanda po kami."),
+                ("lucas", "Alam po namin ang tamang gagawin sa bawat hakbang, kaya kahit anong sumpa, hindi kami natinag."),
             ],
         },
         {
-            "id":    "S15P2",
+            "id":    "S11P6",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": "left"},
+            "bg":    "background/storage.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "defeated"}},
             "lines": [
-                ("lucas", "Walo na, Lola! Dalawa na lang ang natitira. Parang mas malinaw na ang lahat ngayon — at mas malapit na tayo sa Pista."),
-                ("lucas", "Bigas Memory — UNLOCKED!"),
+                ("baron", "Hmp... Hindi pa ito ang katapusan."),
             ],
         },
-
+        {
+            "id": "S11P7",
+            "type": "scene",
+            "bg": "background/storage.jpg",
+            "shake": True,
+            "smoke": True,   # smoke rises from the bottom of the screen
+ 
+            "chars": {
+                "baron": {
+                    "side": "center",
+                    "expression": "explosion",
+                    "flip": False,
+                },
+            },
+        },
+ 
+        # ── The Bigas memory ───────────────────────────────────
+        {
+            "id":    "S12P1",
+            "type":  "dialogue",
+            "bg":    "background/kitchenbg.jpg",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Bigas... Ang bangong ito ng bagong lutong kanin..."),
+                ("lola", "Naaalala ko na! Lugaw ang unang pagkaing inihain ko sa nanay mo noong sanggol pa siya, at sinangag ang almusal namin ng lolo mo tuwing umaga!"),
+            ],
+        },
+        {
+            "id":    "S12P2",
+            "type":  "dialogue",
+            "bg":    "background/kitchenbg.jpg",
+            "chars": {"lola": {"side": "left", "expression": "celebrates", "flip": False}},
+            "lines": [
+                ("lola", "Kanin din ang laging nasa mesa tuwing may handaan sa ating pamilya. Hindi ito kailanman nawala."),
+            ],
+        },
+        {
+            "id":    "S12P3",
+            "type":  "dialogue",
+            "bg":    "background/kitchenbg.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Walo na po ang naibalik nating alaala, Lola. Dalawa na lang po ang natitira bago ang Pista."),
+            ],
+        },
+        {
+            "id": "S12P4",
+            "type": "narration_overlay",
+            "day": 113,
+            "bg": "background/scenebg_default.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "Muling nagkaroon ng amoy ng bagong lutong kanin ang munting kusina ni Lola Maria. "
+                "Naibalik na ang Bigas Memory."
+            ),
+        },
     ],
 }

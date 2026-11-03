@@ -102,8 +102,8 @@ CHAPTER = {
             "question": "Ano ang pinakamainam na gamitin sa pagpaparami ng kamote?",
             "retry_question": "Hindi lahat ng bahagi ng halaman ay magandang pantanim. Maghanap ng malusog na baging na may mga buhol o nodes.",
             "choices": [
-                {"img": "buttons/choice_sweetpotato_vine.png", "label": "Malusog na baging", "frame": True},
-                {"img": "buttons/choice_dry_leaf.png", "label": "Tuyong dahon", "frame": True},
+                {"img": "buttons/choice_sweetpotato_vine.png", "label": "", "frame": False},
+                {"img": "buttons/choice_dry_leaf.png", "label": "", "frame": False},
             ],
             "correct": 0,
         },
@@ -144,7 +144,7 @@ CHAPTER = {
             "id":   "S1P12",
             "type": "dialogue",
             "bg":   "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "right", "expression": "talking"}},
+            "chars": {"lucas": {"side": "right", "expression": "talking" }},
             "lines": [
                 ("lucas", "Aayusin ko po ang lupa at aalisin ang malalaking bato. Pagkatapos, maaari na nating itanim ang mga pinagputulang baging."),
                 ("lucas", "Saan po ba dapat nakabaon ang mga ito?"),
@@ -161,16 +161,9 @@ CHAPTER = {
             ],
         },
         {
-            "id": "S1P14",
-            "type": "action_challenge",
-            "bg": "background/scenebg_default.png",
-            "overlay": "sweetpotatoplantingcard.png",
-            "dim_inactive": False,
-        },
-        {
-            "id":   "S1P15",
+            "id":   "S1P14",
             "type": "dialogue",
-            "bg":   "background/sweetpotatobed.jpg",
+            "bg":   "background/sweetpotatosprout.jpg",
             "chars": {"chef": {"side": "right", "expression": "happy"}},
             "lines": [
                 ("chef", "Ayan, maayos na ang pagkakatanim. Hindi ko akalaing baging lang pala ang kailangan natin para makapagsimula."),
@@ -178,9 +171,9 @@ CHAPTER = {
             ],
         },
         {
-            "id":   "S1P16",
+            "id":   "S1P15",
             "type": "dialogue",
-            "bg":   "background/sweetpotatobed.jpg",
+            "bg":   "background/sweetpotatosprout.jpg",
             "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
                 ("lola", "Panatilihing mamasa-masa ang lupa habang nag-uugat ang mga pinagputulan, pero huwag itong bahain."),
@@ -232,7 +225,7 @@ CHAPTER = {
         {
             "id": "S2P4",
             "type": "scene",
-            "bg": "background/baronsweetpotato.jpg",
+            "bg": "background/sweetpotatosprout.jpg",
             "shake": True,
             "smoke": True,
             "chars": {
@@ -246,7 +239,7 @@ CHAPTER = {
         {
             "id": "S2P5",
             "type": "dialogue",
-            "bg": "background/baronsweetpotato.jpg",
+            "bg": "background/sweetpotatosprout.jpg",
             "dark": True,
             "chars": {"baron": {"side": "right", "expression": "smile"}},
             "lines": [
@@ -257,13 +250,13 @@ CHAPTER = {
         {
             "id": "S2P6",
             "type": "scene",
-            "bg": "background/sweetpotatopest.jpg",
+            "bg": "background/sweetpotatosprout.jpg",
             "shake": True,
         },
         {
             "id": "S2P7",
             "type": "dialogue",
-            "bg": "background/sweetpotatopest.jpg",
+            "bg": "background/sweetpotatosprout.jpg",
             "chars": {"chef": {"side": "right", "expression": "worried"}},
             "lines": [
                 ("chef", "Naku! May mga insektong kumakain sa mga dahon. Kapag dumami pa ang mga ito, hihina ang ating mga tanim."),
@@ -272,7 +265,7 @@ CHAPTER = {
         {
             "id": "S2P8",
             "type": "dialogue",
-            "bg": "background/sweetpotatopest.jpg",
+            "bg": "background/sweetpotatosprout.jpg",
             "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "lines": [
                 ("lucas", "Huwag po tayong mataranta, Chef. Suriin muna natin kung aling mga dahon ang may pinsala at kung anong peste ang naroon."),
@@ -282,14 +275,14 @@ CHAPTER = {
         {
             "id": "S2P9",
             "type": "action_challenge",
-            "bg": "background/sweetpotatopest.jpg",
-            "overlay": "pestinspectioncard.png",
+            "bg": "background/sweetpotatosprout.jpg",
+            "overlay": "naturalpesticidecard.png",
             "dim_inactive": False,
         },
         {
             "id": "S2P10",
             "type": "dialogue",
-            "bg": "background/sweetpotatobed.jpg",
+            "bg": "background/sweetpotatosprout.jpg",
             "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
                 ("lola", "Mabuti at maagap ninyong nasuri ang mga dahon. Ipagpatuloy natin ang regular na pagtingin sa ilalim at ibabaw ng mga ito."),
@@ -299,7 +292,7 @@ CHAPTER = {
         {
             "id": "S2P11",
             "type": "dialogue",
-            "bg": "background/sweetpotatobed.jpg",
+            "bg": "background/sweetpotatosprout.jpg",
             "chars": {"chef": {"side": "right", "expression": "default"}},
             "lines": [
                 ("chef", "Naiintindihan ko. Hindi sapat na basta may gawin tayo; kailangan ding tama ang gagawin natin."),
@@ -360,7 +353,7 @@ CHAPTER = {
         {
             "id": "S3P5",
             "type": "scene",
-            "bg": "background/baronsweetpotato.jpg",
+            "bg": "background/sweetpotatogrowth1.jpg",
             "shake": True,
             "smoke": True,
             "chars": {
@@ -374,7 +367,7 @@ CHAPTER = {
         {
             "id": "S3P6",
             "type": "dialogue",
-            "bg": "background/baronsweetpotato.jpg",
+            "bg": "background/sweetpotatogrowth1.jpg",
             "dark": True,
             "chars": {"baron": {"side": "right", "expression": "laugh"}},
             "lines": [
@@ -385,7 +378,7 @@ CHAPTER = {
         {
             "id": "S3P7",
             "type": "dialogue",
-            "bg": "background/baronsweetpotato.jpg",
+            "bg": "background/sweetpotatogrowth1.jpg",
             "chars": {"chef": {"side": "left", "expression": "angry", "flip": True}},
             "lines": [
                 ("chef", "Hindi kami basta gagamit ng kung anu-ano dahil lang nangangako kang bibilis ang paglaki ng tanim."),
@@ -395,7 +388,7 @@ CHAPTER = {
         {
             "id": "S3P8",
             "type": "dialogue",
-            "bg": "background/baronsweetpotato.jpg",
+            "bg": "background/sweetpotatogrowth1.jpg",
             "dark": True,
             "chars": {"baron": {"side": "right", "expression": "smile"}},
             "lines": [
@@ -419,13 +412,6 @@ CHAPTER = {
         },
         {
             "id": "S3P11",
-            "type": "action_challenge",
-            "bg": "background/sweetpotatogrowth1.jpg",
-            "overlay": "woodashcard.png",
-            "dim_inactive": False,
-        },
-        {
-            "id": "S3P12",
             "type": "dialogue",
             "bg": "background/sweetpotatogrowth1.jpg",
             "chars": {"lucas": {"side": "right", "expression": "happy"}},
@@ -435,7 +421,7 @@ CHAPTER = {
             ],
         },
         {
-            "id": "S3P13",
+            "id": "S3P12",
             "type": "dialogue",
             "bg": "background/sweetpotatogrowth1.jpg",
             "chars": {"chef": {"side": "left", "expression": "happy", "flip": True}},
@@ -650,8 +636,8 @@ CHAPTER = {
             "question": "Ano ang dapat gawin kapag may nakitang bitak sa lupa sa paligid ng kamote?",
             "retry_question": "Ang bitak ay maaaring palatandaan ng paglaki ng tuber, pero hindi ito nag-iisang batayan para mag-ani.",
             "choices": [
-                {"img": "buttons/choice_dig_immediately.png", "label": "Hukayin agad ang lahat", "frame": True},
-                {"img": "buttons/choice_check_soil.png", "label": "Suriin at maghintay sa tamang panahon", "frame": True},
+                {"img": "buttons/choice_dig_immediately.png", "label": "", "frame": False},
+                {"img": "buttons/choice_check_soil.png", "label": "", "frame": False},
             ],
             "correct": 1,
         },
@@ -790,7 +776,7 @@ CHAPTER = {
             "id": "S7P4",
             "type": "action_challenge",
             "bg": "background/sweetpotatoharvest.jpg",
-            "overlay": "sweetpotatoharvestcard.png",
+            "overlay": "harvestcardscan.png",
             "dim_inactive": False,
         },
         {
@@ -865,9 +851,8 @@ CHAPTER = {
         },
         {
             "id": "S8P5",
-            "type": "action_challenge",
-            "bg": "background/kitchenbg.jpg",
-            "overlay": "kamotecuecookingcard.png",
+            "type": "scene",
+            "bg": "background/kamotecuecooking.jpg",
             "dim_inactive": False,
         },
         {
@@ -910,115 +895,18 @@ CHAPTER = {
                 ("chef", "Salamat, Lucas. Salamat, Lola. Unti-unti nang bumabalik ang mga alaala ko."),
             ],
         },
-
-        # ── Scene 9: The Baron appears ─────────────────────────
         {
-            "id": "S9P1",
-            "type": "scene",
-            "bg": "background/baronkitchen.jpg",
-            "shake": True,
-            "smoke": True,
-            "chars": {
-                "baron": {
-                    "side": "center",
-                    "expression": "explosion",
-                    "flip": False,
-                },
-            },
-        },
-        {
-            "id": "S9P2",
-            "type": "dialogue",
-            "bg": "background/baronkitchen.jpg",
-            "dark": True,
-            "chars": {"baron": {"side": "right", "expression": "angry"}},
-            "lines": [
-                ("baron", "Muli na naman kayong nagdiriwang! Bakit ba hindi kayo mapagod sa pagtutulungan?"),
-                ("baron", "Akala ninyo ba isang pagkaing matamis ang makapagpapabago sa lahat?"),
-            ],
-        },
-        {
-            "id": "S9P3",
-            "type": "dialogue",
-            "bg": "background/kitchenbg.jpg",
-            "chars": {"chef": {"side": "right", "expression": "determined"}},
-            "lines": [
-                ("chef", "Hindi lang pagkain ang ipinaglalaban namin, Baron. Ang bawat ani ay bunga ng pagtutulungan at pag-aalaga ng buong baryo."),
-                ("chef", "At kapag may sapat kami, gusto naming ibahagi iyon sa iba."),
-            ],
-        },
-        {
-            "id": "S9P4",
-            "type": "dialogue",
-            "bg": "background/baronkitchen.jpg",
-            "dark": True,
-            "chars": {"baron": {"side": "right", "expression": "defeated"}},
-            "lines": [
-                ("baron", "Madali para sa inyong sabihin iyan. Hindi ninyo alam ang pakiramdam na laging naiiwan habang sama-sama kayong nagdiriwang."),
-            ],
-        },
-        {
-            "id": "S9P5",
-            "type": "dialogue",
-            "bg": "background/kitchenbg.jpg",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
-            "lines": [
-                ("lucas", "Baron, hindi tama ang ginawa mong pagsira sa mga alaala ng mga tao. Pero kung gusto mong mapabilang, puwede mo kaming kausapin sa halip na saktan ang baryo."),
-            ],
-        },
-        {
-            "id": "S9P6",
-            "type": "dialogue",
-            "bg": "background/kitchenbg.jpg",
-            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
-            "lines": [
-                ("lola", "Hindi pa man natin kayang ayusin ang lahat ngayon, may puwang pa rin sa hapag para sa taong handang magbago."),
-                ("lola", "Hindi kailangang sirain ang kasiyahan ng iba para lang mapansin ka."),
-            ],
-        },
-        {
-            "id": "S9P7",
-            "type": "dialogue",
-            "bg": "background/baronkitchen.jpg",
-            "dark": True,
-            "chars": {"baron": {"side": "right", "expression": "confused"}},
-            "lines": [
-                ("baron", "Pagkatapos ng lahat ng ginawa ko, bibigyan ninyo pa rin ako ng pagkakataong makisalo?"),
-            ],
-        },
-        {
-            "id": "S9P8",
-            "type": "dialogue",
-            "bg": "background/kitchenbg.jpg",
-            "chars": {"chef": {"side": "right", "expression": "happy"}},
-            "lines": [
-                ("chef", "Hindi namin sinasabing walang nangyari. Pero kung talagang gusto mong magbago, maaari kang magsimula sa paghingi ng tawad at pagtulong sa baryo."),
-                ("chef", "May Kamote Cue pa rito. Maaari kang makisalo kapag handa ka nang makibahagi nang maayos."),
-            ],
-        },
-        {
-            "id": "S9P9",
-            "type": "dialogue",
-            "bg": "background/baronkitchen.jpg",
-            "chars": {"baron": {"side": "right", "expression": "defeated"}},
-            "lines": [
-                ("baron", "Hindi ko alam kung paano magsisimula... pero pagod na rin akong mag-isa."),
-                ("baron", "Patawad sa mga pananim at alaalang sinira ko. Susubukan kong itama ang mga nagawa ko."),
-            ],
-        },
-        {
-            "id": "S9P10",
-            "type": "dialogue",
-            "bg": "background/kitchenbg.jpg",
-            "chars": {"lola": {"side": "left", "expression": "happy", "flip": False}},
-            "lines": [
-                ("lola", "Kung ganoon, magsimula tayo sa simpleng bagay. Tulungan mo kaming ihanda ang mga pagkain para sa pista."),
-                ("lola", "Mas magiging masaya ang pagdiriwang kung lahat ay may pagkakataong makibahagi."),
-            ],
-        },
-        {
-            "id": "end_fade",
-            "type": "transition",
+            "id": "S8P10",
+            "type": "narration_overlay",
+            "day": 80,
+            "bg": "background/scenebg_default.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+    
+            "narration": (
+                "Muling napuno ng tawanan at masarap na amoy ang Kusina ni Chef Pablo. "
+                "Naibalik na ang Kamote-cue Memory."
+            ),
         },
     ],
 }

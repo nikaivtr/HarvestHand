@@ -11,468 +11,1076 @@ CHAPTER = {
     "level":      "intermediate",
     "memory":     "Kare-Kare Memory",
     "total_days": 80,
-
+ 
     "slides": [
-
+ 
         # ── Title card ─────────────────────────────────────────
         {
             "id":   "title",
             "type": "title",
             "bg":   "background/scenebg_default.png",
-            "logo": "logos/chapter6.png",
+            "logo": "chapter6.png",
         },
-
-        # ── Panel 1 — Kapitan lost his purpose ────────────────
+ 
+        # ── Scene 1 — Kapitan lost his purpose ─────────────────
         {
             "id":    "S1P1",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"kapitan": "right"},
+            "chars": {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("kapitan", "Lucas mayroon bang pamamaraan sa pagtatanim ang puwedeng gamitin para mas lumago at maging makinang ang aking pananim na talong?"),
+                ("kapitan", "Magandang umaga, Lucas. Mabuti at napadaan ka."),
+                ("kapitan", "May gusto sana akong ipakiusap sa iyo."),
             ],
         },
         {
-            "id":    "S2P3",
+            "id":    "S1P2",
             "type":  "dialogue",
-            "bg":    "background/tomatobgsnow.jpg",
-            "chars": {"lucas": {"side": "left", "expression": "cold", "flip": True}},
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
             "lines": [
-                ("lucas", "Bakit po?"),
-                ("lucas", "Anong problema sa mga pananim nyong talong?"),
+                ("lucas", "Magandang umaga rin po, Kapitan Ernesto. Ano po ang maitutulong ko?"),
+            ],
+        },
+        {
+            "id":    "S1P3",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Dati, tuwing may handaan sa barangay hall, ako ang pinakamasaya sa lahat."),
+                ("kapitan", "Ngunit ngayon, hindi ko na maalala kung paano ako gagalaw bilang Kapitan."),
             ],
         },
         {
             "id":    "S1P4",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"kapitan": "right"},
+            "chars": {"lucas": {"side": "left", "expression": "concerned", "flip": True}},
             "lines": [
-                ("kapitan", "Sa palagay ko ang mga ito ay hindi talaga nakakakuha ng sapat na nutrisyon."),
-                ("kapitan", "Masyado kasing makulubot ang mga "),
+                ("lucas", "Bakit po ninyo nasabi iyan, Kapitan?"),
             ],
         },
-
-        # ── Panel 2 — Trivia: hardening off ───────────────────
         {
-            "id":    "S2P1",
+            "id":    "S1P5",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"kapitan": "right"},
+            "chars": {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("kapitan", "Parang training ng sundalo — kailangan sanay muna sa labas bago tuluyang dalhin sa parada. Ganyan din ang halaman?"),
+                ("kapitan", "Mula nang masira ang mga pananim natin, wala na akong maihandang pagkain para sa lahat."),
+                ("kapitan", "Unti-unti nang hindi nagtitipon ang mga tao. Pakiramdam ko, wala na akong silbi bilang Kapitan."),
             ],
         },
         {
-            "id":            "S2P2",
+            "id":    "S1P6",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Hindi po totoo iyan, Kapitan. Kayo po ang dahilan kung bakit magkakakilala ang buong baryo."),
+            ],
+        },
+        {
+            "id":    "S1P7",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Salamat, hijo. Kaya naisip kong magtanim muli ng talong."),
+                ("kapitan", "Natatandaan kong may talong sa pagkaing inihahain ko noon, ngunit nawala na ang pangalan at lasa nito sa isip ko."),
+                ("kapitan", "Baka maalala ko ito kapag nakita ko ulit ang mismong bunga."),
+            ],
+        },
+        {
+            "id":    "S1P8",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Ang problema, noong nakaraang taon ay naninilaw ang mga dahon ng talong ko at maliliit ang mga bunga nito."),
+                ("kapitan", "Sa palagay ko, kulang sila sa sustansya."),
+            ],
+        },
+        {
+            "id":    "S1P9",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Huwag po kayong mag-alala, Kapitan. Marami na po akong natutunan kay Lola Maria noong nagtanim kami ng kamatis."),
+                ("lucas", "Tutulungan ko po kayo."),
+            ],
+        },
+        {
+            "id":    "S1P10",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Maraming salamat, Lucas. May mga punla na ako sa nursery."),
+                ("kapitan", "Puwede na ba natin silang itanim sa hardin ngayon din?"),
+            ],
+        },
+        {
+            "id":    "S1P11",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Hindi pa po, Kapitan. Kailangan muna silang masanay sa labas ng nursery."),
+            ],
+        },
+        {
+            "id":    "S1P12",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Parang sundalo pala, ano? Kailangan munang masanay sa init at hangin bago ipadala sa parada."),
+            ],
+        },
+        {
+            "id":    "S1P13",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Opo, Kapitan! Hardening off po ang tawag diyan."),
+                ("lucas", "Unti-unti po natin silang ilalabas sa lilim, at dadagdagan natin ang oras at tindi ng sikat ng araw araw-araw."),
+            ],
+        },
+ 
+        # ── Hardening off — choice ─────────────────────────────
+        {
+            "id":            "S1P14",
             "type":          "choice",
             "bg":            "background/scenebg_default.png",
-            "question":       "Totoo ba na ang dahan-dahanang pagsanay ng seedlings sa araw ay nagpipigil ng transplant shock?",
-            "retry_question": "Isipin muli! Ano ang mangyayari kapag biglang ilantad ang seedlings sa matinding araw mula sa malamig na silid?",
+            "question":       "Nais ni Kapitan na ilipat agad sa hardin ang mga punla ng talong. Paano dapat sanayin ang mga ito sa labas bago itanim?",
+            "retry_question": "Sandali, masyadong biglaan ang paraang iyon para sa mga murang dahon. Pag-isipan natin muli.",
             "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Totoo — unti-unting sanay"},
-                {"img": "buttons/choice_hoe.png",    "label": "Mali — diretso sa araw"},
+                {"img": "buttons/choice_gradual_sun.png", "label": "", "frame": False},
+                {"img": "buttons/choice_noon_sun.png",    "label": "", "frame": False},
             ],
             "correct": 0,
         },
         {
-            "id":          "S2P2_right_1",
+            "id":          "S1P14_right_1",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lucas_thumbs": "left"},
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_thumbs", "Tama! Ang 'hardening off' ay dahan-dahanang pagsanay ng seedlings sa labas — tulad ng training ng sundalo bago lumaban!"),
+                ("lucas", "Tama! Sisimulan natin sa isang oras sa lilim, tapos dadagdagan natin ang oras araw-araw hanggang masanay sila sa buong sikat ng araw."),
             ],
         },
         {
-            "id":               "S2P2_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
+            "id":          "S1P14_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("lucas_wrong", "Kung biglang ilantad ang seedlings sa matinding sikat, malalanta sila. Unti-unting pagsanay ang tamang paraan."),
+                ("kapitan", "Magaling! Tulad ng sundalong nagsasanay, unti-unti ang dagdag ng pagod para hindi mabigla ang katawan."),
             ],
         },
-
-        # ── Day 21 transition (TIME SKIP) ─────────────────────
+        {
+            "id":              "S1P14_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Kapag biglang tinamaan ng matinding sikat ng araw ang mga punla, pumuputi at nalalanta ang kanilang mga dahon. Transplant shock po ang tawag dito."),
+            ],
+        },
+        {
+            "id":              "S1P14_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Mag-ingat tayo! Hindi pa kayang tiisin ng murang dahon ang init ng tanghaling tapat."),
+            ],
+        },
+ 
+        # ── Day 21 — Transplanting ─────────────────────────────
         {
             "id":   "day21_fade",
             "type": "transition",
         },
-
-        # ── Panel 3 — Tool: Dulo for deep holes ───────────────
         {
-            "id":    "S3P1",
+            "id": "S2P1",
+            "type": "narration_overlay",
+            "day": 21,
+            "bg": "background/scenebg_planter.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "21 araw na ang lumipas. "
+                "Sa loob ng isang linggo, unti-unting inilabas nina Lucas "
+                "at Kapitan Ernesto ang mga punla sa lilim, "
+                "at dinagdagan nila ang oras ng pagkakabilad nito sa araw "
+                "hanggang sa masanay ang mga ito."
+            ),
+        },
+        {
+            "id":    "S2P2",
             "type":  "dialogue",
             "day":   21,
             "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": "left"},
+            "chars": {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("lucas", "Mabigat na ang Talong kapag lumaki, Kapitan — kaya malalim ang butas na kailangan para hindi matumba."),
+                ("kapitan", "Tingnan mo, Lucas! Hindi na nalalanta ang mga dahon nila at matitigas na ang kanilang mga tangkay."),
             ],
         },
         {
-            "id":            "S3P2",
+            "id":    "S2P3",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_planter.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Handa na po sila, Kapitan! Maaari na natin silang ilipat sa hardin."),
+                ("lucas", "Dalawang talampakan po ang layo ng bawat isa para hindi sila magsiksikan."),
+            ],
+        },
+        {
+            "id":    "S2P4",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_planter.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Ibabaon ba natin ang tangkay hanggang sa mga unang dahon, tulad ng ginawa ninyo sa kamatis?"),
+            ],
+        },
+        {
+            "id":    "S2P5",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_planter.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Hindi po, Kapitan. Iba po ang talong sa kamatis."),
+                ("lucas", "Itatanim lamang natin ito sa parehong lalim ng pagkakatanim nito sa lalagyan, dahil madaling mabulok ang tangkay nito kapag natabunan."),
+            ],
+        },
+        {
+            "id":    "S2P6",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_planter.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Kaya pala. Ano ang dapat kong gamitin sa paghuhukay?"),
+            ],
+        },
+ 
+        # ── Digging tool — choice ──────────────────────────────
+        {
+            "id":            "S2P7",
             "type":          "choice",
+            "day":           21,
             "bg":            "background/scenebg_planter.png",
-            "question":       "Alin ang tamang kagamitan para humukay ng malalim at matatag na butas para sa Talong seedlings?",
-            "retry_question": "Isipin muli! Kailangan ng kagamitang angkop sa pagpasok ng malalim na butas para sa malaking Talong.",
+            "question":       "Alin ang mas angkop na kagamitan sa paghuhukay ng butas na sakto lamang sa laki ng ugat ng punla ng talong?",
+            "retry_question": "Sandali, masyadong malaki ang kagamitang iyon para sa maliit na butas. Subukan nating muli.",
             "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Dulo — malalim at tumpak"},
-                {"img": "buttons/choice_hoe.png",    "label": "Kalaykay — para sa ibabaw lang"},
+                {"img": "buttons/choice_trowel.png", "label": "", "frame": False},
+                {"img": "buttons/choice_hoe.png",    "label": "", "frame": False},
             ],
             "correct": 0,
         },
         {
-            "id":          "S3P2_right_1",
+            "id":          "S2P7_right_1",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lucas_thumbs": "left"},
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_thumbs", "Tama! Ang Dulo ang perpekto para humukay ng malalim at matatag na butas na tatanggap sa malaking Talong."),
+                ("lucas", "Tama! Ang dulo ang pinakaangkop sa paghuhukay ng butas na sakto sa laki ng ugat ng punla."),
             ],
         },
         {
-            "id":               "S3P2_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
+            "id":          "S2P7_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("lucas_wrong", "Ang Kalaykay ay para sa pag-aayos ng ibabaw ng lupa, hindi para sa malalim na paghuhukay. Subukan ang ibang kagamitan."),
+                ("kapitan", "Magaling, Lucas! Maliit at maingat ang kamay, kaya hindi masisira ang mga ugat."),
             ],
         },
-
-        # ── Panel 4 — Water scan: settle roots ────────────────
         {
-            "id":       "S4P1",
+            "id":              "S2P7_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Ang asarol ay masyadong malaki at maaaring makasira sa mga maliliit na ugat ng punla."),
+            ],
+        },
+        {
+            "id":              "S2P7_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Hindi iyan ang tamang kagamitan! Para sa malalawak na hukay ang asarol, hindi para sa maliliit na punla."),
+            ],
+        },
+        {
+            "id":    "S2P8",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_planter.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Dahan-dahan po nating ilalagay ang bawat punla sa butas, at tatabunan natin ito nang marahan."),
+            ],
+        },
+        {
+            "id":    "S2P9",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_planter.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Dapat bang diligan na natin sila agad pagkatapos ilipat?"),
+            ],
+        },
+ 
+        # ── Water Card scan ────────────────────────────────────
+        {
+            "id":       "S2P10",
             "type":     "scan",
             "day":      21,
             "bg":       "background/scenebg_planter.png",
-            "chars":    {"kapitan": "right"},
-            "active":   "kapitan",
+            "chars":    {"lucas": {"side": "left", "expression": "waters", "flip": True}},
+            "active":   "lucas",
             "card":     "AC-01 Water Card",
-            "dialogue": "Kapitan: Diligin agad pagkatapos ilipat, di ba? Para mawala ang hanging nakulong sa ilalim at masigurado ang ugat.",
+            "dialogue": "Lucas: Opo, Kapitan! Diligin natin agad ang mga punla pagkatapos ilipat. Aayos ang lupa sa paligid ng ugat at mawawala ang mga bulsa ng hangin sa ilalim nito.",
             "question": "Scan the Water Card to settle the soil around the newly transplanted eggplants.",
         },
-
-        # ── Day 30 transition (TIME SKIP) ─────────────────────
+        {
+            "id":    "S2P11",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg.jpg",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Ang ganda tingnan! Parang nakahinga na ang mga punla."),
+            ],
+        },
+ 
+        # ── Day 30 — Earthworms and vermicast ──────────────────
         {
             "id":   "day30_fade",
             "type": "transition",
         },
-
-        # ── Panel 5 — Earthworms: vermicast ───────────────────
+        {
+            "id": "S3P1",
+            "type": "narration_overlay",
+            "day": 30,
+            "bg": "background/eggplantbg.jpg",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "30 araw na ang lumipas. "
+                "Mas malalago na ang mga punla ng talong, "
+                "ngunit may kakaibang gumagalaw sa ilalim ng lupa."
+            ),
+        },
+        {
+            "id":    "S3P2",
+            "type":  "dialogue",
+            "day":   30,
+            "bg":    "background/eggplantbg3.jpg",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Lucas! May mga bulate sa lupa! Nakakadiri!"),
+                ("kapitan", "Tanggalin natin silang lahat bago masira ang mga halaman!"),
+            ],
+        },
+        {
+            "id":    "S3P3",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg3.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "concerned", "flip": True}},
+            "lines": [
+                ("lucas", "Sandali po, Kapitan! Huwag po muna!"),
+                ("lucas", "Hindi po lahat ng gumagalaw sa lupa ay peste."),
+            ],
+        },
+        {
+            "id":    "S3P4",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg3.jpg",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Kung hindi sila peste, ano ang gagawin ko sa kanila?"),
+            ],
+        },
+ 
+        # ── Vermicast — choice ─────────────────────────────────
+        {
+            "id":            "S3P5",
+            "type":          "choice",
+            "day":           30,
+            "bg":            "background/eggplantbg3.jpg",
+            "question":       "Nandidiri si Kapitan sa mga bulate sa lupa ng taniman. Ano ang dapat nating gawin sa mga ito?",
+            "retry_question": "Sandali, baka may mahalagang trabaho ang mga bulate sa lupa. Pag-isipan natin muli.",
+            "choices": [
+                {"img": "buttons/choice_keep_worms.png",   "label": "", "frame": False},
+                {"img": "buttons/choice_remove_worms.png", "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S3P5_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Tama! Binubungkal ng mga bulate ang lupa, at ang dumi nila ay tinatawag na vermicast. Isa itong napakasustansyang organikong pataba!"),
+            ],
+        },
+        {
+            "id":          "S3P5_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Aba, kaya pala mas maitim at mas mabango ang lupa dito kaysa sa dati kong taniman!"),
+            ],
+        },
+        {
+            "id":              "S3P5_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Kapag inalis natin ang mga bulate, mawawala ang libre nating tagapagpayaman ng lupa."),
+            ],
+        },
+        {
+            "id":              "S3P5_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Teka muna! Baka mas makasama pa kung aalisin natin ang mga tagapag-ayos ng lupa."),
+            ],
+        },
+        {
+            "id":    "S3P6",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg3.jpg",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Hindi ko akalaing may silbi pala ang mga bulate. Pasensya na sa inyo, mga bulate!"),
+            ],
+        },
+        {
+            "id":    "S3P7",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg3.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Libre pa po ang pataba, Kapitan. Hayaan lang po nating gawin nila ang kanilang trabaho."),
+            ],
+        },
+ 
+        # ── Day 35 — Fertilizer ────────────────────────────────
+        {
+            "id":   "day35_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S4P1",
+            "type":  "dialogue",
+            "day":   35,
+            "bg":    "background/eggplantbg5.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Kapitan, dumarami na po ang dahon ng talong. Oras na po para dagdagan ang pagkain ng lupa."),
+                ("lucas", "Ilalagay po natin ito malapit sa ugat, pero hindi dapat dumikit sa tangkay."),
+            ],
+        },
+        {
+            "id":    "S4P2",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg5.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "May natira akong supot ng kemikal na pataba. Maaari na ba nating gamitin iyon?"),
+            ],
+        },
+        {
+            "id":    "S4P3",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg5.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Mas mainam po ang organikong pataba tulad ng compost at vermicast, Kapitan."),
+                ("lucas", "Dahan-dahan itong nagbibigay ng sustansya, hindi nakakasunog ng ugat, at pinapabuti pa nito ang lupa."),
+            ],
+        },
+        {
+            "id":       "S4P4",
+            "type":     "scan",
+            "day":      35,
+            "bg":       "background/eggplantbg5.png",
+            "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
+            "active":   "lucas",
+            "card":     "AC-02 Fertilizer Card",
+            "dialogue": "Lucas: I-scan natin ang Fertilizer Card, Kapitan, para piliin ang organikong pataba para sa malusog na lupa ng talong!",
+            "question": "Scan the Fertilizer Card to choose the organic fertilizer for healthy eggplant soil.",
+        },
+        {
+            "id":    "S4P5",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg5.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Ang bango ng lupa! Parang pinakain natin ang mga halaman ng masarap na handaan."),
+            ],
+        },
+ 
+        # ── Day 40 — Weeding and mulching ──────────────────────
+        {
+            "id":   "day40_fade",
+            "type": "transition",
+        },
         {
             "id":    "S5P1",
             "type":  "dialogue",
-            "day":   30,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": "right"},
+            "day":   40,
+            "bg":    "background/eggplantbg5.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("kapitan", "Lucas! May mga bulate na gumagalaw sa lupa! Nandidiri ako — alisin natin sila?"),
+                ("kapitan", "Lucas, mabilis matuyo ang lupa sa init ng araw, at tumutubo na naman ang mga damo."),
             ],
         },
         {
             "id":    "S5P2",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": "left"},
+            "bg":    "background/eggplantbg5.png",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
             "lines": [
-                ("lucas", "Huwag, Kapitan! Sila ang lihim na gumagawa ng pinakamagandang pataba dito. Ano ang tinatawag na produkto ng mga bulate?"),
+                ("lucas", "Bubunutin muna po natin ang mga damo gamit ang kamay, Kapitan, para hindi masugatan ang tangkay ng talong."),
+                ("lucas", "Pagkatapos po, may maitatakip tayo sa lupa para mabawasan ang pagsingaw ng tubig."),
             ],
         },
         {
-            "id":            "S5P3",
+            "id":    "S5P3",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg5.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Mayroon akong natirang dayami sa bodega. Maaari ba nating gamitin iyon?"),
+            ],
+        },
+        {
+            "id":            "S5P4",
             "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "question":       "Ano ang ginagawa ng mga bulate (earthworms) para sa lupa ng ating taniman?",
-            "retry_question": "Isipin muli! Ang mga bulate ay nagpapabunga ng lupa — sino ang nakikinabang sa kanilang trabaho?",
+            "day":           40,
+            "bg":            "background/eggplantbg5.png",
+            "question":       "Nabunot na ang mga damo. Paano dapat protektahan ang lupa sa paligid ng mga halamang talong mula sa matinding init?",
+            "retry_question": "Sandali, hindi mapoprotektahan ng paraang iyan ang lupa sa init ng araw. Pag-isipan natin muli.",
             "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Gumagawa ng vermicast na pataba"},
-                {"img": "buttons/choice_hoe.png",    "label": "Sinasamantala lang ang lupa"},
+                {"img": "buttons/choice_mulch_straw.png", "label": "", "frame": False},
+                {"img": "buttons/choice_bare_soil.png",   "label": "", "frame": False},
             ],
             "correct": 0,
         },
         {
-            "id":          "S5P3_right_1",
+            "id":          "S5P4_right_1",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lucas_thumbs": "left"},
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("lucas_thumbs", "Tama! Ang vermicast — dumi ng bulate — ay parang ginto para sa lupa. Pinakamakapangyarihang organic na pataba!"),
+                ("lucas", "Tama! Ang mulch ay parang kumot ng lupa. Pinapanatili nitong basa at malamig ang lupa, at pinipigilan din nitong tumubo ang mga damo."),
             ],
         },
         {
-            "id":               "S5P3_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
-            "lines": [
-                ("lucas_wrong", "Mali! Ang mga bulate ang pinaka-masipag na manggagawa ng lupa. Ginagawa nila ang pinakamayamang pataba — vermicast."),
-            ],
-        },
-
-        # ── Day 35 transition ─────────────────────────────────
-        {
-            "id":   "day35_fade",
-            "type": "transition",
-        },
-
-        # ── Panel 6 — Fertilizer choice: Organic vs Chemical ──
-        {
-            "id":    "S6P1",
-            "type":  "dialogue",
-            "day":   35,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": "left"},
-            "lines": [
-                ("lucas", "Oras na para pakainin ang lupa malapit sa ugat ng Talong, Kapitan — alin ang pipiliin natin?"),
-            ],
-        },
-        {
-            "id":       "S6P2",
-            "type":     "scan",
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": "left"},
-            "active":   "lucas",
-            "card":     "AC-02 Fertilizer Card",
-            "dialogue": "I-scan ang Fertilizer Card para piliin ang tamang pataba para sa malusog na lupa ng Talong!",
-            "question": "Scan the Fertilizer Card to choose the organic fertilizer for healthy eggplant soil.",
-        },
-
-        # ── Day 40 transition (TIME SKIP) ─────────────────────
-        {
-            "id":   "day40_fade",
-            "type": "transition",
-        },
-
-        # ── Panel 7 — Mulching ────────────────────────────────
-        {
-            "id":    "S7P1",
-            "type":  "dialogue",
-            "day":   40,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": "right"},
-            "lines": [
-                ("kapitan", "Lucas, mabilis na natutuyo ang lupa sa init ng araw. Kailangan ba nating lagyan ng dayami sa ibabaw?"),
-            ],
-        },
-        {
-            "id":            "S7P2",
-            "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "question":       "Bakit mahalaga ang mulch (dayami o dahon) sa paligid ng halaman?",
-            "retry_question": "Isipin muli! Ano ang nagagawa ng mulch para sa lupa tuwing malakas ang araw?",
-            "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Nagpapanatili ng halumigmig — kontra-damo"},
-                {"img": "buttons/choice_hoe.png",    "label": "Para magmukhang maayos lang"},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S7P2_right_1",
+            "id":          "S5P4_right_2",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"lucas_thumbs": "left"},
+            "chars":       {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("lucas_thumbs", "Tama! Ang mulch ay parang kumot ng halaman — nagpapanatili ng halumigmig sa lupa at pumipigil sa paglaki ng damo!"),
+                ("kapitan", "Magaling! Mas kaunti na ang pagdidilig natin at mas kaunti na rin ang bubunuting damo."),
             ],
         },
         {
-            "id":               "S7P2_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
+            "id":              "S5P4_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
             "lines": [
-                ("lucas_wrong", "Hindi puro aesthetics ang mulch! Mahalaga ito para mapanatili ang tubig sa lupa at hadangan ang mga ligaw na damo."),
+                ("lucas", "Naku po! Kapag hubad ang lupa, mabilis itong matutuyo at madaling tutubuan ng damo."),
             ],
         },
-
-        # ── Day 50 transition (TIME SKIP) ─────────────────────
         {
-            "id":   "day50_fade",
-            "type": "transition",
+            "id":              "S5P4_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Mag-ingat! Ang lupang walang takip ay madaling matuyo sa matinding init."),
+            ],
         },
-
-        # ── Panel 8 — Weeding around base ─────────────────────
         {
-            "id":    "S8P1",
+            "id":    "S5P5",
             "type":  "dialogue",
-            "day":   50,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": "right"},
+            "bg":    "background/eggplantbg5.png",
+            "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "lines": [
-                ("kapitan", "Dahan-dahan nating alisin ang damo sa paanan ng Talong, Lucas — ayoko masugatan pa ang punong ito."),
+                ("lucas", "Maglalagay po tayo ng dayami sa paligid ng bawat halaman, pero mag-iiwan po tayo ng maliit na espasyo sa tabi ng tangkay."),
+                ("lucas", "Sa ganitong paraan, hindi mababasa at mabubulok ang tangkay."),
             ],
         },
-        {
-            "id":            "S8P2",
-            "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "question":       "Alin ang tamang kagamitan para maingat na bunutin ang damo sa paligid ng tangkay ng Talong?",
-            "retry_question": "Isipin muli! Malapit tayo sa tangkay — kailangan ng kagamitang tumpak at hindi lalabas sa hangganan ng halaman.",
-            "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Dulo — tumpak sa maliit na lugar"},
-                {"img": "buttons/choice_hoe.png",    "label": "Asarol — malawak na hukay"},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S8P2_right_1",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {"lucas_thumbs": "left"},
-            "lines": [
-                ("lucas_thumbs", "Tama! Ang Dulo ang tamang kagamitan para maingat na bunutin ang damo malapit sa tangkay nang hindi nasasira ang halaman."),
-            ],
-        },
-        {
-            "id":               "S8P2_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
-            "lines": [
-                ("lucas_wrong", "Ang Asarol ay masyadong malawak — maaaring masugatan ang tangkay ng Talong. Gamitin ang mas tumpak na kagamitan."),
-            ],
-        },
-
-        # ── Day 60 transition (TIME SKIP) ─────────────────────
+ 
+        # ── Day 60 — The Blight Baron and the shoot borers ─────
         {
             "id":   "day60_fade",
             "type": "transition",
         },
-
-        # ── Panel 9 — Pesticide choice: Natural vs Chemical ───
         {
-            "id":    "S9P1",
+            "id": "S6P1",
+            "type": "narration_overlay",
+            "day": 60,
+            "bg": "background/eggplantbg5.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "60 araw na ang lumipas. "
+                "Namumulaklak na at namumunga ang mga talong ni Kapitan Ernesto, "
+                "ngunit may panibagong panganib na paparating."
+            ),
+        },
+        {
+            "id": "S6P2",
+            "type": "scene",
+            "bg": "background/eggplantbg5.png",
+            "shake": True,
+            "smoke": True,   # smoke rises from the bottom of the screen
+ 
+            "chars": {
+                "baron": {
+                    "side": "center",
+                    "expression": "explosion",
+                    "flip": False,
+                },
+            },
+        },
+        {
+            "id":    "S6P3",
             "type":  "dialogue",
-            "day":   60,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": "left"},
+            "bg":    "background/eggplantbg5.png",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "smile"}},
             "lines": [
-                ("lucas", "Shoot borers, Kapitan! Kailangan agad ng aksyon — pero mag-ingat tayo sa pipiliin, baka pati kapaki-pakinabang na insekto ay masaktan!"),
+                ("baron", "Kumusta, bata? Ang ganda ng hardin ninyo ngayon."),
+                ("baron", "Sayang naman kung may sisira nito."),
             ],
         },
         {
-            "id":       "S9P2",
+            "id":    "S6P4",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg5.png",
+            "chars": {"lucas": {"side": "left", "expression": "defense", "flip": True}},
+            "lines": [
+                ("lucas", "Baron! Ano na naman ang binabalak mo?"),
+                ("lucas", "Hindi mo na masisira ang mga halaman namin!"),
+            ],
+        },
+        {
+            "id":    "S6P5",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg5.png",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "laugh"}},
+            "lines": [
+                ("baron", "Hahahaha! Ang tapang mo na ngayon, ha."),
+                ("baron", "Hayaan mong ipakilala ko sa iyo ang mga anak kong shoot borers! Uubusin nila ang bawat talong!"),
+                ("baron", "HAHAHAHAHAHA!"),
+            ],
+        },
+        {
+            "id": "S6P6",
+            "type": "scene",
+            "bg": "background/baroneggplantbg2.jpg",
+            "shake": True,
+            "smoke": True,   # smoke rises from the bottom of the screen
+ 
+            "chars": {
+                "baron": {
+                    "side": "center",
+                    "expression": "explosion",
+                    "flip": False,
+                },
+            },
+        },
+        {
+            "id":   "day60_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S6P7",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg6.jpg",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Lucas! Nalalanta ang mga dulo ng sanga ng talong ko, at may mga butas pa sa mga bunga!"),
+            ],
+        },
+        {
+            "id":    "S6P8",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg6.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "concerned", "flip": True}},
+            "lines": [
+                ("lucas", "Shoot borers po ito, Kapitan. Pumapasok ang mga uod sa loob ng tangkay at bunga, kaya nalalanta ang dulo ng sanga."),
+            ],
+        },
+        {
+            "id":    "S6P9",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg6.jpg",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Anong gagawin natin? Mas gusto kong mag-spray na lang ng malakas na kemikal para mawala sila agad!"),
+            ],
+        },
+        {
+            "id":    "S6P10",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg6.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Mag-ingat po tayo, Kapitan. Baka pati ang mga kapaki-pakinabang na insekto, tulad ng mga bubuyog na tumutulong sa pamumulaklak, ay masaktan din."),
+                ("lucas", "Puputulin muna po natin at itatapon sa malayo ang mga nalantang sanga at mga butas na bunga. Pagkatapos, gagamit tayo ng natural na pestisidyo."),
+            ],
+        },
+        {
+            "id":       "S6P11",
             "type":     "scan",
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": "left"},
+            "day":      60,
+            "bg":       "background/eggplantbg6.jpg",
+            "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "active":   "lucas",
             "card":     "AC-04 Pesticide Card",
-            "dialogue": "I-scan ang Pesticide Card para piliin ang tamang pestisidyo laban sa shoot borers na hindi makakasama sa kalikasan!",
+            "dialogue": "Lucas: I-scan natin ang Pesticide Card, Kapitan, para piliin ang natural na pestisidyo laban sa shoot borers na hindi makakasama sa kalikasan!",
             "question": "Scan the Pesticide Card to choose the natural pesticide against eggplant shoot borers.",
         },
-
-        # ── Day 80 transition (TIME SKIP) ─────────────────────
+        {
+            "id":    "S6P12",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg7.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "nervous"}},
+            "lines": [
+                ("baron", "Ano?! Ang mga anak ko! Bakit hindi sila nakakapasok sa mga talong?!"),
+            ],
+        },
+        {
+            "id":    "S6P13",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg7.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Natutunan ko po sa mga kamatis at sa mga talong na kapag maayos ang pag-aalaga, mas madaling labanan ang mga peste."),
+                ("lucas", "Hindi mo na kami matatakot, Baron."),
+            ],
+        },
+        {
+            "id":    "S6P14",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg7.jpg",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "angry"}},
+            "lines": [
+                ("baron", "Hmp! Hindi pa tayo tapos, bata!"),
+            ],
+        },
+        {
+            "id": "S6P15",
+            "type": "scene",
+            "bg": "background/eggplantbg7.jpg",
+            "shake": True,
+            "smoke": True,   # smoke rises from the bottom of the screen
+ 
+            "chars": {
+                "baron": {
+                    "side": "center",
+                    "expression": "explosion",
+                    "flip": False,
+                },
+            },
+        },
+ 
+        # ── Day 80 — Harvest ───────────────────────────────────
         {
             "id":   "day80_fade",
             "type": "transition",
         },
-
-        # ── Panel 10 — Harvest scan ───────────────────────────
         {
-            "id":    "S10P1",
+            "id": "S7P1",
+            "type": "narration_overlay",
+            "day": 80,
+            "bg": "background/eggplantbg7.jpg",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "80 araw na ang lumipas. "
+                "Sa pangangalaga nina Lucas at Kapitan Ernesto, "
+                "nakaligtas ang mga talong at dumami ang mga bunga nito."
+            ),
+        },
+        {
+            "id":    "S7P2",
             "type":  "dialogue",
             "day":   80,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": "right"},
+            "bg":    "background/eggplantbg8.jpg",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("kapitan", "Kapag makinang, mahaba, at matingkad na lila — iyon ang pinakamainam para sa inihaw na Talong!"),
+                ("kapitan", "Lucas, napakaraming bunga na ang nakabitin sa mga halaman!"),
+                ("kapitan", "Ngunit alin sa mga ito ang tamang anihin para sa lutuing hinahanap ko?"),
             ],
         },
         {
-            "id":            "S10P2_choice",
+            "id":    "S7P3",
+            "type":  "dialogue",
+            "bg":    "background/eggplantbg8.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "lines": [
+                ("lucas", "Hanapin po natin ang makinis, makinang, at matingkad na lilang talong, Kapitan."),
+                ("lucas", "Kapag sobra na ang pagkahinog nito, magiging dilaw ang balat at malambot na ang laman."),
+            ],
+        },
+        {
+            "id":            "S7P4",
             "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
-            "question":      "Alin ang tamang Talong para sa inihaw na Talong ng Kapitan?",
-            "retry_question": "Isipin muli! Ang tamang Talong ay makinang, matigas, at malalim na lila — hindi maputla o malambot.",
+            "day":           80,
+            "bg":            "background/eggplantbg8.jpg",
+            "question":       "Alin sa dalawang talong ang tamang anihin ngayon?",
+            "retry_question": "Sandali, tingnan nating mabuti ang kulay at hitsura ng balat ng talong. Pag-isipan natin muli.",
             "choices": [
-                {"img": "buttons/choice_trowel.png", "label": "Makinis, makinang na lila, mahaba at matigas"},
-                {"img": "buttons/choice_hoe.png",    "label": "Maputla na, malambot, may mga bitak"},
+                {"img": "buttons/choice_eggplant_ripe.png", "label": "", "frame": False},
+                {"img": "buttons/choice_eggplant_old.png",  "label": "", "frame": False},
             ],
             "correct": 0,
         },
         {
-            "id":          "S10P2_right_1",
+            "id":          "S7P4_right_1",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"kapitan": "right"},
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
             "lines": [
-                ("kapitan", "Iyan ang hinahanap ko! Makinang, matigas, malalim na lila — perpekto para sa inihaw na Talong!"),
+                ("lucas", "Tama! Makinis, makinang, at matingkad na lila ang balat ng talong na handa nang anihin."),
             ],
         },
         {
-            "id":               "S10P2_wrong_1",
-            "type":             "feedback",
-            "if_correct":       False,
-            "random_pick":      True,
-            "retry_to_choice":  True,
-            "bg":               "background/scenebg_wrong.png",
-            "chars":            {"lucas_wrong": "right"},
+            "id":          "S7P4_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("lucas_wrong", "Hindi — ang maputla at malambot na Talong ay sobrang lutog na. Hanapin ang makinang at matigas pa!"),
+                ("kapitan", "Iyan na nga! Makinang at matigas, perpekto para sa lutuing hinahanap ko!"),
             ],
         },
         {
-            "id":       "S10P2",
+            "id":              "S7P4_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "right",
+                    "expression": "wrong",
+                    "flip": False,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Ang talong na malambot at dilaw na ang balat ay sobra na sa hinog at hindi na masarap kainin."),
+            ],
+        },
+        {
+            "id":              "S7P4_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Hindi iyan! Kapag malambot at kulubot na ang balat, lampas na ito sa tamang panahon ng pag-ani."),
+            ],
+        },
+        {
+            "id":       "S7P5",
             "type":     "scan",
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": "left"},
+            "day":      80,
+            "bg":       "background/eggplantbg8.jpg",
+            "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "active":   "lucas",
             "card":     "AC-05 Harvest Card",
-            "dialogue": "Napili mo na ang tamang Talong! I-scan ang Harvest Card para ma-confirm ang pag-aani!",
+            "dialogue": "Lucas: Napili na po natin ang tamang talong! I-scan natin ang Harvest Card para makumpirma ang pag-aani.",
             "question": "Scan the Harvest Card to confirm the smooth, shiny deep-purple eggplant is ready to harvest.",
         },
-
-        # ── Panel 11 — End: Kare-Kare memory ──────────────────
         {
-            "id":    "S11P1",
+            "id":    "S7P6",
             "type":  "dialogue",
-            "day":   80,
-            "bg":    "background/scenebg_default.png",
-            "chars": {"kapitan": "right"},
+            "bg":    "background/eggplantbg8.jpg",
+            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
             "lines": [
-                ("kapitan", "KARE-KARE! May talong, may karne, may mani — at lahat ng tao, nagtitipon sa barangay hall para sabay kumain. Ito ang dahilan kung bakit ako Kapitan — para mapasama silang lahat!"),
+                ("lucas", "Puputulin po natin ang tangkay gamit ang malinis na gunting, Kapitan, at iiwan natin ang maliit na bahagi nito sa bunga."),
+            ],
+        },
+ 
+        # ── The Kare-Kare memory ───────────────────────────────
+        {
+            "id":    "S8P1",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Ang bango at ang bigat ng talong na ito... Teka, naaalala ko na!"),
+                ("kapitan", "KARE-KARE! May talong, may karne, may sarsang mani, at nagtitipon ang buong baryo sa barangay hall para sabay-sabay na kumain!"),
             ],
         },
         {
-            "id":    "S11P2",
+            "id":    "S8P2",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": "left"},
+            "chars": {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("lucas", "Anim na pinto na, Kapitan. Tunay nang bumabalik ang iyong tungkulin — at ang baryo ay mas malusog na ngayon."),
-                ("lucas", "Kare-Kare Memory — UNLOCKED!"),
+                ("kapitan", "Iyon ang dahilan kung bakit ako naging Kapitan, Lucas. Hindi dahil sa tungkulin, kundi para mapagsama-sama ang lahat."),
             ],
         },
-
+        {
+            "id":    "S8P3",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Matagal na pong naghihintay ang baryo para sa inyo, Kapitan."),
+                ("lucas", "Tutulungan ko po kayong magluto at magtipon muli ng lahat."),
+            ],
+        },
+        {
+            "id":    "S8P4",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Salamat, hijo. Dahil sa iyo, bumalik hindi lamang ang aking mga talong kundi pati ang aking layunin."),
+            ],
+        },
+        {
+            "id": "S8P5",
+            "type": "narration_overlay",
+            "day": 80,
+            "bg": "background/scenebg_default.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "Muling napuno ng tawanan at masarap na amoy ang barangay hall. "
+                "Naibalik na ang Kare-Kare Memory."
+            ),
+        },
     ],
 }

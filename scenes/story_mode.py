@@ -595,6 +595,44 @@ def _get_choice_img(path: str, max_w: int, max_h: int) -> pygame.Surface:
     key = (path, max_w, max_h)
     if key not in _choice_img_cache:
         raw     = pygame.image.load(config.IMG_DIR + path).convert_alpha()
+        bounds  = _alpha_bbox(raw)
+        if bounds is not None and bounds != raw.get_rect():
+            raw = raw.subsurface(bounds).copy()
+        elif bounds == raw.get_rect():
+            corners = (
+                raw.get_at((0, 0)),
+                raw.get_at((raw.get_width() - 1, 0)),
+                raw.get_at((0, raw.get_height() - 1)),
+                raw.get_at((raw.get_width() - 1, raw.get_height() - 1)),
+            )
+            if all(
+                pixel.a == 255 and pixel.r >= 245 and pixel.g >= 245 and pixel.b >= 245
+                for pixel in corners
+            ):
+                # Remove only the white background connected to the canvas edge.
+                white = pygame.mask.from_threshold(
+                    raw, (255, 255, 255, 255), (12, 12, 12, 255)
+                )
+                background = pygame.Mask(raw.get_size())
+                for point in (
+                    (0, 0),
+                    (raw.get_width() - 1, 0),
+                    (0, raw.get_height() - 1),
+                    (raw.get_width() - 1, raw.get_height() - 1),
+                ):
+                    if white.get_at(point):
+                        background.draw(white.connected_component(point), (0, 0))
+
+                foreground = pygame.mask.from_surface(raw, 8)
+                foreground.erase(background, (0, 0))
+                alpha = foreground.to_surface(
+                    setcolor=(255, 255, 255, 255),
+                    unsetcolor=(255, 255, 255, 0),
+                )
+                raw.blit(alpha, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+                bounds = _alpha_bbox(raw)
+                if bounds is not None and bounds != raw.get_rect():
+                    raw = raw.subsurface(bounds).copy()
         ratio   = min(max_w / raw.get_width(), max_h / raw.get_height())
         new_w   = max(1, int(raw.get_width()  * ratio))
         new_h   = max(1, int(raw.get_height() * ratio))
@@ -2013,8 +2051,8 @@ def _draw_dbox(surf):
         )
 
 
-def _choice_image_buttons():
-    """Return [left_rect, right_rect] for the two image choice buttons."""
+def _choice_image_slots():
+    """Return the layout slots used to position the two image choices."""
     btn_w   = int(WIDTH  * 0.26)
     btn_h   = int(HEIGHT * 0.40)
     gap     = int(WIDTH  * 0.06)
@@ -2026,6 +2064,58 @@ def _choice_image_buttons():
         pygame.Rect(left_x,  y, btn_w, btn_h),
         pygame.Rect(right_x, y, btn_w, btn_h),
     ]
+
+
+def _choice_image_geometry(btn, choice):
+    label_text = choice.get("label", "")
+    label_h = (_font_hint.get_linesize() + 6) if label_text and _font_hint else 0
+    inset = max(4, int(WIDTH * 0.004))
+    img = _get_choice_img(
+        choice["img"],
+        btn.width - inset * 2,
+        btn.height - inset * 2 - label_h,
+    )
+    img_rect = img.get_rect(
+        centerx=btn.centerx,
+        centery=btn.top + inset + (btn.height - inset * 2 - label_h) // 2,
+    )
+    return img, img_rect
+
+
+def _choice_image_buttons():
+    """Return click targets matching the visible choice artwork."""
+    choices = _engine.slide.get("choices", [])
+    slots = _choice_image_slots()
+    buttons = []
+
+    for slot, choice in zip(slots, choices):
+        if choice.get("dbox"):
+            aspect = _get_overlay_aspect(choice["dbox"])
+            width = slot.width
+            height = int(width / aspect)
+            if height > slot.height:
+                height = slot.height
+                width = int(height * aspect)
+            button = pygame.Rect(0, 0, width, height)
+            button.center = slot.center
+        elif choice.get("frame", True):
+            button = slot
+        elif choice.get("img"):
+            _, button = _choice_image_geometry(slot, choice)
+            label = choice.get("label", "")
+            if label and _font_hint:
+                label_rect = _font_hint.render(
+                    label, True, _DBOX_TEXT
+                ).get_rect(
+                    centerx=slot.centerx,
+                    bottom=slot.bottom - int(WIDTH * 0.014),
+                )
+                button = button.union(label_rect)
+        else:
+            button = slot
+        buttons.append(button)
+
+    return buttons
 
 
 def _fit_dbox_font(text: str, max_w: int, max_h: int):
@@ -2109,7 +2199,7 @@ def _draw_dbox_choice(surf, btn, choice):
 def _draw_choice_image_buttons(surf):
     s       = _engine.slide
     choices = s.get("choices", [])
-    buttons = _choice_image_buttons()
+    buttons = _choice_image_slots()
     pad     = int(WIDTH * 0.014)
     r       = 14
     label_font = _font_hint
@@ -2132,18 +2222,7 @@ def _draw_choice_image_buttons(surf):
 
         img_path = choice.get("img")
         if img_path:
-            # Reserve space at bottom for text label if present
-            label_h = (label_font.get_linesize() + 6) if label_text else 0
-            inset   = max(4, int(WIDTH * 0.004))
-            img     = _get_choice_img(
-                img_path,
-                btn.width  - inset * 2,
-                btn.height - inset * 2 - label_h,
-            )
-            img_rect = img.get_rect(
-                centerx = btn.centerx,
-                centery = btn.top + inset + (btn.height - inset * 2 - label_h) // 2,
-            )
+            img, img_rect = _choice_image_geometry(btn, choice)
             surf.blit(img, img_rect)
 
         # Text label below the image

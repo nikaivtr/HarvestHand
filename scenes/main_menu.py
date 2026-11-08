@@ -28,6 +28,7 @@ TAP_PAD = 0              # invisible extra tap area around each button
 
 # Popup state — only relevant while this scene is active
 active_popup = None   # None, "leaderboard", "info", or "settings"
+_display_change_callback = None
 
 
 def init(width, height, go_to_scene_callback):
@@ -120,18 +121,32 @@ def init(width, height, go_to_scene_callback):
     leaderboards.init(WIDTH, HEIGHT, _close_popup)
     info.init(WIDTH, HEIGHT, _close_popup)
     settings.init(WIDTH, HEIGHT, _close_popup)
+    if _display_change_callback is not None:
+        settings.set_display_callback(_display_change_callback)
     minigames.init(WIDTH, HEIGHT, _close_popup, _launch_minigame)
     card_scan.init(WIDTH, HEIGHT, _close_popup)
+    if active_popup == "settings":
+        settings.open()
+    elif active_popup == "card_scan":
+        card_scan.open()
 
 
 # ── Popup open/close ─────────────────────────────────────────────────────────
 def _open_popup(name):
     global active_popup
+    if active_popup == "card_scan" and name != "card_scan":
+        card_scan.close()
+    if active_popup == "settings" and name != "settings":
+        settings.close()
     active_popup = name
 
 
 def _close_popup():
     global active_popup
+    if active_popup == "card_scan":
+        card_scan.close()
+    if active_popup == "settings":
+        settings.close()
     active_popup = None
 
 
@@ -139,10 +154,21 @@ def _close_popup():
 def _on_play():        _go_to_scene("level_select")
 def _on_leaderboard():  _open_popup("leaderboard")
 def _on_info():          _open_popup("info")
-def _on_settings():     _open_popup("settings")
-def _on_card_scan():    _open_popup("card_scan")
+def _on_settings():
+    settings.open()
+    _open_popup("settings")
+def _on_card_scan():
+    card_scan.open()
+    _open_popup("card_scan")
 def _on_minigames():    _open_popup("minigames")
 def _on_close():        pygame.quit(); sys.exit()
+
+
+def set_display_change_callback(callback):
+    global _display_change_callback
+    _display_change_callback = callback
+    settings.set_display_callback(callback)
+
 
 def _launch_minigame(name):
     _close_popup()
@@ -209,11 +235,15 @@ def handle_tap(px, py):
 def handle_drag(px, py):
     if active_popup == "minigames":
         minigames.handle_drag(px, py)
+    elif active_popup == "settings":
+        settings.handle_drag(px, py)
 
 
 def handle_release(px, py):
     if active_popup == "minigames":
         minigames.handle_release(px, py)
+    elif active_popup == "settings":
+        settings.handle_release(px, py)
 
 
 # ── Drawing ────────────────────────────────────────────────────────────────────

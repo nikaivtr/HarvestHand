@@ -1,72 +1,73 @@
-# Card samples
+# Card training photos
 
-Put photos of your **physical cards** in here, one folder per card.
+Put photos of your physical cards in this folder, with one subfolder per
+card. Folder names match the card names in `Harvest_Hand_Card_Details.xlsx`
+(lowercase, with spaces changed to underscores). The scanner's internal
+class names are separate, so you do not need to name folders after code slugs.
 
-The folder name must match the card's *slug* from
-`cardscan/registry.py`:
+## Action cards
 
-| Slug        | Card            | Used by chapters? |
-|-------------|-----------------|-------------------|
-| `water`     | AC-01 Water     | yes               |
-| `fertilizer`| AC-02 Fertilizer| yes               |
-| `weed`      | AC-03 Weed Removal | yes            |
-| `pesticide` | AC-04 Pesticide | yes               |
-| `harvest`   | AC-05 Harvest   | yes               |
-| `heal`      | AC-06 Heal      | not yet           |
-| `shield`    | AC-07 Shield    | not yet           |
+| Card ID | Card name | Sample folder |
+|---|---|---|
+| AC-01 | Watering Can | `watering_can/` |
+| AC-02A | Organic Fertilizer | `organic_fertilizer/` |
+| AC-02B | Chemical Fertilizer | `chemical_fertilizer/` |
+| AC-03 | Weed Removal | `weed_removal/` |
+| AC-04A | Natural Pesticide | `natural_pesticide/` |
+| AC-04B | Chemical Pesticide | `chemical_pesticide/` |
+| AC-05 | Harvest | `harvest/` |
 
-```
+## Crop cards
+
+| Card ID | Card name | Sample folder |
+|---|---|---|
+| CC-01 | Pechay | `pechay_plant/` |
+| CC-02 | Monggo | `monggo_plant/` |
+| CC-03 | Okra | `okra_plant/` |
+| CC-04 | Kalabasa (Squash) | `squash_plant/` |
+| CC-05 | Kamatis (Tomato) | `tomato_plant/` |
+| CC-06 | Talong (Eggplant) | `eggplant_plant/` |
+| CC-07 | Kamote (Sweet Potato) | `sweet_potato_plant/` |
+| CC-08 | Palay (Rice) | `rice_plant/` |
+| CC-09 | Mais (Corn) | `corn_plant/` |
+| CC-10 | Kamoteng Kahoy (Cassava) | `cassava_plant/` |
+
+For example:
+
+```text
 data/card_samples/
-    water/       01.jpg  02.jpg  ...
-    fertilizer/  01.jpg  ...
-    heal/
-    shield/
+    watering_can/01.jpg  02.jpg  ...
+    organic_fertilizer/01.jpg  ...
+    pechay_plant/01.jpg  ...
 ```
 
-Then train:
+`analyze/` is an optional extra used by the game's research challenge; it is
+not listed in the supplied card-details spreadsheet. There are no sample
+folders for Shield, Heal, or generic AC-02/AC-04 cards because they are not in
+that physical card list. AC-02 and AC-04 chapter prompts are treated as the
+Organic Fertilizer and Natural Pesticide cards respectively.
 
+To capture samples with a connected camera, run this from the project root,
+replacing `watering_can` with another sample folder name from the tables:
+
+```text
+python tools/capture_samples.py --card watering_can
+python tools/capture_samples.py --card organic_fertilizer
+python tools/capture_samples.py --card pechay_plant
 ```
+
+The capture tool saves them into the matching named folder. Press Space to
+take each picture and Q or Escape to finish. You can also copy photos into
+these folders manually.
+
+Once you have added or changed photos, train and inspect the report:
+
+```text
 python tools/train_cards.py --report
 ```
 
-You do not have to shoot these by hand. On the Raspberry Pi:
-
-```
-python tools/capture_samples.py --card water
-```
-
-which grabs photos from the live camera straight into these folders.
-
-## How many photos, and how to shoot them
-
-**At least 5 per card, ideally 15-30.** The recogniser averages
-everything it is given, so more varied photos make it steadier.
-
-Vary these on purpose, because they are exactly what changes in a
-real classroom:
-
-- **Distance** — close to the lens, and arm's length away.
-- **Angle** — flat on, tilted left, tilted right. Hand-held cards
-  are never perfectly square, and the recogniser crops a centred
-  region, so a card that drifts off-centre must still match.
-- **Lighting** — bright room, dim room, and some sideways light.
-  This one matters most; the feature extractor divides out
-  brightness, which is why it survives, but only if it has seen
-  the range.
-- **Background** — on the table, over the player's hand, over a
-  mat. Anything consistently filling the frame changes the match.
-- **Which card is up** — also photograph the cards *near* the
-  target one, since neighbouring cards are what cause
-  misreads.
-
-## Gotchas
-
-- **Film the card filling most of the frame.** `features.CROP`
-  takes the middle 86% of the picture, so a small card far from
-  the lens is mostly background and will not match well.
-- **Use the same lighting you will scan in.** If the game runs in
-  a bright classroom, do not train in the dark.
-- **Keep the filenames short** and avoid spaces. Not required, but
-  easier when you are eyeballing the folders.
-- **Retrain after changing cards** or printing a new batch. The
-  model is a snapshot, not something that learns at runtime.
+At least 5 photos per card are recommended; 15-30 varied photos work better.
+Vary distance, angle, lighting, background, and nearby cards. Keep the whole
+card inside the green capture square and use the same lighting as the game.
+Retrain after adding photos or changing the printed cards; the model is a
+snapshot and does not learn during play.

@@ -5,6 +5,7 @@ import random
 import time
 
 import pygame
+import player_data
 
 WIDTH = HEIGHT = 0
 _go_to_scene = None
@@ -54,6 +55,7 @@ _remaining = SEED_COUNT
 _total_seeds = SEED_COUNT
 
 _buttons = {}
+_minigame_recorded = False
 
 
 def _make_font(size_fraction):
@@ -126,6 +128,7 @@ def reset_game():
     global _seeds, _active_seed, _extracting
     global _drag_offset, _drag_distance
     global _remaining, _total_seeds
+    global _minigame_recorded
 
     _state = "slicing"
     _stage_timer = 0.0
@@ -143,6 +146,7 @@ def reset_game():
 
     _total_seeds = SEED_COUNT
     _remaining = SEED_COUNT
+    _minigame_recorded = False
     _seeds = _make_seeds()
     _active_seed = None
     _extracting = False
@@ -355,6 +359,7 @@ def draw(surface):
     dt = now - _last_ticks
     _last_ticks = now
     _update(dt)
+    _record_minigame_result()
 
     if _background is not None:
         surface.blit(_background, (0, 0))
@@ -372,6 +377,19 @@ def draw(surface):
         _draw_seeds(surface)
     _draw_tool(surface)
     _draw_ui(surface)
+
+
+def _record_minigame_result():
+    global _minigame_recorded
+    if _state not in ("success", "failure") or _minigame_recorded:
+        return
+    extracted = _total_seeds - _remaining
+    player_data.record_minigame_result(
+        "tomato_seed_extraction",
+        extracted * 100,
+        mistakes=1 if _state == "failure" else 0,
+    )
+    _minigame_recorded = True
 
 def _draw_tomato(surface):
     if _state == "slicing_anim":

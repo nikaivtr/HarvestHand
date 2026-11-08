@@ -30,39 +30,30 @@ CHAPTER = {
         {
             "id":    "S1P1",
             "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/cassava_baron_final.png",
             "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "default"}},
+            "chars": {"baron": {"side": "right", "expression": "nervous"}},
             "lines": [
                 ("baron", "..."),
-                ("baron", "Isang alaala na lang. Isa na lang ang natitira."),
+                ("baron", "Isang alaala na lang... ang huli."),
+                ("baron", "Kapag bumalik iyon, tapos na ang lahat. Hindi ko hahayaang mangyari iyon!"),
             ],
         },
         {
             "id":    "S1P2",
             "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/cassava_baron_final.png",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "angry"}},
             "lines": [
-                ("baron", "Hindi ko hahayaang bumalik ang huling alaala! Ibubuhos ko ang lahat ng aking sumpa!"),
-                ("baron", "Tagtuyot! Peste! Lason! At ang sumpa ng oras, sabay-sabay!"),
+                ("baron", "Gagamitin ko ang lahat ng kaya ko! Ang tagtuyot, ang lason, ang mga peste, at ang sumpa ng oras!"),
+                ("baron", "Ito na ang huli kong laban! Tatlumpung segundo sa bawat kilos ninyo, at hindi ninyo ito matatapos!"),
             ],
         },
         {
-            "id":    "S1P3",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "laugh"}},
-            "lines": [
-                ("baron", "Ito na ang aking huling paninindigan! Tatlumpung segundo sa bawat kilos, bata! HAHAHAHAHA!"),
-            ],
-        },
-        {
-            "id": "S1P4",
+            "id": "S1P3",
             "type": "scene",
-            "bg": "background/scenebg_baron.png",
+            "bg": "background/cassava_baron_final.png",
             "shake": True,
             "smoke": True,   # smoke rises from the bottom of the screen
  
@@ -75,21 +66,31 @@ CHAPTER = {
             },
         },
         {
+            "id":    "S1P4",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_default.png",
+            "chars": {"lucas": {"side": "right", "expression": "afraid", "flip": False}},
+            "lines": [
+                ("lucas", "Lola, ito na po yata ang pinakamalakas niyang pananakot."),
+            ],
+        },
+        {
             "id":    "S1P5",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
+            "chars": {"lola": {"side": "left", "expression": "sad", "flip": False}},
             "lines": [
-                ("lucas", "Lahat po ng sumpa niya, sabay-sabay! Lola, paano po natin ito malalampasan?"),
+                ("lola", "Kamoteng kahoy ang huli nating pananim, apo."),
+                ("lola", "Pakiramdam ko, may nakatago pang alaala sa likod nito na higit na mahalaga kaysa sa lahat ng nauna. Ngunit hindi ko pa maalala kung ano iyon."),
             ],
         },
         {
             "id":    "S1P6",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "chars": {"lucas": {"side": "right", "expression": "determined", "flip": False}},
             "lines": [
-                ("lola", "Huwag kang matakot, apo. Hindi na tayo nag-iisa."),
+                ("lucas", "Kaya po natin ito, Lola. Isa po ang kamoteng kahoy sa pinakamatibay na pananim, at marami na po tayong natutunan."),
             ],
         },
         {
@@ -98,97 +99,85 @@ CHAPTER = {
             "bg":    "background/scenebg_default.png",
             "chars": {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("kapitan", "Lucas! Lola Maria! Narinig namin ni Chef na bumalik si Baron, kaya nagmadali kaming pumunta rito."),
+                ("kapitan", "Lucas! Lola Maria! Narinig namin ang pagsabog, kaya nandito kami ni Chef Agapita para tumulong."),
+                ("kapitan", "Ikaw ang nagbalik ng aking layunin, hijo. Panahon na para suklian ko iyon."),
             ],
         },
         {
             "id":    "S1P8",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"chef": {"side": "left", "expression": "talking", "flip": False}},
+            "chars": {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
-                ("chef", "Kayo ang tumulong sa aming maibalik ang aming mga alaala. Ngayon, kami naman ang tutulong sa inyo."),
+                ("chef", "At ako naman ang magtuturo kung paano ligtas na lutuin ang ani. Sama-sama tayo hanggang dulo!"),
             ],
         },
         {
             "id":    "S1P9",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "chars": {"lola": {"side": "left", "expression": "thumbs", "flip": True}},
             "lines": [
-                ("lucas", "Maraming salamat po, Kapitan! Salamat po, Chef!"),
+                ("lola", "Napakaganda ng mga pagkakaibigang naitanim mo, apo. Sige, simulan na natin."),
             ],
         },
         {
             "id":    "S1P10",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lola": {"side": "left", "expression": "worried", "flip": False}},
+            "bg":    "background/cassava_raisedbeds.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
-                ("lola", "Siyam na alaala na ang bumalik, apo. Ngunit may isang bagay pa akong hindi maalala."),
-                ("lola", "Tuwing Pista, may bakanteng upuan sa mesa at isang plato ng kamoteng kahoy na walang kumakain."),
-                ("lola", "Hindi ko maalala kung para kanino iyon."),
+                ("lola", "Hindi buto ang itinatanim sa kamoteng kahoy, kundi mga pinutol na tangkay, o cuttings."),
+                ("lola", "Pipili tayo ng malusog at hinog na tangkay, at puputulin natin ito nang halos dalawampu hanggang tatlumpung sentimetro, na may lima hanggang pitong buko, o nodes."),
             ],
         },
         {
             "id":    "S1P11",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
+            "bg":    "background/cassava_raisedbeds.png",
+            "chars": {"lucas": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
-                ("lucas", "Kamoteng kahoy po ang huling pananim natin, Lola, at ito ang pinakamatibay sa lahat."),
-                ("lucas", "Baka po maalala ninyo ang lahat kapag naani na natin ito."),
+                ("lucas", "Ano po ang uunahin natin, Lola?"),
             ],
         },
         {
             "id":    "S1P12",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lola": {"side": "left", "expression": "thumbs", "flip": True}},
-            "lines": [
-                ("lola", "Tama ka, apo. Simulan na natin."),
-            ],
-        },
- 
-        # ── Scene 2 — Raised beds ──────────────────────────────
-        {
-            "id":    "S2P1",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
+            "bg":    "background/cassava_raisedbeds.png",
             "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
-                ("lola", "Ayaw ng kamoteng kahoy ang lupang laging basa. Madaling mabulok ang mga ugat nito kapag nakababad sa tubig."),
-                ("lola", "Kailangan nito ng mataas at maluwag na tambak ng lupa, o raised beds."),
+                ("lola", "Ang lupa, apo. Ayaw ng kamoteng kahoy ng ugat na laging basa."),
+                ("lola", "Gagawa tayo ng mataas na tambak, o raised bed, para umagos ang sobrang tubig."),
             ],
         },
         {
-            "id":    "S2P2",
+            "id":    "S1P13",
             "type":  "dialogue",
             "bg":    "background/scenebg_baron.png",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "angry"}},
             "lines": [
-                ("baron", "Tatlumpung segundo! Magsimula na kayo!"),
+                ("baron", "Tatlumpung segundo, bata! Magsimula ka na!"),
             ],
         },
         {
-            "id":    "S2P3",
+            "id":    "S1P14",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
+            "bg":    "background/cassava_raisedbeds.png",
             "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "lines": [
-                ("lucas", "Handa na po ako. Alam ko na po ang gagawin!"),
+                ("lucas", "Hindi mo na ako matitinag, Baron. Handa na po ako!"),
             ],
         },
  
         # ── Raised beds — choice (TIMER) ───────────────────────
         {
-            "id":            "S2P4",
+            "id":            "S1P15",
             "type":          "choice",
-            "bg":            "background/scenebg_planter.png",
+            "bg":            "background/cassava_raisedbeds.png",
             "timer":         True,
-            "question":       "Bilis! Alin ang tamang kagamitan para gumawa ng mataas na tambak ng lupa para sa kamoteng kahoy?",
-            "retry_question": "Mabilis! Aling kagamitan ang kayang mag-angat ng maraming lupa?",
+            "question":       "Bilis! Alin ang tamang kagamitan para gumawa ng mataas na tambak para sa kamoteng kahoy?",
+            "retry_question": "Mabilis! Aling kagamitan ang may lakas na mag-angat ng maraming lupa?",
             "choices": [
                 {"img": "buttons/choice_hoe.png",    "label": "", "frame": False},
                 {"img": "buttons/choice_trowel.png", "label": "", "frame": False},
@@ -196,7 +185,7 @@ CHAPTER = {
             "correct": 0,
         },
         {
-            "id":          "S2P4_right_1",
+            "id":          "S1P15_right_1",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
@@ -209,11 +198,11 @@ CHAPTER = {
                 }
             },
             "lines": [
-                ("lucas", "Tama at mabilis! Ang asarol ang pang-angat ng lupa para sa mga tambak na hindi pinipigilan ng tubig."),
+                ("lucas", "Tama at mabilis! Ang asarol ang pang-angat ng lupa para sa tambak na hindi mababaha."),
             ],
         },
         {
-            "id":          "S2P4_right_2",
+            "id":          "S1P15_right_2",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
@@ -226,11 +215,11 @@ CHAPTER = {
                 }
             },
             "lines": [
-                ("lola", "Magaling, apo! Sa mataas na tambak, hindi tatayo ang tubig, at madaling lalaki ang mga ugat sa maluwag na lupa."),
+                ("lola", "Magaling, apo! Sa mataas na tambak, hindi mananatili ang tubig sa mga ugat ng kamoteng kahoy."),
             ],
         },
         {
-            "id":              "S2P4_wrong_1",
+            "id":              "S1P15_wrong_1",
             "type":            "feedback",
             "if_correct":      False,
             "random_pick":     True,
@@ -238,17 +227,17 @@ CHAPTER = {
             "bg":              "background/scenebg_wrong.png",
             "chars":           {
                 "lucas": {
-                    "side": "right",
+                    "side": "left",
                     "expression": "wrong",
-                    "flip": False,
+                    "flip": True,
                 }
             },
             "lines": [
-                ("lucas", "Naku po! Masyadong maliit ang dulo para sa pag-angat ng maraming lupa. Humanap tayo ng mas malakas na kagamitan!"),
+                ("lucas", "Naku po! Masyadong maliit ang dulo para mag-angat ng ganito karaming lupa. Humanap tayo ng mas malakas na kagamitan!"),
             ],
         },
         {
-            "id":              "S2P4_wrong_2",
+            "id":              "S1P15_wrong_2",
             "type":            "feedback",
             "if_correct":      False,
             "random_pick":     True,
@@ -262,93 +251,35 @@ CHAPTER = {
                     }
                 },
             "lines": [
-                ("baron", "HAHAHA! Naubos na ang oras ninyo! Hindi kayo aabot!"),
+                ("baron", "HAHAHA! Naubos na ang oras ninyo! Ang bagal ninyo!"),
             ],
         },
- 
-        # ── Day 1 — Planting the cuttings ──────────────────────
         {
-            "id":   "day1_fade",
-            "type": "transition",
-        },
-        {
-            "id": "S3P1",
-            "type": "narration_overlay",
-            "day": 1,
-            "bg": "background/scenebg_planter.png",
-            "dim_inactive": False,
-            "overlay": "woodbg.png",
- 
-            "narration": (
-                "Unang araw ng pagtatanim. "
-                "Gumupit si Lucas ng mga tangkay ng kamoteng kahoy na halos isang talampakan ang haba, "
-                "at itinanim ang mga ito sa mga mataas na tambak ng lupa."
-            ),
-        },
-        {
-            "id":    "S3P2",
+            "id":    "S1P16",
             "type":  "dialogue",
-            "day":   1,
-            "bg":    "background/scenebg_planter.png",
+            "bg":    "background/cassava_raisedbeds.png",
             "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
-                ("lola", "Hindi buto ang itinatanim natin sa kamoteng kahoy, apo, kundi pinutol na tangkay. Cutting ang tawag dito."),
-                ("lola", "Siguraduhin mong nakaharap pataas ang mga buko, o mata, nito. Doon sisibol ang mga bagong dahon."),
+                ("lola", "Ngayon, itatanim natin ang mga cuttings. Mahalaga ang posisyon ng bawat tangkay, apo."),
             ],
-        },
-        {
-            "id":       "S3P3",
-            "type":     "scan",
-            "day":      1,
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lola": {"side": "left", "expression": "default", "flip": False}},
-            "active":   "lola",
-            "timer":    True,
-            "card":     "AC-01 Water Card",
-            "dialogue": "Lola: Bahagya lamang ang tubig, apo. Madaling mabulok ang ugat ng kamoteng kahoy kapag sobrang basa. I-scan ang Water Card, ngunit banayad lang!",
-            "question": "Scan the Water Card to lightly water the cassava cuttings — just enough to settle the soil, not flood it.",
         },
  
-        # ── Day 30 — Drought ───────────────────────────────────
+        # ── Planting cuttings — choice (TIMER) ─────────────────
         {
-            "id":   "day30_fade",
-            "type": "transition",
-        },
-        {
-            "id":    "S4P1",
-            "type":  "dialogue",
-            "day":   30,
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "smile"}},
-            "lines": [
-                ("baron", "Tagtuyot! Wala nang ulan sa baryo ninyo! Tingnan natin kung kaya ng kamoteng kahoy ang uhaw!"),
-            ],
-        },
-        {
-            "id":    "S4P2",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": {"side": "left", "expression": "concerned", "flip": True}},
-            "lines": [
-                ("lucas", "Lola, matagal na pong hindi umuulan. Ano po ang dapat nating gawin para sa mga kamoteng kahoy?"),
-            ],
-        },
-        {
-            "id":            "S4P3",
+            "id":            "S1P17",
             "type":          "choice",
-            "day":           30,
-            "bg":            "background/scenebg_planter.png",
-            "question":       "Matagal nang hindi umuulan sa baryo. Paano dapat tulungan ni Lucas ang mga kamoteng kahoy?",
-            "retry_question": "Sandali, baka masira ang mga ugat ng kamoteng kahoy sa paraang iyon. Pag-isipan natin muli.",
+            "bg":            "background/cassava_raisedbeds.png",
+            "timer":         True,
+            "question":       "Bilis! Alin ang tamang posisyon ng tangkay ng kamoteng kahoy kapag itinatanim?",
+            "retry_question": "Mabilis! Aling dulo ng tangkay ang may mga usbong na tutubo paitaas?",
             "choices": [
-                {"img": "buttons/choice_mulch_field.png",   "label": "", "frame": False},
-                {"img": "buttons/choice_flood_cassava.png", "label": "", "frame": False},
+                {"img": "buttons/choice_buds_up.png",   "label": "", "frame": False},
+                {"img": "buttons/choice_buds_down.png", "label": "", "frame": False},
             ],
             "correct": 0,
         },
         {
-            "id":          "S4P3_right_1",
+            "id":          "S1P17_right_1",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
@@ -361,11 +292,11 @@ CHAPTER = {
                 }
             },
             "lines": [
-                ("lucas", "Tama! Magtatakip tayo ng mulch para manatiling mamasa-masa ang lupa, at hindi natin lulunurin ang mga ugat."),
+                ("lucas", "Tama at mabilis! Nakaharap sa itaas ang mga usbong, para tumubo paitaas ang mga bagong sanga."),
             ],
         },
         {
-            "id":          "S4P3_right_2",
+            "id":          "S1P17_right_2",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
@@ -378,7 +309,280 @@ CHAPTER = {
                 }
             },
             "lines": [
-                ("lola", "Magaling, apo! Malalim ang ugat ng kamoteng kahoy, at nakakatipid ito ng tubig sa pamamagitan ng paglalagas ng ilang dahon. Kaya nitong magtiis sa tagtuyot."),
+                ("lola", "Magaling, apo! Ibabaon natin ang halos kalahati ng tangkay para magkaroon ng matibay na ugat."),
+            ],
+        },
+        {
+            "id":              "S1P17_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "left",
+                    "expression": "wrong",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Kapag nakabaligtad ang tangkay, mahihirapan itong tumubo."),
+            ],
+        },
+        {
+            "id":              "S1P17_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "baron": {
+                    "side": "right",
+                    "expression": "laugh",
+                    "flip": False,
+                    }
+                },
+            "lines": [
+                ("baron", "HA! Itanim ninyo nang pabaligtad! Mas matagal tumubo, mas masaya!"),
+            ],
+        },
+ 
+        # ── Day 1 — Light watering ─────────────────────────────
+        {
+            "id":   "day1_fade",
+            "type": "transition",
+        },
+        {
+            "id": "S2P1",
+            "type": "narration_overlay",
+            "day": 1,
+            "bg": "background/cassava_raisedbeds.png",
+            "dim_inactive": False,
+            "overlay": "woodbg.png",
+ 
+            "narration": (
+                "Unang araw ng huling taniman. "
+                "Magkakasamang itinanim nina Lucas, Lola Maria, Kapitan Ernesto at Chef Agapita "
+                "ang mga tangkay ng kamoteng kahoy sa mataas na tambak."
+            ),
+        },
+        {
+            "id":    "S2P2",
+            "type":  "dialogue",
+            "day":   1,
+            "bg":    "background/cassava_raisedbeds.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Bahagya lamang ang tubig na ibibigay natin, apo. Madaling mabulok ang tangkay at ugat ng kamoteng kahoy kapag masyadong basa."),
+            ],
+        },
+        {
+            "id":       "S2P3",
+            "type":     "action_challenge",
+            "day":      1,
+            "bg":       "background/cassava_raisedbeds.png",
+            "chars":    {"lucas": {"side": "right", "expression": "waters", "flip": False}},
+            "active":   "lucas",
+            "timer":    True,
+            "card":     "AC-01 Water Card",
+            "overlay": "WaterCard.png",
+            "dialogue": "Lucas: Bahagya lang po ang ibibigay nating tubig, Lola, sapat para umayos ang lupa. I-scan natin ang Water Card, pero banayad!",
+            "question": "Scan the Water Card to lightly water the cassava cuttings — just enough to settle the soil, not flood it.",
+        },
+ 
+        # ── Day 30 — Drought defense ───────────────────────────
+        {
+            "id":   "day30_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S3P1",
+            "type":  "dialogue",
+            "day":   30,
+            "bg":    "background/scenebg_baron.png",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "laugh"}},
+            "lines": [
+                ("baron", "Tagtuyot! Tutuyuin ko ang lupa ninyo! Tingnan natin kung kaya ng inyong kamoteng kahoy!"),
+            ],
+        },
+        {
+            "id":    "S3P2",
+            "type":  "dialogue",
+            "bg":    "background/cassava_drought.png",
+            "chars": {"lucas": {"side": "right", "expression": "concerned", "flip": False}},
+            "lines": [
+                ("lucas", "Lola, bitak-bitak na po ang lupa at lumalaylay ang ilang dahon. Ano po ang dapat nating gawin?"),
+            ],
+        },
+        {
+            "id":    "S3P3",
+            "type":  "dialogue",
+            "bg":    "background/cassava_drought.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Huwag kang mag-alala, apo. Matibay ang kamoteng kahoy at kayang magtiis ng tuyong panahon."),
+                ("lola", "Ang kailangan lamang natin ay tulungan itong panatilihin ang kaunting halumigmig sa lupa."),
+            ],
+        },
+ 
+        # ── Drought — choice (TIMER) ───────────────────────────
+        {
+            "id":            "S3P4",
+            "type":          "choice",
+            "day":           30,
+            "bg":            "background/cassava_drought.png",
+            "timer":         True,
+            "question":       "Tuyo ang lupa dahil sa tagtuyot ni Baron. Ano ang dapat gawin para tulungan ang mga kamoteng kahoy?",
+            "retry_question": "Mabilis! Isipin kung ano ang nangyayari sa ugat ng kamoteng kahoy kapag labis ang tubig.",
+            "choices": [
+                {"img": "buttons/choice_mulch_straw.png", "label": "", "frame": False},
+                {"img": "buttons/choice_flood_field.png", "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S3P4_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Tama at mabilis! Tatakpan natin ng dayami ang lupa para manatili ang kaunting halumigmig, at hindi na natin kailangang bahain ang mga ugat."),
+            ],
+        },
+        {
+            "id":          "S3P4_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lola": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lola", "Magaling, apo! Mas kaya ng kamoteng kahoy ang tagtuyot kaysa sa labis na tubig na nagpapabulok sa ugat."),
+            ],
+        },
+        {
+            "id":              "S3P4_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "left",
+                    "expression": "wrong",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Mabubulok ang mga ugat ng kamoteng kahoy kapag binaha ang taniman."),
+            ],
+        },
+        {
+            "id":              "S3P4_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "baron": {
+                    "side": "right",
+                    "expression": "laugh",
+                    "flip": False,
+                    }
+                },
+            "lines": [
+                ("baron", "HAHAHA! Bahain ninyo ang taniman! Mabubulok ang lahat!"),
+            ],
+        },
+ 
+        # ── Day 45 — Reject the toxic dump ─────────────────────
+        {
+            "id":   "day45_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S4P1",
+            "type":  "dialogue",
+            "day":   45,
+            "bg":    "background/scenebg_baron.png",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "smile"}},
+            "lines": [
+                ("baron", "Heto ang regalo ko! Mga lumang lalagyan ng kemikal!"),
+                ("baron", "Ibaon ninyo ang laman nito sa lupa, at lalaki raw agad ang inyong kamoteng kahoy!"),
+            ],
+        },
+        {
+            "id":    "S4P2",
+            "type":  "dialogue",
+            "bg":    "background/cassava_toxic.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Huwag! Ang mga mapanganib na kemikal sa lupa ay mapupunta sa tubig, sa pananim, at sa mga taong kakain nito."),
+                ("kapitan", "Hindi ito paraan ng pagpapalaki ng pananim. Panganib ito sa buong baryo!"),
+            ],
+        },
+ 
+        # ── Toxic waste — choice (TIMER) ───────────────────────
+        {
+            "id":            "S4P3",
+            "type":          "choice",
+            "day":           45,
+            "bg":            "background/cassava_toxic.png",
+            "timer":         True,
+            "question":       "Inalok ni Baron ang mga lumang lalagyan ng kemikal. Ano ang dapat gawin sa mga ito?",
+            "retry_question": "Mabilis! Isipin kung saan mapupunta ang kemikal kapag inilibing ito sa lupa ng taniman.",
+            "choices": [
+                {"img": "buttons/choice_return_waste.png", "label": "", "frame": False},
+                {"img": "buttons/choice_bury_waste.png",   "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S4P3_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Tama! Ang mga mapanganib na basura ay dapat dalhin sa tamang tanggapan para sa ligtas na pagtatapon, at hindi sa lupa ng ating pagkain."),
+            ],
+        },
+        {
+            "id":          "S4P3_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Magaling po, Kapitan! Mas mabuting protektahan ang lupa kaysa magmadali sa paglaki ng pananim."),
             ],
         },
         {
@@ -390,17 +594,256 @@ CHAPTER = {
             "bg":              "background/scenebg_wrong.png",
             "chars":           {
                 "lucas": {
-                    "side": "right",
+                    "side": "left",
                     "expression": "wrong",
-                    "flip": False,
+                    "flip": True,
                 }
             },
             "lines": [
-                ("lucas", "Naku po! Kapag binaha ang taniman, mabubulok ang mga ugat ng kamoteng kahoy."),
+                ("lucas", "Naku po! Kapag inilibing ang kemikal sa lupa, mapupunta ito sa ugat ng kamoteng kahoy at sa lahat ng kakain nito."),
             ],
         },
         {
             "id":              "S4P3_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {"kapitan_wrong": "right"},
+            "lines": [
+                ("kapitan_wrong", "Huwag! Mapanganib iyan sa buong baryo, hindi lang sa taniman!"),
+            ],
+        },
+ 
+        # ── Day 60 — Fertilizer ────────────────────────────────
+        {
+            "id":   "day60_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S5P1",
+            "type":  "dialogue",
+            "day":   60,
+            "bg":    "background/cassava_growing.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Oras na para pakainin ang lupa, apo. Kailangan ng kamoteng kahoy ng sapat na sustansya para lumaki nang malusog ang mga ugat."),
+                ("lola", "Compost at abo ng kahoy ang magandang pagkain para dito."),
+            ],
+        },
+        {
+            "id":       "S5P2",
+            "type":     "action_challenge",
+            "day":      60,
+            "bg":       "background/cassava_growing.png",
+            "chars":    {"lucas": {"side": "right", "expression": "determined", "flip": False}},
+            "active":   "lucas",
+            "timer":    True,
+            "card":     "AC-02A Organic Fertilizer Card",
+            "overlay": "organicfertilizercard.png",
+            "dialogue": "Lucas: I-scan natin ang Fertilizer Card, Lola, para piliin ang organikong pataba na ligtas para sa lupa ng kamoteng kahoy. Bilis!",
+            "question": "Scan the Fertilizer Card to choose the organic fertilizer for healthy cassava soil.",
+        },
+ 
+        # ── Day 90 — Weeding ───────────────────────────────────
+        {
+            "id":   "day90_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S6P1",
+            "type":  "dialogue",
+            "day":   90,
+            "bg":    "background/cassava_growing.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "Lucas, tumataas na ang mga damo sa pagitan ng mga hilera. Aagawan nila ng sustansya ang kamoteng kahoy."),
+                ("kapitan", "Bunutin natin ang mga ito nang hindi nasasaktan ang mga ugat sa ilalim ng lupa."),
+            ],
+        },
+        {
+            "id":       "S6P2",
+            "type":     "action_challenge",
+            "day":      90,
+            "bg":       "background/cassava_growing.png",
+            "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
+            "active":   "lucas",
+            "timer":    True,
+            "card":     "AC-03 Weed Removal Card",
+            "overlay": "weedremovalcard.png",
+            "dialogue": "Lucas: I-scan natin ang Weed Removal Card, Kapitan, para maalis ang mga damo nang hindi nasisira ang mga ugat ng kamoteng kahoy. Bilis!",
+            "question": "Scan the Weed Removal Card to learn careful weeding that protects the cassava roots underground.",
+        },
+ 
+        # ── Day 120 — Falling leaves ───────────────────────────
+        {
+            "id":   "day120_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S7P1",
+            "type":  "dialogue",
+            "day":   120,
+            "bg":    "background/cassava_mature.png",
+            "chars": {"lucas": {"side": "right", "expression": "concerned", "flip": False}},
+            "lines": [
+                ("lucas", "Lola, naglalagasan po ang mga ibabang dahon ng kamoteng kahoy. May sakit po ba ang mga ito?"),
+            ],
+        },
+        {
+            "id":    "S7P2",
+            "type":  "dialogue",
+            "bg":    "background/cassava_mature.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Huwag kang mag-alala, apo. Natural na naglalagas ang mga lumang dahon sa ibaba habang tumatangkad ang halaman."),
+                ("lola", "Hangga't berde at malusog ang mga bagong dahon sa itaas, walang dapat ikabahala."),
+            ],
+        },
+        {
+            "id":    "S7P3",
+            "type":  "dialogue",
+            "bg":    "background/cassava_mature.png",
+            "chars": {"lucas": {"side": "right", "expression": "thumbs", "flip": False}},
+            "lines": [
+                ("lucas", "Salamat po, Lola. Mabuti na lang at hindi ako nagmadaling mag-spray ng kung anu-ano."),
+            ],
+        },
+ 
+        # ── Day 140 — Spider mites ─────────────────────────────
+        {
+            "id":   "day140_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S8P1",
+            "type":  "dialogue",
+            "day":   140,
+            "bg":    "background/scenebg_baron.png",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "laugh"}},
+            "lines": [
+                ("baron", "Spider mites! Susuhop ng katas ang aking mga munting gagamba sa bawat dahon ng inyong kamoteng kahoy!"),
+                ("baron", "Tingnan natin kung kaya ninyo ito! HAHAHAHA!"),
+            ],
+        },
+        {
+            "id":    "S8P2",
+            "type":  "dialogue",
+            "bg":    "background/cassava_mites.png",
+            "chars": {"lucas": {"side": "right", "expression": "concerned", "flip": False}},
+            "lines": [
+                ("lucas", "Lola, may maliliit na batik na dilaw at pinong sapot sa ilalim ng mga dahon!"),
+            ],
+        },
+        {
+            "id":    "S8P3",
+            "type":  "dialogue",
+            "bg":    "background/cassava_mites.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Spider mites nga iyan, apo. Mahilig sila sa tuyo at mainit na panahon."),
+                ("lola", "Kailangan nating gumamit ng natural na pestisidyo, para hindi masaktan ang mga kapaki-pakinabang na insekto."),
+            ],
+        },
+        {
+            "id":       "S8P4",
+            "type":     "action_challenge",
+            "day":      140,
+            "bg":       "background/cassava_mites.png",
+            "chars":    {"lucas": {"side": "right", "expression": "determined", "flip": False}},
+            "active":   "lucas",
+            "timer":    True,
+            "card":     "AC-04A Natural Pesticide Card",
+            "overlay": "naturalpesticidecard.png",
+            "dialogue": "Lucas: I-scan natin ang Pesticide Card, Lola, para piliin ang natural na pestisidyo laban sa spider mites. Bilis!",
+            "question": "Scan the Pesticide Card to choose the natural pesticide against spider mites.",
+        },
+ 
+        # ── Day 170 — Root-bulking sign ────────────────────────
+        {
+            "id":   "day170_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S9P1",
+            "type":  "dialogue",
+            "day":   170,
+            "bg":    "background/cassava_mature.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Tingnan mo ang lupa sa paligid ng bawat puno, apo. May mga bitak at bahagyang pag-umbok."),
+            ],
+        },
+        {
+            "id":            "S9P2",
+            "type":          "choice",
+            "day":           170,
+            "bg":            "background/cassava_mature.png",
+            "timer":         True,
+            "question":       "Bilis! Ano ang kadalasang ibig sabihin ng mga bitak at pag-umbok ng lupa sa paligid ng puno ng kamoteng kahoy?",
+            "retry_question": "Mabilis! Isipin kung ano ang lumalaki sa ilalim ng lupa.",
+            "choices": [
+                {"img": "buttons/choice_tuber_growing.png", "label": "", "frame": False},
+                {"img": "buttons/choice_need_water.png",    "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S9P2_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Tama at mabilis! Tinutulak ng lumalaking mga ugat ang lupa, kaya nagbibitak at umuumbok ito."),
+            ],
+        },
+        {
+            "id":          "S9P2_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lola": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lola", "Magaling, apo! Magandang palatandaan iyan na malapit na tayong umani."),
+            ],
+        },
+        {
+            "id":              "S9P2_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "left",
+                    "expression": "wrong",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Hindi lang kakulangan sa tubig ang ibig sabihin niyan. Lumalaki na ang mga ugat sa ilalim."),
+            ],
+        },
+        {
+            "id":              "S9P2_wrong_2",
             "type":            "feedback",
             "if_correct":      False,
             "random_pick":     True,
@@ -414,358 +857,7 @@ CHAPTER = {
                     }
                 },
             "lines": [
-                ("baron", "HA! Bahain ninyo! Mabubulok ang lahat ng ugat!"),
-            ],
-        },
- 
-        # ── Day 45 — Baron's "gift" of old chemicals ───────────
-        {
-            "id":   "day45_fade",
-            "type": "transition",
-        },
-        {
-            "id":    "S5P1",
-            "type":  "dialogue",
-            "day":   45,
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "smile"}},
-            "lines": [
-                ("baron", "Heto ang mga lumang kemikal ko! Ibuhos ninyo sa lupa ng taniman, at lalaki nang mabilis ang kamoteng kahoy ninyo!"),
-            ],
-        },
-        {
-            "id":    "S5P2",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": {"side": "right", "flip": False}},
-            "lines": [
-                ("kapitan", "Huwag! Ang mga kemikal na iyan ay mapupunta sa lupa, sa kamoteng kahoy, at sa lahat ng kakain nito."),
-            ],
-        },
-        {
-            "id":            "S5P3",
-            "type":          "choice",
-            "day":           45,
-            "bg":            "background/scenebg_planter.png",
-            "question":       "Ano ang dapat gawin sa mga lumang kemikal na inalok ni Baron?",
-            "retry_question": "Sandali, saan mapupunta ang mga kemikal kapag inilagay natin ito sa lupa? Pag-isipan natin muli.",
-            "choices": [
-                {"img": "buttons/choice_proper_disposal.png", "label": "", "frame": False},
-                {"img": "buttons/choice_dump_soil.png",       "label": "", "frame": False},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S5P3_right_1",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {"kapitan": {"side": "right", "flip": False}},
-            "lines": [
-                ("kapitan", "Tama! Dadalhin natin ang mga kemikal sa tamang pasilidad ng basura, at hindi sa lupa ng ating pagkain."),
-            ],
-        },
-        {
-            "id":          "S5P3_right_2",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {
-                "lucas": {
-                    "side": "left",
-                    "expression": "thumbs",
-                    "flip": True,
-                }
-            },
-            "lines": [
-                ("lucas", "Magaling po! Ang tamang pagtatapon ay responsibilidad nating lahat, para ligtas ang taniman at ang buong baryo."),
-            ],
-        },
-        {
-            "id":              "S5P3_wrong_1",
-            "type":            "feedback",
-            "if_correct":      False,
-            "random_pick":     True,
-            "retry_to_choice": True,
-            "bg":              "background/scenebg_wrong.png",
-            "chars":           {
-                "lucas": {
-                    "side": "right",
-                    "expression": "wrong",
-                    "flip": False,
-                }
-            },
-            "lines": [
-                ("lucas", "Naku po! Ang kemikal sa lupa ay mapupunta sa ugat ng kamoteng kahoy at sa lahat ng kakain nito."),
-            ],
-        },
-        {
-            "id":              "S5P3_wrong_2",
-            "type":            "feedback",
-            "if_correct":      False,
-            "random_pick":     True,
-            "retry_to_choice": True,
-            "bg":              "background/scenebg_wrong.png",
-            "chars":           {"kapitan_wrong": "right"},
-            "lines": [
-                ("kapitan_wrong", "Mag-ingat tayo! Hindi dapat ihalo sa lupa ng ating pagkain ang mga lumang kemikal!"),
-            ],
-        },
-        {
-            "id":    "S5P4",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "nervous"}},
-            "lines": [
-                ("baron", "Bakit... bakit hindi ninyo tinatanggap ang anumang ibigay ko?"),
-            ],
-        },
-        {
-            "id":    "S5P5",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": {"side": "left", "expression": "confused", "flip": True}},
-            "lines": [
-                ("lucas", "Parang... malungkot po ang boses niya, Lola."),
-            ],
-        },
- 
-        # ── Day 60 — Organic fertilizer ────────────────────────
-        {
-            "id":   "day60_fade",
-            "type": "transition",
-        },
-        {
-            "id":    "S6P1",
-            "type":  "dialogue",
-            "day":   60,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
-            "lines": [
-                ("lola", "Oras na para pakainin ang lupa, apo. Ang kamoteng kahoy ay nag-iimbak ng pagkain sa mga ugat nito, kaya kailangan nito ng malusog na lupa."),
-                ("lola", "Gagamitin natin ang compost at vermicast na natutunan nating gawin."),
-            ],
-        },
-        {
-            "id":       "S6P2",
-            "type":     "scan",
-            "day":      60,
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
-            "active":   "lucas",
-            "timer":    True,
-            "card":     "AC-02 Fertilizer Card",
-            "dialogue": "Lucas: I-scan natin ang Fertilizer Card, Lola, para piliin ang organikong pataba para sa malusog na lupa ng kamoteng kahoy. Bilis!",
-            "question": "Scan the Fertilizer Card to choose the organic fertilizer for healthy cassava soil.",
-        },
- 
-        # ── Day 90 — Careful weeding ───────────────────────────
-        {
-            "id":   "day90_fade",
-            "type": "transition",
-        },
-        {
-            "id":    "S7P1",
-            "type":  "dialogue",
-            "day":   90,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": {"side": "right", "flip": False}},
-            "lines": [
-                ("kapitan", "Lucas, tumutubo na naman ang mga damo. Bunutin natin ang mga ito nang maingat."),
-                ("kapitan", "Malapit lang sa ibabaw ng lupa ang mga ugat na lumalaki, kaya huwag nating masugatan ang mga ito."),
-            ],
-        },
-        {
-            "id":       "S7P2",
-            "type":     "scan",
-            "day":      90,
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
-            "active":   "lucas",
-            "timer":    True,
-            "card":     "AC-03 Weed Removal Card",
-            "dialogue": "Lucas: I-scan natin ang Weed Removal Card, Kapitan, para maalis ang mga damo nang hindi nasisira ang mga ugat ng kamoteng kahoy. Bilis!",
-            "question": "Scan the Weed Removal Card to learn careful weeding that protects the cassava tuber underground.",
-        },
- 
-        # ── Day 120 — Normal leaf drop ─────────────────────────
-        {
-            "id":   "day120_fade",
-            "type": "transition",
-        },
-        {
-            "id":    "S8P1",
-            "type":  "dialogue",
-            "day":   120,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
-            "lines": [
-                ("lucas", "Lola! Naglalagas po ang mga dahon ng kamoteng kahoy! May sakit po ba sila?"),
-            ],
-        },
-        {
-            "id":    "S8P2",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
-            "lines": [
-                ("lola", "Huwag kang mag-alala, apo. Natural na naglalagas ang mga matatandang dahon ng kamoteng kahoy."),
-                ("lola", "Ang dapat nating bantayan ay ang mga dahong may batik o kulot."),
-            ],
-        },
-        {
-            "id":            "S8P3",
-            "type":          "choice",
-            "day":           120,
-            "bg":            "background/scenebg_planter.png",
-            "question":       "Alin sa dalawang tanawin ang normal at hindi dapat ikabahala?",
-            "retry_question": "Sandali, tingnan nating mabuti kung alin ang natural na paglalagas ng matatandang dahon. Pag-isipan natin muli.",
-            "choices": [
-                {"img": "buttons/choice_old_leaves_drop.png", "label": "", "frame": False},
-                {"img": "buttons/choice_leaf_spots.png",      "label": "", "frame": False},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S8P3_right_1",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {
-                "lucas": {
-                    "side": "left",
-                    "expression": "thumbs",
-                    "flip": True,
-                }
-            },
-            "lines": [
-                ("lucas", "Tama! Normal ang paglalagas ng mga matatandang dahon sa ibaba, at patuloy pa ring tumutubo ang mga bagong dahon sa itaas."),
-            ],
-        },
-        {
-            "id":          "S8P3_right_2",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {
-                "lola": {
-                    "side": "left",
-                    "expression": "thumbs",
-                    "flip": True,
-                }
-            },
-            "lines": [
-                ("lola", "Magaling, apo! Kailangan lang nating mag-ingat kapag maraming dahon ang may batik o kulot."),
-            ],
-        },
-        {
-            "id":              "S8P3_wrong_1",
-            "type":            "feedback",
-            "if_correct":      False,
-            "random_pick":     True,
-            "retry_to_choice": True,
-            "bg":              "background/scenebg_wrong.png",
-            "chars":           {
-                "lucas": {
-                    "side": "right",
-                    "expression": "wrong",
-                    "flip": False,
-                }
-            },
-            "lines": [
-                ("lucas", "Naku po! Iyan ang mga dahong may batik at kulot, kaya dapat natin itong bantayan."),
-            ],
-        },
-        {
-            "id":              "S8P3_wrong_2",
-            "type":            "feedback",
-            "if_correct":      False,
-            "random_pick":     True,
-            "retry_to_choice": True,
-            "bg":              "background/scenebg_wrong.png",
-            "chars":           {"kapitan_wrong": "right"},
-            "lines": [
-                ("kapitan_wrong", "Hindi iyan ang natural na paglalagas! Tingnan nating muli ang dalawang tanawin."),
-            ],
-        },
- 
-        # ── Day 140 — Spider mites ─────────────────────────────
-        {
-            "id":   "day140_fade",
-            "type": "transition",
-        },
-        {
-            "id":    "S9P1",
-            "type":  "dialogue",
-            "day":   140,
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "laugh"}},
-            "lines": [
-                ("baron", "Spider mites! Sisipsipin ng aking maliliit na gagamba ang katas ng mga dahon ninyo!"),
-            ],
-        },
-        {
-            "id":    "S9P2",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": {"side": "left", "expression": "concerned", "flip": True}},
-            "lines": [
-                ("lucas", "Chef! May maliliit na tuldok na dilaw sa mga dahon, at may pinong sapot sa ilalim nito!"),
-            ],
-        },
-        {
-            "id":    "S9P3",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "worried", "flip": False}},
-            "lines": [
-                ("chef", "Spider mites nga iyan, Lucas. Mahilig sila sa tuyo at mainit na panahon."),
-                ("chef", "Pumili tayo ng natural na pestisidyo para hindi madamay ang mga kapaki-pakinabang na insekto."),
-            ],
-        },
-        {
-            "id":       "S9P4",
-            "type":     "scan",
-            "day":      140,
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
-            "active":   "lucas",
-            "timer":    True,
-            "card":     "AC-04 Pesticide Card",
-            "dialogue": "Lucas: I-scan natin ang Pesticide Card, Chef, para piliin ang natural na pestisidyo laban sa spider mites. Bilis!",
-            "question": "Scan the Pesticide Card to choose the natural pesticide against spider mites.",
-        },
- 
-        # ── Day 170 — Cracking soil ────────────────────────────
-        {
-            "id":   "day170_fade",
-            "type": "transition",
-        },
-        {
-            "id":    "S10P1",
-            "type":  "dialogue",
-            "day":   170,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
-            "lines": [
-                ("lola", "Tingnan mo ang lupa sa paligid ng mga puno, apo. May mga bitak na at bahagyang umaangat ang lupa."),
-                ("lola", "Senyales iyan na lumalaki na ang mga ugat sa ilalim at itinutulak nito ang lupa paitaas."),
-            ],
-        },
-        {
-            "id":    "S10P2",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
-            "lines": [
-                ("lucas", "Ibig sabihin po, malapit na tayong umani. Hindi po tayo dapat magdagdag ng tubig."),
+                ("baron", "HAHAHA! Diligan ninyo ang lahat! Mas mabulok, mas masaya!"),
             ],
         },
  
@@ -775,44 +867,43 @@ CHAPTER = {
             "type": "transition",
         },
         {
-            "id":    "S11P1",
+            "id":    "S10P1",
             "type":  "dialogue",
             "day":   195,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "bg":    "background/cassava_mature.png",
+            "chars": {"lola": {"side": "left", "expression": "celebrates", "flip": False}},
             "lines": [
-                ("lola", "Halos lahat ng matatandang dahon ay nalagas na, at laganap na ang mga bitak sa lupa."),
-                ("lola", "Bago tayo mag-ani nang marami, maghuhukay muna tayo ng isang halaman para subukan kung malalaki na ang mga ugat."),
+                ("lola", "Malaki na ang mga bitak at halos wala nang dahon sa ibaba, apo."),
+                ("lola", "Oras na para anihin ang pinakamatibay nating pananim!"),
             ],
         },
         {
-            "id":    "S11P2",
+            "id":    "S10P2",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
+            "bg":    "background/cassava_mature.png",
+            "chars": {"lucas": {"side": "right", "expression": "determined", "flip": False}},
             "lines": [
-                ("lucas", "Dahan-dahan ko pong huhukayin ang isa. Heto na po! Malalaki at matitigas ang mga ugat!"),
-                ("lucas", "Ngayon po, kailangan kong pumili agad ng tamang senyales!"),
+                ("lucas", "Kailangan ko pong tiyakin kung alin ang handa na, Lola. Hindi po ako magmamadali."),
             ],
         },
  
         # ── Harvest — choice (TIMER) ───────────────────────────
         {
-            "id":            "S11P3",
+            "id":            "S10P3",
             "type":          "choice",
             "day":           195,
-            "bg":            "background/scenebg_planter.png",
+            "bg":            "background/cassava_mature.png",
             "timer":         True,
-            "question":       "Bilis! Alin sa dalawang halaman ang handa nang anihin?",
-            "retry_question": "Mabilis! Ang handang anihing kamoteng kahoy ay may malalaking ugat at bitak na lupa.",
+            "question":       "Bilis! Alin ang halamang kamoteng kahoy na handa nang anihin?",
+            "retry_question": "Mabilis! Ang handa nang anihin ay may bitak na lupa at kaunti na lang ang dahon sa ibaba.",
             "choices": [
-                {"img": "buttons/choice_ready_cassava.png",   "label": "", "frame": False},
-                {"img": "buttons/choice_unready_cassava.png", "label": "", "frame": False},
+                {"img": "buttons/choice_cassava_ready.png", "label": "", "frame": False},
+                {"img": "buttons/choice_cassava_young.png", "label": "", "frame": False},
             ],
             "correct": 0,
         },
         {
-            "id":          "S11P3_right_1",
+            "id":          "S10P3_right_1",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
@@ -825,11 +916,11 @@ CHAPTER = {
                 }
             },
             "lines": [
-                ("lucas", "Tama at mabilis! Malalaki ang mga ugat at bitak ang lupa, kaya handa na itong anihin."),
+                ("lucas", "Tama at mabilis! Bitak ang lupa at kaunti na lang ang dahon sa ibaba, kaya handa na ang mga ugat."),
             ],
         },
         {
-            "id":          "S11P3_right_2",
+            "id":          "S10P3_right_2",
             "type":        "feedback",
             "if_correct":  True,
             "random_pick": True,
@@ -842,7 +933,139 @@ CHAPTER = {
                 }
             },
             "lines": [
-                ("lola", "Magaling, apo! Natapos na ng halaman ang pagpupuno ng mga ugat nito."),
+                ("lola", "Magaling, apo! Ang pasensya mo ang nagbigay sa atin ng pinakamalalaking ugat."),
+            ],
+        },
+        {
+            "id":              "S10P3_wrong_1",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "lucas": {
+                    "side": "left",
+                    "expression": "wrong",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Naku po! Bata pa ang halamang iyan at maliit pa ang mga ugat nito."),
+            ],
+        },
+        {
+            "id":              "S10P3_wrong_2",
+            "type":            "feedback",
+            "if_correct":      False,
+            "random_pick":     True,
+            "retry_to_choice": True,
+            "bg":              "background/scenebg_wrong.png",
+            "chars":           {
+                "baron": {
+                    "side": "right",
+                    "expression": "laugh",
+                    "flip": False,
+                    }
+                },
+            "lines": [
+                ("baron", "HAHAHA! Hukayin ninyo na iyan kahit bata pa! Mas maliit ang aanihin ninyo!"),
+            ],
+        },
+        {
+            "id":       "S10P4",
+            "type":     "action_challenge",
+            "day":      195,
+            "bg":       "background/cassava_harvest.png",
+            "chars":    {"lucas": {"side": "right", "expression": "determined", "flip": False}},
+            "active":   "lucas",
+            "timer":    True,
+            "card":     "AC-05 Harvest Card",
+            "overlay": "harvestcardscan.png",
+            "dialogue": "Lucas: Napili na po natin ang tamang halaman, Lola! I-scan natin ang Harvest Card para makumpirma ang pag-aani. Bilis!",
+            "question": "Scan the Harvest Card to confirm the cassava roots — firm, pale, and fully grown — are ready for the final harvest.",
+        },
+        {
+            "id":    "S10P5",
+            "type":  "dialogue",
+            "bg":    "background/cassava_harvest.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Paluwagin muna natin ang lupa sa paligid gamit ang asarol, tapos hugutin natin ang halaman sa tangkay."),
+                ("lola", "Iwan natin ang mga tatlumpung sentimetro ng tangkay para may mahawakan tayo, at mag-ingat na huwag mabali ang mga ugat."),
+            ],
+        },
+        {
+            "id":    "S10P6",
+            "type":  "dialogue",
+            "bg":    "background/cassava_kitchen.png",
+            "chars": {"chef": {"side": "right", "expression": "worried", "flip": False}},
+            "lines": [
+                ("chef", "Dapat nating iproseso o lutuin ang mga ito sa loob ng isa hanggang dalawang araw."),
+                ("chef", "Mabilis magbago at masira ang kamoteng kahoy pagkatapos anihin."),
+            ],
+        },
+ 
+        # ── Raw cassava is toxic ───────────────────────────────
+        {
+            "id":    "S11P1",
+            "type":  "dialogue",
+            "bg":    "background/scenebg_baron.png",
+            "dark":  True,
+            "chars": {"baron": {"side": "right", "expression": "angry"}},
+            "lines": [
+                ("baron", "Hindi na kailangang magluto! Kainin ninyo na agad ang kamoteng kahoy nang hilaw!"),
+            ],
+        },
+        {
+            "id":    "S11P2",
+            "type":  "dialogue",
+            "bg":    "background/cassava_kitchen.png",
+            "chars": {"chef": {"side": "left", "expression": "angry", "flip": False}},
+            "lines": [
+                ("chef", "Huwag kayong maniniwala sa kaniya! May natural na sangkap na may cyanide ang kamoteng kahoy."),
+                ("chef", "Mapanganib ito kapag hindi inihanda nang tama."),
+            ],
+        },
+        {
+            "id":            "S11P3",
+            "type":          "choice",
+            "bg":            "background/cassava_kitchen.png",
+            "timer":         True,
+            "question":       "Bilis! Ano ang tamang paghahanda sa bagong aning kamoteng kahoy bago ito kainin?",
+            "retry_question": "Mabilis! Isipin kung ano ang nagtatanggal ng lason sa kamoteng kahoy.",
+            "choices": [
+                {"img": "buttons/choice_cook_cassava.png", "label": "", "frame": False},
+                {"img": "buttons/choice_eat_raw.png",      "label": "", "frame": False},
+            ],
+            "correct": 0,
+        },
+        {
+            "id":          "S11P3_right_1",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "lines": [
+                ("chef", "Tama at mabilis! Binabalatan, hinuhugasan, at niluluto nang mabuti ang kamoteng kahoy, at doon nawawala ang mapanganib na sangkap nito."),
+            ],
+        },
+        {
+            "id":          "S11P3_right_2",
+            "type":        "feedback",
+            "if_correct":  True,
+            "random_pick": True,
+            "bg":          "background/scenebg_right.png",
+            "chars":       {
+                "lucas": {
+                    "side": "left",
+                    "expression": "thumbs",
+                    "flip": True,
+                }
+            },
+            "lines": [
+                ("lucas", "Magaling po, Chef! Hindi rin ligtas ibigay sa mga hayop ang hilaw na kamoteng kahoy, kaya lutuin din natin ito para sa kanila."),
             ],
         },
         {
@@ -854,13 +1077,13 @@ CHAPTER = {
             "bg":              "background/scenebg_wrong.png",
             "chars":           {
                 "lucas": {
-                    "side": "right",
+                    "side": "left",
                     "expression": "wrong",
-                    "flip": False,
+                    "flip": True,
                 }
             },
             "lines": [
-                ("lucas", "Naku po! Maliliit pa ang mga ugat niyan, kaya hindi pa ito handang anihin."),
+                ("lucas", "Naku po! Ang hilaw na kamoteng kahoy ay maaaring makalason kapag kinain."),
             ],
         },
         {
@@ -870,494 +1093,292 @@ CHAPTER = {
             "random_pick":     True,
             "retry_to_choice": True,
             "bg":              "background/scenebg_wrong.png",
-            "chars":           {
-                "baron": {
-                    "side": "right",
-                    "expression": "laugh",
-                    "flip": False,
-                    }
-                },
+            "chars":           {"chef_wrong": "right"},
             "lines": [
-                ("baron", "HAHAHA! Anihin ninyo na iyan! Mas kaunti ang makukuha ninyo!"),
+                ("chef_wrong", "Mag-ingat! Huwag kainin ang hilaw na kamoteng kahoy. Lutuin muna nang mabuti!"),
             ],
         },
+ 
+        # ── Day 196 — The empty chair ──────────────────────────
         {
-            "id":       "S11P4",
-            "type":     "scan",
-            "day":      195,
-            "bg":       "background/scenebg_planter.png",
-            "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
-            "active":   "lucas",
-            "timer":    True,
-            "card":     "AC-05 Harvest Card",
-            "dialogue": "Lucas: Napili na po natin ang tamang halaman, Lola! I-scan natin ang Harvest Card para makumpirma ang pag-aani. Bilis!",
-            "question": "Scan the Harvest Card to confirm the cassava tubers — firm, pale, and fully grown — are ready for the final harvest.",
+            "id":   "day196_fade",
+            "type": "transition",
+        },
+        {
+            "id":    "S11P4",
+            "type":  "dialogue",
+            "day":   196,
+            "bg":    "background/cassava_kitchen.png",
+            "chars": {"chef": {"side": "right", "expression": "happy", "flip": False}},
+            "lines": [
+                ("chef", "Heto na ang pinakuluan at pinritong kamoteng kahoy. Tikman ninyo, Lola Maria."),
+            ],
         },
         {
             "id":    "S11P5",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "bg":    "background/cassava_emptychair.png",
+            "chars": {"lola": {"side": "left", "expression": "shocked", "flip": False}},
             "lines": [
-                ("kapitan", "Tulungan kita, Lucas. Puputulin muna natin ang tangkay mga isang talampakan sa ibabaw ng lupa."),
-                ("kapitan", "Pagkatapos, luluwagan natin ang lupa sa paligid, at hihilahin natin nang dahan-dahan ang tangkay para lumabas ang mga ugat nang hindi napuputol."),
+                ("lola", "Ang tamis at ang lambot... Teka."),
+                ("lola", "May bakanteng upuan sa mesa. Isang upuan na lagi naming iniiwang nakalaan, ngunit hindi ko maalala kung para kanino."),
+            ],
+        },
+        {
+            "id":    "S11P6",
+            "type":  "dialogue",
+            "bg":    "background/cassava_emptychair.png",
+            "chars": {"lucas": {"side": "right", "expression": "concerned", "flip": False}},
+            "lines": [
+                ("lucas", "Huwag po ninyong pilitin, Lola. Darating din po iyan."),
             ],
         },
  
-        # ── Cyanide safety — humans ────────────────────────────
-        {
-            "id":    "S12P1",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "smile"}},
-            "lines": [
-                ("baron", "Ang dami ninyong naani! Kainin na ninyo agad nang hilaw!"),
-            ],
-        },
-        {
-            "id":    "S12P2",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"chef": {"side": "left", "expression": "angry", "flip": False}},
-            "lines": [
-                ("chef", "Huwag! Ang hilaw na kamoteng kahoy ay may natural na lason na tinatawag na cyanogenic glycosides."),
-                ("chef", "Kailangan itong balatan, hugasan, at lutuin nang mabuti bago kainin."),
-            ],
-        },
-        {
-            "id":            "S12P3",
-            "type":          "choice",
-            "bg":            "background/scenebg_default.png",
-            "question":       "Bagong ani ang kamoteng kahoy. Ano ang ligtas na paraan ng paghahanda nito bago kainin?",
-            "retry_question": "Sandali, isipin natin ang lason na natural na nasa hilaw na kamoteng kahoy. Pag-isipan natin muli.",
-            "choices": [
-                {"img": "buttons/choice_cooked_cassava.png", "label": "", "frame": False},
-                {"img": "buttons/choice_raw_cassava.png",    "label": "", "frame": False},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S12P3_right_1",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {"chef": {"side": "left", "expression": "happy", "flip": False}},
-            "lines": [
-                ("chef", "Tama! Kapag binalatan, hinugasan, at niluto nang mabuti, nawawala ang lason at ligtas na itong kainin."),
-            ],
-        },
-        {
-            "id":          "S12P3_right_2",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {
-                "lucas": {
-                    "side": "left",
-                    "expression": "thumbs",
-                    "flip": True,
-                }
-            },
-            "lines": [
-                ("lucas", "Magaling po, Chef! Laging luto at balat ang kamoteng kahoy bago ihain."),
-            ],
-        },
-        {
-            "id":              "S12P3_wrong_1",
-            "type":            "feedback",
-            "if_correct":      False,
-            "random_pick":     True,
-            "retry_to_choice": True,
-            "bg":              "background/scenebg_wrong.png",
-            "chars":           {
-                "lucas": {
-                    "side": "right",
-                    "expression": "wrong",
-                    "flip": False,
-                }
-            },
-            "lines": [
-                ("lucas", "Naku po! Delikado ang hilaw na kamoteng kahoy dahil may natural itong lason."),
-            ],
-        },
-        {
-            "id":              "S12P3_wrong_2",
-            "type":            "feedback",
-            "if_correct":      False,
-            "random_pick":     True,
-            "retry_to_choice": True,
-            "bg":              "background/scenebg_wrong.png",
-            "chars":           {"chef_wrong": "right"},
-            "lines": [
-                ("chef_wrong", "Mag-ingat! Huwag kakain ng hilaw na kamoteng kahoy, kahit kaunti lang!"),
-            ],
-        },
- 
-        # ── Cyanide safety — animals ───────────────────────────
-        {
-            "id":    "S12P4",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
-            "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "angry"}},
-            "lines": [
-                ("baron", "Kung hindi para sa tao, ibigay ninyo sa mga hayop! Makakatipid kayo sa pakain!"),
-            ],
-        },
-        {
-            "id":            "S12P5",
-            "type":          "choice",
-            "bg":            "background/scenebg_default.png",
-            "question":       "Gusto ni Lucas na gamitin ang mga balat ng kamoteng kahoy bilang pagkain ng mga hayop. Ano ang ligtas na paraan?",
-            "retry_question": "Sandali, nakakaapekto rin sa mga hayop ang lason ng hilaw na kamoteng kahoy. Pag-isipan natin muli.",
-            "choices": [
-                {"img": "buttons/choice_cooked_feed.png", "label": "", "frame": False},
-                {"img": "buttons/choice_raw_feed.png",    "label": "", "frame": False},
-            ],
-            "correct": 0,
-        },
-        {
-            "id":          "S12P5_right_1",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {
-                "lucas": {
-                    "side": "left",
-                    "expression": "thumbs",
-                    "flip": True,
-                }
-            },
-            "lines": [
-                ("lucas", "Tama! Lulutuin, patutuyuin, o ibababad muna natin bago ibigay sa mga hayop."),
-            ],
-        },
-        {
-            "id":          "S12P5_right_2",
-            "type":        "feedback",
-            "if_correct":  True,
-            "random_pick": True,
-            "bg":          "background/scenebg_right.png",
-            "chars":       {
-                "lola": {
-                    "side": "left",
-                    "expression": "thumbs",
-                    "flip": True,
-                }
-            },
-            "lines": [
-                ("lola", "Magaling, apo! Para sa tao man o hayop, hindi dapat hilaw ang kamoteng kahoy."),
-            ],
-        },
-        {
-            "id":              "S12P5_wrong_1",
-            "type":            "feedback",
-            "if_correct":      False,
-            "random_pick":     True,
-            "retry_to_choice": True,
-            "bg":              "background/scenebg_wrong.png",
-            "chars":           {
-                "lucas": {
-                    "side": "right",
-                    "expression": "wrong",
-                    "flip": False,
-                }
-            },
-            "lines": [
-                ("lucas", "Naku po! Maaaring magkasakit ang mga hayop kapag kumain sila ng hilaw na kamoteng kahoy."),
-            ],
-        },
-        {
-            "id":              "S12P5_wrong_2",
-            "type":            "feedback",
-            "if_correct":      False,
-            "random_pick":     True,
-            "retry_to_choice": True,
-            "bg":              "background/scenebg_wrong.png",
-            "chars":           {"kapitan_wrong": "right"},
-            "lines": [
-                ("kapitan_wrong", "Mag-ingat! Huwag basta ipakain ang hilaw na kamoteng kahoy sa mga hayop!"),
-            ],
-        },
- 
-        # ── Day 200 — The last memory and Baron's confession ───
+        # ── Day 200 — Baron's revelation: lonely, not evil ─────
         {
             "id":   "day200_fade",
             "type": "transition",
         },
         {
-            "id": "S13P1",
-            "type": "narration_overlay",
-            "day": 200,
-            "bg": "background/scenebg_default.png",
-            "dim_inactive": False,
-            "overlay": "woodbg.png",
- 
-            "narration": (
-                "200 araw na ang lumipas. "
-                "Sa barangay hall, nagluto sina Chef Agapita at Lucas ng cassava cake at suman "
-                "mula sa bagong aning kamoteng kahoy."
-            ),
-        },
-        {
-            "id":    "S13P2",
+            "id":    "S12P1",
             "type":  "dialogue",
             "day":   200,
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lola": {"side": "left", "expression": "shocked", "flip": False}},
-            "lines": [
-                ("lola", "Ang bangong ito... ang tamis ng ginataang kamoteng kahoy..."),
-                ("lola", "Naaalala ko na! Naaalala ko na ang bakanteng upuan!"),
-            ],
-        },
-        {
-            "id":    "S13P3",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/cassava_dusk.png",
             "dark":  True,
-            "chars": {"baron": {"side": "right", "expression": "nervous"}},
+            "chars": {"baron": {"side": "right", "expression": "defeated"}},
             "lines": [
                 ("baron", "..."),
-                ("baron", "Naamoy ko ang kamoteng kahoy mula sa labas. Alam kong naaalala na ninyo."),
+                ("baron", "Nabalik na ang halos lahat ng alaala. Natalo na ako."),
             ],
         },
         {
-            "id":    "S13P4",
+            "id":    "S12P2",
             "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/cassava_dusk.png",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "defeated"}},
             "lines": [
-                ("baron", "Lahat ng alaala ay nabalik na. Tapos na kayo. Natalo na ako."),
+                ("baron", "Hindi ko alam kung bakit ko ginawa ang lahat ng ito. Siguro ay naiinggit ako."),
+                ("baron", "Kayo ay nagtutulungan, nagtatawanan, at nagdiriwang... at ako ay nag-iisa."),
             ],
         },
         {
-            "id":    "S13P5",
+            "id":    "S12P3",
             "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/cassava_dusk.png",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "defeated"}},
             "lines": [
-                ("baron", "Hindi ko alam kung bakit ko ito ginawa. Nainggit lang siguro ako."),
-                ("baron", "Kayo ay nagkakasama, nagtatrabaho, nagdiriwang, at ako..."),
-                ("baron", "Ako ay nag-iisa."),
+                ("baron", "Narinig kong may Pista noon, ngunit nasira ang mga pananim ko at wala akong maibigay na handog. Kaya hindi na ako nagpakita."),
+                ("baron", "Mas madali pang kalimutan ng lahat ang Pista kaysa isipin kong walang naghahanap sa akin."),
             ],
         },
         {
-            "id":    "S13P6",
+            "id":    "S12P4",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
+            "bg":    "background/cassava_emptychair.png",
             "chars": {"lucas": {"side": "left", "expression": "concerned", "flip": True}},
             "lines": [
-                ("lucas", "Baron..."),
+                ("lucas", "Kaya po pala... Hindi po kayo galit, Baron. Nasaktan lang po kayo."),
             ],
         },
         {
-            "id":    "S13P7",
+            "id":    "S12P5",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
+            "bg":    "background/cassava_emptychair.png",
             "chars": {"lola": {"side": "left", "expression": "sad", "flip": False}},
             "lines": [
-                ("lola", "Baron, inimbita ka namin sa Pista noon, ngunit hindi ka dumating. Naghintay kami."),
+                ("lola", "Baron... Naaalala ko na."),
+                ("lola", "Noon pa man, tuwing Pista, nag-iiwan kami ng bakanteng upuan sa mesa. Para iyon sa iyo."),
             ],
         },
         {
-            "id":    "S13P8",
+            "id":    "S12P6",
             "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/cassava_dusk.png",
             "dark":  False,
             "chars": {"baron": {"side": "right", "expression": "nervous"}},
             "lines": [
-                ("baron", "Naghintay kayo?"),
+                ("baron", "Para... sa akin?"),
             ],
         },
         {
-            "id":    "S13P9",
+            "id":    "S12P7",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
+            "bg":    "background/cassava_emptychair.png",
             "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
-                ("lola", "Lagi. Kaya tuwing Pista, may bakanteng upuan sa mesa at isang plato ng kamoteng kahoy."),
-                ("lola", "Para iyon sa iyo, Baron."),
+                ("lola", "Oo, Baron. Naghintay kami, bawat taon."),
+                ("lola", "Ang Pista ng Nakalimutang Baryo ay para sa lahat, lalo na sa mga nag-iisa. Hindi mo kailangang magdala ng handog para maupo sa aming mesa."),
+                ("lola", "Gusto mo bang sumama sa aming handaan?"),
             ],
         },
         {
-            "id":    "S13P10",
+            "id":    "S12P8",
             "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/cassava_dusk.png",
             "dark":  False,
-            "chars": {"baron": {"side": "right", "expression": "defeated"}},
-            "lines": [
-                ("baron", "Para sa akin..."),
-                ("baron", "Nahiya ako noon. Sirang-sira ang taniman ko, at wala akong maibibigay sa inyo."),
-                ("baron", "Mas madali pang magalit kaysa humarap sa inyo nang walang dala."),
-                ("baron", "Kaya pinalimot ko kayo sa Pista, para hindi ninyo maalalang may upuang walang nakaupo. Patawad."),
-            ],
-        },
-        {
-            "id":    "S13P11",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
-            "lines": [
-                ("lola", "Ang Pista ng Nakalimutang Baryo ay para sa lahat, Baron, kasama ang mga nag-iisa. Lalo na sila."),
-                ("lola", "Gusto mo bang sumama sa ating handaan?"),
-            ],
-        },
-        {
-            "id":    "S13P12",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
             "chars": {"baron": {"side": "right", "expression": "renewed"}},
             "lines": [
                 ("baron", "Ako... Oo. Oo, gusto ko."),
-                ("baron", "Heto, isang basket ng sariwang lupa mula sa pinakamamahal kong hardin. Para sa inyong susunod na pananim."),
+                ("baron", "Wala akong ibang maibibigay kundi ito. Isang basket ng sariwang lupa mula sa maliit kong hardin, para sa susunod ninyong pananim."),
             ],
         },
         {
-            "id":    "S13P13",
+            "id":    "S12P9",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
+            "bg":    "background/cassava_emptychair.png",
+            "chars": {"lola": {"side": "left", "expression": "celebrates", "flip": False}},
             "lines": [
-                ("lucas", "Nagbibigay po ng lupa... si Baron?"),
-                ("lucas", "Hindi ko po agad malilimutan ang lahat ng nangyari, ngunit tinatanggap po namin ang iyong paghingi ng tawad."),
+                ("lola", "Iyan na ang pinakamagandang handog na natanggap ko."),
             ],
         },
         {
-            "id":    "S13P14",
+            "id":    "S12P10",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lola": {"side": "left", "expression": "thumbs", "flip": True}},
+            "bg":    "background/cassava_emptychair.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("lola", "Ang dating kaaway ay ang bagong kaibigan ng baryo, apo."),
-                ("lola", "Ganyan ang kapangyarihan ng pagkain at ng pagdiriwang. Pinagsasama nito ang lahat."),
+                ("kapitan", "Hindi mabubura ng regalong ito ang pinsalang ginawa mo sa mga pananim namin, Baron."),
+                ("kapitan", "Ngunit magandang simula ang pananagutan. Tutulong ka sa muling pagtatanim ng baryo."),
+            ],
+        },
+        {
+            "id":    "S12P11",
+            "type":  "dialogue",
+            "bg":    "background/cassava_dusk.png",
+            "dark":  False,
+            "chars": {"baron": {"side": "right", "expression": "renewed"}},
+            "lines": [
+                ("baron", "Gagawin ko, Kapitan. Pangako."),
+            ],
+        },
+        {
+            "id":    "S12P12",
+            "type":  "dialogue",
+            "bg":    "background/cassava_emptychair.png",
+            "chars": {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "lines": [
+                ("chef", "At marami pang kaldero ang hugasan sa kusina pagkatapos ng handaan!"),
+            ],
+        },
+        {
+            "id":    "S12P13",
+            "type":  "dialogue",
+            "bg":    "background/cassava_emptychair.png",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Hindi na po kayo nag-iisa, Baron."),
+            ],
+        },
+        {
+            "id":    "S12P14",
+            "type":  "dialogue",
+            "bg":    "background/cassava_emptychair.png",
+            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
+            "lines": [
+                ("lola", "Ganyan ang kapangyarihan ng pagkain at ng pagtitipon, apo. Pinagsasama nito ang lahat, pati ang mga dating magkaaway."),
             ],
         },
  
-        # ── Day 201 — Grand Finale: the Pista is restored ──────
+        # ── Day 201 — Grand Finale: all memories return ────────
         {
             "id":   "day201_fade",
             "type": "transition",
         },
         {
-            "id": "S14P1",
-            "type": "narration_overlay",
-            "day": 201,
-            "bg": "background/scenebg_default.png",
-            "dim_inactive": False,
-            "overlay": "woodbg.png",
- 
-            "narration": (
-                "Kinabukasan, napuno ng tao, tawanan, at mabangong pagkain ang barangay hall. "
-                "Sa gitna ng mesa, may upuang laging nakalaan, "
-                "at sa unang pagkakataon, may nakaupo na roon."
-            ),
-        },
-        {
-            "id":    "S14P2",
+            "id":    "S13P1",
             "type":  "dialogue",
             "day":   201,
-            "bg":    "background/scenebg_default.png",
+            "bg":    "background/cassava_fiesta.png",
             "chars": {"lola": {"side": "left", "expression": "celebrates", "flip": False}},
             "lines": [
                 ("lola", "Naaalala ko na ang lahat!"),
-                ("lola", "Ang pechay na nilaga para sa una kong paglalako sa palengke. Ang monggo guisado para sa mga araw na kapos tayo. Ang okra na sinigang sa hapunan ng pamilya."),
+                ("lola", "Ang nilagang pechay na inihanda ko para sa una kong palengke. Ang monggo guisado na niluto ko tuwing mahirap na Linggo. Ang sinigang na okra sa hapunan ng pamilya."),
             ],
         },
         {
-            "id":    "S14P3",
+            "id":    "S13P2",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
+            "bg":    "background/cassava_fiesta.png",
             "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
-                ("lola", "Ang kalabasa sa gata na paboritong ulam ng lolo mo. Ang kamatis na sarciado na niluluto namin tuwing Linggo."),
-                ("lola", "Ang kamote cue na paninda natin sa palengke. Ang lugaw, ang sinangag, at ang kanin sa bawat handaan."),
+                ("lola", "Ang kalabasa sa gata na paboritong ulam ng lolo mo. Ang kamatis na sarciado na inihahanda namin tuwing Linggo. Ang kamote cue na ibinebenta natin sa palengke."),
+                ("lola", "Ang sinangag at lugaw mula sa bigas. Ang kamoteng kahoy na pinirito, ang suman, at ang bibingka, ang pagkaing nagbibigay ng lakas at tibay."),
             ],
         },
         {
-            "id":    "S14P4",
+            "id":    "S13P3",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
+            "bg":    "background/cassava_fiesta.png",
             "chars": {"kapitan": {"side": "right", "flip": False}},
             "lines": [
-                ("kapitan", "At ang kare-kare, kung saan nagtitipon ang buong baryo sa barangay hall!"),
+                ("kapitan", "At ang kare-kare na nagpapaalala sa akin kung bakit ako naging Kapitan: para magtipon ang buong baryo sa iisang mesa."),
             ],
         },
         {
-            "id":    "S14P5",
+            "id":    "S13P4",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
+            "bg":    "background/cassava_fiesta.png",
             "chars": {"chef": {"side": "left", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "At ang mais na sopas, ang inihaw na mais sa tabi ng ilog, at ang popcorn tuwing Pista!"),
-                ("chef", "Ngayon, mas marami pa tayong lulutuin dahil may bago na tayong kasalo."),
+                ("chef", "Ngayon, kasama pa natin si Baron. Mas maraming pagkain, mas maraming kuwento, at mas makulay ang ating handaan!"),
             ],
         },
         {
-            "id":    "S14P6",
+            "id":    "S13P5",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
-            "lines": [
-                ("lola", "At ang kamoteng kahoy, ang pagkain ng lakas at tibay."),
-                ("lola", "Ito ang laging inihahain namin sa bakanteng upuan, para sa sinumang nag-iisa."),
-            ],
-        },
-        {
-            "id":    "S14P7",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
-            "lines": [
-                ("lucas", "Lola, naaalala mo na po ang lahat ng sampung alaala. Ang Pista ng Nakalimutang Baryo ay nagbalik na."),
-            ],
-        },
-        {
-            "id":    "S14P8",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
+            "bg":    "background/cassava_fiesta.png",
             "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
             "lines": [
-                ("lucas", "Salamat po, Lola, sa lahat ng itinuro ninyo sa akin."),
-                ("lucas", "Hindi lang po pagtatanim ang natutunan ko, kundi ang pagmamahal sa lupa, sa pagkain, at sa isa't isa."),
+                ("lucas", "Lola, naaalala na po ninyo ang lahat ng sampung alaala. Ang Pista ng Nakalimutang Baryo..."),
             ],
         },
         {
-            "id":    "S14P9",
+            "id":    "S13P6",
             "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
+            "bg":    "background/cassava_fiesta.png",
+            "chars": {"kapitan": {"side": "right", "flip": False}},
+            "lines": [
+                ("kapitan", "...ay muling mabubuhay! Sampung pananim. Sampung alaala. Isang baryo, isang handaan."),
+            ],
+        },
+        {
+            "id":    "S13P7",
+            "type":  "dialogue",
+            "bg":    "background/cassava_fiesta.png",
+            "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
+            "lines": [
+                ("lucas", "Salamat po, Lola, sa lahat ng itinuro ninyo sa akin. Hindi lang po ang pagtatanim, kundi ang pagmamahal sa lupa, sa pagkain, at sa isa't isa."),
+                ("lucas", "Magsisimula na pong muli ang Pista ng Nakalimutang Baryo!"),
+            ],
+        },
+        {
+            "id":    "S13P8",
+            "type":  "dialogue",
+            "bg":    "background/cassava_fiesta.png",
             "chars": {"lola": {"side": "left", "expression": "celebrates", "flip": False}},
             "lines": [
-                ("lola", "Ikaw ang nagbalik ng aming mga alaala, apo. Siguradong ipinagmamalaki ka ng lolo mo."),
+                ("lola", "Kamoteng Kahoy Memory — UNLOCKED!"),
+                ("lola", "At ang lahat ng sampung alaala ng Pista ng Nakalimutang Baryo ay nabalik na!"),
             ],
         },
         {
-            "id":    "S14P10",
-            "type":  "dialogue",
-            "bg":    "background/scenebg_default.png",
-            "chars": {"baron": {"side": "right", "expression": "renewed"}},
-            "lines": [
-                ("baron", "Salamat... sa upuan. At sa paanyaya."),
-            ],
-        },
-        {
-            "id": "S14P11",
+            "id": "S13P9",
             "type": "narration_overlay",
             "day": 201,
-            "bg": "background/scenebg_default.png",
+            "bg": "background/cassava_fiesta.png",
             "dim_inactive": False,
             "overlay": "woodbg.png",
  
             "narration": (
-                "Naibalik na ang Kamoteng Kahoy Memory, at kasama nito ang lahat ng sampung alaala. "
-                "Muling nagsimula ang Pista ng Nakalimutang Baryo, at sa unang pagkakataon, "
-                "walang naiwang nag-iisa."
+                "Sa unang pagkakataon, may upuan ang lahat sa mesa, "
+                "pati si Baron. "
+                "Naibalik na ang Kamoteng Kahoy Memory, at hindi na muling nakalimutan "
+                "ang Pista ng Nakalimutang Baryo."
             ),
         },
+ 
     ],
 }

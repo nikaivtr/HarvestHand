@@ -75,7 +75,7 @@ CHAPTER = {
             "id":    "S1P5",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"chef": {"side": "left", "expression": "talking", "flip": False}},
+            "chars": {"chef": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("chef", "Narinig ko ang ingay at dumating ako agad, Lucas. Huwag kang matakot, may paraan tayo."),
             ],
@@ -86,14 +86,14 @@ CHAPTER = {
             "bg":    "background/scenebg_default.png",
             "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
             "lines": [
-                ("lucas", "Chef Agapita! Mabuti po at nandito kayo. Ano po ang maitutulong ninyo sa amin?"),
+                ("lucas", "Chef Pablo! Mabuti po at nandito kayo. Ano po ang maitutulong ninyo sa amin?"),
             ],
         },
         {
             "id":    "S1P7",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"chef": {"side": "left", "expression": "worried", "flip": False}},
+            "chars": {"chef": {"side": "right", "expression": "worried", "flip": False}},
             "lines": [
                 ("chef", "Alam mo, Lucas, mais ang unang sangkap na pumapasok sa isip ko kapag iniisip ko ang paborito kong lutuin."),
                 ("chef", "Ngunit kahit anong pilit ko, hindi ko matandaan kung ano iyon, at kung bakit ito mahalaga sa baryo."),
@@ -112,7 +112,7 @@ CHAPTER = {
             "id":    "S1P9",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"chef": {"side": "left", "expression": "default", "flip": False}},
+            "chars": {"chef": {"side": "right", "expression": "default", "flip": False}},
             "lines": [
                 ("chef", "Magandang ideya! Ngunit kailangan nating maghanda."),
                 ("chef", "Matangkad at manipis ang tangkay ng mais, kaya madali itong matumba ng hangin."),
@@ -123,7 +123,7 @@ CHAPTER = {
             "id":    "S1P10",
             "type":  "dialogue",
             "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "talking", "flip": False}},
+            "chars": {"chef": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("chef", "Una, bubungkalin natin nang malalim ang lupa at gagawa tayo ng mga tudling, o furrows, para sa mga buto."),
             ],
@@ -185,7 +185,7 @@ CHAPTER = {
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "chars":       {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "Magaling, Lucas! Ang malalim na ugat ang pinakamainam na panlaban sa hangin."),
             ],
@@ -199,9 +199,9 @@ CHAPTER = {
             "bg":              "background/scenebg_wrong.png",
             "chars":           {
                 "lucas": {
-                    "side": "right",
+                    "side": "left",
                     "expression": "wrong",
-                    "flip": False,
+                    "flip": True,
                 }
             },
             "lines": [
@@ -251,7 +251,7 @@ CHAPTER = {
             "type":  "dialogue",
             "day":   1,
             "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "talking", "flip": False}},
+            "chars": {"chef": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("chef", "Ngayon, didiligan natin ang mga buto nang malalim, at hindi nang madalas at mababaw."),
                 ("chef", "Sa ganoong paraan, hahabulin ng mga ugat ang tubig pailalim, kaya lalo silang kakapit sa lupa."),
@@ -259,13 +259,14 @@ CHAPTER = {
         },
         {
             "id":       "S2P3",
-            "type":     "scan",
+            "type":     "action_challenge",
             "day":      1,
             "bg":       "background/scenebg_planter.png",
             "chars":    {"lucas": {"side": "left", "expression": "waters", "flip": True}},
             "active":   "lucas",
             "timer":    True,
             "card":     "AC-01 Water Card",
+            "overlay": "WaterCard.png",
             "dialogue": "Lucas: Diligan natin nang malalim ang mga buto, Chef, para lumalim din ang ugat ng mais. I-scan natin ang Water Card, bilis!",
             "question": "Scan the Water Card to water the corn seeds deeply to build strong roots against Baron's wind.",
         },
@@ -273,7 +274,7 @@ CHAPTER = {
             "id":    "S2P4",
             "type":  "dialogue",
             "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "chars": {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "Mahusay! Basa na hanggang sa ilalim ang lupa. Hintayin na lang nating sumibol ang mga buto."),
             ],
@@ -302,8 +303,8 @@ CHAPTER = {
             "id":    "S3P2",
             "type":  "dialogue",
             "day":   35,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "talking", "flip": False}},
+            "bg":    "background/cornbg.jpg",
+            "chars": {"chef": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("chef", "Panahon na para sa side-dressing, ang pagdaragdag ng pataba sa tabi ng hilera."),
                 ("chef", "Mabilis kumain ng sustansya ang mais sa yugtong ito, kaya kailangan nila ng dagdag na pagkain."),
@@ -312,7 +313,7 @@ CHAPTER = {
         {
             "id":    "S3P3",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
+            "bg":    "background/cornbg.jpg",
             "chars": {"lucas": {"side": "left", "expression": "talking", "flip": True}},
             "lines": [
                 ("lucas", "Saan po natin ilalagay ang pataba, Chef?"),
@@ -322,7 +323,7 @@ CHAPTER = {
             "id":            "S3P4",
             "type":          "choice",
             "day":           35,
-            "bg":            "background/scenebg_planter.png",
+            "bg":            "background/cornbg.jpg",
             "question":       "Magdaragdag si Lucas ng organikong pataba sa mga mais. Saan dapat niya itong ilagay?",
             "retry_question": "Sandali, baka masunog ang mga ugat kapag doon ito inilagay. Pag-isipan natin muli.",
             "choices": [
@@ -354,7 +355,7 @@ CHAPTER = {
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "chars":       {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "Magaling! Kapag dumikit ang pataba sa tangkay at sa ugat, maaari itong makasunog sa halaman."),
             ],
@@ -368,9 +369,9 @@ CHAPTER = {
             "bg":              "background/scenebg_wrong.png",
             "chars":           {
                 "lucas": {
-                    "side": "right",
+                    "side": "left",
                     "expression": "wrong",
-                    "flip": False,
+                    "flip": True,
                 }
             },
             "lines": [
@@ -392,7 +393,7 @@ CHAPTER = {
         {
             "id":    "S3P5",
             "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/baroncornbg.jpg",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "smile"}},
             "lines": [
@@ -405,7 +406,7 @@ CHAPTER = {
             "id":            "S3P6",
             "type":          "choice",
             "day":           35,
-            "bg":            "background/scenebg_planter.png",
+            "bg":            "background/cornbg.jpg",
             "timer":         True,
             "question":       "Bilis! Alin ang tamang kagamitan para maingat na ilagay ang pataba sa tabi ng hilera ng mais?",
             "retry_question": "Mabilis! Aling kagamitan ang tumpak at hindi makakasira sa mga ugat?",
@@ -438,7 +439,7 @@ CHAPTER = {
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "chars":       {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "Magaling, Lucas! Maingat ang pagkakahukay kaya hindi nasira ang mga ugat."),
             ],
@@ -452,9 +453,9 @@ CHAPTER = {
             "bg":              "background/scenebg_wrong.png",
             "chars":           {
                 "lucas": {
-                    "side": "right",
+                    "side": "left",
                     "expression": "wrong",
-                    "flip": False,
+                    "flip": True,
                 }
             },
             "lines": [
@@ -489,8 +490,8 @@ CHAPTER = {
             "id":    "S4P1",
             "type":  "dialogue",
             "day":   40,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "talking", "flip": False}},
+            "bg":    "background/cornbg.jpg",
+            "chars": {"chef": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("chef", "Ngayon, itatambak natin ang lupa sa paligid ng bawat puno. Hilling up ang tawag dito."),
                 ("chef", "Ngunit alisin muna natin ang mga damo, kung hindi, matatabunan din natin ang mga ito at tutubo silang muli."),
@@ -498,20 +499,21 @@ CHAPTER = {
         },
         {
             "id":       "S4P2",
-            "type":     "scan",
+            "type":     "action_challenge",
             "day":      40,
-            "bg":       "background/scenebg_planter.png",
+            "bg":       "background/cornbg.jpg",
             "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "active":   "lucas",
             "timer":    True,
             "card":     "AC-03 Weed Removal Card",
+            "overlay": "weedremovalcard.png",
             "dialogue": "Lucas: Alisin muna natin ang mga damo, Chef, bago itambak ang lupa sa paligid ng puno. I-scan natin ang Weed Removal Card, bilis!",
             "question": "Scan the Weed Removal Card to clear the weeds before hilling up the corn for wind support.",
         },
         {
             "id":    "S4P3",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
+            "bg":    "background/cornbg.jpg",
             "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "lines": [
                 ("lucas", "Gamit ang asarol, itataas ko ang lupa sa gilid ng bawat puno ng mais."),
@@ -520,8 +522,8 @@ CHAPTER = {
         {
             "id":    "S4P4",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "bg":    "background/cornbg.jpg",
+            "chars": {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "Tama, Lucas! Ang tambak na lupa ay sumusuporta sa tangkay."),
                 ("chef", "Tutubuan din ng dagdag na mga ugat ang ibabang bahagi ng puno, kaya lalo itong tatatag laban sa hangin."),
@@ -537,7 +539,7 @@ CHAPTER = {
             "id": "S5P1",
             "type": "narration_overlay",
             "day": 58,
-            "bg": "background/scenebg_planter.png",
+            "bg": "background/cornbg2.jpg",
             "dim_inactive": False,
             "overlay": "woodbg.png",
  
@@ -550,7 +552,7 @@ CHAPTER = {
             "id":    "S5P2",
             "type":  "dialogue",
             "day":   58,
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/baroncornbg2.jpg",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "laugh"}},
             "lines": [
@@ -560,7 +562,7 @@ CHAPTER = {
         {
             "id": "S5P3",
             "type": "scene",
-            "bg": "background/scenebg_baron.png",
+            "bg": "background/baroncornbg2.jpg",
             "shake": True,
             "smoke": True,   # smoke rises from the bottom of the screen
  
@@ -575,7 +577,7 @@ CHAPTER = {
         {
             "id":    "S5P4",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
+            "bg":    "background/cornbg2.jpg",
             "chars": {"lucas": {"side": "left", "expression": "afraid", "flip": True}},
             "lines": [
                 ("lucas", "Chef! Napakalakas ng hangin!"),
@@ -584,7 +586,7 @@ CHAPTER = {
         {
             "id":    "S5P5",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
+            "bg":    "background/cornbg2.jpg",
             "chars": {"lucas": {"side": "left", "expression": "thumbs", "flip": True}},
             "lines": [
                 ("lucas", "Nakatayo pa rin po sila! Hindi natumba ang kahit isa!"),
@@ -593,8 +595,8 @@ CHAPTER = {
         {
             "id":    "S5P6",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "bg":    "background/cornbg2.jpg",
+            "chars": {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "Dahil iyan sa malalim na ugat at sa tambak na lupa na ginawa mo, Lucas!"),
             ],
@@ -602,7 +604,7 @@ CHAPTER = {
         {
             "id":    "S5P7",
             "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/baroncornbg2.jpg",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "angry"}},
             "lines": [
@@ -613,8 +615,8 @@ CHAPTER = {
         {
             "id":    "S5P8",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "talking", "flip": False}},
+            "bg":    "background/cornbg2.jpg",
+            "chars": {"chef": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("chef", "Mag-ingat, Lucas. Ang mais ay pina-pollinate ng hangin, hindi ng mga bubuyog."),
                 ("chef", "Ang pollen mula sa mga bulaklak sa tuktok ang dapat bumagsak sa mga seda, o hibla, ng bawat mais."),
@@ -626,7 +628,7 @@ CHAPTER = {
             "id":            "S5P9",
             "type":          "choice",
             "day":           58,
-            "bg":            "background/scenebg_planter.png",
+            "bg":            "background/cornbg2.jpg",
             "question":       "Kumakalat na ang pollen ng mais sa hangin. Paano dapat magdilig si Lucas ngayong umaga?",
             "retry_question": "Sandali, isipin natin kung saan dapat pumunta ang tubig para hindi mahugasan ang pollen. Subukan nating muli.",
             "choices": [
@@ -658,7 +660,7 @@ CHAPTER = {
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "chars":       {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "Magaling! Kapag tuyo ang pollen, mas madali itong dadalhin ng hangin sa mga seda."),
             ],
@@ -672,9 +674,9 @@ CHAPTER = {
             "bg":              "background/scenebg_wrong.png",
             "chars":           {
                 "lucas": {
-                    "side": "right",
+                    "side": "left",
                     "expression": "wrong",
-                    "flip": False,
+                    "flip": True,
                 }
             },
             "lines": [
@@ -709,7 +711,7 @@ CHAPTER = {
             "id":    "S6P1",
             "type":  "dialogue",
             "day":   65,
-            "bg":    "background/scenebg_planter.png",
+            "bg":    "background/cornbg3.jpg",
             "chars": {"lola": {"side": "left", "expression": "default", "flip": False}},
             "lines": [
                 ("lola", "Tingnan mo ang mga seda ng mais, apo. Ang bawat hibla ay nakakabit sa isang butil sa loob ng bunga."),
@@ -720,7 +722,7 @@ CHAPTER = {
             "id":            "S6P2",
             "type":          "choice",
             "day":           65,
-            "bg":            "background/scenebg_planter.png",
+            "bg":            "background/cornbg3.jpg",
             "question":       "Alin sa dalawang mais ang nagpapakitang natanggap na ang pollen at lumalaki na ang mga butil?",
             "retry_question": "Sandali, tingnan nating mabuti ang kulay ng seda. Pag-isipan natin muli.",
             "choices": [
@@ -772,9 +774,9 @@ CHAPTER = {
             "bg":              "background/scenebg_wrong.png",
             "chars":           {
                 "lucas": {
-                    "side": "right",
+                    "side": "left",
                     "expression": "wrong",
-                    "flip": False,
+                    "flip": True,
                 }
             },
             "lines": [
@@ -803,7 +805,7 @@ CHAPTER = {
             "id":    "S7P1",
             "type":  "dialogue",
             "day":   70,
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/baroncornbg3.jpg",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "laugh"}},
             "lines": [
@@ -814,7 +816,7 @@ CHAPTER = {
         {
             "id":    "S7P2",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
+            "bg":    "background/cornbg3.jpg",
             "chars": {"lucas": {"side": "left", "expression": "concerned", "flip": True}},
             "lines": [
                 ("lucas", "Chef! May maliliit na butas po sa mga tangkay, at may pinong serbuk na parang kahoy sa paligid."),
@@ -823,8 +825,8 @@ CHAPTER = {
         {
             "id":    "S7P3",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "worried", "flip": False}},
+            "bg":    "background/baroncornbg3.jpg",
+            "chars": {"chef": {"side": "right", "expression": "worried", "flip": False}},
             "lines": [
                 ("chef", "Corn borers nga iyan. Pumapasok ang mga uod sa loob, kaya mahirap silang maabot."),
                 ("chef", "Kailangan natin ng natural na pestisidyo, para hindi tayo makasakit ng mga kapaki-pakinabang na insekto."),
@@ -832,20 +834,21 @@ CHAPTER = {
         },
         {
             "id":       "S7P4",
-            "type":     "scan",
+            "type":     "action_challenge",
             "day":      70,
-            "bg":       "background/scenebg_planter.png",
+            "bg":       "background/baroncornbg3.jpg",
             "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "active":   "lucas",
             "timer":    True,
-            "card":     "AC-04 Pesticide Card",
+            "card":     "AC-04A Natural Pesticide Card",
+            "overlay": "naturalpesticidecard.png",
             "dialogue": "Lucas: I-scan natin ang Pesticide Card, Chef, para piliin ang natural na pestisidyo laban sa corn borers. Bilis!",
             "question": "Scan the Pesticide Card to choose the natural pesticide against corn borers.",
         },
         {
             "id":    "S7P5",
             "type":  "dialogue",
-            "bg":    "background/scenebg_baron.png",
+            "bg":    "background/baroncornbg3.jpg",
             "dark":  True,
             "chars": {"baron": {"side": "right", "expression": "nervous"}},
             "lines": [
@@ -862,8 +865,8 @@ CHAPTER = {
             "id":    "S8P1",
             "type":  "dialogue",
             "day":   80,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "talking", "flip": False}},
+            "bg":    "background/cornbg4.jpg",
+            "chars": {"chef": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("chef", "Namamaga na ang mga butil at napupuno ng katas na parang gatas."),
                 ("chef", "Kailangan nila ng sapat na tubig ngayon para maging malaki at matambok ang bawat isa."),
@@ -871,13 +874,14 @@ CHAPTER = {
         },
         {
             "id":       "S8P2",
-            "type":     "scan",
+            "type":     "action_challenge",
             "day":      80,
-            "bg":       "background/scenebg_planter.png",
+            "bg":       "background/cornbg4.jpg",
             "chars":    {"lucas": {"side": "left", "expression": "waters", "flip": True}},
             "active":   "lucas",
             "timer":    True,
             "card":     "AC-01 Water Card",
+            "overlay": "WaterCard.png",
             "dialogue": "Lucas: Diligan natin ang mga mais, Chef, para maging malaki at matambok ang mga butil. I-scan natin ang Water Card, bilis!",
             "question": "Scan the Water Card to water the corn during kernel plumping stage for full, juicy kernels.",
         },
@@ -891,8 +895,8 @@ CHAPTER = {
             "id":    "S9P1",
             "type":  "dialogue",
             "day":   95,
-            "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "bg":    "background/cornbg4.jpg",
+            "chars": {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "Tingnan mo, Lucas! Tuyo at kayumanggi na ang mga seda, at mukhang masikip na ang mga butil."),
                 ("chef", "Oras na para umani!"),
@@ -901,7 +905,7 @@ CHAPTER = {
         {
             "id":    "S9P2",
             "type":  "dialogue",
-            "bg":    "background/scenebg_planter.png",
+            "bg":    "background/cornbg4.jpg",
             "chars": {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "lines": [
                 ("lucas", "Kailangan ko pong pumili agad ng mais na handa na, Chef. Hindi po ako magkakamali!"),
@@ -913,7 +917,7 @@ CHAPTER = {
             "id":            "S9P3",
             "type":          "choice",
             "day":           95,
-            "bg":            "background/scenebg_planter.png",
+            "bg":            "background/cornbg4.jpg",
             "timer":         True,
             "question":       "Bilis! Alin ang mais na handa nang anihin?",
             "retry_question": "Mabilis! Ang handang anihing mais ay may kayumangging seda at masikip na mga butil.",
@@ -946,7 +950,7 @@ CHAPTER = {
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "chars":       {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "Magaling, Lucas! Iyan ang mais na pinakamatamis at pinakamasarap."),
             ],
@@ -960,9 +964,9 @@ CHAPTER = {
             "bg":              "background/scenebg_wrong.png",
             "chars":           {
                 "lucas": {
-                    "side": "right",
+                    "side": "left",
                     "expression": "wrong",
-                    "flip": False,
+                    "flip": True,
                 }
             },
             "lines": [
@@ -989,13 +993,14 @@ CHAPTER = {
         },
         {
             "id":       "S9P4",
-            "type":     "scan",
+            "type":     "action_challenge",
             "day":      95,
-            "bg":       "background/scenebg_planter.png",
+            "bg":       "background/cornbg4.jpg",
             "chars":    {"lucas": {"side": "left", "expression": "determined", "flip": True}},
             "active":   "lucas",
             "timer":    True,
             "card":     "AC-05 Harvest Card",
+            "overlay": "harvestcardscan.png",
             "dialogue": "Lucas: Napili na po natin ang tamang mais, Chef! I-scan natin ang Harvest Card para makumpirma ang pag-aani. Bilis!",
             "question": "Scan the Harvest Card to confirm the corn with brown silks and plump, shiny kernels is ready to harvest.",
         },
@@ -1003,7 +1008,7 @@ CHAPTER = {
             "id":    "S9P5",
             "type":  "dialogue",
             "bg":    "background/scenebg_planter.png",
-            "chars": {"chef": {"side": "left", "expression": "talking", "flip": False}},
+            "chars": {"chef": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("chef", "Ang ilan sa mga ito ay lulutuin natin nang sariwa. Ang iba ay patutuyuin natin at itatago, para sa popcorn at sa susunod na taniman."),
             ],
@@ -1084,9 +1089,9 @@ CHAPTER = {
             "bg":              "background/scenebg_wrong.png",
             "chars":           {
                 "lucas": {
-                    "side": "right",
+                    "side": "left",
                     "expression": "wrong",
-                    "flip": False,
+                    "flip": True,
                 }
             },
             "lines": [
@@ -1116,7 +1121,7 @@ CHAPTER = {
             "type":  "dialogue",
             "day":   100,
             "bg":    "background/scenebg_default.png",
-            "chars": {"chef": {"side": "left", "expression": "talking", "flip": False}},
+            "chars": {"chef": {"side": "right", "expression": "talking", "flip": False}},
             "lines": [
                 ("chef", "Tuyo na ang mga butil, Lucas. Ngayon, pag-isipan natin kung saan at paano ito itatago."),
             ],
@@ -1157,7 +1162,7 @@ CHAPTER = {
             "if_correct":  True,
             "random_pick": True,
             "bg":          "background/scenebg_right.png",
-            "chars":       {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "chars":       {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "Magaling, Lucas! Ang maayos na imbakan ang huling hakbang para manatiling masarap at ligtas ang ating mais."),
             ],
@@ -1171,9 +1176,9 @@ CHAPTER = {
             "bg":              "background/scenebg_wrong.png",
             "chars":           {
                 "lucas": {
-                    "side": "right",
+                    "side": "left",
                     "expression": "wrong",
-                    "flip": False,
+                    "flip": True,
                 }
             },
             "lines": [
@@ -1209,7 +1214,7 @@ CHAPTER = {
             "narration": (
                 "102 araw na ang lumipas. "
                 "Nilaga ni Lucas ang ilang bagong aning mais, "
-                "at ang mabangong singaw ay napuno ang munting kusina ni Chef Agapita."
+                "at ang mabangong singaw ay napuno ang munting kusina ni Chef Pablo."
             ),
         },
         {
@@ -1217,7 +1222,7 @@ CHAPTER = {
             "type":  "dialogue",
             "day":   102,
             "bg":    "background/scenebg_default.png",
-            "chars": {"chef": {"side": "left", "expression": "worried", "flip": False}},
+            "chars": {"chef": {"side": "right", "expression": "worried", "flip": False}},
             "lines": [
                 ("chef", "Ang bangong ito... ang tamis ng sariwang mais..."),
                 ("chef", "Teka, parang may bumabalik sa alaala ko."),
@@ -1227,7 +1232,7 @@ CHAPTER = {
             "id":    "S12P3",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"chef": {"side": "left", "expression": "happy", "flip": False}},
+            "chars": {"chef": {"side": "right", "expression": "happy", "flip": False}},
             "lines": [
                 ("chef", "Mais! Ang mais na sopas, ang inihaw na mais sa tabi ng ilog, ang popcorn tuwing Pista ng Baryo!"),
                 ("chef", "Naaalala ko na ang lahat ng inihanda ko para sa buong baryo!"),
@@ -1251,7 +1256,7 @@ CHAPTER = {
             "overlay": "woodbg.png",
  
             "narration": (
-                "Sa sandaling iyon, lumiwanag ang paligid at bumalik ang alaala ni Chef Agapita. "
+                "Sa sandaling iyon, lumiwanag ang paligid at bumalik ang alaala ni Chef Pablo. "
                 "Naibalik na ang Mais Memory."
             ),
         },
@@ -1285,7 +1290,7 @@ CHAPTER = {
             "id":    "S12P8",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lucas": {"side": "left", "expression": "concerned", "flip": True}},
+            "chars": {"lucas": {"side": "right", "expression": "concerned", "flip": False}},
             "lines": [
                 ("lucas", "Lola, hindi po siya mukhang galit. Mukha po siyang takot na takot."),
             ],
@@ -1294,7 +1299,7 @@ CHAPTER = {
             "id":    "S12P9",
             "type":  "dialogue",
             "bg":    "background/scenebg_default.png",
-            "chars": {"lola": {"side": "left", "expression": "worried", "flip": False}},
+            "chars": {"lola": {"side": "left", "expression": "sad", "flip": False}},
             "lines": [
                 ("lola", "Napansin ko rin iyon, apo. Mukhang may mas malalim na dahilan si Baron kaysa sa inaakala natin."),
                 ("lola", "Ngunit kailangan muna nating tapusin ang ating sinimulan."),

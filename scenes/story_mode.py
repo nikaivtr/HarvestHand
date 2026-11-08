@@ -9,7 +9,9 @@ import random
 import pygame
 import config
 import game_state
+import player_data
 import data.chapters as chapters_data
+from cardscan import registry as card_registry
 from story.engine     import StoryEngine
 from story.characters import CharacterLayer, get_slot_width
 from story.effects    import SmokeFX
@@ -63,6 +65,7 @@ _overlay_cache    : dict = {}
 _overlay_aspect   : dict = {}
 _overlay_inset    : dict = {}
 _choice_img_cache : dict = {}
+_gauge_icon_cache : dict = {}
 _font_body               = None
 _font_hint               = None
 _dialogue_font           = None
@@ -88,12 +91,54 @@ _DAY_TOTAL  = 30    # overwritten per chapter by _load_chapter()
 # ── Water meter (bottom of the planter) ─────────────────────────
 _water_level        = 1.0    # 0.0 (bone dry) - 1.0 (freshly watered)
 _crop_name          = ""     # current chapter's crop, for tailoring the meter
-_pending_water_scan = False  # True while a scan popup for the Water Card is open
+_pending_water_scan = False
+_gauge_remaining = {}
+_gauge_totals = {}
+_gauge_visible = {}
+_GAUGE_ORDER = ("water", "fertilizer", "pests", "weeds")
+_GAUGE_LABELS = {
+    "water": "Water",
+    "fertilizer": "Fertilizer",
+    "pests": "Pest control",
+    "weeds": "Weed removal",
+}
+_GAUGE_COLORS = {
+    "water": (70, 140, 200),
+    "fertilizer": (90, 160, 70),
+    "pests": (200, 80, 65),
+    "weeds": (140, 180, 65),
+}
+_GAUGE_ICON_PATHS = {
+    "water": "ui/gauges/water.png",
+    "fertilizer": "ui/gauges/fertilizer.png",
+    "pests": "ui/gauges/pests.png",
+    "weeds": "ui/gauges/weeds.png",
+}
+_ACTION_GAUGE_BY_SLUG = {
+    "water": "water",
+    "fertilizer": "fertilizer",
+    "organic_fertilizer": "fertilizer",
+    "chemical_fertilizer": "fertilizer",
+    "weed": "weeds",
+    "pesticide": "pests",
+    "natural_pesticide": "pests",
+    "chemical_pesticide": "pests",
+}
+_RANDOM_ACTION_CARDS = {
+    "water": ("water", "background/Action_Challenge-Water.png"),
+    "fertilizer": ("organic_fertilizer", "organicfertilizercard.png"),
+    "pests": ("natural_pesticide", "naturalpesticidecard.png"),
+    "weeds": ("weed", "weedremovalcard.png"),
+}
+_RANDOM_CHALLENGE_MIN_DAYS = 7
+_RANDOM_CHALLENGE_MAX_DAYS = 14
+_RANDOM_CHALLENGE_START_FRACTION = 0.25
+_RANDOM_CHALLENGE_END_FRACTION = 0.75
+_RANDOM_CHALLENGE_FIRST_WINDOW_FRACTION = 0.4
+_ANALYSIS_CHALLENGE_PROBABILITY = 0.5
 
-_WATER_DECAY_PER_TRANSITION = 0.28   # how much a day-skip dries out the soil
-_WATER_BAR_W_FRAC           = 0.34
-_WATER_BAR_H_FRAC           = 0.026
-_WATER_BOTTOM_MARGIN_FRAC   = 0.035
+_WATER_DRYING_DAYS            = 7
+_WATER_DECAY_PER_DAY          = 0.28 / _WATER_DRYING_DAYS
 _WATER_LOW_THRESHOLD        = 0.28
 _WATER_DEFAULT_COLOR        = (70, 140, 200)
 
@@ -178,6 +223,10 @@ _ACTION_SOLVE_DELAY = 0.9   # seconds the success banner stays up
 _ACTION_WRONG_TIME  = 0.45  # seconds the red square flashes
 _ACTION_SOLVED_T    = 0.0
 _ACTION_WRONG_T     = 0.0
+_CHALLENGE_DURATION = 30.0
+_challenge_timer_slide = None
+_challenge_time_left = 0.0
+_challenge_timeout_feedback = 0.0
 
 # Layout, as fractions of the screen, so it scales to any resolution.
 _ACTION_OVERLAY_W_FRAC = 0.60
@@ -271,15 +320,229 @@ def _make_font(size_frac):
 #  Chapter loading
 # ─────────────────────────────────────────────────────────────
 
+def _action_kind(slide):
+    """Return the card identity for an action challenge, if it is known."""
+    card = card_registry.resolve(slide.get("card", ""))
+    if card is not None:
+        return card.slug
+
+    overlay = slide.get("overlay", "").replace("\\", "/").rsplit("/", 1)[-1].lower()
+    if "analyze" in overlay or "analys" in overlay:
+        return "analyze"
+    if "water" in overlay:
+        return "water"
+    if "fertilizer" in overlay:
+        return "fertilizer"
+    if "weed" in overlay:
+        return "weed"
+    if "pesticide" in overlay or "pest" in overlay:
+        return "pesticide"
+    return None
+
+
+def _random_action_pair(day, index, gauge, include_analysis=False, background=None):
+    slug, overlay = _RANDOM_ACTION_CARDS[gauge]
+    card = card_registry.get(slug)
+    if card is None:
+        raise ValueError(f"Random challenge card is not registered: {slug}")
+    event_id = f"random_care_{day}_{index}"
+    slides = []
+    if include_analysis:
+        research_messages = {
+            "water": (
+                "Napansin kong natutuyo ang lupa. Suriin muna natin ang mga palatandaan "
+                "at i-scan ang Analyze Card para malaman kung anong pangangalaga ang kailangan."
+            ),
+            "fertilizer": (
+                "Maputla ang mga dahon at tila kulang sa sustansya ang lupa. Suriin natin "
+                "ang pananim gamit ang Analyze Card bago pumili ng pataba."
+            ),
+            "pests": (
+                "May mga kagat at kakaibang marka sa mga dahon. Suriin muna natin ang "
+                "mga palatandaan gamit ang Analyze Card bago kumilos."
+            ),
+            "weeds": (
+                "May tumutubong damo sa paligid ng pananim. Suriin natin ang epekto nito "
+                "gamit ang Analyze Card bago kumilos."
+            ),
+        }
+        slides.extend((
+            {
+                "id": f"{event_id}_research",
+                "type": "dialogue",
+                "day": day,
+                "bg": background or "background/scenebg_default.png",
+                "chars": {"lola": {"side": "left", "expression": "worried", "flip": False}},
+                "lines": [("lola", research_messages[gauge])],
+                "random_research": True,
+            },
+            {
+                "id": f"{event_id}_analyze",
+                "type": "action_challenge",
+                "day": day,
+                "overlay": "analyzecard.png",
+                "card": "Analyze Card",
+                "question": "Analyze the crop to find the care action it needs.",
+                "random_challenge": True,
+            },
+        ))
+    slides.append({
+        "id": f"{event_id}_action",
+        "type": "action_challenge",
+        "day": day,
+        "overlay": overlay,
+        "card": card.display,
+        "question": f"Use the {card.name} to care for the crop.",
+        "random_challenge": True,
+    })
+    return slides
+
+
+def _place_chapter_characters(chapter):
+    """Apply Chapter 8's Lucas placement rule to a per-playthrough copy."""
+    slides = list(chapter.get("slides", ()))
+    if chapter.get("id") != "ch08":
+        return slides
+
+    placed = []
+    for index, original in enumerate(slides):
+        chars = original.get("chars", {})
+        lucas = chars.get("lucas")
+        if not isinstance(lucas, dict):
+            placed.append(original)
+            continue
+
+        nearby_characters = set(chars)
+        if index:
+            previous = slides[index - 1]
+            nearby_characters.update(previous.get("chars", {}))
+            nearby_characters.update(
+                speaker for speaker, _ in previous.get("lines", ())
+            )
+        current_text = " ".join(text for _, text in original.get("lines", ())).lower()
+        faces_opponent = any(
+            any(name in actor.lower() for actor in nearby_characters)
+            or name in current_text
+            for name in ("chef", "baron", "kapitan")
+        )
+
+        slide = dict(original)
+        slide_chars = dict(chars)
+        lucas = dict(lucas)
+        lucas["side"] = "left" if faces_opponent else "right"
+        lucas["flip"] = faces_opponent
+        slide_chars["lucas"] = lucas
+        slide["chars"] = slide_chars
+        placed.append(slide)
+    return placed
+
+
+def _prepare_chapter(chapter):
+    """Build per-playthrough care challenges without mutating chapter modules."""
+    prepared = dict(chapter)
+    slides = _place_chapter_characters(chapter)
+    crop = card_registry.crop_card(chapter.get("crop", ""))
+    if crop is None:
+        raise ValueError(f"No crop card is registered for chapter crop {chapter.get('crop')!r}")
+
+    crop_needs = {
+        "water": max(0, int(crop.details.get("water", 0))),
+        "fertilizer": max(0, int(crop.details.get("fertilizer", 0))),
+        "weeds": max(0, int(crop.details.get("weeds", 0))),
+        "pests": max(0, int(crop.details.get("pests", 0))),
+    }
+    fixed_challenges = {gauge: 0 for gauge in _GAUGE_ORDER}
+    for slide in slides:
+        if slide.get("type") == "action_challenge":
+            gauge = _ACTION_GAUGE_BY_SLUG.get(_action_kind(slide))
+            if gauge is not None:
+                fixed_challenges[gauge] += 1
+
+    day_values = [slide["day"] for slide in slides if isinstance(slide.get("day"), int)]
+    last_day = max(day_values, default=int(crop.details.get("days", 0)))
+    total_days = max(
+        int(chapter.get("total_days") or crop.details.get("days") or last_day),
+        last_day,
+    )
+    candidates = [gauge for gauge in _GAUGE_ORDER if crop_needs[gauge] > 0]
+    scheduled = []
+    middle_start = max(
+        _RANDOM_CHALLENGE_MIN_DAYS,
+        int(total_days * _RANDOM_CHALLENGE_START_FRACTION + 0.999),
+    )
+    middle_end = min(
+        last_day,
+        int(total_days * _RANDOM_CHALLENGE_END_FRACTION),
+    )
+    if candidates and middle_start <= middle_end:
+        first_event_latest = min(
+            middle_end,
+            max(
+                middle_start,
+                int(total_days * _RANDOM_CHALLENGE_FIRST_WINDOW_FRACTION + 0.999),
+            ),
+        )
+        due_day = random.randint(middle_start, first_event_latest)
+        while due_day <= middle_end:
+            gauge = random.choices(
+                candidates,
+                weights=[3 if candidate == "water" else 1 for candidate in candidates],
+                k=1,
+            )[0]
+            scheduled.append((due_day, gauge))
+            due_day += random.randint(_RANDOM_CHALLENGE_MIN_DAYS, _RANDOM_CHALLENGE_MAX_DAYS)
+    analyze_index = None
+    if scheduled and random.random() < _ANALYSIS_CHALLENGE_PROBABILITY:
+        analyze_index = random.randrange(len(scheduled))
+
+    scheduled_index = 0
+    prepared_slides = []
+    current_day = 0
+    random_counts = {gauge: 0 for gauge in _GAUGE_ORDER}
+    for slide in slides:
+        slide_day = slide.get("day", current_day)
+        while scheduled_index < len(scheduled) and scheduled[scheduled_index][0] <= slide_day:
+            due_day, gauge = scheduled[scheduled_index]
+            prepared_slides.extend(_random_action_pair(
+                due_day,
+                scheduled_index + 1,
+                gauge,
+                include_analysis=(scheduled_index == analyze_index),
+                background=slide.get("bg"),
+            ))
+            random_counts[gauge] += 1
+            scheduled_index += 1
+        prepared_slides.append(slide)
+        if isinstance(slide.get("day"), int):
+            current_day = slide["day"]
+
+    totals = {
+        gauge: (
+            0 if gauge == "water"
+            else max(crop_needs[gauge], fixed_challenges[gauge]) + random_counts[gauge]
+        )
+        for gauge in _GAUGE_ORDER
+    }
+    prepared["slides"] = prepared_slides
+    return prepared, totals
+
+
 def _load_chapter():
     global _engine, _chars, _DAY_TOTAL, _chapter_done, _last_bg_surf
-    global _water_level, _crop_name, _pending_water_scan
+    global _water_level, _crop_name, _pending_water_scan, _challenge_timer_slide
+    global _gauge_remaining, _gauge_totals, _gauge_visible
     global _memory_game_played, _ingredient_puzzle_played, _whack_a_pest_played
     global _tomato_seed_extraction_played
-    chapter     = chapters_data.load(game_state.selected_chapter)
+    chapter, _gauge_totals = _prepare_chapter(
+        chapters_data.load(game_state.selected_chapter)
+    )
+    _gauge_remaining = dict(_gauge_totals)
+    _gauge_visible = {gauge: False for gauge in _GAUGE_ORDER}
     _DAY_TOTAL  = chapter.get("total_days", 30)
+    game_state.day = 0
     _chars      = CharacterLayer(WIDTH, HEIGHT)
     _engine     = StoryEngine(chapter, on_chapter_end=_on_chapter_end)
+    player_data.begin_chapter(game_state.selected_chapter)
     _chapter_done = False
     _memory_game_played = False
     _ingredient_puzzle_played = False
@@ -289,6 +552,7 @@ def _load_chapter():
     _water_level  = 1.0
     _crop_name    = chapter.get("crop", "")
     _pending_water_scan = False
+    _challenge_timer_slide = None
     _reset_typing()
     _sync_chars()
 
@@ -298,6 +562,9 @@ def _sync_chars():
         return
     s = _engine.slide
     if "day" in s:
+        elapsed_days = max(0, s["day"] - game_state.day)
+        if elapsed_days:
+            _decay_water(elapsed_days)
         game_state.day = s["day"]
     _chars.set_slide(
         s.get("chars", {}),
@@ -310,6 +577,7 @@ def _sync_chars():
     # a previous panel must never carry over.
     if s.get("type") != "action_challenge":
         _reset_action()
+    _reset_challenge_timer()
 
     # Smoke panels (e.g. S2P21) also fire a dense one-shot burst on
     # arrival; emission continues while the slide stays on screen.
@@ -344,6 +612,9 @@ def _blit_shaken(surf: pygame.Surface):
 
 def _on_chapter_end():
     global _engine, _chars, _chapter_done
+    result = player_data.complete_chapter()
+    if result is not None:
+        game_state.score[result["chapter"]] = result["score"]
     _chapter_done = True
     _chars = None
     _compute_end_buttons()
@@ -1082,6 +1353,59 @@ def _reset_action():
     _ACTION_WRONG_T  = 0.0
 
 
+def _reset_challenge_timer():
+    global _challenge_timer_slide, _challenge_time_left, _challenge_timeout_feedback
+    if _engine is None or not _engine.slide.get("timer"):
+        _challenge_timer_slide = None
+        _challenge_time_left = 0.0
+        _challenge_timeout_feedback = 0.0
+        return
+    if _challenge_timer_slide != _engine.slide_idx:
+        _challenge_timer_slide = _engine.slide_idx
+        _challenge_time_left = _CHALLENGE_DURATION
+        _challenge_timeout_feedback = 0.0
+
+
+def _update_challenge_timer(dt):
+    global _challenge_time_left, _challenge_timeout_feedback
+    if _engine is None or not _engine.slide.get("timer"):
+        return
+    if _challenge_timeout_feedback > 0.0:
+        _challenge_timeout_feedback = max(0.0, _challenge_timeout_feedback - dt)
+        if _challenge_timeout_feedback == 0.0:
+            _challenge_time_left = _CHALLENGE_DURATION
+        return
+    _challenge_time_left = max(0.0, _challenge_time_left - dt)
+    if _challenge_time_left == 0.0:
+        player_data.record_mistake()
+        _challenge_timeout_feedback = 1.5
+        _reset_action()
+
+
+def _draw_challenge_timer(surf):
+    if _engine is None or not _engine.slide.get("timer"):
+        return
+    if _challenge_timeout_feedback > 0.0:
+        text = "Time's up! Try again"
+        color = (220, 90, 75)
+    else:
+        text = f"Time: {max(0, int(_challenge_time_left + 0.999))}s"
+        color = _DAY_TEXT
+    label = _font_hint.render(text, True, color)
+    pad_x = int(WIDTH * 0.016)
+    pad_y = int(HEIGHT * 0.009)
+    exit_rect = _chapter_exit_button_rect()
+    rect = pygame.Rect(
+        exit_rect.left - label.get_width() - pad_x * 2 - int(WIDTH * 0.018),
+        int(HEIGHT * 0.020),
+        label.get_width() + pad_x * 2,
+        label.get_height() + pad_y * 2,
+    )
+    pygame.draw.rect(surf, _DAY_FILL, rect, border_radius=rect.height // 2)
+    pygame.draw.rect(surf, _DAY_BORDER, rect, width=2, border_radius=rect.height // 2)
+    surf.blit(label, label.get_rect(center=rect.center))
+
+
 def _action_layout():
     """Rects for the instruction art, the two squares and the hint line.
 
@@ -1120,7 +1444,7 @@ def _handle_action_tap(px, py):
     Tapping anywhere else does nothing: the player has to pick a square,
     so the panel cannot be skipped past.
     """
-    global _ACTION_SOLVED_T, _ACTION_WRONG_T
+    global _ACTION_SOLVED_T, _ACTION_WRONG_T, _water_level
 
     if _ACTION_SOLVED_T > 0:
         return                       # already solved, waiting to advance
@@ -1128,9 +1452,21 @@ def _handle_action_tap(px, py):
     lay = _action_layout()
     blue, red = lay["blue"], lay["red"]
     if blue is not None and blue.collidepoint(px, py):
+        player_data.record_challenge_success(
+            _challenge_time_left if _engine.slide.get("timer") else 0
+        )
+        action = _action_kind(_engine.slide)
+        gauge = _ACTION_GAUGE_BY_SLUG.get(action)
+        if gauge is not None:
+            _gauge_visible[gauge] = True
+            if gauge != "water":
+                _gauge_remaining[gauge] = max(0, _gauge_remaining[gauge] - 1)
+        if gauge == "water":
+            _water_level = 1.0
         _ACTION_SOLVED_T = _ACTION_SOLVE_DELAY
         return
     if red is not None and red.collidepoint(px, py):
+        player_data.record_mistake()
         _ACTION_WRONG_T = _ACTION_WRONG_TIME
         return
 
@@ -1361,6 +1697,10 @@ def _draw_narration(surf):
 def handle_tap(px, py):
     global _typing_chars, _typing_done, _pending_water_scan
 
+    if handle_chapter_exit_tap(px, py):
+        exit_chapter()
+        return
+
     # Chapter-complete overlay intercepts all taps
     if _chapter_done:
         _handle_end_tap(px, py)
@@ -1379,6 +1719,8 @@ def handle_tap(px, py):
         return
 
     s = _engine.slide
+    if s.get("timer") and _challenge_timeout_feedback > 0.0:
+        return
     if s["type"] == "memory_game" and not _memory_game_played:
         _launch_memory_game()
         return
@@ -1406,6 +1748,12 @@ def handle_tap(px, py):
     if s["type"] == "choice":
         for i, btn in enumerate(_choice_image_buttons()):
             if btn.collidepoint(px, py):
+                if i != s.get("correct"):
+                    player_data.record_mistake()
+                else:
+                    player_data.record_challenge_success(
+                        _challenge_time_left if s.get("timer") else 0
+                    )
                 if _engine.choose(i):
                     _sync_chars()
                 return
@@ -1450,12 +1798,13 @@ def handle_tap(px, py):
         return
 
     if _engine.popup_open == "scan":
-        card_name = s.get("card", "")
+        card_name = _engine.slide.get("card", "")
         _pending_water_scan = "water" in card_name.lower()
         scan_popup.open(
-            card_name   = card_name,
-            question    = s.get("question", ""),
-            on_complete = _on_scan_done,
+            card_name=card_name,
+            question=_engine.slide.get("question", ""),
+            on_complete=_on_scan_done,
+            on_cancel=_on_scan_cancel,
         )
 
 
@@ -1467,6 +1816,11 @@ def _on_scan_done():
         _water_level = 1.0
     _engine.on_scan_complete()
     _sync_chars()
+
+
+def _on_scan_cancel():
+    if _engine is not None:
+        _engine.close_popup()
 
 
 def _handle_end_tap(px, py):
@@ -1497,11 +1851,50 @@ def _handle_end_tap(px, py):
             return
 
 
+def exit_chapter():
+    """Leave the current chapter and return to the chapter selector."""
+    global _engine, _chars, _chapter_done, _fade_phase, _fade_alpha
+    global _fade_timer, _pending_water_scan, _smoke
+
+    if game_state.selected_chapter is None:
+        return
+    if _smoke is not None:
+        _smoke.stop()
+    scan_popup.close()
+    _engine = None
+    _chars = None
+    _chapter_done = False
+    _fade_phase = None
+    _fade_alpha = 0
+    _fade_timer = 0.0
+    _pending_water_scan = False
+    player_data.abort_chapter()
+    game_state.day = 0
+    game_state.selected_chapter = None
+    _go_to_scene("level_select")
+
+
 # ─────────────────────────────────────────────────────────────
 #  Drawing
 # ─────────────────────────────────────────────────────────────
 
 def draw(surf):
+    _draw_chapter_frame(surf)
+    draw_chapter_exit(surf)
+
+
+def handle_chapter_exit_tap(px, py):
+    if game_state.selected_chapter is None:
+        return False
+    return _chapter_exit_button_rect().collidepoint(px, py)
+
+
+def draw_chapter_exit(surf):
+    if game_state.selected_chapter is not None:
+        _draw_chapter_exit(surf)
+
+
+def _draw_chapter_frame(surf):
     global _last_ticks, _typing_chars, _typing_done, _typing_text, _prev_line_key
     global _dbox, _fade_phase, _fade_alpha, _fade_timer, _last_bg_surf
     global _shake_timer, _shake_surf
@@ -1605,6 +1998,8 @@ def draw(surf):
         _apply_fade(surf, dt)
         return
 
+    _update_challenge_timer(dt)
+
     # ── Character-only scene ─────────────────────────────────
     if stype == "scene":
         if _chars is not None:
@@ -1631,6 +2026,7 @@ def draw(surf):
         _draw_action(target, dt)
         _draw_day_counter(target)
         _draw_water_bar(target)
+        _draw_challenge_timer(target)
         _blit_shaken(surf)
         _finish_fade_in(surf, dt)
         return
@@ -1694,6 +2090,7 @@ def draw(surf):
 
     # ── Water meter (bottom of the planter) ────────────────────
     _draw_water_bar(target)
+    _draw_challenge_timer(target)
 
     # ── Camera shake: present the frame with the offset ───────
     _blit_shaken(surf)
@@ -1707,6 +2104,29 @@ def draw(surf):
         scan_popup.draw(surf)
     elif _engine and _engine.popup_open == "image":
         image_popup.draw(surf)
+
+
+def _chapter_exit_button_rect():
+    button_w = max(92, min(160, int(WIDTH * 0.13)))
+    button_h = max(44, min(64, int(HEIGHT * 0.075)))
+    margin = max(10, int(min(WIDTH, HEIGHT) * 0.025))
+    return pygame.Rect(WIDTH - button_w - margin, margin, button_w, button_h)
+
+
+def _draw_chapter_exit(surf):
+    rect = _chapter_exit_button_rect()
+    pygame.draw.rect(surf, (132, 48, 40), rect, border_radius=rect.height // 3)
+    pygame.draw.rect(surf, (245, 220, 195), rect, width=2, border_radius=rect.height // 3)
+
+    font = _make_font(max(0.028, 16 / HEIGHT))
+    label = font.render("Exit chapter", True, (255, 245, 230))
+    max_width = rect.width - 16
+    if label.get_width() > max_width:
+        label = pygame.transform.smoothscale(
+            label,
+            (max_width, max(1, int(label.get_height() * max_width / label.get_width()))),
+        )
+    surf.blit(label, label.get_rect(center=rect.center))
 
 
 def _draw_memory_game_return(surf):
@@ -1847,7 +2267,6 @@ def _apply_fade(surf, dt):
         if _fade_timer >= _HOLD_DURATION:
             _engine.tap()   # advance from transition slide to next slide
             _sync_chars()
-            _decay_water()  # days passed without a fresh watering
             _fade_phase = "in"
             _fade_alpha = 255
 
@@ -1863,61 +2282,90 @@ def _apply_fade(surf, dt):
     surf.blit(overlay, (0, 0))
 
 
-def _decay_water():
-    """A day-skip passed without a fresh watering — the soil dries out a bit."""
+def _decay_water(days_passed):
+    """Reduce the meter in proportion to elapsed in-game days."""
     global _water_level
-    _water_level = max(0.0, _water_level - _WATER_DECAY_PER_TRANSITION)
+    _water_level = max(0.0, _water_level - _WATER_DECAY_PER_DAY * days_passed)
 
 
 def _draw_water_bar(surf):
-    """Water-level meter anchored to the bottom of the planter bed."""
-    s = _engine.slide
-    if _engine.popup_open or "planter" not in s.get("bg", ""):
+    """Draw only the care meters whose matching action has been encountered."""
+    if _engine is None or _engine.popup_open:
         return
 
-    color = _CROP_WATER_COLORS.get(_crop_name, _WATER_DEFAULT_COLOR)
-    low   = _water_level < _WATER_LOW_THRESHOLD
+    visible = [gauge for gauge in _GAUGE_ORDER if _gauge_visible.get(gauge, False)]
+    if not visible:
+        return
 
-    bar_w = int(WIDTH  * _WATER_BAR_W_FRAC)
-    bar_h = int(HEIGHT * _WATER_BAR_H_FRAC)
-    bar_x = (WIDTH - bar_w) // 2
-    bar_y = HEIGHT - int(HEIGHT * _WATER_BOTTOM_MARGIN_FRAC) - bar_h
-    track = pygame.Rect(bar_x, bar_y, bar_w, bar_h)
-    r     = bar_h // 2
+    margin = max(8, int(WIDTH * 0.025))
+    panel_h = max(68, int(HEIGHT * 0.09))
+    panel_y = HEIGHT - panel_h - max(4, int(HEIGHT * 0.012))
+    panel = pygame.Surface((WIDTH - margin * 2, panel_h), pygame.SRCALPHA)
+    pygame.draw.rect(
+        panel,
+        (28, 22, 16, 205),
+        panel.get_rect(),
+        border_radius=max(8, panel_h // 5),
+    )
+    surf.blit(panel, (margin, panel_y))
 
-    # Label
-    label_text = f"{_crop_name} Water" if _crop_name else "Water"
-    lbl        = _font_hint.render(label_text, True, (250, 245, 230))
-    lbl_rect   = lbl.get_rect(midbottom=(WIDTH // 2, bar_y - 4))
-    shadow     = _font_hint.render(label_text, True, (30, 20, 10))
-    surf.blit(shadow, lbl_rect.move(1, 1))
-    surf.blit(lbl, lbl_rect)
+    item_w = panel.get_width() // len(visible)
+    icon_size = min(max(30, int(HEIGHT * 0.052)), panel_h - 12)
+    label_font = _font_hint
+    for index, gauge in enumerate(visible):
+        x = margin + index * item_w
+        icon = _get_gauge_icon(gauge, icon_size)
+        icon_y = panel_y + (panel_h - icon_size) // 2
+        surf.blit(icon, (x + 8, icon_y))
 
-    # Track (empty background)
-    pygame.draw.rect(surf, (45, 32, 20), track, border_radius=r)
+        if gauge == "water":
+            water_label = f"Water {int(_water_level * 100)}%"
+            label = f"{_crop_name} {water_label}" if _crop_name else water_label
+        else:
+            remaining = _gauge_remaining[gauge]
+            total = _gauge_totals[gauge]
+            label = f"{_GAUGE_LABELS[gauge]} {remaining}/{total}"
+        text = label_font.render(label, True, (250, 245, 230))
+        max_text_w = max(20, item_w - icon_size - 24)
+        if text.get_width() > max_text_w:
+            text = pygame.transform.smoothscale(
+                text,
+                (max_text_w, max(1, int(text.get_height() * max_text_w / text.get_width()))),
+            )
+        text_x = x + icon_size + 16
+        surf.blit(text, (text_x, panel_y + 8))
 
-    # Fill (how much water is left)
-    if _water_level > 0:
-        fill_w = min(bar_w, max(bar_h, int(bar_w * _water_level)))
-        fill_color = (215, 70, 55) if low else color
-        pygame.draw.rect(surf, fill_color, pygame.Rect(bar_x, bar_y, fill_w, bar_h), border_radius=r)
+        bar_x = text_x
+        bar_y = panel_y + panel_h - 20
+        bar_w = max(16, margin + (index + 1) * item_w - 8 - bar_x)
+        track = pygame.Rect(bar_x, bar_y, bar_w, 9)
+        pygame.draw.rect(surf, (54, 43, 31), track, border_radius=5)
+        if gauge == "water":
+            fraction = _water_level
+            fill_color = (215, 70, 55) if _water_level < _WATER_LOW_THRESHOLD else _CROP_WATER_COLORS.get(
+                _crop_name, _WATER_DEFAULT_COLOR
+            )
+        else:
+            fraction = remaining / total if total else 0
+            fill_color = _GAUGE_COLORS[gauge]
+        fill_w = int(track.width * max(0.0, min(1.0, fraction)))
+        if fill_w:
+            pygame.draw.rect(
+                surf,
+                fill_color,
+                pygame.Rect(track.x, track.y, fill_w, track.height),
+                border_radius=5,
+            )
+        pygame.draw.rect(surf, (235, 225, 205), track, width=1, border_radius=5)
 
-    # Border — flags red when the crop badly needs watering
-    border_color = (235, 90, 70) if low else (245, 235, 210)
-    pygame.draw.rect(surf, border_color, track, width=2, border_radius=r)
 
-    # Droplet icon to the left of the bar, tinted to match the crop
-    drop_r  = int(bar_h * 0.9)
-    drop_cx = bar_x - drop_r - int(WIDTH * 0.012)
-    drop_cy = bar_y + bar_h // 2
-    drop_color = (215, 70, 55) if low else color
-    pygame.draw.circle(surf, drop_color, (drop_cx, drop_cy + drop_r // 3), drop_r)
-    pygame.draw.polygon(surf, drop_color, [
-        (drop_cx,                     drop_cy - int(drop_r * 1.3)),
-        (drop_cx - int(drop_r * 0.85), drop_cy),
-        (drop_cx + int(drop_r * 0.85), drop_cy),
-    ])
-    pygame.draw.circle(surf, (255, 255, 255), (drop_cx, drop_cy + drop_r // 3), drop_r, width=1)
+def _get_gauge_icon(gauge, size):
+    key = (gauge, size)
+    if key not in _gauge_icon_cache:
+        path = config.IMG_DIR + _GAUGE_ICON_PATHS[gauge]
+        image = pygame.image.load(path).convert_alpha()
+        _gauge_icon_cache[key] = pygame.transform.scale(image, (size, size))
+    return _gauge_icon_cache[key]
 
 
 def _draw_day_counter(surf):

@@ -123,7 +123,15 @@ class CardScanner:
 
     @property
     def trained(self):
-        return bool(self.model and self.model.get("cards"))
+        return bool(
+            self.model
+            and self.model.get("cards")
+            and self.model.get("feature_version") == features.PREPROCESS_VERSION
+        )
+
+    @property
+    def can_recognize(self):
+        return self.trained and len(self.model.get("cards", {})) >= 2
 
     def start(self, card_text):
         """Begin waiting for a card.
@@ -164,15 +172,20 @@ class CardScanner:
         """Grab a single frame and classify it.
 
         Returns (slug, score, confident) with slug None when there
-        is no camera, no model, or no readable frame.
+        is no camera, no model, or no readable frame. Camera frames
+        are still captured without a trained model so preview clients
+        can display live video.
         """
-        if self.cam is None or not self.trained:
+        if self.cam is None:
             self.saw_frame = False
             return None, 0.0, False
 
         self.frame = self.cam.read()
         self.saw_frame = self.frame is not None
         if self.frame is None:
+            return None, 0.0, False
+
+        if not self.can_recognize:
             return None, 0.0, False
 
         vec = features.extract(self.frame)
@@ -254,14 +267,17 @@ class CardScanner:
         if not self.active:
             return "idle"
         if not self.trained:
-            return "no model (run tools/train_cards.py)"
+            return "no current model (run tools/train_cards.py)"
+        if not self.can_recognize:
+            return "only one card class trained; train another card to enable recognition"
         if self.cam is None or not self.cam.is_open:
             return "camera not open"
         if not self.saw_frame:
             return f"{self.cam.backend} camera returning no frame"
+        resolution = f"{self.frame.get_width()}x{self.frame.get_height()}"
         if self.last_slug is None:
-            return f"waiting for {self.expected}"
-        return (f"reading {self.last_slug} "
+            return f"{resolution} | waiting for {self.expected}"
+        return (f"{resolution} | reading {self.last_slug} "
                 f"{self.progress() * 100:.0f}% ({self.last_score:.2f})")
 
     def __enter__(self):

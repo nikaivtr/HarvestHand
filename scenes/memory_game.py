@@ -6,8 +6,10 @@ import random
 
 import pygame
 
+import audio_manager
 import config
 import game_state
+import player_data
 import utils
 
 
@@ -39,6 +41,10 @@ _message_until = 0
 _message = ""
 _level_complete = False
 _finale = False
+_mistake_count = 0
+_matched_pairs_total = 0
+_level_pair_count = 0
+_minigame_recorded = False
 _last_ticks = 0
 _card_images = []
 _card_back_image = None
@@ -136,13 +142,13 @@ def _make_chime(notes, duration):
 
 
 def _play(sound):
-    if sound is not None:
-        sound.play()
+    audio_manager.play_effect(sound)
 
 
 def start():
     """Begin a fresh run when Chapter 2 reaches its final story panel."""
     global _background, _level_index, _finale, _card_images, _card_back_image
+    global _mistake_count, _matched_pairs_total, _level_pair_count, _minigame_recorded
     if not _card_images:
         card_images = [
             utils.load_img(f"memory-cards/{filename}")
@@ -154,6 +160,10 @@ def start():
     _background = utils.load_bg("background/Monggobg.jpg", (WIDTH, HEIGHT))
     _level_index = 0
     _finale = False
+    _mistake_count = 0
+    _matched_pairs_total = 0
+    _level_pair_count = 0
+    _minigame_recorded = False
     _start_level()
 
 
@@ -161,9 +171,10 @@ def _start_level():
     global _cards, _selected, _mismatch_until, _message_until, _message
     global _level_complete, _last_ticks, _mismatch_flipping, _finale
     global _previewing, _preview_flipping, _preview_until, _preview_duration_ms
-    global _hearts, _game_over, _game_over_pending
+    global _hearts, _game_over, _game_over_pending, _level_pair_count
 
     pair_count = _LEVEL_PAIRS[_level_index]
+    _level_pair_count = 0
     card_ids = list(range(pair_count))
     card_ids *= 2
     random.shuffle(card_ids)
@@ -316,10 +327,26 @@ def _button_rects():
 
 
 def _complete_level():
-    global _level_complete, _finale
+    global _level_complete, _finale, _minigame_recorded
     _level_complete = True
     _finale = _level_index == len(_LEVEL_PAIRS) - 1
+    if _finale:
+        _record_minigame_score()
     _play(_sound_complete)
+
+
+def _record_minigame_score():
+    global _minigame_recorded
+    if _minigame_recorded:
+        return
+    score = max(
+        0,
+        _matched_pairs_total * 100 + _hearts * 50 - _mistake_count * 25,
+    )
+    player_data.record_minigame_result(
+        "memory_game", score, mistakes=_mistake_count
+    )
+    _minigame_recorded = True
 
 
 def _flip(card, face_up):
@@ -330,7 +357,8 @@ def _flip(card, face_up):
 
 def _select_card(index):
     global _selected, _mismatch_until, _mismatch_flipping, _message, _message_until
-    global _hearts, _game_over_pending
+    global _hearts, _game_over_pending, _mistake_count
+    global _matched_pairs_total, _level_pair_count
     if _level_complete or _game_over or _previewing or _mismatch_until or len(_selected) >= 2:
         return
     card = _cards[index]
@@ -343,6 +371,8 @@ def _select_card(index):
         first, second = (_cards[i] for i in _selected)
         if first["kind"] == second["kind"]:
             first["matched"] = second["matched"] = True
+            _matched_pairs_total += 1
+            _level_pair_count += 1
             _selected = []
             _play(_sound_match)
             _message = "Great job! You found a match!"
@@ -351,6 +381,7 @@ def _select_card(index):
                 _complete_level()
         else:
             _hearts -= 1
+            _mistake_count += 1
             _play(_sound_mismatch)
             _message = "One heart used. Keep looking!" if _hearts else "Let's try this level again!"
             _message_until = pygame.time.get_ticks() + int(_MISMATCH_DELAY * 1000)
@@ -361,6 +392,7 @@ def _select_card(index):
 
 def handle_tap(px, py):
     global _level_index, _level_complete, _finale
+    global _matched_pairs_total, _level_pair_count, _minigame_recorded
 
     if not _cards:
         return
@@ -368,6 +400,8 @@ def handle_tap(px, py):
         for key, rect in _button_rects().items():
             if rect.collidepoint(px, py):
                 if key == "retry_level":
+                    _matched_pairs_total -= _level_pair_count
+                    _minigame_recorded = False
                     _start_level()
                 else:
                     _leave()
@@ -382,7 +416,7 @@ def handle_tap(px, py):
                 elif key == "continue_story":
                     _finish_success()
                 elif key == "replay":
-                    _start_level()
+                    start()
                 else:
                     _leave()
                 return
@@ -433,6 +467,7 @@ def _update(now):
             if _game_over_pending:
                 _game_over = True
                 _game_over_pending = False
+                _record_minigame_score()
         else:
             for index in _selected:
                 _flip(_cards[index], False)

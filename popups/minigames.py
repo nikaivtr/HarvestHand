@@ -98,9 +98,15 @@ def init(width, height, close_popup_callback, launch_callback=None):
     )
     _card_width = int(WIDTH * 0.54)
     _step = int(WIDTH * 0.52)
+    button_h = max(48, int(HEIGHT * 0.067))
+    reserved_height = (
+        button_h + _font_title.get_linesize()
+        + 2 * (_font_body.get_linesize() + 3) + 85
+    )
+    available_image_height = max(48, _viewport.height - reserved_height)
     _image_size = (
         min(_card_width - 24, int(WIDTH * 0.39)),
-        min(int(HEIGHT * 0.34), max(80, _viewport.height - 190)),
+        min(int(HEIGHT * 0.34), available_image_height),
     )
 
     close_size = max(56, int(min(WIDTH, HEIGHT) * 0.095))
@@ -197,14 +203,9 @@ def _play_rect(card_rect, game, focus):
     cover_bottom = cover_center_y + cover_h // 2
     title = _font_title.render(game["name"], True, _INK)
     description_lines = _wrap_text(game["desc"], _font_body, _card_width - 30)
-    description_bottom = (
-        cover_bottom + 18 + title.get_height() + 8
-        + min(2, len(description_lines)) * (_font_body.get_linesize() + 3)
-    )
-    y = max(
-        description_bottom + 8,
-        min(card_rect.bottom - button_h - 4, _viewport.bottom - button_h - 2),
-    )
+    description_bottom = cover_bottom + 18 + title.get_height() + 8
+    description_bottom += min(2, len(description_lines)) * (_font_body.get_linesize() + 3)
+    y = max(description_bottom + 10, _viewport.bottom - button_h - 12)
     return pygame.Rect(card_rect.centerx - button_w // 2, y, button_w, button_h)
 
 

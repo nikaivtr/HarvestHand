@@ -25,6 +25,7 @@ from .puzzle_piece import PuzzlePiece
 from .timer import Timer
 from .level_manager import LevelManager
 from .results_screen import ResultsScreen
+import player_data
 
 # ── Globals ──────────────────────────────────────────────────────────────
 WIDTH = HEIGHT = 0
@@ -56,16 +57,18 @@ _advance_at = None
 _game_score = 0
 _message = ""
 _message_until = 0.0
+_result_recorded = False
 
 
 def start():
     """Called by story_mode or main menu to begin the mini-game at level 1."""
-    global _timer, _game_score
+    global _timer, _game_score, _result_recorded
     global _current_ingredient, _current_pieces, _dragging_piece, _selected_piece
     global _message, _message_until, _advance_at
 
     _level_mgr.start_level(1)
     _game_score = 0
+    _result_recorded = False
     _timer = Timer(sum(cfg["timer_seconds"] for cfg in AC.LEVELS.values()))
     _timer.start()
     _results.hide()
@@ -192,6 +195,7 @@ def _make_font(size_fraction):
 
 def _finish_level(time_up=False):
     """Current level finished — show results."""
+    global _result_recorded
     time_left = _timer.remaining()
     time_bonus = int(time_left * AC.POINTS_TIME_BONUS_PER_SECOND) if not time_up else 0
     if time_up:
@@ -206,6 +210,13 @@ def _finish_level(time_up=False):
         _results.show("victory", _level_mgr.current_level, total, time_bonus)
     else:
         _results.show("complete", _level_mgr.current_level, total, time_bonus)
+    if not _result_recorded:
+        player_data.record_minigame_result(
+            "ingredient_puzzle",
+            total,
+            time_bonus=time_bonus,
+        )
+        _result_recorded = True
 
 
 

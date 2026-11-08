@@ -70,7 +70,7 @@ def draw_hud(surf, card, shots, count):
 def main():
     ap = argparse.ArgumentParser(description="Capture card sample photos")
     ap.add_argument("--card", required=True,
-                    help="card slug, e.g. water")
+                    help="card key or sample folder name, e.g. water or watering_can")
     ap.add_argument("--count", type=int, default=10,
                     help="photos to take (default 10)")
     ap.add_argument("--device", type=int, default=0, help="camera index")
@@ -79,11 +79,23 @@ def main():
 
     card = registry.get(args.card)
     if card is None:
+        card = next(
+            (
+                item for item in registry.all_cards()
+                if item.sample_folder.casefold() == args.card.casefold()
+            ),
+            None,
+        )
+    if card is None:
         print(f"unknown card '{args.card}'")
-        print("known slugs:", ", ".join(registry.slugs()))
+        print("known card keys:", ", ".join(registry.slugs()))
+        print(
+            "sample folders:",
+            ", ".join(card.sample_folder for card in registry.all_cards()),
+        )
         return 1
 
-    out_dir = args.out or os.path.join(SAMPLES, card.slug)
+    out_dir = args.out or os.path.join(SAMPLES, card.sample_folder)
     os.makedirs(out_dir, exist_ok=True)
 
     pygame.init()

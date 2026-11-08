@@ -31,9 +31,12 @@ import pygame
 # tremor changes the result.
 GRID = 12
 
-# Fraction of the frame the card is expected to fill. A card
-# held close to the lens covers a lot of the view, so we crop
-# the middle rather than the whole frame.
+# Increment whenever preprocessing changes, so models trained with
+# a different crop are not silently used for live recognition.
+PREPROCESS_VERSION = 2
+
+# Fraction of the shorter frame dimension used for the centered square
+# crop. This matches the square guide shown by the sample-capture tool.
 CROP = 0.86
 
 # Edge weighting. Edges are what survive bad lighting best, but
@@ -61,12 +64,11 @@ def prepare(surface):
         return None
 
     w, h = surface.get_size()
-    cw = max(2, int(w * CROP))
-    ch = max(2, int(h * CROP))
-    ox = (w - cw) // 2
-    oy = (h - ch) // 2
+    side = max(2, int(min(w, h) * CROP))
+    ox = (w - side) // 2
+    oy = (h - side) // 2
 
-    crop = surface.subsurface(pygame.Rect(ox, oy, cw, ch))
+    crop = surface.subsurface(pygame.Rect(ox, oy, side, side))
     small = pygame.transform.smoothscale(crop, (GRID, GRID))
     # No .convert() here on purpose: converting needs a display, and this
     # runs headless during training. tobytes() reads a plain surface fine.

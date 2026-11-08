@@ -55,7 +55,7 @@ def sample_dirs(root=None):
     base = _samples_root(root)
     found = {}
     for card in registry.all_cards():
-        path = os.path.join(base, card.slug)
+        path = os.path.join(base, card.sample_folder)
         if os.path.isdir(path):
             found[card.slug] = path
     return found
@@ -63,7 +63,10 @@ def sample_dirs(root=None):
 
 def find_samples(slug, root=None):
     """Sorted list of sample image paths for one card."""
-    path = os.path.join(_samples_root(root), slug)
+    card = registry.get(slug)
+    if card is None:
+        return []
+    path = os.path.join(_samples_root(root), card.sample_folder)
     if not os.path.isdir(path):
         return []
     return [
@@ -146,11 +149,12 @@ def build_model(root=None, verbose=True):
     if not cards:
         problems.append(
             "no usable samples found - put photos in "
-            f"{os.path.join(_samples_root(root), '<card-slug>')}"
+            f"{os.path.join(_samples_root(root), '<card-folder>')}"
         )
 
     return {
         "version": 1,
+        "feature_version": features.PREPROCESS_VERSION,
         "grid": features.GRID,
         "crop": features.CROP,
         "threshold": DEFAULT_THRESHOLD,
@@ -173,7 +177,9 @@ def load_model(path=None):
             model = json.load(fh)
     except (FileNotFoundError, OSError, ValueError):
         return None
-    if not isinstance(model, dict) or not model.get("cards"):
+    if (not isinstance(model, dict)
+            or not model.get("cards")
+            or model.get("feature_version") != features.PREPROCESS_VERSION):
         return None
     return model
 
@@ -212,13 +218,16 @@ def classify(model, vector, threshold=None, margin=None):
 
     Returns (slug, score, confident). `confident` is False if the
     best score is below the threshold or too close to the runner-up.
+    A model with only one card class cannot distinguish that card
+    from an untrained object, so it is never considered confident.
     The scanner treats a non-confident result as "keep scanning"
-    rather than as a wrong card, so a hand hovering at the edge of
-    frame never counts as a mistake.
+    rather than as a wrong card.
     """
     slug, score, _runner, runner = match(model, vector)
     if slug is None:
         return None, 0.0, False
+    if len(model.get("cards", {})) < 2:
+        return slug, score, False
 
     thr = model.get("threshold", DEFAULT_THRESHOLD) if threshold is None else threshold
     mrg = model.get("margin", DEFAULT_MARGIN) if margin is None else margin

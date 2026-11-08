@@ -17,6 +17,8 @@ import config
 import utils
 import game_state
 import data.chapters as chapters_data
+from cardscan import registry as card_registry
+from popups import scan_popup
 
 
 WIDTH = HEIGHT = 0
@@ -86,6 +88,12 @@ _tile_s   = None
 _post_s   = None
 _title_s  = None
 _back_s   = None
+_selection_art = None
+_selection_chapter = None
+_selection_confirm_rect = None
+_selection_cancel_rect = None
+_chapter_scan_open = False
+_selection_error = ""
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -99,11 +107,18 @@ def init(width, height, go_to_scene_callback):
     global _PLAQ_W, _PLAQ_H, _TILE_TOP, _TILE_W, _TILE_H, _TILE_GAP
     global _POST_W, _POST_H, _COL_X
     global _plaque_s, _tile_s, _post_s, _title_s, _back_s
+    global _selection_art, _selection_chapter
+    global _selection_confirm_rect, _selection_cancel_rect
+    global _chapter_scan_open, _selection_error
     global _shadow_p, _shadow_t
     global _f_title, _f_name, _f_sub, _f_chap, _f_crop, _f_back
 
     WIDTH, HEIGHT = width, height
     _go_to_scene  = go_to_scene_callback
+    _selection_chapter = None
+    _chapter_scan_open = False
+    _selection_error = ""
+    scan_popup.init(WIDTH, HEIGHT)
 
     bg_image = utils.load_bg("background/menubg2.png", (WIDTH, HEIGHT))
     wood     = utils.load_img("woodbg.png")
@@ -176,6 +191,31 @@ def init(width, height, go_to_scene_callback):
     back_w  = int(min(WIDTH, HEIGHT) * 0.13)
     _back_s = pygame.transform.smoothscale(panel, (back_w, int(back_w / 1.9)))
     back_rect = _back_s.get_rect(topleft=(int(WIDTH * 0.028), _TITLE_TOP))
+
+    selection_source = utils.load_img("Action Challenge_Select_Chapter.png")
+    selection_ratio = selection_source.get_width() / selection_source.get_height()
+    selection_w = min(int(WIDTH * 0.86), int(HEIGHT * 0.72 * selection_ratio))
+    selection_h = int(selection_w / selection_ratio)
+    _selection_art = pygame.transform.smoothscale(
+        selection_source, (selection_w, selection_h)
+    )
+    button_w = int(WIDTH * 0.31)
+    button_h = max(36, int(HEIGHT * 0.075))
+    button_y = int(HEIGHT * 0.86)
+    _selection_confirm_rect = pygame.Rect(
+        0, 0, button_w, button_h
+    )
+    _selection_confirm_rect.center = (
+        WIDTH // 2 - int(WIDTH * 0.17),
+        button_y,
+    )
+    _selection_cancel_rect = pygame.Rect(
+        0, 0, button_w, button_h
+    )
+    _selection_cancel_rect.center = (
+        WIDTH // 2 + int(WIDTH * 0.17),
+        button_y,
+    )
 
     _shadow_p = _make_shadow(_PLAQ_W, _PLAQ_H, int(_PLAQ_H * 0.09))
     _shadow_t = _make_shadow(_TILE_W, _TILE_H, int(_TILE_H * 0.14))
@@ -349,6 +389,11 @@ def _compute_layout():
 def handle_tap(px, _py):
     """Remember the press so the board under the finger shrinks."""
     global _press_at, _pressed
+    if _chapter_scan_open:
+        scan_popup.handle_tap(px, _py)
+        return
+    if _selection_chapter is not None:
+        return
     for item in _compute_layout():
         if item["rect"].collidepoint(px, _py):
             _pressed = (item["kind"], item["gi"], item["ci"])
@@ -362,8 +407,33 @@ def handle_drag(_px, _py):
 
 
 def handle_release(px, py):
-    global _pressed
+    global _pressed, _selection_chapter, _chapter_scan_open, _selection_error
     _pressed = None
+
+    if _chapter_scan_open:
+        return
+
+    if _selection_chapter is not None:
+        if _selection_confirm_rect.collidepoint(px, py):
+            card = card_registry.crop_card(_selection_chapter.get("crop", ""))
+            if card is None:
+                _selection_error = "This chapter has no registered crop card."
+                return
+            _selection_error = ""
+            _chapter_scan_open = True
+            scan_popup.open(
+                card_name=card.display,
+                question=(
+                    f"Scan the {card.name} to unlock "
+                    f"{_selection_chapter.get('crop', 'this')} chapter."
+                ),
+                on_complete=_on_chapter_card_scanned,
+                on_cancel=_on_chapter_scan_cancel,
+            )
+        elif _selection_cancel_rect.collidepoint(px, py):
+            _selection_chapter = None
+            _selection_error = ""
+        return
 
     if back_rect and back_rect.collidepoint(px, py):
         _go_to_scene("main_menu")
@@ -376,10 +446,25 @@ def handle_release(px, py):
             g = _groups[item["gi"]]
             g["expanded"] = not g["expanded"]
         elif item["kind"] == "chap":
-            ch = item["ch"]
-            game_state.selected_chapter = ch["_module_id"]
-            _go_to_scene("story_mode")
+            _selection_chapter = item["ch"]
+            _selection_error = ""
         return
+
+
+def _on_chapter_card_scanned():
+    global _selection_chapter, _chapter_scan_open
+    if _selection_chapter is None:
+        _chapter_scan_open = False
+        return
+    game_state.selected_chapter = _selection_chapter["_module_id"]
+    _selection_chapter = None
+    _chapter_scan_open = False
+    _go_to_scene("story_mode")
+
+
+def _on_chapter_scan_cancel():
+    global _chapter_scan_open
+    _chapter_scan_open = False
 
 
 
@@ -422,6 +507,54 @@ def draw(surf):
             _draw_card(surf, item)
 
     _draw_back(surf)
+    if _selection_chapter is not None:
+        _draw_chapter_scan_prompt(surf)
+    if _chapter_scan_open:
+        scan_popup.draw(surf)
+
+
+def _draw_chapter_scan_prompt(surf):
+    shade = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+    shade.fill((0, 0, 0, 190))
+    surf.blit(shade, (0, 0))
+
+    art_rect = _selection_art.get_rect(
+        midtop=(WIDTH // 2, int(HEIGHT * 0.025))
+    )
+    surf.blit(_selection_art, art_rect)
+
+    card = card_registry.crop_card(_selection_chapter.get("crop", ""))
+    card_name = card.name if card is not None else "crop"
+    prompt = f"Scan the {card_name} to enter this chapter"
+    prompt_font = _make_font(HEIGHT * 0.043)
+    _paint_text(
+        surf,
+        prompt,
+        _fit_font(prompt, int(WIDTH * 0.8), prompt_font),
+        _CREAM,
+        (WIDTH // 2, int(HEIGHT * 0.77)),
+    )
+
+    pygame.draw.rect(surf, (50, 150, 75), _selection_confirm_rect, border_radius=12)
+    pygame.draw.rect(surf, _CREAM, _selection_confirm_rect, width=3, border_radius=12)
+    confirm_font = _make_font(HEIGHT * 0.031)
+    confirm_text = confirm_font.render("Scan Card", True, _CREAM)
+    surf.blit(confirm_text, confirm_text.get_rect(center=_selection_confirm_rect.center))
+
+    pygame.draw.rect(surf, (115, 64, 48), _selection_cancel_rect, border_radius=12)
+    pygame.draw.rect(surf, _CREAM, _selection_cancel_rect, width=3, border_radius=12)
+    cancel_text = confirm_font.render("Cancel", True, _CREAM)
+    surf.blit(cancel_text, cancel_text.get_rect(center=_selection_cancel_rect.center))
+    if _selection_error:
+        error_font = _make_font(HEIGHT * 0.024)
+        error_text = _fit_font(_selection_error, int(WIDTH * 0.8), error_font)
+        _paint_text(
+            surf,
+            _selection_error,
+            error_text,
+            (255, 170, 140),
+            (WIDTH // 2, int(HEIGHT * 0.93)),
+        )
 
 
 def _draw_title(surf):

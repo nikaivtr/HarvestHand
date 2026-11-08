@@ -924,11 +924,7 @@ CHAPTER = {
                 ("lucas", "Kailangan nila ng tubig para lumusog at tumubo sila Lola. Kaya gagamit tayo ng regadera.."),
             ],
         },
-    # ── Scene 2, Panel 48 - Card Scan Event ──────────────────────
-    # TEMPORARY stand-in for the real card scan. The instruction art is
-    # drawn on top of the default scene background and the player picks
-    # the blue square. This slide type is replaced once the camera-based
-    # cardscan feature is wired in.
+    # ── Scene 2, Panel 48 - Water the Pechay crop ───────────────
         {
             "id": "S2P48",
             "type": "action_challenge",

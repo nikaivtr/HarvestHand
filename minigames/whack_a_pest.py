@@ -8,6 +8,7 @@ import time
 import pygame
 
 import config
+import player_data
 
 
 WIDTH = HEIGHT = 0
@@ -38,6 +39,7 @@ _tile_rects = []
 _buttons = {}
 _message = ""
 _message_until = 0.0
+_minigame_recorded = False
 
 COLS = 5
 ROWS = 3
@@ -228,11 +230,12 @@ def _layout():
 
 def start():
     global _state, _level, _score, _eliminations, _invalid_actions, _plants_lost
-    global _level5_eliminations
+    global _level5_eliminations, _minigame_recorded
     global _plants, _pests, _splats, _next_pest_id, _message, _message_until
     _level = 1
     _score = _eliminations = _invalid_actions = _plants_lost = 0
     _level5_eliminations = 0
+    _minigame_recorded = False
     _plants = set(PLANT_TILES)
     _pests = []
     _splats = []
@@ -654,6 +657,7 @@ PLANT_TILES_ORDER = tuple(sorted(PLANT_TILES))
 def draw(surface):
     now = time.monotonic()
     _update(now)
+    _record_minigame_result()
     surface.blit(_background, (0, 0))
     _draw_hud(surface, now)
     _draw_board(surface, now)
@@ -674,3 +678,15 @@ def draw(surface):
         )
     elif _state == "defeat":
         _draw_result(surface, "The pests got the garden!", f"Final score: {_score:,}", "TRY AGAIN")
+
+
+def _record_minigame_result():
+    global _minigame_recorded
+    if _state not in ("victory", "defeat") or _minigame_recorded:
+        return
+    player_data.record_minigame_result(
+        "whack_a_pest",
+        _score,
+        mistakes=_invalid_actions + _plants_lost,
+    )
+    _minigame_recorded = True

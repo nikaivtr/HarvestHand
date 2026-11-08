@@ -65,10 +65,16 @@ class OpenCVCamera(_Base):
 
     backend = "opencv"
 
-    def __init__(self, device=0, width=640, height=480):
+    def __init__(self, device=0, width=None, height=None):
+        if (width is None) != (height is None):
+            raise ValueError("width and height must be set together")
+        if width is not None and height is not None and (width < 1 or height < 1):
+            raise ValueError("width and height must be positive")
         self.device = device
         self.width  = width
         self.height = height
+        self.resolution = None
+        self.autofocus_enabled = False
         self._cv2   = None
         self._cap   = None
 
@@ -81,14 +87,26 @@ class OpenCVCamera(_Base):
                 "    pip install opencv-python-headless"
             ) from exc
 
-        cap = cv2.VideoCapture(self.device)
-        if not cap.isOpened():
+        try:
+            cap = cv2.VideoCapture(self.device)
+        except cv2.error as exc:
             raise CameraError(
-                f"could not open camera {self.device} - check the ribbon "
-                "seating and that the camera is enabled (sudo raspi-config)"
+                f"could not initialize camera {self.device}: {exc}"
+            ) from exc
+        if not cap.isOpened():
+            cap.release()
+            raise CameraError(
+                f"could not open camera {self.device} - check that the camera "
+                "is enabled, its driver is active, and the current user can "
+                "access the device"
             )
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH,  self.width)
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
+        try:
+            self.autofocus_enabled = bool(cap.set(cv2.CAP_PROP_AUTOFOCUS, 1))
+        except cv2.error:
+            self.autofocus_enabled = False
+        if self.width is not None and self.height is not None:
+            cap.set(cv2.CAP_PROP_FRAME_WIDTH,  self.width)
+            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
 
         self._cv2 = cv2
         self._cap = cap
@@ -98,18 +116,23 @@ class OpenCVCamera(_Base):
         """Grab one frame as a pygame.Surface, or None."""
         if self._cap is None:
             return None
-        ok, frame = self._cap.read()
-        if not ok or frame is None:
-            return None
+        try:
+            ok, frame = self._cap.read()
+            if not ok or frame is None:
+                return None
 
-        rgb = self._cv2.cvtColor(frame, self._cv2.COLOR_BGR2RGB)
-        h, w = rgb.shape[:2]
-        return pygame.image.frombuffer(rgb.tobytes(), (w, h), "RGB")
+            rgb = self._cv2.cvtColor(frame, self._cv2.COLOR_BGR2RGB)
+            h, w = rgb.shape[:2]
+            self.resolution = (w, h)
+            return pygame.image.frombuffer(rgb.tobytes(), (w, h), "RGB")
+        except self._cv2.error as exc:
+            raise CameraError(f"camera {self.device} failed while reading a frame: {exc}") from exc
 
     def release(self):
         if self._cap is not None:
             self._cap.release()
             self._cap = None
+        self.resolution = None
 
     @property
     def is_open(self):
@@ -199,10 +222,13 @@ class NullCamera(_Base):
 
 # ── Factory ─────────────────────────────────────────────────
 
-def open_camera(kind="auto", device=0, path=None, loop=True):
+def open_camera(kind="auto", device=0, path=None, loop=True,
+                width=None, height=None):
     """Build and open a camera source.
 
     kind: "opencv" | "folder" | "null" | "auto"
+    width/height: optional requested OpenCV frame size; by default the
+                  camera backend selects a supported mode.
 
     Auto prefers a real OpenCV camera and falls back to a null
     source, so a missing camera never crashes the game.
@@ -214,12 +240,12 @@ def open_camera(kind="auto", device=0, path=None, loop=True):
             raise CameraError("folder source needs a path")
         return FolderCamera(path, loop).open()
     if kind == "opencv":
-        return OpenCVCamera(device).open()
+        return OpenCVCamera(device, width, height).open()
     if kind != "auto":
         raise CameraError(f"unknown camera kind: {kind}")
 
     try:
-        return OpenCVCamera(device).open()
+        return OpenCVCamera(device, width, height).open()
     except CameraError as exc:
         print(f"[cardscan] no live camera "
               f"({str(exc.args[0]).splitlines()[0]}); continuing without one")

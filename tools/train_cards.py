@@ -118,14 +118,16 @@ def main():
     found = model.sample_dirs(root)
     if not found:
         print("  no card folders yet. Create one per card, using the")
-        print("  slugs from the catalog:")
-        print("   ", ", ".join(registry.slugs()))
+        print("  sample folder names from the catalog:")
+        print("   ", ", ".join(
+            card.sample_folder for card in registry.all_cards()
+        ))
         return 1
 
-    known = {c.slug for c in registry.all_cards()}
-    for slug in sorted(os.listdir(root)):
-        if os.path.isdir(os.path.join(root, slug)) and slug not in known:
-            print(f"  ! '{slug}' is not in the catalog - ignored "
+    known = {c.sample_folder for c in registry.all_cards()}
+    for folder in sorted(os.listdir(root)):
+        if os.path.isdir(os.path.join(root, folder)) and folder not in known:
+            print(f"  ! '{folder}' is not in the catalog - ignored "
                   "(add it to cardscan/registry.py)")
 
     _banner("Training")
@@ -137,6 +139,13 @@ def main():
             n = len(model.find_samples(slug, root))
             print(f"    {slug}: {n} images")
         return 1
+
+    if len(built["cards"]) < 2:
+        print(
+            "\n  WARNING: only one card class was trained. The scanner cannot "
+            "distinguish it from other objects and will not accept scans. "
+            "Train at least one more visually distinct card class."
+        )
 
     out = args.out
     if not out:

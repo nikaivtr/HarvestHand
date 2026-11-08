@@ -17,7 +17,26 @@ folders as well as `main.py`.
 
    The installer uses `apt` to install Python 3, Pygame, and OpenCV (used for
    live card scanning), then verifies the Python imports. It works when run as
-   root or through `sudo`.
+   root or through `sudo`. The scanner lets OpenCV use the camera backend's
+   default supported resolution and reads the actual frame dimensions; it
+   does not assume every camera supports the same mode.
+
+3. Connect and enable the camera before starting the game. USB webcams and Pi
+   cameras exposed through a V4L2-compatible device are supported by the
+   OpenCV camera path. Camera availability still depends on the Pi OS camera
+   stack, device permissions, and the camera driver; verify the camera works
+   with the OS camera tools if Harvest Hand reports that it cannot open it.
+
+4. If card designs or scanner image preprocessing change, capture fresh
+   samples and retrain the model:
+
+   ```bash
+   python3 tools/capture_samples.py --card water
+   python3 tools/train_cards.py --report
+   ```
+
+   Repeat capture for each card slug. The scan panel reports the actual
+   camera frame resolution while it is reading.
 
 ## Start the game
 

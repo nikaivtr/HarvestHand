@@ -1,78 +1,68 @@
-# ============================================================
-#  Card Features
+# Card Features
 #
-#  Turns a captured frame (or a sample photo) into a compact
-#  numeric fingerprint that the model can compare.
+# Turns a captured frame (or sample photo) into a compact numeric
+# fingerprint that the model can compare.
 #
-#  Deliberately dependency-free: this project has no numpy and
-#  pygame.surfarray needs it, so everything here works on a
-#  raw RGB byte buffer produced by pygame.image.tobytes().
+# Pipeline:
+#   surface -> preprocess.prepare (detect card, perspective-correct,
+#            letterbox to a fixed 5:7 portrait canvas)
+#           -> downscale to GRID x GRID
+#           -> per-cell mean colour + edge energy
+#           -> gentle centre / illustration-band weighting
+#           -> concatenate colour + edge (fixed-length vector)
 #
-#  The fingerprint is a coarse colour grid plus edge energy, and
-#  it is built to survive the things that actually go wrong at
-#  scan time: different lighting, the card being a bit further
-#  from the lens, and small hand-held tilt. Those change
-#  brightness and overall scale far more than they change which
-#  card it is.
+# Pure Python (no numpy) so it trains and runs headless on a Pi.
+# The old 12x12 grid could not separate cards that share one
+# template; the higher grid plus card isolation resolves the
+# illustration, name and ID differences.
 #
-#  Pipeline:
-#      surface -> centre crop -> flatten to GRID x GRID
-#              -> per-cell mean colour
-#              -> normalise for brightness
-#              -> concatenate colour + edge rows
-# ============================================================
 
 import pygame
 
+import cardscan.preprocess as preprocess
 
-# ── Tuning ──────────────────────────────────────────────────
-# The analysis resolution. 12x12 gives enough spatial detail to
-# tell the card art apart without being so fine that a 2px hand
-# tremor changes the result.
-GRID = 12
+# Analysis resolution. 24x24 gives enough spatial detail to tell
+# same-template cards apart without being so fine that a 2px hand
+# tremor changes the result. Each cell is 5x7 px on the 120x168
+# normalized card.
+GRID = 24
 
-# Increment whenever preprocessing changes, so models trained with
-# a different crop are not silently used for live recognition.
-PREPROCESS_VERSION = 2
+# Must match preprocess.PREPROCESS_VERSION so stale models are
+# rejected.
+PREPROCESS_VERSION = preprocess.PREPROCESS_VERSION
 
-# Fraction of the shorter frame dimension used for the centered square
-# crop. This matches the square guide shown by the sample-capture tool.
-CROP = 0.86
-
-# Edge weighting. Edges are what survive bad lighting best, but
-# pure edge matching would confuse two cards with the same
-# outline, so they are mixed with colour rather than used alone.
+# Edge weighting. Edges survive bad lighting, but pure edge matching
+# would confuse two cards with the same outline, so they are mixed
+# with colour rather than used alone.
 EDGE_WEIGHT = 0.85
 
-# Centre weighting. The card is meant to be held in the middle of
-# the frame, so cells away from the centre are pulled down. Without
-# this, a card that does not quite fill the frame is mostly
-# background, and every card starts to look like every other one.
-# 0.0 ignores the weighting, 1.0 makes it very strong.
-CENTER_FALLOFF = 0.6
+# Centre weighting. The card is centred in the normalized canvas, so
+# cells near the middle (illustration) are more informative than the
+# corners (border / background padding). 0.0 disables.
+CENTER_FALLOFF = 0.5
 
-# Luminance weights (Rec. 601) used for the edge pass.
+# Horizontal band that usually holds the crop illustration gets a
+# small extra boost; name (top) and ID (bottom) bands keep their
+# colour so the card ID is a supporting signal.
+ILLUSTRATION_BAND = (0.30, 0.75)
+ILLUSTRATION_BOOST = 0.25
+
 _LR, _LG, _LB = 0.299, 0.587, 0.114
 
 
 def prepare(surface):
-    """Crop the centre of a frame and flatten it to a GRID x GRID RGB buffer.
+    """Normalize a frame/sample to the standard card canvas.
 
-    Returns (width, height, bytes) or None if the surface is unusable.
+    Delegates to cardscan.preprocess.prepare so training and live
+    recognition use identical preprocessing. Returns a (CANVAS_W x
+    CANVAS_H) pygame Surface, or None.
     """
-    if surface is None or surface.get_width() < 2 or surface.get_height() < 2:
-        return None
+    return preprocess.prepare(surface)
 
-    w, h = surface.get_size()
-    side = max(2, int(min(w, h) * CROP))
-    ox = (w - side) // 2
-    oy = (h - side) // 2
 
-    crop = surface.subsurface(pygame.Rect(ox, oy, side, side))
-    small = pygame.transform.smoothscale(crop, (GRID, GRID))
-    # No .convert() here on purpose: converting needs a display, and this
-    # runs headless during training. tobytes() reads a plain surface fine.
-    return GRID, GRID, pygame.image.tobytes(small, "RGB")
+def load_image(path):
+    """Load a sample photo off disk, or None if it cannot be read."""
+    return preprocess.load_image(path)
 
 
 def _cell_mean(buf, w, x, y):
@@ -81,45 +71,57 @@ def _cell_mean(buf, w, x, y):
     return buf[i], buf[i + 1], buf[i + 2]
 
 
+def _build_weight_map(w, h):
+    """Per-cell weight: centre-weighted with an illustration-band boost."""
+    cx = (w - 1) / 2.0
+    cy = (h - 1) / 2.0
+    norm = max(cx, cy) or 1.0
+    top, bottom = ILLUSTRATION_BAND
+    wt = [[0.0] * w for _ in range(h)]
+    for y in range(h):
+        dy = (y - cy) / norm
+        band = 1.0 if top <= (y / max(h - 1, 1)) <= bottom else 0.0
+        for x in range(w):
+            dx = (x - cx) / norm
+            d2 = dx * dx + dy * dy
+            k = 1.0 - CENTER_FALLOFF * (d2 if d2 < 1.0 else 1.0)
+            if k < 0.3:
+                k = 0.3
+            k += ILLUSTRATION_BOOST * band
+            wt[y][x] = k
+    return wt
+
+
 def extract(surface):
     """Compute the feature vector for one frame or sample image.
 
     Returns a list of floats, or None if the image cannot be read.
-    Length is stable: GRID*GRID colour values followed by
-    GRID*GRID edge values.
+    Length is stable: GRID*GRID*4 values (mean R, G, B and edge
+    energy per cell).
     """
-    prep = prepare(surface)
-    if prep is None:
+    card = preprocess.prepare(surface)
+    if card is None:
         return None
-    w, h, buf = prep
+    small = pygame.transform.smoothscale(card, (GRID, GRID))
+    w, h = small.get_size()
+    buf = pygame.image.tobytes(small, 'RGB')
 
-    # ── Pass 1: per-cell mean colour, normalised for brightness ──
-    # Dividing out each cell's own luminance means a dim room or a
-    # bright lamp compresses the whole vector toward 1.0 instead of
-    # shifting it, so matching stays stable across lighting.
-    # `colour` is a flat RGB run (3 floats per cell), `lumas` is one
-    # float per cell.
     colour = [0.0] * (w * h * 3)
-    lumas  = [0.0] * (w * h)
+    lumas = [0.0] * (w * h)
     for y in range(h):
         for x in range(w):
             r, g, b = _cell_mean(buf, w, x, y)
-            i  = y * w + x
-            c  = i * 3
+            i = y * w + x
+            c = i * 3
             lum = _LR * r + _LG * g + _LB * b
-            # A near-black cell has no usable hue, so it is left
-            # neutral instead of being divided up into noise.
+            # Keep absolute colour (helps separate illustrations);
+            # only guard near-black cells against noise.
             if lum > 18.0:
-                colour[c]     = r / lum
-                colour[c + 1] = g / lum
-                colour[c + 2] = b / lum
+                colour[c] = r / 255.0
+                colour[c + 1] = g / 255.0
+                colour[c + 2] = b / 255.0
             lumas[i] = lum / 255.0
 
-    # ── Pass 2: gradient energy along rows and columns ──
-    # A card is mostly flat colour with a bold icon in the middle;
-    # the icon's edges are the part that identifies it. Sampling
-    # only left/right and up/down neighbours (not diagonals) keeps
-    # this cheap while still capturing the outline.
     edge = [0.0] * (w * h)
     for y in range(h):
         for x in range(w):
@@ -135,57 +137,23 @@ def extract(surface):
                 mag = 1.0
             edge[i] = mag * EDGE_WEIGHT
 
-    # ── Pass 3: pull weight toward the middle of the frame ──
-    _apply_centre_weight(w, h, colour, edge)
-
-    return colour + edge
-
-
-def _apply_centre_weight(w, h, colour, edge):
-    """Scale every cell down by how far it sits from the centre.
-
-    The card is held in the middle of the view, so the corners are
-    expected to be whatever was behind it. Down-weighting them stops
-    a half-empty background from drowning out the card's own colour,
-    which is what made an unfilled frame match the wrong card.
-    """
-    if CENTER_FALLOFF <= 0.0:
-        return
-    cx = (w - 1) / 2.0
-    cy = (h - 1) / 2.0
-    # Longest half-axis, so the corners reach exactly 1.0.
-    norm = max(cx, cy) or 1.0
+    weight = _build_weight_map(w, h)
+    out = []
     for y in range(h):
-        dy = (y - cy) / norm
         for x in range(w):
-            dx = (x - cx) / norm
-            d2 = dx * dx + dy * dy
-            if d2 <= 0.0:
-                continue
-            k = 1.0 - CENTER_FALLOFF * (d2 if d2 < 1.0 else 1.0)
-            c = (y * w + x) * 3
-            colour[c]     *= k
-            colour[c + 1] *= k
-            colour[c + 2] *= k
-            edge[y * w + x] *= k
-
-
-def load_image(path):
-    """Load a sample photo off disk, or None if it cannot be read.
-
-    The image is returned unconverted: convert()/convert_alpha() both
-    require an initialised display, and training has to work headless.
-    """
-    try:
-        return pygame.image.load(path)
-    except (pygame.error, FileNotFoundError, OSError):
-        return None
+            i = y * w + x
+            k = weight[y][x]
+            c = i * 3
+            out.append(colour[c] * k)
+            out.append(colour[c + 1] * k)
+            out.append(colour[c + 2] * k)
+            out.append(edge[i] * k)
+    return out
 
 
 def describe(vec):
-    """Short human-readable summary, handy when tuning a card by hand."""
     if not vec:
-        return "empty"
-    half = len(vec) // 2
-    bright = sum(vec[half:]) / half * 255.0
-    return f"{len(vec)} dims, {len(vec) // 6} cells, mean edge {bright:.0f}/255"
+        return 'empty'
+    ncell = len(vec) // 4
+    edge_sum = sum(vec[i] for i in range(3, len(vec), 4))
+    return '%d dims, %d cells, mean edge %.2f' % (len(vec), ncell, edge_sum / ncell)

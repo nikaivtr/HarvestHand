@@ -1,0 +1,14 @@
+filename,class_label,capture_session,source_path,width,height,file_hash,notes
+# Expanded dataset manifest - D:\HarvestHand\cardscan\dataset\
+# Add one row per new image. Columns:
+#   filename        - original filename (preserved)
+#   class_label     - pechay_plant or monggo_plant
+#   capture_session - session identifier (e.g. session_01, session_02)
+#   source_path     - full path to the image file (under cardscan\dataset\)
+#   width/height    - image dimensions (filled in by inventory script)
+#   file_hash       - SHA-256 prefix for duplicate detection (filled in by inventory script)
+#   notes           - manual notes about capture conditions (lighting, distance, etc.)
+#
+# Example rows (remove before use):
+# IMG_20261110_100000.jpg,pechay_plant,session_01,D:\HarvestHand\cardscan\dataset\pechay_plant\session_01\IMG_20261110_100000.jpg,,,,
+# IMG_20261110_100001.jpg,monggo_plant,session_01,D:\HarvestHand\cardscan\dataset\monggo_plant\session_01\IMG_20261110_100001.jpg,,,,

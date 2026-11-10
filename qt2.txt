@@ -1,0 +1,1 @@
+# comment line\nx = 'single quoted'\nprint('ok')\n

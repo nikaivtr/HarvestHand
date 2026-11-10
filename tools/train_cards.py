@@ -27,7 +27,6 @@ os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
 
 import pygame
 
-import cardscan.features as features
 import cardscan.model as model
 import cardscan.registry as registry
 
@@ -38,34 +37,44 @@ def _banner(text):
     print("-" * len(text))
 
 
-def report(built, root):
-    """Leave-one-out style check: how well does it know its own cards?"""
+def report(built):
+    """Report leave-one-out sample recognition and class separation."""
     _banner("Recognition report")
     print(f"  threshold {built['threshold']}   margin {built['margin']}\n")
 
     ok = bad = 0
     for slug in sorted(built["cards"]):
-        files = model.find_samples(slug, root)
-        if not files:
+        entry = built["cards"][slug]
+        samples = entry["samples"]
+        if not samples:
             continue
-        hits = 0
-        scores = []
-        for f in files:
-            vec = features.extract(features.load_image(f))
-            if vec is None:
-                continue
-            guess, score, confident = model.classify(built, vec)
-            scores.append(score)
-            if guess == slug and confident:
-                hits += 1
-        n = len(scores) or 1
-        mean = sum(scores) / n
-        rate = hits / len(files)
-        ok  += hits
-        bad += len(files) - hits
+        top_hits = accepted_hits = 0
+        scored = []
+        for sample_index, vec in enumerate(samples):
+            held_out = dict(built)
+            held_out["cards"] = dict(built["cards"])
+            held_out_entry = dict(entry)
+            held_out_entry["samples"] = (
+                samples[:sample_index] + samples[sample_index + 1:]
+            )
+            held_out["cards"][slug] = held_out_entry
+            result = model.classify_detailed(held_out, vec)
+            scored.append(result)
+            if result["slug"] == slug:
+                top_hits += 1
+                if result["confident"]:
+                    accepted_hits += 1
+        n = len(scored)
+        rate = accepted_hits / n if n else 0.0
+        ok  += accepted_hits
+        bad += n - accepted_hits
         flag = "ok " if rate >= 0.8 else "WEAK"
-        print(f"  {slug:<10} {hits:>3}/{len(files):<3} correct "
-              f"({rate * 100:>5.1f}%)  mean {mean:.3f}  {flag}")
+        mean_score = sum(row["best_score"] for row in scored) / n if n else 0.0
+        mean_gap = sum(row["gap"] for row in scored) / n if n else 0.0
+        print(f"  {slug:<20} ranked {top_hits:>3}/{n:<3}  "
+              f"accepted {accepted_hits:>3}/{n:<3} "
+              f"({rate * 100:>5.1f}%)  best {mean_score:.3f}  "
+              f"gap {mean_gap:.3f}  {flag}")
 
     total = ok + bad
     if total:
@@ -84,7 +93,10 @@ def report(built, root):
             for b in slugs:
                 if a == b:
                     continue
-                s = model.similarity(built["cards"][a], built["cards"][b])
+                s = model.similarity(
+                    built["cards"][a]["centroid"],
+                    built["cards"][b]["centroid"],
+                )
                 if s < worst:
                     worst, other = s, b
             flag = "ok " if worst < built["threshold"] else "CLOSE"
@@ -131,11 +143,11 @@ def main():
                   "(add it to cardscan/registry.py)")
 
     _banner("Training")
-    built = model.build_model(root)
+    built = model.build_model(root, verbose=True)
 
     if not built["cards"]:
         print("\n  nothing to train on.")
-        for slug, path in sorted(found.items()):
+        for slug in sorted(found):
             n = len(model.find_samples(slug, root))
             print(f"    {slug}: {n} images")
         return 1
@@ -156,7 +168,7 @@ def main():
     print(f"\n  saved {len(built['cards'])} cards -> {saved} ({size / 1024:.1f} KB)")
 
     if args.report:
-        report(built, root)
+        report(built)
     return 0
 
 

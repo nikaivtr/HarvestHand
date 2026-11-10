@@ -1,0 +1,4 @@
+line1
+x = 'numpy'
+y = 'cv2'
+print('ok')

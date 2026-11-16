@@ -1,0 +1,20 @@
+{
+  "eligible_images": 29,
+  "verified_detections": 0,
+  "correct_full_card_detections": 0,
+  "incorrect_or_internal_detections": 0,
+  "missed_or_uncertain": 29,
+  "internal_region_false_locks": 0,
+  "mean_corner_error_percent_verified": null,
+  "p95_corner_error_percent_verified": null,
+  "mean_processing_ms": 141.9282172413471,
+  "p95_processing_ms": 367.48797999989597,
+  "static_acceptance": {
+    "correct_at_least_26": false,
+    "false_locks_zero": true,
+    "missed_at_most_3": false,
+    "mean_error_at_most_2_percent": false,
+    "p95_error_at_most_4_percent": false
+  },
+  "live_physical_testing": "not run by automated benchmark"
+}

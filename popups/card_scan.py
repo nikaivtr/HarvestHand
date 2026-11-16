@@ -3,6 +3,7 @@ import os
 import pygame
 import player_data
 from cardscan import CardScanner, all_cards, CameraError, get as get_card
+from cardscan.boundary_tracker import BoundaryTracker
 
 WIDTH = 0
 HEIGHT = 0
@@ -11,6 +12,7 @@ _close_popup = None
 _panel = None
 _close_rect = None
 _scanner = None
+_boundary_tracker = None
 _cam_opened = False
 _cards = []
 _selected_idx = 0
@@ -36,7 +38,8 @@ def _make_font(size, bold=False):
 
 
 def init(width, height, close_popup_callback):
-    global WIDTH, HEIGHT, _close_popup, _panel, _close_rect, _close_img, _scanner, _cards, _cam_opened, _selected_idx
+    global WIDTH, HEIGHT, _close_popup, _panel, _close_rect, _close_img
+    global _scanner, _boundary_tracker, _cards, _cam_opened, _selected_idx
     global _card_page, _card_page_size, _result_msg, _result_msg_until
     global _result_msg_color, _select_model_page
     if _scanner is not None:
@@ -53,6 +56,7 @@ def init(width, height, close_popup_callback):
     _close_rect = _close_img.get_rect(topright=(_panel.right - 10, _panel.top + 10))
     _cards = all_cards()
     _scanner = CardScanner(confirm_frames=12)
+    _boundary_tracker = BoundaryTracker()
     trained_cards = set(_scanner.model.get("cards", {})) if _scanner.model else set()
     _selected_idx = next(
         (index for index, card in enumerate(_cards) if card.slug in trained_cards),
@@ -72,6 +76,8 @@ def open():
     global _cam_opened, _result_msg, _result_msg_until, _result_msg_color
     if _scanner is None:
         return
+    if _boundary_tracker is not None:
+        _boundary_tracker.reset()
     if not _cam_opened:
         try:
             _scanner.open_camera(
@@ -105,6 +111,8 @@ def close():
     global _cam_opened
     if _scanner is not None:
         _scanner.cancel()
+    if _boundary_tracker is not None:
+        _boundary_tracker.reset()
     _cam_opened = False
 
 
@@ -167,6 +175,51 @@ def _frame_to_surface(frame):
         )
         return pygame.transform.smoothscale(frame, size)
     return None
+
+
+def _draw_boundary_overlay(surf, frame, image_rect, details, body_font):
+    points = details.get("points")
+    if not points or len(points) != 4:
+        label = "No card boundary detected"
+        label_surface = _fit_text_surface(
+            label, body_font, image_rect.width - 12, (255, 170, 85)
+        )
+        surf.blit(
+            label_surface,
+            label_surface.get_rect(midtop=(image_rect.centerx, image_rect.top + 6)),
+        )
+        return
+    try:
+        screen_points = [
+            (
+                round(image_rect.left + point[0] * image_rect.width / frame.get_width()),
+                round(image_rect.top + point[1] * image_rect.height / frame.get_height()),
+            )
+            for point in points
+        ]
+    except (TypeError, ValueError, ZeroDivisionError, IndexError):
+        return
+
+    status = details.get("status")
+    color = {
+        "tracking": (90, 235, 125),
+        "acquiring": (100, 190, 245),
+        "reacquiring": (255, 190, 90),
+    }.get(status, (255, 170, 85))
+    pygame.draw.lines(surf, color, True, screen_points, width=4)
+    for point in screen_points:
+        pygame.draw.circle(surf, color, point, 6)
+
+    label = {
+        "tracking": "Boundary tracking",
+        "acquiring": "Calibrating boundary...",
+        "reacquiring": "Reacquiring full card...",
+    }.get(status, "Candidate boundary rejected")
+    label_surface = _fit_text_surface(label, body_font, image_rect.width - 12, color)
+    surf.blit(
+        label_surface,
+        label_surface.get_rect(midtop=(image_rect.centerx, image_rect.top + 6)),
+    )
 
 
 def _draw_retry_button(surf, body_font):
@@ -236,7 +289,20 @@ def draw(surf):
         frame = _scanner.frame if _cam_opened else None
         s = _frame_to_surface(frame)
         if s:
-            surf.blit(s, s.get_rect(center=_preview_rect.center))
+            image_rect = s.get_rect(center=_preview_rect.center)
+            surf.blit(s, image_rect)
+            boundary_details = (
+                _boundary_tracker.update(frame, 1.0 / 60.0)
+                if _boundary_tracker is not None
+                else {"status": "lost"}
+            )
+            _draw_boundary_overlay(
+                surf,
+                frame,
+                image_rect,
+                boundary_details,
+                body_font,
+            )
         else:
             nf = body_font.render("No camera frame. Check connection.", True, (220, 170, 120))
             surf.blit(nf, nf.get_rect(center=_preview_rect.center))

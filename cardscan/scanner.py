@@ -28,6 +28,7 @@
 import cardscan.camera as camera
 import cardscan.features as features
 import cardscan.model as model
+import cardscan.preprocess as preprocess
 import cardscan.registry as registry
 
 
@@ -276,6 +277,12 @@ class CardScanner:
             return f"{self.cam.backend} camera returning no frame"
         resolution = f"{self.frame.get_width()}x{self.frame.get_height()}"
         if self.last_slug is None:
+            detection = preprocess.last_detection()
+            if detection.get("status") == "failed":
+                return (
+                    f"{resolution} | card boundary not found: "
+                    f"{detection.get('reason', 'retry capture')}"
+                )
             return f"{resolution} | waiting for {self.expected}"
         return (f"{resolution} | reading {self.last_slug} "
                 f"{self.progress() * 100:.0f}% ({self.last_score:.2f})")

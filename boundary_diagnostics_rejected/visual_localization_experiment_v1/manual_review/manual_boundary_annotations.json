@@ -1,0 +1,1568 @@
+[
+  {
+    "filename": "06f34cc6-cfcf-4805-a210-9679a4cb591c - Copy.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\06f34cc6-cfcf-4805-a210-9679a4cb591c - Copy.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        408.14,
+        179.93
+      ],
+      [
+        1356.07,
+        96.55
+      ],
+      [
+        1372.16,
+        915.75
+      ],
+      [
+        430.08,
+        886.49
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:32:15.625761+00:00"
+  },
+  {
+    "filename": "06f34cc6-cfcf-4805-a210-9679a4cb591c.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\06f34cc6-cfcf-4805-a210-9679a4cb591c.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        411.06,
+        171.15
+      ],
+      [
+        1354.61,
+        106.79
+      ],
+      [
+        1337.05,
+        914.29
+      ],
+      [
+        399.36,
+        889.42
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:32:22.473784+00:00"
+  },
+  {
+    "filename": "0a01f9f6-fb25-4cb2-b253-89ad882e4ea4.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\0a01f9f6-fb25-4cb2-b253-89ad882e4ea4.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        95.09,
+        248.69
+      ],
+      [
+        1534.54,
+        106.79
+      ],
+      [
+        1575.5,
+        1138.1
+      ],
+      [
+        321.83,
+        1139.57
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:11:12.763049+00:00"
+  },
+  {
+    "filename": "299f151c-890e-4e80-b5ef-276cc8c1f737.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\299f151c-890e-4e80-b5ef-276cc8c1f737.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        114.1,
+        7.31
+      ],
+      [
+        1704.23,
+        8.78
+      ],
+      [
+        1701.3,
+        1095.68
+      ],
+      [
+        125.81,
+        1126.4
+      ]
+    ],
+    "annotation_status": "blurred_or_damaged",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:37:22.836620+00:00"
+  },
+  {
+    "filename": "325fe2ba-fe12-480b-9c91-4c037b5633ef.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\325fe2ba-fe12-480b-9c91-4c037b5633ef.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        582.22,
+        236.98
+      ],
+      [
+        1787.61,
+        136.05
+      ],
+      [
+        1808.09,
+        1142.49
+      ],
+      [
+        571.98,
+        1078.13
+      ]
+    ],
+    "annotation_status": "blurred_or_damaged",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:11:31.202313+00:00"
+  },
+  {
+    "filename": "4e5e32c9-3d5b-498f-a498-0bcd5780a17d.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\4e5e32c9-3d5b-498f-a498-0bcd5780a17d.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        236.66,
+        284.44
+      ],
+      [
+        1037.65,
+        311.75
+      ],
+      [
+        1055.86,
+        1358.51
+      ],
+      [
+        218.45,
+        1378.99
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:11:34.755304+00:00"
+  },
+  {
+    "filename": "4ef036f9-3397-4241-b010-638cfaa9104d.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\4ef036f9-3397-4241-b010-638cfaa9104d.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        482.74,
+        270.63
+      ],
+      [
+        1301.94,
+        323.29
+      ],
+      [
+        1423.36,
+        855.77
+      ],
+      [
+        378.88,
+        844.07
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:24:31.549950+00:00"
+  },
+  {
+    "filename": "4fa5ceb0-9108-4084-a1e4-0136026cce13 - Copy.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\4fa5ceb0-9108-4084-a1e4-0136026cce13 - Copy.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        75.09,
+        327.68
+      ],
+      [
+        801.0,
+        250.31
+      ],
+      [
+        887.47,
+        1181.01
+      ],
+      [
+        163.84,
+        1272.04
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:24:44.093602+00:00"
+  },
+  {
+    "filename": "4fa5ceb0-9108-4084-a1e4-0136026cce13.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\4fa5ceb0-9108-4084-a1e4-0136026cce13.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        84.2,
+        309.48
+      ],
+      [
+        789.62,
+        243.48
+      ],
+      [
+        889.74,
+        1171.91
+      ],
+      [
+        184.32,
+        1285.69
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:24:52.740970+00:00"
+  },
+  {
+    "filename": "59db5bd6-f83e-4ed0-921f-e815160f210d.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\59db5bd6-f83e-4ed0-921f-e815160f210d.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        514.93,
+        121.42
+      ],
+      [
+        1793.46,
+        39.5
+      ],
+      [
+        1790.54,
+        1129.33
+      ],
+      [
+        501.76,
+        1038.63
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:25:03.402129+00:00"
+  },
+  {
+    "filename": "5ac988f1-a307-4906-b2f9-d9e54f1aa139.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\5ac988f1-a307-4906-b2f9-d9e54f1aa139.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        194.56,
+        125.81
+      ],
+      [
+        1480.41,
+        109.71
+      ],
+      [
+        1471.63,
+        1108.85
+      ],
+      [
+        185.78,
+        1088.37
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:25:11.502544+00:00"
+  },
+  {
+    "filename": "65f44f31-81b6-44be-8bde-c65af98d4e63.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\65f44f31-81b6-44be-8bde-c65af98d4e63.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        129.71,
+        477.87
+      ],
+      [
+        969.39,
+        393.67
+      ],
+      [
+        996.69,
+        1647.5
+      ],
+      [
+        77.37,
+        1617.92
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:25:15.090625+00:00"
+  },
+  {
+    "filename": "6ba8cceb-393b-4b90-a19e-cf09c8dc5d80.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\6ba8cceb-393b-4b90-a19e-cf09c8dc5d80.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        225.28,
+        71.68
+      ],
+      [
+        1552.09,
+        98.01
+      ],
+      [
+        1794.93,
+        1022.54
+      ],
+      [
+        20.48,
+        1069.35
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:25:23.293658+00:00"
+  },
+  {
+    "filename": "85bceec5-2c5e-48ef-a279-8f85e12d0064.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\85bceec5-2c5e-48ef-a279-8f85e12d0064.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        36.57,
+        171.15
+      ],
+      [
+        1585.74,
+        7.31
+      ],
+      [
+        1674.97,
+        1142.49
+      ],
+      [
+        115.57,
+        1142.49
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:25:29.721344+00:00"
+  },
+  {
+    "filename": "91258ac8-8731-4955-9712-9608ea857726.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\91258ac8-8731-4955-9712-9608ea857726.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        294.03,
+        166.77
+      ],
+      [
+        1641.33,
+        4.39
+      ],
+      [
+        1644.25,
+        1139.57
+      ],
+      [
+        337.92,
+        1079.59
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:12:32.007165+00:00"
+  },
+  {
+    "filename": "9d342fee-0b8c-4af7-8c2c-2a4e795431b1.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\9d342fee-0b8c-4af7-8c2c-2a4e795431b1.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        354.99,
+        830.58
+      ],
+      [
+        978.49,
+        830.58
+      ],
+      [
+        1037.65,
+        1720.32
+      ],
+      [
+        300.37,
+        1722.6
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:25:59.961170+00:00"
+  },
+  {
+    "filename": "IMG_20261110_141914.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\IMG_20261110_141914.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        696.89,
+        1587.91
+      ],
+      [
+        1493.33,
+        1742.22
+      ],
+      [
+        1050.31,
+        3046.4
+      ],
+      [
+        159.29,
+        2683.02
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:27:15.851755+00:00"
+  },
+  {
+    "filename": "IMG_20261110_141941.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\IMG_20261110_141941.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        627.2,
+        1339.02
+      ],
+      [
+        1931.38,
+        1453.51
+      ],
+      [
+        1682.49,
+        3215.64
+      ],
+      [
+        527.64,
+        3245.51
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:27:17.028691+00:00"
+  },
+  {
+    "filename": "IMG_20261110_141953.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\IMG_20261110_141953.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        771.56,
+        1612.8
+      ],
+      [
+        1563.02,
+        1632.71
+      ],
+      [
+        1597.87,
+        2852.27
+      ],
+      [
+        841.24,
+        3026.49
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:27:20.050011+00:00"
+  },
+  {
+    "filename": "IMG_20261110_141958.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\IMG_20261110_141958.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        756.62,
+        1587.91
+      ],
+      [
+        1348.98,
+        1388.8
+      ],
+      [
+        1418.67,
+        2727.82
+      ],
+      [
+        726.76,
+        2767.64
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:27:27.122454+00:00"
+  },
+  {
+    "filename": "IMG_20261110_142003.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\IMG_20261110_142003.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        433.07,
+        2125.51
+      ],
+      [
+        1378.84,
+        2040.89
+      ],
+      [
+        1488.36,
+        3424.71
+      ],
+      [
+        587.38,
+        3584.0
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:27:38.811763+00:00"
+  },
+  {
+    "filename": "IMG_20261110_142009.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\IMG_20261110_142009.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        711.82,
+        1468.44
+      ],
+      [
+        1473.42,
+        1329.07
+      ],
+      [
+        1538.13,
+        2493.87
+      ],
+      [
+        701.87,
+        2548.62
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:27:44.430082+00:00"
+  },
+  {
+    "filename": "IMG_20261110_142050.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\IMG_20261110_142050.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        766.58,
+        2235.02
+      ],
+      [
+        1249.42,
+        2259.91
+      ],
+      [
+        1254.4,
+        3016.53
+      ],
+      [
+        771.56,
+        3066.31
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:27:50.684459+00:00"
+  },
+  {
+    "filename": "a294b9af-0fd9-4d40-b804-e781fa0eec07.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\a294b9af-0fd9-4d40-b804-e781fa0eec07.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        329.14,
+        7.31
+      ],
+      [
+        1847.59,
+        43.89
+      ],
+      [
+        1850.51,
+        1139.57
+      ],
+      [
+        310.13,
+        1135.18
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:27:59.617307+00:00"
+  },
+  {
+    "filename": "a53bc616-2de1-4f66-a2e1-4fb06e43f639.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\a53bc616-2de1-4f66-a2e1-4fb06e43f639.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        282.17,
+        286.72
+      ],
+      [
+        914.77,
+        277.62
+      ],
+      [
+        955.73,
+        1112.75
+      ],
+      [
+        300.37,
+        1149.16
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:28:05.639967+00:00"
+  },
+  {
+    "filename": "ab95f40d-bddd-4e22-a49a-069b303a2fd3.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\ab95f40d-bddd-4e22-a49a-069b303a2fd3.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        146.29,
+        61.44
+      ],
+      [
+        1478.95,
+        26.33
+      ],
+      [
+        1464.32,
+        1100.07
+      ],
+      [
+        134.58,
+        1053.26
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:28:12.496478+00:00"
+  },
+  {
+    "filename": "b8d7215a-a96a-423f-92ac-c55aada888d0.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\b8d7215a-a96a-423f-92ac-c55aada888d0.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        413.99,
+        39.5
+      ],
+      [
+        1787.61,
+        17.55
+      ],
+      [
+        1825.65,
+        1135.18
+      ],
+      [
+        291.11,
+        1064.96
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:28:24.637222+00:00"
+  },
+  {
+    "filename": "c2e3bfdf-dc97-42ab-a366-5aa63562f3e2.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\c2e3bfdf-dc97-42ab-a366-5aa63562f3e2.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        917.21,
+        131.66
+      ],
+      [
+        1876.85,
+        136.05
+      ],
+      [
+        1890.01,
+        866.01
+      ],
+      [
+        924.53,
+        882.1
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:28:30.749967+00:00"
+  },
+  {
+    "filename": "ea1dcf87-454d-4074-aeaf-6aa4dcb720ad.jpg",
+    "class": "monggo_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\monggo_plant\\ea1dcf87-454d-4074-aeaf-6aa4dcb720ad.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        318.58,
+        334.51
+      ],
+      [
+        1146.88,
+        377.74
+      ],
+      [
+        1144.6,
+        1597.44
+      ],
+      [
+        216.18,
+        1513.24
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:28:47.469920+00:00"
+  },
+  {
+    "filename": "15b3c45c-229f-4bc2-8b11-a741f583d591.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\15b3c45c-229f-4bc2-8b11-a741f583d591.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        539.79,
+        222.35
+      ],
+      [
+        1280.0,
+        241.37
+      ],
+      [
+        1266.83,
+        784.09
+      ],
+      [
+        550.03,
+        784.09
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:28:52.595019+00:00"
+  },
+  {
+    "filename": "1ea480c8-e7c9-4298-8545-424246d671c2.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\1ea480c8-e7c9-4298-8545-424246d671c2.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        157.01,
+        455.11
+      ],
+      [
+        1005.8,
+        523.38
+      ],
+      [
+        983.04,
+        1667.98
+      ],
+      [
+        145.64,
+        1674.81
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:28:58.253238+00:00"
+  },
+  {
+    "filename": "2b5dd6d2-bb4e-4c9c-a0e5-996f783db777.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\2b5dd6d2-bb4e-4c9c-a0e5-996f783db777.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        605.62,
+        206.26
+      ],
+      [
+        1626.7,
+        190.17
+      ],
+      [
+        1691.06,
+        823.59
+      ],
+      [
+        320.37,
+        772.39
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:29:04.546152+00:00"
+  },
+  {
+    "filename": "2bacde34-d63f-4885-afa2-c63a54219b31.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\2bacde34-d63f-4885-afa2-c63a54219b31.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        129.71,
+        530.2
+      ],
+      [
+        973.94,
+        364.09
+      ],
+      [
+        1094.54,
+        1508.69
+      ],
+      [
+        341.33,
+        1556.48
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:29:12.560943+00:00"
+  },
+  {
+    "filename": "4407a29c-5afb-4a31-af48-5a2f23237a71.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\4407a29c-5afb-4a31-af48-5a2f23237a71.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        327.68,
+        86.31
+      ],
+      [
+        1677.9,
+        136.05
+      ],
+      [
+        1661.81,
+        1114.7
+      ],
+      [
+        326.22,
+        1136.64
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:29:17.271692+00:00"
+  },
+  {
+    "filename": "668da6b6-cb26-495e-83ee-62a3b7b0fbc9.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\668da6b6-cb26-495e-83ee-62a3b7b0fbc9.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        516.39,
+        100.94
+      ],
+      [
+        1582.81,
+        160.91
+      ],
+      [
+        1597.44,
+        942.08
+      ],
+      [
+        529.55,
+        1048.87
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:29:23.982220+00:00"
+  },
+  {
+    "filename": "82964558-1618-4853-829e-f1f97fcbbd7e.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\82964558-1618-4853-829e-f1f97fcbbd7e.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        29.58,
+        514.28
+      ],
+      [
+        973.94,
+        477.87
+      ],
+      [
+        1001.24,
+        1811.34
+      ],
+      [
+        22.76,
+        1818.17
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:29:32.138912+00:00"
+  },
+  {
+    "filename": "93d262c8-f97f-4e23-ab3a-4e7002d75214.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\93d262c8-f97f-4e23-ab3a-4e7002d75214.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        56.89,
+        325.4
+      ],
+      [
+        1146.88,
+        291.27
+      ],
+      [
+        1144.6,
+        1997.94
+      ],
+      [
+        50.06,
+        1959.25
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:29:38.131914+00:00"
+  },
+  {
+    "filename": "9695bc39-6647-4437-93d5-2bcc31b5b5b3.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\9695bc39-6647-4437-93d5-2bcc31b5b5b3.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        298.1,
+        830.58
+      ],
+      [
+        664.46,
+        837.4
+      ],
+      [
+        671.29,
+        1338.03
+      ],
+      [
+        295.82,
+        1344.85
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:29:48.718825+00:00"
+  },
+  {
+    "filename": "9d2195a4-fc90-4f13-9e8b-3de6d7e4f8d3.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\9d2195a4-fc90-4f13-9e8b-3de6d7e4f8d3.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        109.23,
+        409.6
+      ],
+      [
+        1033.1,
+        393.67
+      ],
+      [
+        1037.65,
+        1636.12
+      ],
+      [
+        141.08,
+        1640.68
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:29:55.039350+00:00"
+  },
+  {
+    "filename": "IMG_20261110_135321.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\IMG_20261110_135321.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        313.6,
+        1095.11
+      ],
+      [
+        1846.76,
+        1095.11
+      ],
+      [
+        1752.18,
+        3345.07
+      ],
+      [
+        338.49,
+        3255.47
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:30:05.532306+00:00"
+  },
+  {
+    "filename": "IMG_20261110_135330.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\IMG_20261110_135330.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        691.91,
+        1597.87
+      ],
+      [
+        1413.69,
+        1612.8
+      ],
+      [
+        1413.69,
+        2717.87
+      ],
+      [
+        686.93,
+        2737.78
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:30:14.638698+00:00"
+  },
+  {
+    "filename": "IMG_20261110_135346.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\IMG_20261110_135346.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        896.0,
+        2200.18
+      ],
+      [
+        1324.09,
+        2195.2
+      ],
+      [
+        1329.07,
+        2827.38
+      ],
+      [
+        891.02,
+        2872.18
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:30:24.585044+00:00"
+  },
+  {
+    "filename": "IMG_20261110_135400.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\IMG_20261110_135400.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        462.93,
+        1329.07
+      ],
+      [
+        1796.98,
+        1254.4
+      ],
+      [
+        1836.8,
+        3369.96
+      ],
+      [
+        462.93,
+        3325.16
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:30:34.489512+00:00"
+  },
+  {
+    "filename": "IMG_20261110_135414.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\IMG_20261110_135414.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        781.51,
+        1931.38
+      ],
+      [
+        1597.87,
+        1951.29
+      ],
+      [
+        1582.93,
+        3205.69
+      ],
+      [
+        751.64,
+        3185.78
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:30:45.859612+00:00"
+  },
+  {
+    "filename": "IMG_20261110_135435.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\IMG_20261110_135435.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        443.02,
+        1334.04
+      ],
+      [
+        1722.31,
+        1339.02
+      ],
+      [
+        1692.44,
+        3131.02
+      ],
+      [
+        482.84,
+        3121.07
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:30:55.633170+00:00"
+  },
+  {
+    "filename": "IMG_20261110_135729.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\IMG_20261110_135729.jpg",
+    "image_width": 2016,
+    "image_height": 4480,
+    "corners": [
+      [
+        283.73,
+        1368.89
+      ],
+      [
+        1383.82,
+        1468.44
+      ],
+      [
+        1373.87,
+        3116.09
+      ],
+      [
+        238.93,
+        3106.13
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:31:04.818339+00:00"
+  },
+  {
+    "filename": "ced8a0e8-2fcc-4c5f-a979-0a98b0854b1e.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\ced8a0e8-2fcc-4c5f-a979-0a98b0854b1e.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        138.81,
+        846.51
+      ],
+      [
+        709.97,
+        835.13
+      ],
+      [
+        730.45,
+        1654.33
+      ],
+      [
+        136.53,
+        1667.98
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:31:10.811446+00:00"
+  },
+  {
+    "filename": "cf18fef3-92cf-4437-b327-aaeb0915b4e8.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\cf18fef3-92cf-4437-b327-aaeb0915b4e8.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        45.51,
+        263.96
+      ],
+      [
+        1067.24,
+        161.56
+      ],
+      [
+        1076.34,
+        1722.6
+      ],
+      [
+        13.65,
+        1629.3
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:31:17.362252+00:00"
+  },
+  {
+    "filename": "cfe8a3cf-6665-4e61-a904-36dc93010a6e.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\cfe8a3cf-6665-4e61-a904-36dc93010a6e.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        136.53,
+        482.42
+      ],
+      [
+        1146.88,
+        459.66
+      ],
+      [
+        1146.88,
+        2013.87
+      ],
+      [
+        113.78,
+        1977.46
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:31:24.885556+00:00"
+  },
+  {
+    "filename": "d76a6f8c-f69f-4695-b876-7a1d51e427ab.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\d76a6f8c-f69f-4695-b876-7a1d51e427ab.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        318.58,
+        534.76
+      ],
+      [
+        1146.88,
+        525.65
+      ],
+      [
+        1146.88,
+        1906.92
+      ],
+      [
+        275.34,
+        1831.82
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:31:33.240182+00:00"
+  },
+  {
+    "filename": "db66a971-017b-414a-90d0-fc582e1d3be2.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\db66a971-017b-414a-90d0-fc582e1d3be2.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        325.4,
+        657.64
+      ],
+      [
+        1080.89,
+        596.2
+      ],
+      [
+        1142.33,
+        1670.26
+      ],
+      [
+        211.63,
+        1647.5
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:31:41.274760+00:00"
+  },
+  {
+    "filename": "dcbb71ba-b01f-40d1-ab7a-e3b50e24a4d6.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\dcbb71ba-b01f-40d1-ab7a-e3b50e24a4d6.jpg",
+    "image_width": 1152,
+    "image_height": 2048,
+    "corners": [
+      [
+        86.47,
+        186.6
+      ],
+      [
+        1055.86,
+        345.88
+      ],
+      [
+        948.91,
+        1658.88
+      ],
+      [
+        4.55,
+        1601.99
+      ]
+    ],
+    "annotation_status": "no_usable_card",
+    "all_corners_visible": false,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:31:49.424857+00:00"
+  },
+  {
+    "filename": "f32364fe-aff9-421e-9569-e97e42a976aa.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\f32364fe-aff9-421e-9569-e97e42a976aa.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        492.98,
+        17.55
+      ],
+      [
+        1781.76,
+        55.59
+      ],
+      [
+        1933.9,
+        1003.52
+      ],
+      [
+        93.62,
+        835.29
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:32:04.296008+00:00"
+  },
+  {
+    "filename": "f7acde1c-d3e9-4179-a169-00765e68e5c4.jpg",
+    "class": "pechay_plant",
+    "source_path": "D:\\HarvestHand\\data\\card_samples\\pechay_plant\\f7acde1c-d3e9-4179-a169-00765e68e5c4.jpg",
+    "image_width": 2048,
+    "image_height": 1152,
+    "corners": [
+      [
+        362.79,
+        1139.57
+      ],
+      [
+        469.58,
+        260.39
+      ],
+      [
+        1555.02,
+        370.1
+      ],
+      [
+        1651.57,
+        1139.57
+      ]
+    ],
+    "annotation_status": "valid_complete_card",
+    "all_corners_visible": true,
+    "reviewer_notes": "",
+    "annotated_at": "2026-11-15T14:32:07.879926+00:00"
+  }
+]

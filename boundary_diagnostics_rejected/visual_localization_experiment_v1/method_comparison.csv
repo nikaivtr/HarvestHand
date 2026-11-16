@@ -1,0 +1,5 @@
+method,candidate_images,strong_candidates,possible_candidates,extractor_compatible,mean_processing_ms,visually_verified,background_false_positives
+existing,0,0,0,0,19.45,N/A,N/A
+multi_scale,54,49,3,0,2843.2,N/A,N/A
+contrast_enhanced,54,42,11,0,4358.97,N/A,N/A
+combined,54,50,3,0,16842.54,N/A,N/A

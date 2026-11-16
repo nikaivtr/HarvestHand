@@ -1,0 +1,55 @@
+{
+  "annotation_counts": {
+    "blurred_or_damaged": 2,
+    "no_usable_card": 23,
+    "valid_complete_card": 29
+  },
+  "eligible_complete_cards": 29,
+  "methods": {
+    "existing": {
+      "eligible_images": 29,
+      "candidate_missing": 29,
+      "incorrect_or_background": 0,
+      "geometrically_correct_at_10_percent": 0,
+      "candidate_detection_rate": 0.0,
+      "correct_boundary_rate": 0.0,
+      "all_corners_within_2_percent": 0,
+      "all_corners_within_5_percent": 0,
+      "all_corners_within_10_percent": 0
+    },
+    "multi_scale": {
+      "eligible_images": 29,
+      "candidate_missing": 0,
+      "incorrect_or_background": 26,
+      "geometrically_correct_at_10_percent": 3,
+      "candidate_detection_rate": 1.0,
+      "correct_boundary_rate": 0.10344827586206896,
+      "all_corners_within_2_percent": 3,
+      "all_corners_within_5_percent": 3,
+      "all_corners_within_10_percent": 4
+    },
+    "contrast_enhanced": {
+      "eligible_images": 29,
+      "candidate_missing": 0,
+      "incorrect_or_background": 29,
+      "geometrically_correct_at_10_percent": 0,
+      "candidate_detection_rate": 1.0,
+      "correct_boundary_rate": 0.0,
+      "all_corners_within_2_percent": 0,
+      "all_corners_within_5_percent": 0,
+      "all_corners_within_10_percent": 1
+    },
+    "combined": {
+      "eligible_images": 29,
+      "candidate_missing": 0,
+      "incorrect_or_background": 25,
+      "geometrically_correct_at_10_percent": 4,
+      "candidate_detection_rate": 1.0,
+      "correct_boundary_rate": 0.13793103448275862,
+      "all_corners_within_2_percent": 3,
+      "all_corners_within_5_percent": 4,
+      "all_corners_within_10_percent": 4
+    }
+  },
+  "visual_verification": "manual review overlays required"
+}

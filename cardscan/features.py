@@ -29,23 +29,25 @@ GRID = 24
 
 # Must match preprocess.PREPROCESS_VERSION so stale models are
 # rejected.
-PREPROCESS_VERSION = preprocess.PREPROCESS_VERSION
+PREPROCESS_VERSION = 12
 
 # Edge weighting. Edges survive bad lighting, but pure edge matching
 # would confuse two cards with the same outline, so they are mixed
 # with colour rather than used alone.
-EDGE_WEIGHT = 0.85
+EDGE_WEIGHT = 2.5
 
 # Centre weighting. The card is centred in the normalized canvas, so
 # cells near the middle (illustration) are more informative than the
 # corners (border / background padding). 0.0 disables.
-CENTER_FALLOFF = 0.5
+CENTER_FALLOFF = 0.8
 
 # Horizontal band that usually holds the crop illustration gets a
-# small extra boost; name (top) and ID (bottom) bands keep their
+# strong boost; name (top) and ID (bottom) bands keep their
 # colour so the card ID is a supporting signal.
-ILLUSTRATION_BAND = (0.30, 0.75)
-ILLUSTRATION_BOOST = 0.25
+# Illustration region (pechay leafy vs monggo bean) is the most
+# distinguishing feature; background template is shared across cards.
+ILLUSTRATION_BAND = (0.30, 0.70)
+ILLUSTRATION_BOOST = 2.5
 
 _LR, _LG, _LB = 0.299, 0.587, 0.114
 
@@ -96,7 +98,7 @@ def extract(surface):
     """Compute the feature vector for one frame or sample image.
 
     Returns a list of floats, or None if the image cannot be read.
-    Length is stable: GRID*GRID*4 values (mean R, G, B and edge
+    Length is stable: GRID*GRID*4 values (mean H, S, V and edge
     energy per cell).
     """
     card = preprocess.prepare(surface)
@@ -114,12 +116,27 @@ def extract(surface):
             i = y * w + x
             c = i * 3
             lum = _LR * r + _LG * g + _LB * b
-            # Keep absolute colour (helps separate illustrations);
-            # only guard near-black cells against noise.
+            # Convert to HSV for better colour discrimination
+            # (especially for plant illustrations with different green shades)
             if lum > 18.0:
-                colour[c] = r / 255.0
-                colour[c + 1] = g / 255.0
-                colour[c + 2] = b / 255.0
+                r_norm, g_norm, b_norm = r / 255.0, g / 255.0, b / 255.0
+                mx = max(r_norm, g_norm, b_norm)
+                mn = min(r_norm, g_norm, b_norm)
+                df = mx - mn
+                if mx == mn:
+                    hue_val = 0.0
+                elif mx == r_norm:
+                    hue_val = (60.0 * ((g_norm - b_norm) / df) + 360.0) % 360.0
+                elif mx == g_norm:
+                    hue_val = (60.0 * ((b_norm - r_norm) / df) + 120.0) % 360.0
+                else:
+                    hue_val = (60.0 * ((r_norm - g_norm) / df) + 240.0) % 360.0
+                s = 0.0 if mx == 0.0 else df / mx
+                v = mx
+                # Normalize hue to 0-1
+                colour[c] = hue_val / 360.0
+                colour[c + 1] = s
+                colour[c + 2] = v
             lumas[i] = lum / 255.0
 
     edge = [0.0] * (w * h)

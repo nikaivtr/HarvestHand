@@ -27,9 +27,9 @@ import cardscan.preprocess as preprocess
 # normalized card.
 GRID = 24
 
-# Must match preprocess.PREPROCESS_VERSION so stale models are
-# rejected.
-PREPROCESS_VERSION = 12
+# Single source of truth is preprocess.py, so the two can never drift
+# apart again (a model trained under an older crop is rejected).
+PREPROCESS_VERSION = preprocess.PREPROCESS_VERSION
 
 # Edge weighting. Edges survive bad lighting, but pure edge matching
 # would confuse two cards with the same outline, so they are mixed
@@ -52,14 +52,14 @@ ILLUSTRATION_BOOST = 2.5
 _LR, _LG, _LB = 0.299, 0.587, 0.114
 
 
-def prepare(surface):
+def prepare(surface, fallback=None):
     """Normalize a frame/sample to the standard card canvas.
 
     Delegates to cardscan.preprocess.prepare so training and live
     recognition use identical preprocessing. Returns a (CANVAS_W x
     CANVAS_H) pygame Surface, or None.
     """
-    return preprocess.prepare(surface)
+    return preprocess.prepare(surface, fallback=fallback)
 
 
 def load_image(path):
@@ -94,16 +94,23 @@ def _build_weight_map(w, h):
     return wt
 
 
-def extract(surface):
+def extract(surface, fallback=None):
     """Compute the feature vector for one frame or sample image.
 
     Returns a list of floats, or None if the image cannot be read.
     Length is stable: GRID*GRID*4 values (mean H, S, V and edge
     energy per cell).
+
+    fallback: None | "training" | "guide" - see preprocess.py.
     """
-    card = preprocess.prepare(surface)
+    card = preprocess.prepare(surface, fallback=fallback)
     if card is None:
         return None
+    return extract_card(card)
+
+
+def extract_card(card):
+    """Feature vector for an ALREADY normalized card canvas."""
     small = pygame.transform.smoothscale(card, (GRID, GRID))
     w, h = small.get_size()
     buf = pygame.image.tobytes(small, 'RGB')
@@ -166,6 +173,19 @@ def extract(surface):
             out.append(colour[c + 2] * k)
             out.append(edge[i] * k)
     return out
+
+
+def extract_prepared(card):
+    """Compatibility alias for callers using the older feature API."""
+    return extract_card(card)
+
+
+def extract_center_fallback(surface):
+    """Compatibility fallback using the Claude guide rectangle."""
+    card = preprocess.prepare(surface, fallback="guide")
+    if card is None:
+        return None
+    return extract_card(card)
 
 
 def describe(vec):

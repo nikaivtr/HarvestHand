@@ -4,44 +4,52 @@
 # portrait card image that the feature extractor can compare.
 #
 # Pipeline:
-#   surface -> (optional) card-boundary detection
-#            -> perspective warp to fronto-parallel card
-#            -> letterbox onto a fixed 5:7 portrait canvas
-#            -> pygame Surface (CANVAS_W x CANVAS_H)
+#   surface -> cardscan.detect (multi-view card-boundary detection,
+#                               ranked candidates)
+#           -> perspective warp to a fronto-parallel card
+#           -> fixed 5:7 portrait canvas (CANVAS_W x CANVAS_H)
+#           -> pygame Surface
 #
-# Design goals (HarvestHand, Raspberry Pi friendly):
-#   * Detect the physical card boundary where possible (OpenCV
-#     contours + 4-point perspective warp) so the whole card --
-#     border, ID, illustration, name -- is preserved.
-#   * Never stretch a portrait card into a square; letterbox to a
-#     fixed 5:7 canvas instead.
-#   * Reject unreliable detections explicitly so a bad crop never
-#     enters the recognition pipeline.
-#   * Keep training and live recognition on the identical path.
-#   * Work without numpy where OpenCV/numpy are unavailable: fall
-#     back to a pure-Pygame centered crop + letterbox.
+# v13 replaces the old "contour -> approxPolyDP -> exactly 4 points"
+# detector. See cardscan/detect.py for how boundaries are found and
+# scored. This module owns everything AFTER detection:
 #
+#   * supersampled warp (2x, then area-downscale) so thin card features
+#     do not alias differently between a sample photo and a live frame
+#   * a small inward trim so background never bleeds into the crop
+#   * fallbacks, so a failed detection does not have to mean "no read":
+#       fallback="training"  an already-cropped card image (e.g. your
+#                            card design files) is used whole
+#       fallback="guide"     live use: crop the on-screen guide box
+#   * guide_rect(): the 5:7 box to draw on the preview so players can
+#     fit the card into it
+#
+# Training and live recognition share this exact path. Requires
+# OpenCV + NumPy.
 
 import pygame
 
 # Bump whenever preprocessing changes so a model trained with an
 # older crop is never silently used for live recognition.
-PREPROCESS_VERSION = 12
+PREPROCESS_VERSION = 13
 
-# Normalized canvas: 5:7 portrait (poker-card proportions), never
-# stretched. All cards share one template, so a fixed canvas keeps
-# every card framed identically.
+# Normalized canvas: 5:7 portrait (poker-card proportions).
 CANVAS_W = 120
 CANVAS_H = 168
-CARD_ASPECT = CANVAS_W / CANVAS_H
+CARD_ASPECT = CANVAS_W / CANVAS_H          # 0.714
 
-# Maximum dimension used for OpenCV card-boundary detection.
-DETECT_MAX_DIMENSION = 960
-MIN_CARD_AREA_RATIO = 0.07
-MIN_EDGE_SUPPORT = 0.02
-MIN_OPPOSITE_SIDE_RATIO = 0.45
-MIN_CORNER_ANGLE = 45.0
-MAX_CORNER_ANGLE = 135.0
+WARP_SUPERSAMPLE = 2
+QUAD_INSET = 0.012          # trim this fraction off each side of the quad
+
+# Detection runs on a downscaled copy. 480 is as accurate as 640 on the
+# benchmark and cheaper; lower it further on a slow Raspberry Pi.
+DETECT_MAX_DIMENSION = 480
+
+GUIDE_HEIGHT_RATIO = 0.82   # guide box height / frame height
+WHOLE_IMAGE_ASPECT_TOLERANCE = 0.10
+BLUR_THRESHOLD = 30.0       # variance-of-Laplacian on a <=640px frame
+MIN_LIVE_CARD_AREA_RATIO = 0.10       # variance-of-Laplacian on a <=640px frame
+MARKER_MODE = "assist"
 
 # OpenCV/numpy availability (probed lazily).
 _HAS_CV2 = None
@@ -69,7 +77,7 @@ def _try_import(name):
         return False
 
 
-# Pygame <-> OpenCV conversion (numpy path)
+# ── Pygame <-> OpenCV ───────────────────────────────────────
 
 def _surface_to_array(surface):
     _, has_np = _probe()
@@ -78,221 +86,147 @@ def _surface_to_array(surface):
     import numpy as np
     raw = pygame.image.tobytes(surface, 'RGB')
     w, h = surface.get_size()
-    arr = np.frombuffer(raw, dtype=np.uint8).reshape(h, w, 3)
-    return arr
+    return np.frombuffer(raw, dtype=np.uint8).reshape(h, w, 3)
 
 
 def _array_to_surface(arr):
-    h, w = arr.shape[:2]
-    surf = pygame.Surface((w, h))
-    pygame.surfarray.blit_array(surf, arr.transpose(1, 0, 2))
-    return surf
-
-
-def _array_to_gray(arr):
-    import cv2
-    gray = cv2.cvtColor(arr, cv2.COLOR_RGB2GRAY)
-    gray = cv2.GaussianBlur(gray, (5, 5), 0)
-    return gray
-
-
-# Card-boundary detection
-
-def _quad_metrics(gray, points):
-    import cv2
     import numpy as np
+    arr = np.ascontiguousarray(arr)
+    h, w = arr.shape[:2]
+    return pygame.image.frombuffer(arr.tobytes(), (w, h), 'RGB').copy()
 
-    height, width = gray.shape[:2]
-    ordered = _order_points(points)
-    area = abs(cv2.contourArea(ordered))
-    area_ratio = area / float(width * height)
-    top = np.linalg.norm(ordered[1] - ordered[0])
-    right = np.linalg.norm(ordered[2] - ordered[1])
-    bottom = np.linalg.norm(ordered[2] - ordered[3])
-    left = np.linalg.norm(ordered[3] - ordered[0])
-    horizontal = (top + bottom) / 2.0
-    vertical = (left + right) / 2.0
-    aspect = min(horizontal, vertical) / max(horizontal, vertical)
-    opposite_ratio = min(
-        top / max(bottom, 1.0), bottom / max(top, 1.0),
-        left / max(right, 1.0), right / max(left, 1.0),
-    )
 
-    angles = []
-    for i in range(4):
-        before = ordered[(i - 1) % 4] - ordered[i]
-        after = ordered[(i + 1) % 4] - ordered[i]
-        cosine = np.dot(before, after) / (
-            max(np.linalg.norm(before) * np.linalg.norm(after), 1.0)
-        )
-        angles.append(np.degrees(np.arccos(np.clip(cosine, -1.0, 1.0))))
+def guide_rect(width, height):
+    """The 5:7 guide box to draw on the live preview.
 
-    edges = cv2.Canny(gray, 50, 150)
-    support = []
-    for start, end in zip(ordered, np.roll(ordered, -1, axis=0)):
-        length = max(int(np.linalg.norm(end - start)), 2)
-        xs = np.rint(np.linspace(start[0], end[0], length)).astype(int)
-        ys = np.rint(np.linspace(start[1], end[1], length)).astype(int)
-        good = 0
-        for x, y in zip(xs, ys):
-            x0, x1 = max(0, x - 2), min(width, x + 3)
-            y0, y1 = max(0, y - 2), min(height, y + 3)
-            if edges[y0:y1, x0:x1].any():
-                good += 1
-        support.append(good / float(length))
+    A card fitted inside this box always yields a usable crop, even when
+    boundary detection cannot find its edges.
+    """
+    gh = int(height * GUIDE_HEIGHT_RATIO)
+    gw = int(gh * CARD_ASPECT)
+    if gw > width * 0.95:
+        gw = int(width * 0.95)
+        gh = int(gw / CARD_ASPECT)
+    return pygame.Rect((width - gw) // 2, (height - gh) // 2, gw, gh)
 
-    center = ordered.mean(axis=0)
-    center_distance = np.linalg.norm(
-        center - np.array([width / 2.0, height / 2.0])
-    )
-    center_score = max(
-        0.0,
-        1.0 - center_distance / np.linalg.norm(
-            [width / 2.0, height / 2.0]
-        ),
-    )
-    aspect_score = max(
-        0.0, 1.0 - abs(aspect - CARD_ASPECT) / CARD_ASPECT
-    )
-    edge_support = min(support)
-    valid = (
-        area_ratio >= MIN_CARD_AREA_RATIO
-        and aspect_score >= 0.65
-        and opposite_ratio >= MIN_OPPOSITE_SIDE_RATIO
-        and min(angles) >= MIN_CORNER_ANGLE
-        and max(angles) <= MAX_CORNER_ANGLE
-        and (
-            edge_support >= MIN_EDGE_SUPPORT
-            or area_ratio >= 0.30
-        )
-    )
-    quality = (
-        0.45 * min(area_ratio / 0.55, 1.0)
-        + 0.20 * aspect_score
-        + 0.15 * opposite_ratio
-        + 0.10 * center_score
-        + 0.10 * edge_support
-    )
+
+# ── Detection ───────────────────────────────────────────────
+
+def _sharpness(rgb):
+    import cv2
+    h, w = rgb.shape[:2]
+    scale = min(1.0, 640.0 / max(h, w))
+    small = (cv2.resize(rgb, None, fx=scale, fy=scale,
+                        interpolation=cv2.INTER_AREA) if scale < 1.0 else rgb)
+    gray = cv2.cvtColor(small, cv2.COLOR_RGB2GRAY)
+    return float(cv2.Laplacian(gray, cv2.CV_64F).var())
+
+
+def _details(det, sharp, rank):
     return {
-        "area_ratio": float(area_ratio),
-        "aspect": float(aspect),
-        "aspect_score": float(aspect_score),
-        "opposite_side_ratio": float(opposite_ratio),
-        "min_angle": float(min(angles)),
-        "max_angle": float(max(angles)),
-        "edge_support": float(edge_support),
-        "center_score": float(center_score),
-        "quality": float(quality),
-        "valid": bool(valid),
+        "status": "detected",
+        "reason": "validated card boundary",
+        "source": "detected",
+        "strategy": det.source,
+        "quality": float(det.score),
+        "area_ratio": float(det.area_ratio),
+        "aspect": float(det.aspect),
+        "edge_support": float(det.support),
+        "contrast": float(det.contrast),
+        "points": [[float(p[0]), float(p[1])] for p in det.corners],
+        "candidate_rank": rank,
+        "sharpness": round(sharp, 1),
+        "blurry": bool(sharp < BLUR_THRESHOLD),
     }
 
 
+def find_candidates(rgb, max_candidates=3, previous=None):
+    """Ranked boundary candidates for an RGB array: [(points, details)].
+
+    `previous` (last frame's quad, optional) nudges the ranking toward
+    temporal consistency when tracking live video.
+    """
+    import numpy as np
+    import cardscan.detect as detect
+
+    sharp = _sharpness(rgb)
+    found = detect.find_cards(
+        rgb, max_dim=DETECT_MAX_DIMENSION,
+        max_candidates=max(max_candidates, 6)
+        if previous is not None else max_candidates)
+    if previous is not None and found:
+        prev = np.asarray(previous, np.float32).reshape(4, 2)
+        diag = float(np.hypot(rgb.shape[1], rgb.shape[0]))
+        for d in found:
+            dist = float(np.mean(np.linalg.norm(d.corners - prev, axis=1)))
+            d.rank += 0.12 * max(0.0, 1.0 - dist / (0.25 * diag))
+        found.sort(key=lambda d: -d.rank)
+        found = found[:max_candidates]
+    return [(d.corners.astype(np.float32), _details(d, sharp, i))
+            for i, d in enumerate(found)]
+
+
+def detect_quad(rgb, previous=None):
+    """Best card boundary: (points 4x2 float32 or None, details)."""
+    cands = find_candidates(rgb, 1, previous)
+    if cands:
+        return cands[0]
+    reason = "no card-shaped outline found"
+    sharp = _sharpness(rgb)
+    if sharp < BLUR_THRESHOLD:
+        reason += ("; image is blurry - lock focus or hold the card "
+                   "20-30 cm from the lens")
+    return None, {"status": "failed", "reason": reason,
+                  "sharpness": round(sharp, 1),
+                  "blurry": bool(sharp < BLUR_THRESHOLD)}
+
+
+# Back-compat helpers (older tools/tests call these).
 def _find_card_quad(gray):
     import cv2
-    import numpy as np
-
-    candidates = []
-    img_area = gray.shape[0] * gray.shape[1]
-    edges = cv2.Canny(gray, 50, 150)
-    edge_mask = cv2.morphologyEx(
-        edges, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8), iterations=2
-    )
-    masks = [(edge_mask, 0.04)]
-    for threshold in (140, 180):
-        _, light_mask = cv2.threshold(
-            gray, threshold, 255, cv2.THRESH_BINARY
-        )
-        light_mask = cv2.morphologyEx(
-            light_mask,
-            cv2.MORPH_CLOSE,
-            np.ones((7, 7), np.uint8),
-            iterations=2,
-        )
-        masks.append((light_mask, 0.06))
-
-    for mask, epsilon in masks:
-        contours, _ = cv2.findContours(
-            mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
-        )
-        for cnt in contours:
-            area = cv2.contourArea(cnt)
-            if area < 0.003 * img_area or area > 0.85 * img_area:
-                continue
-            peri = cv2.arcLength(cnt, True)
-            approx = cv2.approxPolyDP(cnt, epsilon * peri, True)
-            if len(approx) != 4 or not cv2.isContourConvex(approx):
-                continue
-            points = approx.reshape(4, 2).astype(np.float32)
-            metrics = _quad_metrics(gray, points)
-            candidates.append((metrics["quality"], points, metrics))
-
-    if not candidates:
-        return None, {
-            "status": "failed",
-            "reason": "no quadrilateral candidates",
-        }
-
-    candidates.sort(key=lambda item: item[0], reverse=True)
-    for _, points, metrics in candidates:
-        if metrics["valid"]:
-            return points, {
-                "status": "detected",
-                "reason": "validated card boundary",
-                **metrics,
-            }
-
-    metrics = candidates[0][2]
-    reason = "candidate failed validation"
-    if metrics["area_ratio"] < MIN_CARD_AREA_RATIO:
-        reason = "candidate too small"
-    elif metrics["edge_support"] < MIN_EDGE_SUPPORT:
-        reason = "card border edge support too weak"
-    elif metrics["opposite_side_ratio"] < MIN_OPPOSITE_SIDE_RATIO:
-        reason = "perspective distortion too strong"
-    return None, {
-        "status": "failed",
-        "reason": reason,
-        "candidate_points": [
-            [float(point[0]), float(point[1])] for point in points
-        ],
-        **metrics,
-    }
+    return detect_quad(cv2.cvtColor(gray, cv2.COLOR_GRAY2RGB))
 
 
 def _largest_quad_contour(gray):
-    """Compatibility helper returning only a validated card boundary."""
-    points, _ = _find_card_quad(gray)
-    return points
+    pts, _ = _find_card_quad(gray)
+    return pts
 
 
 def _order_points(pts):
+    """TL, TR, BR, BL for a quad (angle sort; safe up to 45 deg tilt)."""
     import numpy as np
-    rect = np.zeros((4, 2), dtype=np.float32)
-    s = pts.sum(axis=1)
-    rect[0] = pts[np.argmin(s)]
-    rect[2] = pts[np.argmax(s)]
-    diff = np.diff(pts, axis=1)
-    rect[1] = pts[np.argmin(diff)]
-    rect[3] = pts[np.argmax(diff)]
-    return rect
+    pts = np.asarray(pts, dtype=np.float32).reshape(4, 2)
+    c = pts.mean(axis=0)
+    ang = np.arctan2(pts[:, 1] - c[1], pts[:, 0] - c[0])
+    pts = pts[np.argsort(ang)]
+    return np.roll(pts, -int(np.argmin(pts.sum(axis=1))), axis=0)
 
 
-def _warp_to_card(surface, pts):
+# ── Warp ────────────────────────────────────────────────────
+
+def _warp_array(arr, pts):
+    """Warp the card quad (TL,TR,BR,BL of a portrait card) to the canvas."""
     import cv2
     import numpy as np
 
-    rect = _order_points(pts)
+    q = np.asarray(pts, dtype=np.float32).reshape(4, 2)
+    c = q.mean(axis=0)
+    q = (c + (q - c) * (1.0 - 2.0 * QUAD_INSET)).astype(np.float32)
 
-    dst = np.array([
-        [0, 0],
-        [CANVAS_W - 1, 0],
-        [CANVAS_W - 1, CANVAS_H - 1],
-        [0, CANVAS_H - 1],
-    ], dtype=np.float32)
-    M = cv2.getPerspectiveTransform(rect, dst)
-    arr = _surface_to_array(surface)
-    warped = cv2.warpPerspective(arr, M, (CANVAS_W, CANVAS_H))
-    return _array_to_surface(warped)
+    sw, sh = CANVAS_W * WARP_SUPERSAMPLE, CANVAS_H * WARP_SUPERSAMPLE
+    dst = np.array([[0, 0], [sw - 1, 0], [sw - 1, sh - 1], [0, sh - 1]],
+                   dtype=np.float32)
+    m = cv2.getPerspectiveTransform(q, dst)
+    big = cv2.warpPerspective(arr, m, (sw, sh), flags=cv2.INTER_LINEAR,
+                              borderMode=cv2.BORDER_REPLICATE)
+    if WARP_SUPERSAMPLE > 1:
+        return cv2.resize(big, (CANVAS_W, CANVAS_H),
+                          interpolation=cv2.INTER_AREA)
+    return big
+
+
+def _warp_to_card(surface, pts):
+    return _array_to_surface(_warp_array(_surface_to_array(surface), pts))
 
 
 def _fit_into_canvas(src):
@@ -300,18 +234,16 @@ def _fit_into_canvas(src):
     if sw < 1 or sh < 1:
         return None
     scale = min(CANVAS_W / sw, CANVAS_H / sh)
-    nw = max(1, int(sw * scale))
-    nh = max(1, int(sh * scale))
+    nw, nh = max(1, int(sw * scale)), max(1, int(sh * scale))
     small = pygame.transform.smoothscale(src, (nw, nh))
     canvas = pygame.Surface((CANVAS_W, CANVAS_H))
     canvas.fill((0, 0, 0))
-    ox = (CANVAS_W - nw) // 2
-    oy = (CANVAS_H - nh) // 2
-    canvas.blit(small, (ox, oy))
+    canvas.blit(small, ((CANVAS_W - nw) // 2, (CANVAS_H - nh) // 2))
     return canvas
 
 
 def _fallback_prepare(surface):
+    """Centered 5:7 crop (kept for older callers)."""
     w, h = surface.get_size()
     if w / h > CARD_ASPECT:
         crop_h = h
@@ -319,97 +251,156 @@ def _fallback_prepare(surface):
     else:
         crop_w = w
         crop_h = max(2, int(crop_w / CARD_ASPECT))
-    crop_w = min(w, crop_w)
-    crop_h = min(h, crop_h)
-    ox = (w - crop_w) // 2
-    oy = (h - crop_h) // 2
-    crop = surface.subsurface(pygame.Rect(ox, oy, crop_w, crop_h))
+    crop_w, crop_h = min(w, crop_w), min(h, crop_h)
+    crop = surface.subsurface(pygame.Rect((w - crop_w) // 2,
+                                          (h - crop_h) // 2, crop_w, crop_h))
     return _fit_into_canvas(crop)
 
 
-# Public API
+def center_prepare(surface, height_ratio=GUIDE_HEIGHT_RATIO):
+    """Compatibility center crop using the Claude guide rectangle."""
+    if surface is None:
+        return None
+    rect = guide_rect(surface.get_width(), surface.get_height())
+    rgb = _surface_to_array(surface)
+    if rgb is None:
+        return None
+    crop = rgb[rect.top:rect.bottom, rect.left:rect.right]
+    import cv2
+    canvas = cv2.resize(
+        crop,
+        (CANVAS_W, CANVAS_H),
+        interpolation=cv2.INTER_AREA,
+    )
+    return _array_to_surface(canvas)
 
-def prepare_detailed(surface):
-    global _LAST_DETECTION, _LAST_DETECTION_ERROR
+
+# ── Fallbacks ───────────────────────────────────────────────
+
+def _is_card_shaped(w, h):
+    ratio = min(w, h) / float(max(w, h))
+    return abs(ratio - CARD_ASPECT) <= WHOLE_IMAGE_ASPECT_TOLERANCE * CARD_ASPECT
+
+
+def _apply_fallback(surface, arr, fallback, details):
+    """(canvas, details) for a failed detection, or (None, details)."""
+    import cv2
+    w, h = surface.get_size()
+    if fallback == "training" and _is_card_shaped(w, h):
+        img = arr if h >= w else cv2.rotate(arr, cv2.ROTATE_90_CLOCKWISE)
+        canvas = cv2.resize(img, (CANVAS_W, CANVAS_H),
+                            interpolation=cv2.INTER_AREA)
+        return _array_to_surface(canvas), {
+            **details, "status": "fallback", "source": "whole_image",
+            "reason": "no boundary found; image is already card-shaped"}
+    if fallback == "guide":
+        r = guide_rect(w, h)
+        crop = arr[r.top:r.bottom, r.left:r.right]
+        if crop.size == 0:
+            return None, details
+        canvas = cv2.resize(crop, (CANVAS_W, CANVAS_H),
+                            interpolation=cv2.INTER_AREA)
+        return _array_to_surface(canvas), {
+            **details, "status": "fallback", "source": "guide",
+            "reason": "no boundary found; using the guide box"}
+    return None, details
+
+
+# ── Public API ──────────────────────────────────────────────
+
+def _record(details):
+    global _LAST_DETECTION
+    _LAST_DETECTION = details
+    return details
+
+
+def prepare_candidates(surface, max_candidates=3, fallback=None,
+                       previous=None, use_marker=None):
+    """Return [(canvas, details), ...] best boundary first.
+
+    The scanner uses the alternates to let the recognition model veto a
+    boundary that is geometrically plausible but wrong (inner frame,
+    neighbouring card). Never empty when `fallback` can supply a crop.
+    """
+    global _LAST_DETECTION_ERROR
     if surface is None or surface.get_width() < 2 or surface.get_height() < 2:
-        details = {"status": "failed", "reason": "invalid input surface"}
-        _LAST_DETECTION = details
-        return None, details
-
+        _record({"status": "failed", "reason": "invalid input surface"})
+        return []
     has_cv2, _ = _probe()
     if not has_cv2:
-        details = {
-            "status": "failed",
-            "reason": "OpenCV and NumPy are required for card detection",
-        }
-        _LAST_DETECTION = details
-        return None, details
-
+        _record({"status": "failed",
+                 "reason": "OpenCV and NumPy are required for card detection"})
+        return []
     import cv2
-
-    width, height = surface.get_size()
-    scale = min(1.0, DETECT_MAX_DIMENSION / max(width, height))
-    detection_surface = surface
-    if scale < 1.0:
-        detection_surface = pygame.transform.smoothscale(
-            surface,
-            (max(2, int(width * scale)), max(2, int(height * scale))),
-        )
-    arr = _surface_to_array(detection_surface)
-    if arr is None:
-        details = {"status": "failed", "reason": "image conversion failed"}
-        _LAST_DETECTION = details
-        return None, details
+    arr = _surface_to_array(surface)
+    if use_marker is None:
+        use_marker = MARKER_MODE != "off"
     try:
-        gray = _array_to_gray(arr)
-        pts, details = _find_card_quad(gray)
-        if pts is None:
-            candidate_points = details.get("candidate_points")
-            if candidate_points is not None:
-                details = dict(details)
-                details["candidate_points"] = [
-                    [
-                        float(point[0]) / scale,
-                        float(point[1]) / scale,
-                    ]
-                    for point in candidate_points
-                ]
-            _LAST_DETECTION = details
-            return None, details
-        pts /= scale
-        details = dict(details)
-        details["points"] = [
-            [float(point[0]), float(point[1])] for point in pts
-        ]
-        canvas = _warp_to_card(surface, pts)
-        if canvas is None:
-            details = {
-                "status": "failed",
-                "reason": "perspective transform failed",
-            }
-            _LAST_DETECTION = details
-            return None, details
+        if use_marker:
+            import cardscan.marker as marker
+            if marker.available():
+                found = marker.detect(arr)
+                m = marker.best_known(found)
+                if m is not None:
+                    canvas = _array_to_surface(
+                        marker.card_array(
+                            arr, m, CANVAS_W, CANVAS_H, WARP_SUPERSAMPLE
+                        )
+                    )
+                    sharp = _sharpness(arr)
+                    details = {
+                        "status": "detected",
+                        "reason": "ArUco marker %d" % m.id,
+                        "source": "marker",
+                        "strategy": "aruco",
+                        "marker_id": m.id,
+                        "marker_slug": marker.slug_for_id(m.id),
+                        "marker_side": round(m.side, 1),
+                        "quality": 1.0,
+                        "points": [[float(p[0]), float(p[1])]
+                                   for p in marker.card_quad(m)],
+                        "sharpness": round(sharp, 1),
+                        "blurry": bool(sharp < BLUR_THRESHOLD),
+                    }
+                    _LAST_DETECTION_ERROR = None
+                    _record(details)
+                    return [(canvas, details)]
+        cands = find_candidates(arr, max_candidates, previous)
+        if not cands:
+            _, details = detect_quad(arr)
+            canvas, details = _apply_fallback(surface, arr, fallback, details)
+            _record(details)
+            return [(canvas, details)] if canvas is not None else []
+        out = [(_array_to_surface(_warp_array(arr, pts)), det)
+               for pts, det in cands]
         _LAST_DETECTION_ERROR = None
-        _LAST_DETECTION = details
-        return canvas, details
+        _record(out[0][1])
+        return out
     except cv2.error as exc:
         message = str(exc)
         if message != _LAST_DETECTION_ERROR:
             print(f"[cardscan] card-boundary detection failed: {message}")
             _LAST_DETECTION_ERROR = message
-        details = {"status": "failed", "reason": message}
-        _LAST_DETECTION = details
-        return None, details
+        _record({"status": "failed", "reason": message})
+        return []
 
 
-def prepare(surface):
-    """Return a normalized card only after boundary validation succeeds."""
-    canvas, _ = prepare_detailed(surface)
+def prepare_detailed(surface, fallback=None, previous=None):
+    """Best (canvas, details); canvas is None when nothing usable."""
+    cands = prepare_candidates(surface, 1, fallback, previous)
+    if cands:
+        return cands[0]
+    return None, dict(_LAST_DETECTION)
+
+
+def prepare(surface, fallback=None):
+    """Return a normalized card, or None when no usable crop exists."""
+    canvas, _ = prepare_detailed(surface, fallback=fallback)
     return canvas
 
 
 def last_detection():
-    """Return quality details for the most recent preprocessing attempt."""
+    """Details for the most recent preprocessing attempt."""
     return dict(_LAST_DETECTION)
 
 

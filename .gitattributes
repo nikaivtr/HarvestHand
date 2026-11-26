@@ -1,0 +1,8 @@
+CardScanner-v13/cardscan/card_model.json filter=lfs diff=lfs merge=lfs -text
+recognition_lab/exports/live_training/card_model_card_plants_v13_live_experimental.json filter=lfs diff=lfs merge=lfs -text
+CardScanner-v13/card_model_card_plants_mean_centered_v13_experimental.json filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.JPG filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.PNG filter=lfs diff=lfs merge=lfs -text
+card_model_card_plants_mean_centered_v13_experimental.json filter=lfs diff=lfs merge=lfs -text

@@ -44,6 +44,8 @@ from cardscan.camera import (
     NullCamera,
 )
 from cardscan.scanner import CardScanner, ScanResult
+from cardscan.targeted_verification import verify, get_threshold
+import cardscan.marker as marker
 
 
 __all__ = [
@@ -53,5 +55,6 @@ __all__ = [
     "classify", "match",
     "CameraError", "open_camera", "OpenCVCamera", "FolderCamera",
     "NullCamera",
-    "CardScanner", "ScanResult",
+    "CardScanner", "ScanResult", "verify", "get_threshold",
+    "marker",
 ]

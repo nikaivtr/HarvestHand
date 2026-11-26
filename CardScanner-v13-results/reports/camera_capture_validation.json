@@ -1,0 +1,30 @@
+{
+  "test": "GSOU T16 webcam capture validation",
+  "configuration": {
+    "device": 0,
+    "backend_mode": "auto",
+    "selected_backend": "Media Foundation",
+    "requested_resolution": "1920x1080",
+    "actual_resolution": "1920x1080",
+    "requested_fps": 30,
+    "reported_fps": 30.0,
+    "requested_fourcc": "MJPG",
+    "observed_fourcc": "unknown"
+  },
+  "duration_seconds": 30,
+  "frames_captured": 886,
+  "failed_frames": 0,
+  "measured_fps": 30.0836,
+  "average_frame_read_ms": 32.9424,
+  "diagnostic_quality": {
+    "brightness": 146.0227,
+    "contrast": 64.0318,
+    "laplacian_sharpness": 1950.291
+  },
+  "notes": [
+    "Measured from successful frame timestamps, not CAP_PROP_FPS.",
+    "FOURCC returned by Media Foundation was not printable/verifiable.",
+    "Brightness, contrast, and Laplacian sharpness are diagnostic-only samples.",
+    "Latest-frame capture was used; no frame backlog is accumulated."
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "sample_id": "boundary-5db90331738e48f99a419e9d41584356",
+  "image_path": "D:\\HarvestHand\\recognition_lab\\datasets\\boundary_references\\tilted_left\\boundary-5db90331738e48f99a419e9d41584356.png",
+  "rectified_crop_path": "D:\\HarvestHand\\recognition_lab\\datasets\\boundary_references\\tilted_left\\boundary-5db90331738e48f99a419e9d41584356_rectified.png",
+  "corners": [
+    [
+      216.5581395348837,
+      71.44186046511628
+    ],
+    [
+      452.09302325581393,
+      80.37209302325581
+    ],
+    [
+      519.0697674418604,
+      373.95348837209303
+    ],
+    [
+      91.53488372093022,
+      371.72093023255815
+    ]
+  ],
+  "capture_condition": "tilted_left",
+  "capture_condition_label": "Tilted Left",
+  "image_width": 640,
+  "image_height": 480,
+  "timestamp": "2026-11-17T07:22:11+00:00",
+  "session_id": "1f32681db254",
+  "annotation_status": "manually_annotated",
+  "visibility_status": "fully_visible",
+  "notes": "",
+  "manually_verified": true,
+  "validation_warnings": [],
+  "ground_truth_source": "human_outer_boundary_annotation"
+}

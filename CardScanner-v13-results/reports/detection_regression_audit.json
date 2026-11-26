@@ -1,0 +1,109 @@
+{
+  "audit_timestamp": "2026-11-17T16:59:27+08:00",
+  "scope": "recognition_lab only",
+  "investigation_only": true,
+  "changes_made": [],
+  "production_cardscan_modified": false,
+  "current_inventory": {
+    "boundary_references": 14,
+    "conditions": {
+      "flat_on_table": 2,
+      "tilted_right": 4,
+      "tilted_left": 4,
+      "held_by_hand": 4
+    },
+    "reference_resolutions": {
+      "640x480": 8,
+      "1920x1080": 6
+    },
+    "stored_annotations": {
+      "total": 310,
+      "correct": 48,
+      "incorrect": 261,
+      "unsure": 1
+    }
+  },
+  "same_image_replay": {
+    "current_engine": {
+      "candidate_images": 1,
+      "total_images": 14,
+      "best_iou_on_success": 0.7773629149,
+      "no_candidate_images": 13
+    },
+    "baseline_snapshot_engine": {
+      "candidate_images": 1,
+      "total_images": 14,
+      "best_iou_on_success": 0.7773629149,
+      "no_candidate_images": 13
+    },
+    "candidate_outcomes_matched": true,
+    "interpretation": "The preserved engine snapshot and current engine produced the same candidate outcome on the expanded reference collection. Current diagnostic metrics increased runtime but did not change this replay outcome."
+  },
+  "historical_pipeline_evidence": {
+    "original_reference_count": 8,
+    "contours_extracted": 979,
+    "non_four_vertex_rejections": 633,
+    "non_convex_rejections": 33,
+    "filter_or_geometry_rejections": 310,
+    "accepted_quadrilaterals": 1,
+    "references_without_pre_filter_iou_0_50": 7,
+    "accepted_internal_region_count": 1,
+    "most_common_rejection_reasons": {
+      "area_outside_limits": 620,
+      "implausible_card_aspect": 374,
+      "collapsed_edge": 236,
+      "insufficient_edge_support": 187
+    }
+  },
+  "false_positive_evidence": {
+    "current_incorrect_judgments": 261,
+    "detection_methods": {
+      "canny_50_150": 217,
+      "canny_25_100": 44
+    },
+    "metric_ranges": {
+      "area_ratio": [0.010016, 0.833625],
+      "aspect_ratio": [0.4501, 0.8984],
+      "edge_support": [0.08, 0.9299],
+      "confidence": [0.4774, 0.855]
+    },
+    "acceptance_path": "Geometrically valid candidates are queued for review; no semantic final acceptance gate is applied."
+  },
+  "pipeline_changes": {
+    "contour_engine_changed_after_snapshot": true,
+    "current_live_profile": "Feature-distance ranking profile from manually judged rows; ranking only, not rejection or generation.",
+    "current_live_downscale": false,
+    "current_async_detection": true,
+    "current_detector_defaults": {
+      "min_area_ratio": 0.01,
+      "max_area_ratio": 0.92,
+      "min_aspect_ratio": 0.45,
+      "max_aspect_ratio": 0.9,
+      "max_perspective_distortion": 0.45,
+      "min_edge_support": 0.08
+    }
+  },
+  "root_cause_hypotheses": [
+    {"rank": 1, "hypothesis": "No semantic final acceptance gate", "confidence": "high"},
+    {"rank": 2, "hypothesis": "Physical outer boundary is absent upstream of ranking", "confidence": "high"},
+    {"rank": 3, "hypothesis": "Camera resolution/content differs from the reviewed 640x480 corpus", "confidence": "high"},
+    {"rank": 4, "hypothesis": "The temporary live downscale altered candidate geometry", "confidence": "high"},
+    {"rank": 5, "hypothesis": "Stored profile was historically unavailable and is currently ranking-only", "confidence": "high"},
+    {"rank": 6, "hypothesis": "Asynchronous tracking can preserve stale candidates during slow detection", "confidence": "medium"},
+    {"rank": 7, "hypothesis": "Additional diagnostic metrics increased latency", "confidence": "high"}
+  ],
+  "data_contamination": {
+    "model_training_found": false,
+    "automatic_relabeling_found": false,
+    "manual_labels_used_for_live_profile": true,
+    "risk": "The profile is selection-biased calibration data from the same candidate generator, not an independently validated card classifier."
+  },
+  "recommended_recovery": [
+    "Freeze baseline and current reports.",
+    "Use a same-frame replay harness for every recovery experiment.",
+    "Separate generation, ranking, and final acceptance metrics.",
+    "Measure full-resolution camera behavior before changing processing resolution.",
+    "Validate any profile or acceptance rule on held-out sessions.",
+    "Investigate outer-boundary generation before changing thresholds."
+  ]
+}

@@ -27,6 +27,10 @@ import os
 import pygame
 
 
+DEFAULT_WIDTH = 1280
+DEFAULT_HEIGHT = 720
+
+
 class CameraError(Exception):
     """Raised when a camera source cannot be opened."""
 
@@ -65,7 +69,7 @@ class OpenCVCamera(_Base):
 
     backend = "opencv"
 
-    def __init__(self, device=0, width=None, height=None):
+    def __init__(self, device=0, width=None, height=None, focus=None):
         if (width is None) != (height is None):
             raise ValueError("width and height must be set together")
         if width is not None and height is not None and (width < 1 or height < 1):
@@ -75,6 +79,12 @@ class OpenCVCamera(_Base):
         self.height = height
         self.resolution = None
         self.autofocus_enabled = False
+        # focus=None keeps the camera's autofocus. Many webcams use
+        # FACE-priority autofocus and leave a held-up card blurry; set a
+        # number (try 20-60; the range is driver-specific, often 0-255)
+        # to switch autofocus off and lock the lens at that distance.
+        self.focus = focus
+        self.focus_locked = False
         self._cv2   = None
         self._cap   = None
 
@@ -101,12 +111,19 @@ class OpenCVCamera(_Base):
                 "access the device"
             )
         try:
-            self.autofocus_enabled = bool(cap.set(cv2.CAP_PROP_AUTOFOCUS, 1))
+            if self.focus is None:
+                self.autofocus_enabled = bool(cap.set(cv2.CAP_PROP_AUTOFOCUS, 1))
+            else:
+                cap.set(cv2.CAP_PROP_AUTOFOCUS, 0)
+                self.focus_locked = bool(
+                    cap.set(cv2.CAP_PROP_FOCUS, float(self.focus)))
+                self.autofocus_enabled = False
         except cv2.error:
             self.autofocus_enabled = False
-        if self.width is not None and self.height is not None:
-            cap.set(cv2.CAP_PROP_FRAME_WIDTH,  self.width)
-            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
+        want_w = self.width if self.width is not None else DEFAULT_WIDTH
+        want_h = self.height if self.height is not None else DEFAULT_HEIGHT
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, want_w)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, want_h)
 
         self._cv2 = cv2
         self._cap = cap
@@ -223,12 +240,14 @@ class NullCamera(_Base):
 # ── Factory ─────────────────────────────────────────────────
 
 def open_camera(kind="auto", device=0, path=None, loop=True,
-                width=None, height=None):
+                width=None, height=None, focus=None):
     """Build and open a camera source.
 
     kind: "opencv" | "folder" | "null" | "auto"
     width/height: optional requested OpenCV frame size; by default the
                   camera backend selects a supported mode.
+    focus:        optional manual focus value; disables autofocus (see
+                  OpenCVCamera).
 
     Auto prefers a real OpenCV camera and falls back to a null
     source, so a missing camera never crashes the game.
@@ -240,12 +259,12 @@ def open_camera(kind="auto", device=0, path=None, loop=True,
             raise CameraError("folder source needs a path")
         return FolderCamera(path, loop).open()
     if kind == "opencv":
-        return OpenCVCamera(device, width, height).open()
+        return OpenCVCamera(device, width, height, focus).open()
     if kind != "auto":
         raise CameraError(f"unknown camera kind: {kind}")
 
     try:
-        return OpenCVCamera(device, width, height).open()
+        return OpenCVCamera(device, width, height, focus).open()
     except CameraError as exc:
         print(f"[cardscan] no live camera "
               f"({str(exc.args[0]).splitlines()[0]}); continuing without one")

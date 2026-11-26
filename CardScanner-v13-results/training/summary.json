@@ -1,0 +1,15 @@
+{
+  "model": "card_model_card_plants_mean_centered_v13_experimental.json",
+  "feature_version": 13,
+  "classes": 8,
+  "readable_samples": 1907,
+  "threshold": 0.5,
+  "margin": 0.2,
+  "leave_one_out": {
+    "top1_percent": 87.9,
+    "confident_percent": 57.8,
+    "wrong_confident": 0
+  },
+  "live_status": "No confident physical-camera card match measured",
+  "interpretation": "Stored-photo results are not evidence of unseen-camera recognition."
+}

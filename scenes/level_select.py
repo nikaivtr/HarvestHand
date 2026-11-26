@@ -423,6 +423,7 @@ def handle_release(px, py):
             _chapter_scan_open = True
             scan_popup.open(
                 card_name=card.display,
+                expected_card=card.slug,
                 question=(
                     f"Scan the {card.name} to unlock "
                     f"{_selection_chapter.get('crop', 'this')} chapter."

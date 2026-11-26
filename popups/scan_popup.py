@@ -21,6 +21,7 @@ _status = ""
 _retry_enabled = False
 _last_ticks = 0
 _pending_match_at = 0
+_expected_card = None
 
 _CREAM = (255, 246, 220)
 _GREEN = (79, 119, 62)
@@ -62,12 +63,13 @@ def init(width: int, height: int):
         _panel.centerx,
         _panel.bottom - int(_panel.height * 0.10),
     )
-    _scanner = CardScanner(confirm_frames=12)
+    _scanner = CardScanner(confirm_frames=4)
     _pending_match_at = 0
 
 
-def open(card_name: str, question: str, on_complete=None, on_cancel=None):
-    global _card_name, _question, _on_complete, _on_cancel
+def open(card_name: str, question: str, on_complete=None, on_cancel=None,
+         expected_card=None):
+    global _card_name, _question, _on_complete, _on_cancel, _expected_card
     global _error, _status, _retry_enabled, _last_ticks, _pending_match_at
     if _scanner is not None:
         _scanner.cancel()
@@ -75,20 +77,23 @@ def open(card_name: str, question: str, on_complete=None, on_cancel=None):
     _question = question
     _on_complete = on_complete
     _on_cancel = on_cancel
+    _expected_card = expected_card
     _error = ""
     _retry_enabled = False
     _status = "Opening camera..."
     _last_ticks = pygame.time.get_ticks()
     _pending_match_at = 0
-    _start_scan()
+    _start_scan(expected_card=expected_card)
 
 
-def _start_scan():
+def _start_scan(expected_card=None):
     global _error, _status, _retry_enabled
+    if expected_card is None:
+        expected_card = _expected_card
     if _scanner is None:
         return
     _retry_enabled = False
-    card = _scanner.start(_card_name)
+    card = _scanner.start(_card_name, expected_card=expected_card)
     if card is None:
         _error = f"Unrecognized card in story: {_card_name}"
         _status = "This card is not in the scanner catalog."
@@ -206,6 +211,8 @@ def _update_scanner():
         _retry_enabled = True
         return
     if result is None:
+        if _scanner.saw_frame:
+            _status = _scanner.status()
         return
     if result.status == result.MATCH:
         _status = f"Matched {result.card.replace('_', ' ').title()} ({result.score:.0%})."
@@ -215,6 +222,8 @@ def _update_scanner():
             f"Detected {result.card.replace('_', ' ').title()}; "
             "show the requested card."
         )
+    elif result.status == result.REJECTED:
+        _status = "Card not verified. Show the requested card and hold it steady."
 
 
 def draw(surface: pygame.Surface):

@@ -1,0 +1,8 @@
+{
+  "phase": "phase1",
+  "total_samples": 0,
+  "verified_correct": 0,
+  "incorrect_or_uncertain": 0,
+  "accuracy": null,
+  "note": "Accuracy is based only on human verification records."
+}

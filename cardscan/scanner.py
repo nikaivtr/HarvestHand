@@ -25,11 +25,15 @@
 #  standalone, fully testable unit.
 # ============================================================
 
+import pygame
+
 import cardscan.camera as camera
 import cardscan.features as features
+import cardscan.marker as marker
 import cardscan.model as model
 import cardscan.preprocess as preprocess
 import cardscan.registry as registry
+import cardscan.targeted_verification as targeted_verification
 
 
 # ── Tuning ──────────────────────────────────────────────────
@@ -58,6 +62,9 @@ class ScanResult:
     MATCH  = "match"
     WRONG  = "wrong"
     TIMEOUT = "timeout"
+    ACCEPTED = "CARD_ACCEPTED"
+    REJECTED = "CARD_REJECTED"
+    UNCERTAIN = "SCAN_UNCERTAIN"
 
     def __init__(self, status, card, expected, score=0.0):
         self.status   = status      # one of MATCH / WRONG / TIMEOUT
@@ -115,6 +122,15 @@ class CardScanner:
         self.frame      = None
         self.last_score = 0.0
         self.saw_frame  = False   # did the last read actually deliver one?
+        self.use_guide  = True    # fall back to the guide-box crop
+        self.try_flipped = True   # also try the card rotated 180 degrees
+        self.last_source = None   # "detected" | "guide" | None
+        self.last_read  = None    # dict describing the latest frame's read
+        self.marker_mode = preprocess.MARKER_MODE
+        self.targeted = False
+        self.threshold = None
+        self.previous_points = None
+        self.state = "WAITING_FOR_CARD"
 
     # ── Setup ────────────────────────────────────────────────
 
@@ -134,16 +150,26 @@ class CardScanner:
     def can_recognize(self):
         return self.trained and len(self.model.get("cards", {})) >= 2
 
-    def start(self, card_text):
+    def start(self, card_text=None, expected_card=None):
         """Begin waiting for a card.
 
         `card_text` is the chapter's display string, e.g.
         "AC-01 Water Card". Returns the resolved Card, or None if
         the string is not in the registry.
         """
-        card = registry.resolve(card_text)
+        card = registry.resolve(card_text) if card_text else None
+        if card is None and expected_card:
+            card = registry.get(expected_card) or registry.resolve(expected_card)
         self.card     = card
         self.expected = card.slug if card else None
+        if expected_card:
+            self.expected = str(expected_card).strip().lower()
+            if self.card is not None:
+                self.expected = self.card.slug
+        self.targeted = bool(expected_card)
+        self.threshold = None
+        self.previous_points = None
+        self.state = "WAITING_FOR_CARD"
         self.active   = True
         self.t        = 0.0
         self.last_slug = None
@@ -159,6 +185,9 @@ class CardScanner:
         self.card = None
         self.streak = 0
         self.last_slug = None
+        self.targeted = False
+        self.previous_points = None
+        self.state = "WAITING_FOR_CARD"
 
     def cancel(self):
         """Same as stop(), but also drops the camera."""
@@ -181,6 +210,7 @@ class CardScanner:
             self.saw_frame = False
             return None, 0.0, False
 
+        self.last_read = None            # per-frame diagnostics (see below)
         self.frame = self.cam.read()
         self.saw_frame = self.frame is not None
         if self.frame is None:
@@ -189,12 +219,265 @@ class CardScanner:
         if not self.can_recognize:
             return None, 0.0, False
 
-        vec = features.extract(self.frame)
-        if vec is None:
+        if self.targeted:
+            cands = preprocess.prepare_candidates(
+                self.frame,
+                max_candidates=3,
+                fallback=None,
+                previous=self.previous_points,
+            )
+            top_details = cands[0][1] if cands else None
+            marker_slug = (
+                top_details.get("marker_slug")
+                if top_details and top_details.get("source") == "marker"
+                else None
+            )
+            if marker_slug is not None:
+                points = top_details.get("points")
+                if points is not None:
+                    self.previous_points = points
+                if top_details.get("blurry"):
+                    self.state = "SCAN_UNCERTAIN"
+                    self.last_read = {
+                        "slug": marker_slug,
+                        "score": 0.0,
+                        "confident": False,
+                        "reason": "marker frame is blurry",
+                        "source": "marker",
+                        "strategy": "aruco",
+                        "quality": top_details.get("quality"),
+                        "sharpness": top_details.get("sharpness"),
+                        "blurry": True,
+                        "marker_id": top_details.get("marker_id"),
+                        "targeted": True,
+                    }
+                    return marker_slug, 0.0, False
+
+                marker_matches = (
+                    targeted_verification.model_slug(marker_slug)
+                    == targeted_verification.model_slug(self.expected)
+                )
+                if marker_matches:
+                    self.last_source = "marker"
+                    self.last_score = 1.0
+                    self.threshold = 1.0
+                    self.state = "VERIFYING_EXPECTED_CARD"
+                    self.last_read = {
+                        "slug": marker_slug,
+                        "score": 1.0,
+                        "confident": True,
+                        "reason": "ArUco marker matches expected card",
+                        "source": "marker",
+                        "strategy": "aruco",
+                        "quality": top_details.get("quality"),
+                        "sharpness": top_details.get("sharpness"),
+                        "blurry": top_details.get("blurry"),
+                        "marker_id": top_details.get("marker_id"),
+                        "targeted": True,
+                    }
+                    return marker_slug, 1.0, True
+
+                self.last_source = "marker"
+                self.last_score = 1.0
+                self.threshold = 1.0
+                self.state = "CARD_DETECTED"
+                self.last_read = {
+                    "slug": marker_slug,
+                    "score": 1.0,
+                    "confident": False,
+                    "reason": "ArUco marker does not match expected card",
+                    "source": "marker",
+                    "strategy": "aruco",
+                    "quality": top_details.get("quality"),
+                    "sharpness": top_details.get("sharpness"),
+                    "blurry": top_details.get("blurry"),
+                    "marker_id": top_details.get("marker_id"),
+                    "targeted": True,
+                }
+                return marker_slug, 1.0, False
+
+            best = None
+            for canvas, details in cands:
+                source = details.get("source")
+                if source == "marker":
+                    marker_slug = details.get("marker_slug")
+                    if marker_slug is not None:
+                        from cardscan.targeted_verification import model_slug
+                        if model_slug(marker_slug) != model_slug(self.expected):
+                            continue
+                elif source != "detected":
+                    continue
+                if source != "marker":
+                    if details.get("blurry"):
+                        continue
+                    if details.get("area_ratio", 0.0) < preprocess.MIN_LIVE_CARD_AREA_RATIO:
+                        continue
+                    if details.get("quality", 0.0) < 0.42:
+                        continue
+                    if details.get("edge_support", 0.0) < 0.05:
+                        continue
+                    aspect = details.get("aspect", 0.0)
+                    if aspect < 0.50 or aspect > 0.92:
+                        continue
+                points = details.get("points")
+                if points is not None and self.previous_points is not None:
+                    import numpy as np
+                    first = np.asarray(points, dtype=np.float32)
+                    second = np.asarray(self.previous_points, dtype=np.float32)
+                    if first.shape == second.shape:
+                        diagonal = max(
+                            float(np.linalg.norm(
+                                np.asarray([
+                                    [0.0, 0.0],
+                                    [self.frame.get_width(),
+                                     self.frame.get_height()],
+                                ], dtype=np.float32)[1]
+                            )),
+                            1.0,
+                        )
+                        jump = float(np.mean(np.linalg.norm(first - second, axis=1)))
+                        if jump / diagonal > 0.12:
+                            continue
+                views = [canvas]
+                if self.try_flipped and source != "marker":
+                    views.append(pygame.transform.rotate(canvas, 180))
+                for view in views:
+                    vec = features.extract_card(view)
+                    info = targeted_verification.verify(
+                        self.model, vec, self.expected
+                    )
+                    score = info["score"]
+                    confident = info["accepted"]
+                    read = (confident, score, details, info)
+                    if (not confident
+                            and (best is None or score > best[1])):
+                        best = read
+                    if confident:
+                        best = read
+                        break
+                if best is not None and best[0]:
+                    break
+            if best is None:
+                self.last_source = None
+                self.previous_points = None
+                self.state = "SCAN_UNCERTAIN"
+                return None, 0.0, False
+
+            confident, score, det, info = best
+            self.last_source = det.get("source")
+            self.last_score = score
+            self.threshold = info["threshold"]
+            self.previous_points = det.get("points")
+            if confident:
+                self.state = "VERIFYING_EXPECTED_CARD"
+            else:
+                self.state = "CARD_DETECTED" if det.get("points") else "SCAN_UNCERTAIN"
+            self.last_read = {
+                "slug": self.expected,
+                "score": score,
+                "confident": confident,
+                "runner": None,
+                "runner_score": 0.0,
+                "gap": 0.0,
+                "reason": info["reason"],
+                "source": det.get("source"),
+                "strategy": det.get("strategy"),
+                "quality": det.get("quality"),
+                "sharpness": det.get("sharpness"),
+                "blurry": det.get("blurry"),
+                "threshold": info["threshold"],
+                "targeted": True,
+            }
+            return self.expected, score, confident
+
+        # Boundary detection returns a few ranked candidates. Take the
+        # first one the card model is CONFIDENT about; otherwise keep the
+        # best-scoring read. A geometrically plausible but wrong boundary
+        # (inner frame, neighbouring card) scores poorly and is skipped.
+        cands = preprocess.prepare_candidates(
+            self.frame, max_candidates=3,
+            fallback="guide" if self.use_guide else None)
+        best = None
+        for canvas, details in cands:
+            # Boundary geometry cannot tell a card from the same card
+            # upside down, so a read that is not confident upright is
+            # retried rotated 180 degrees.
+            views = [canvas]
+            if self.try_flipped:
+                views.append(pygame.transform.rotate(canvas, 180))
+            for view in views:
+                vec = features.extract_card(view)
+                info = model.classify_detailed(self.model, vec)
+                slug, score = info["slug"], info["score"]
+                confident = info["confident"]
+                if slug is None:
+                    continue
+                read = (confident, score, slug, details.get("source"),
+                        info, details)
+                if best is None or read[:2] > best[:2]:
+                    best = read
+                if confident:
+                    break
+            if best is not None and best[0]:
+                break
+        top_details = cands[0][1] if cands else None
+        marker_slug = (
+            top_details.get("marker_slug")
+            if top_details and top_details.get("source") == "marker"
+            else None
+        )
+        if marker_slug is not None:
+            c_conf, c_score, c_slug = False, 0.0, None
+            c_info = None
+            if best is not None:
+                c_conf, c_score, c_slug, _, c_info, _ = best
+            if self.marker_mode == "strict":
+                confident = bool(c_conf and c_slug == marker_slug)
+                reason = "marker + classifier agree" if confident else "classifier not confident"
+                score = c_score
+            elif c_conf and c_slug != marker_slug:
+                confident = False
+                reason = "marker says %s, classifier says %s" % (marker_slug, c_slug)
+                score = c_score
+            else:
+                confident = True
+                reason = "marker"
+                score = 1.0
+            self.last_source = "marker"
+            self.last_score = score
+            self.last_read = {
+                "slug": marker_slug,
+                "score": score,
+                "confident": confident,
+                "runner": c_info["runner_slug"] if c_info else None,
+                "runner_score": c_info["runner_score"] if c_info else 0.0,
+                "gap": c_info["gap"] if c_info else 0.0,
+                "reason": reason,
+                "source": "marker",
+                "strategy": "aruco",
+                "quality": top_details.get("quality"),
+                "sharpness": top_details.get("sharpness"),
+                "blurry": top_details.get("blurry"),
+                "marker_id": top_details.get("marker_id"),
+                "classifier_slug": c_slug,
+                "classifier_confident": c_conf,
+            }
+            return marker_slug, score, confident
+        if best is None:
+            self.last_source = None
             return None, 0.0, False
 
-        slug, score, confident = model.classify(self.model, vec)
+        confident, score, slug, self.last_source, info, det = best
         self.last_score = score
+        # Everything tools/live_test.py needs to explain this frame.
+        self.last_read = {
+            "slug": slug, "score": score, "confident": confident,
+            "runner": info["runner_slug"], "runner_score": info["runner_score"],
+            "gap": info["gap"], "reason": info["reason"],
+            "source": det.get("source"), "strategy": det.get("strategy"),
+            "quality": det.get("quality"), "sharpness": det.get("sharpness"),
+            "blurry": det.get("blurry"),
+        }
         return slug, score, confident
 
     def update(self, dt):
@@ -214,6 +497,21 @@ class CardScanner:
             self.last_slug = None
             return None
 
+        if self.targeted and not confident:
+            until = self.suppress.get("target_card", 0.0)
+            self.state = "CARD_REJECTED"
+            self.streak = 0
+            self.last_slug = None
+            if self.t < until:
+                return None
+            self.suppress["target_card"] = self.t + self.wrong_cooldown
+            return ScanResult(
+                ScanResult.REJECTED,
+                None,
+                self.expected,
+                score,
+            )
+
         # A long gap means something moved; the streak is stale.
         if self.last_slug is not None and (self.t - self.last_t) > MAX_GAP:
             self.streak = 0
@@ -232,7 +530,10 @@ class CardScanner:
         else:
             self.streak += 1
 
-        if self.streak < self.confirm_frames:
+        # A guide-box crop is less trustworthy than a detected boundary,
+        # so it must hold for a couple more frames.
+        need = self.confirm_frames + (2 if self.last_source == "guide" else 0)
+        if self.streak < need:
             return None
 
         # Confirmed: same card, confidently, several frames running.
@@ -246,6 +547,7 @@ class CardScanner:
             if (self.t - self.match_at) < MATCH_COOLDOWN:
                 return None
             self.match_at = self.t
+            self.state = "CARD_ACCEPTED"
             return ScanResult(ScanResult.MATCH, slug, self.expected, score)
 
         until = self.suppress.get(slug, 0.0)
@@ -283,6 +585,10 @@ class CardScanner:
                     f"{resolution} | card boundary not found: "
                     f"{detection.get('reason', 'retry capture')}"
                 )
+            if detection.get("blurry"):
+                return (f"{resolution} | image looks blurry "
+                        f"(sharpness {detection.get('sharpness')}): "
+                        "hold the card 20-30 cm away / lock focus")
             return f"{resolution} | waiting for {self.expected}"
         return (f"{resolution} | reading {self.last_slug} "
                 f"{self.progress() * 100:.0f}% ({self.last_score:.2f})")
@@ -293,13 +599,3 @@ class CardScanner:
     def __exit__(self, *exc):
         self.cancel()
         return False
-
-        self.score    = score       # similarity 0.0 - 1.0
-
-    @property
-    def ok(self):
-        return self.status == self.MATCH
-
-    def __repr__(self):
-        return (f"<ScanResult {self.status} read={self.card!r} "
-                f"want={self.expected!r} {self.score:.2f}>")

@@ -1,0 +1,402 @@
+{
+  "method": "leave-one-out targeted v13 mean-centered top-k similarity",
+  "model": "card_model_card_plants_mean_centered_v13_experimental.json",
+  "top_k": 3,
+  "maximum_false_acceptance_rate": 0.01,
+  "classes": {
+    "pechay_plant": {
+      "total_test_samples": 269,
+      "correctly_accepted_expected_samples": 143,
+      "rejected_expected_samples": 126,
+      "false_acceptances": 16,
+      "false_acceptance_rate": 0.009768009768009733,
+      "true_acceptance_rate": 0.5315985130111525,
+      "threshold": 0.7856403555839112,
+      "negative_total": 1638,
+      "negative_breakdown": {
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 16,
+          "false_acceptance_rate": 0.03695150115473441
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "monggo_plant": {
+      "total_test_samples": 433,
+      "correctly_accepted_expected_samples": 278,
+      "rejected_expected_samples": 155,
+      "false_acceptances": 14,
+      "false_acceptance_rate": 0.009497964721845276,
+      "true_acceptance_rate": 0.6420323325635104,
+      "threshold": 0.7231142815302657,
+      "negative_total": 1474,
+      "negative_breakdown": {
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 12,
+          "false_acceptance_rate": 0.04460966542750929
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.006644518272425249
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "okra_plant": {
+      "total_test_samples": 301,
+      "correctly_accepted_expected_samples": 214,
+      "rejected_expected_samples": 87,
+      "false_acceptances": 16,
+      "false_acceptance_rate": 0.00996264009962644,
+      "true_acceptance_rate": 0.7109634551495017,
+      "threshold": 0.6699793149016297,
+      "negative_total": 1606,
+      "negative_breakdown": {
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 3,
+          "false_acceptance_rate": 0.011152416356877323
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 10,
+          "false_acceptance_rate": 0.023094688221709007
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.013245033112582781
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006666666666666667
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "squash_plant": {
+      "total_test_samples": 301,
+      "correctly_accepted_expected_samples": 240,
+      "rejected_expected_samples": 61,
+      "false_acceptances": 16,
+      "false_acceptance_rate": 0.00996264009962644,
+      "true_acceptance_rate": 0.7973421926910299,
+      "threshold": 0.6568772696881694,
+      "negative_total": 1606,
+      "negative_breakdown": {
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 3,
+          "false_acceptance_rate": 0.011152416356877323
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 7,
+          "false_acceptance_rate": 0.016166281755196306
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 6,
+          "false_acceptance_rate": 0.039735099337748346
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "tomato_plant": {
+      "total_test_samples": 151,
+      "correctly_accepted_expected_samples": 105,
+      "rejected_expected_samples": 46,
+      "false_acceptances": 17,
+      "false_acceptance_rate": 0.009681093394077411,
+      "true_acceptance_rate": 0.695364238410596,
+      "threshold": 0.6453293749140955,
+      "negative_total": 1756,
+      "negative_breakdown": {
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.0023094688221709007
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 4,
+          "false_acceptance_rate": 0.013289036544850499
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 10,
+          "false_acceptance_rate": 0.03322259136212625
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006666666666666667
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006622516556291391
+        }
+      }
+    },
+    "eggplant_plant": {
+      "total_test_samples": 151,
+      "correctly_accepted_expected_samples": 135,
+      "rejected_expected_samples": 16,
+      "false_acceptances": 17,
+      "false_acceptance_rate": 0.009681093394077411,
+      "true_acceptance_rate": 0.8940397350993378,
+      "threshold": 0.47928475497133505,
+      "negative_total": 1756,
+      "negative_breakdown": {
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.0037174721189591076
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 4,
+          "false_acceptance_rate": 0.009237875288683603
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.0033222591362126247
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006622516556291391
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 10,
+          "false_acceptance_rate": 0.06666666666666667
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "sweet_potato_plant": {
+      "total_test_samples": 150,
+      "correctly_accepted_expected_samples": 87,
+      "rejected_expected_samples": 63,
+      "false_acceptances": 17,
+      "false_acceptance_rate": 0.009675583380762687,
+      "true_acceptance_rate": 0.5800000000000001,
+      "threshold": 0.622524245230102,
+      "negative_total": 1757,
+      "negative_breakdown": {
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.0037174721189591076
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.004618937644341801
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 3,
+          "false_acceptance_rate": 0.019867549668874173
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 11,
+          "false_acceptance_rate": 0.0728476821192053
+        }
+      }
+    },
+    "rice_plant": {
+      "total_test_samples": 151,
+      "correctly_accepted_expected_samples": 91,
+      "rejected_expected_samples": 60,
+      "false_acceptances": 17,
+      "false_acceptance_rate": 0.009681093394077411,
+      "true_acceptance_rate": 0.6026490066225165,
+      "threshold": 0.6403668416070101,
+      "negative_total": 1756,
+      "negative_breakdown": {
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 3,
+          "false_acceptance_rate": 0.011152416356877323
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 5,
+          "false_acceptance_rate": 0.011547344110854504
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006622516556291391
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 8,
+          "false_acceptance_rate": 0.05333333333333334
+        }
+      }
+    }
+  },
+  "comparison": {
+    "targeted": {
+      "total_test_samples": 1907,
+      "true_acceptances": 1293,
+      "true_acceptance_rate": 0.6780283167278448,
+      "false_acceptances": 130,
+      "negative_test_samples": 13349,
+      "false_acceptance_rate": 0.009738557195295528
+    },
+    "existing_multiclass": {
+      "total_test_samples": 1907,
+      "top1_accuracy": 0.8793917147351862,
+      "accepted": 1103,
+      "acceptance_rate": 0.578395385422129,
+      "wrong_acceptances": 0,
+      "wrong_acceptance_rate": 0.0
+    }
+  }
+}

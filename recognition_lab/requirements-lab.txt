@@ -1,0 +1,4 @@
+# Uses packages already present in HarvestHand/.venv.
+numpy
+opencv-python
+pygame-ce

@@ -1,3 +1,0 @@
-ERROR: Invalid requirement: '': Expected package name at the start of dependency specifier
-    
-    ^

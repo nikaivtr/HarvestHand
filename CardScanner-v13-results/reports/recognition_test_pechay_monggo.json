@@ -1,0 +1,1980 @@
+{
+  "test": "Pechay and Monggo Recognition Lab closed-set test",
+  "references": [
+    {
+      "id": 10,
+      "label": "e4b7fb467a05_10",
+      "path": "D:\\HarvestHand\\recognition_lab\\materials\\uploads\\phase2\\e4b7fb467a05_10.png",
+      "width": 848,
+      "height": 1264
+    },
+    {
+      "id": 9,
+      "label": "c3a0cd3dc990_9",
+      "path": "D:\\HarvestHand\\recognition_lab\\materials\\uploads\\phase2\\c3a0cd3dc990_9.png",
+      "width": 848,
+      "height": 1264
+    },
+    {
+      "id": 8,
+      "label": "cc6be71f2b79_8",
+      "path": "D:\\HarvestHand\\recognition_lab\\materials\\uploads\\phase2\\cc6be71f2b79_8.png",
+      "width": 848,
+      "height": 1264
+    },
+    {
+      "id": 7,
+      "label": "0ec41a62dd38_7",
+      "path": "D:\\HarvestHand\\recognition_lab\\materials\\uploads\\phase2\\0ec41a62dd38_7.png",
+      "width": 848,
+      "height": 1264
+    },
+    {
+      "id": 6,
+      "label": "0df05a820454_6",
+      "path": "D:\\HarvestHand\\recognition_lab\\materials\\uploads\\phase2\\0df05a820454_6.png",
+      "width": 848,
+      "height": 1264
+    },
+    {
+      "id": 5,
+      "label": "e268f49c0cc6_5",
+      "path": "D:\\HarvestHand\\recognition_lab\\materials\\uploads\\phase2\\e268f49c0cc6_5.png",
+      "width": 848,
+      "height": 1264
+    },
+    {
+      "id": 4,
+      "label": "53d0bfa9b1c8_4",
+      "path": "D:\\HarvestHand\\recognition_lab\\materials\\uploads\\phase2\\53d0bfa9b1c8_4.png",
+      "width": 848,
+      "height": 1264
+    },
+    {
+      "id": 3,
+      "label": "5614d70b5972_3",
+      "path": "D:\\HarvestHand\\recognition_lab\\materials\\uploads\\phase2\\5614d70b5972_3.png",
+      "width": 848,
+      "height": 1264
+    },
+    {
+      "id": 2,
+      "label": "Monggo",
+      "path": "D:\\HarvestHand\\recognition_lab\\materials\\uploads\\phase2\\aa88005d9933_2.png",
+      "width": 848,
+      "height": 1264
+    },
+    {
+      "id": 1,
+      "label": "Pechay",
+      "path": "D:\\HarvestHand\\recognition_lab\\materials\\uploads\\phase2\\ba76a831528f_1.png",
+      "width": 848,
+      "height": 1264
+    }
+  ],
+  "reference_count": 10,
+  "target_cards": {
+    "Pechay": {
+      "tests": 2,
+      "correct_top1": 2,
+      "top1_accuracy": 1.0,
+      "average_top_score": 0.9908
+    },
+    "Monggo": {
+      "tests": 2,
+      "correct_top1": 2,
+      "top1_accuracy": 1.0,
+      "average_top_score": 0.9909
+    }
+  },
+  "overall": {
+    "labels": [
+      "0df05a820454_6",
+      "0ec41a62dd38_7",
+      "53d0bfa9b1c8_4",
+      "5614d70b5972_3",
+      "Monggo",
+      "Pechay",
+      "c3a0cd3dc990_9",
+      "cc6be71f2b79_8",
+      "e268f49c0cc6_5",
+      "e4b7fb467a05_10"
+    ],
+    "tests": 20,
+    "correct_top1": 20,
+    "top1_accuracy": 1.0
+  },
+  "tests": [
+    {
+      "target_id": 10,
+      "target_label": "e4b7fb467a05_10",
+      "variant": "mild_perspective",
+      "predicted_id": 10,
+      "predicted_label": "e4b7fb467a05_10",
+      "correct": true,
+      "top_score": 0.9836,
+      "runner_up_score": 0.9762,
+      "margin": 0.007400000000000073,
+      "ranked_scores": [
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9636,
+          "orb_matches": 299.0,
+          "orb_score": 1.0,
+          "combined": 0.9836
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9471,
+          "orb_matches": 66.0,
+          "orb_score": 1.0,
+          "combined": 0.9762
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9451,
+          "orb_matches": 66.0,
+          "orb_score": 1.0,
+          "combined": 0.9753
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9421,
+          "orb_matches": 59.0,
+          "orb_score": 1.0,
+          "combined": 0.9739
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.941,
+          "orb_matches": 32.0,
+          "orb_score": 1.0,
+          "combined": 0.9735
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9401,
+          "orb_matches": 39.0,
+          "orb_score": 1.0,
+          "combined": 0.9731
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9368,
+          "orb_matches": 30.0,
+          "orb_score": 1.0,
+          "combined": 0.9716
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.941,
+          "orb_matches": 27.0,
+          "orb_score": 0.9,
+          "combined": 0.9185
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.938,
+          "orb_matches": 23.0,
+          "orb_score": 0.7667,
+          "combined": 0.8438
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9271,
+          "orb_matches": 16.0,
+          "orb_score": 0.5333,
+          "combined": 0.7105
+        }
+      ]
+    },
+    {
+      "target_id": 10,
+      "target_label": "e4b7fb467a05_10",
+      "variant": "mild_brightness",
+      "predicted_id": 10,
+      "predicted_label": "e4b7fb467a05_10",
+      "correct": true,
+      "top_score": 0.9985,
+      "runner_up_score": 0.9861,
+      "margin": 0.012400000000000078,
+      "ranked_scores": [
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9966,
+          "orb_matches": 439.0,
+          "orb_score": 1.0,
+          "combined": 0.9985
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9691,
+          "orb_matches": 88.0,
+          "orb_score": 1.0,
+          "combined": 0.9861
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9645,
+          "orb_matches": 78.0,
+          "orb_score": 1.0,
+          "combined": 0.984
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9615,
+          "orb_matches": 79.0,
+          "orb_score": 1.0,
+          "combined": 0.9827
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9549,
+          "orb_matches": 46.0,
+          "orb_score": 1.0,
+          "combined": 0.9797
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9517,
+          "orb_matches": 41.0,
+          "orb_score": 1.0,
+          "combined": 0.9783
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9442,
+          "orb_matches": 45.0,
+          "orb_score": 1.0,
+          "combined": 0.9749
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9495,
+          "orb_matches": 28.0,
+          "orb_score": 0.9333,
+          "combined": 0.9406
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9374,
+          "orb_matches": 24.0,
+          "orb_score": 0.8,
+          "combined": 0.8618
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9538,
+          "orb_matches": 23.0,
+          "orb_score": 0.7667,
+          "combined": 0.8509
+        }
+      ]
+    },
+    {
+      "target_id": 9,
+      "target_label": "c3a0cd3dc990_9",
+      "variant": "mild_perspective",
+      "predicted_id": 9,
+      "predicted_label": "c3a0cd3dc990_9",
+      "correct": true,
+      "top_score": 0.983,
+      "runner_up_score": 0.9789,
+      "margin": 0.0040999999999999925,
+      "ranked_scores": [
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9623,
+          "orb_matches": 268.0,
+          "orb_score": 1.0,
+          "combined": 0.983
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9531,
+          "orb_matches": 98.0,
+          "orb_score": 1.0,
+          "combined": 0.9789
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9507,
+          "orb_matches": 93.0,
+          "orb_score": 1.0,
+          "combined": 0.9778
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9436,
+          "orb_matches": 68.0,
+          "orb_score": 1.0,
+          "combined": 0.9746
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9368,
+          "orb_matches": 47.0,
+          "orb_score": 1.0,
+          "combined": 0.9716
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9366,
+          "orb_matches": 46.0,
+          "orb_score": 1.0,
+          "combined": 0.9715
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9357,
+          "orb_matches": 37.0,
+          "orb_score": 1.0,
+          "combined": 0.9711
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.932,
+          "orb_matches": 51.0,
+          "orb_score": 1.0,
+          "combined": 0.9694
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9319,
+          "orb_matches": 56.0,
+          "orb_score": 1.0,
+          "combined": 0.9693
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9264,
+          "orb_matches": 37.0,
+          "orb_score": 1.0,
+          "combined": 0.9669
+        }
+      ]
+    },
+    {
+      "target_id": 9,
+      "target_label": "c3a0cd3dc990_9",
+      "variant": "mild_brightness",
+      "predicted_id": 9,
+      "predicted_label": "c3a0cd3dc990_9",
+      "correct": true,
+      "top_score": 0.9985,
+      "runner_up_score": 0.9873,
+      "margin": 0.011200000000000099,
+      "ranked_scores": [
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9967,
+          "orb_matches": 382.0,
+          "orb_score": 1.0,
+          "combined": 0.9985
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9718,
+          "orb_matches": 125.0,
+          "orb_score": 1.0,
+          "combined": 0.9873
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9628,
+          "orb_matches": 110.0,
+          "orb_score": 1.0,
+          "combined": 0.9832
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9528,
+          "orb_matches": 83.0,
+          "orb_score": 1.0,
+          "combined": 0.9788
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9455,
+          "orb_matches": 65.0,
+          "orb_score": 1.0,
+          "combined": 0.9755
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9431,
+          "orb_matches": 36.0,
+          "orb_score": 1.0,
+          "combined": 0.9744
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9412,
+          "orb_matches": 36.0,
+          "orb_score": 1.0,
+          "combined": 0.9735
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9347,
+          "orb_matches": 57.0,
+          "orb_score": 1.0,
+          "combined": 0.9706
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9339,
+          "orb_matches": 51.0,
+          "orb_score": 1.0,
+          "combined": 0.9703
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9302,
+          "orb_matches": 30.0,
+          "orb_score": 1.0,
+          "combined": 0.9686
+        }
+      ]
+    },
+    {
+      "target_id": 8,
+      "target_label": "cc6be71f2b79_8",
+      "variant": "mild_perspective",
+      "predicted_id": 8,
+      "predicted_label": "cc6be71f2b79_8",
+      "correct": true,
+      "top_score": 0.9825,
+      "runner_up_score": 0.9785,
+      "margin": 0.0040000000000000036,
+      "ranked_scores": [
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9612,
+          "orb_matches": 252.0,
+          "orb_score": 1.0,
+          "combined": 0.9825
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9521,
+          "orb_matches": 98.0,
+          "orb_score": 1.0,
+          "combined": 0.9785
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9511,
+          "orb_matches": 88.0,
+          "orb_score": 1.0,
+          "combined": 0.978
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9479,
+          "orb_matches": 68.0,
+          "orb_score": 1.0,
+          "combined": 0.9766
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9394,
+          "orb_matches": 56.0,
+          "orb_score": 1.0,
+          "combined": 0.9727
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9369,
+          "orb_matches": 37.0,
+          "orb_score": 1.0,
+          "combined": 0.9716
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9345,
+          "orb_matches": 50.0,
+          "orb_score": 1.0,
+          "combined": 0.9705
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9343,
+          "orb_matches": 46.0,
+          "orb_score": 1.0,
+          "combined": 0.9704
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.934,
+          "orb_matches": 41.0,
+          "orb_score": 1.0,
+          "combined": 0.9703
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9255,
+          "orb_matches": 39.0,
+          "orb_score": 1.0,
+          "combined": 0.9665
+        }
+      ]
+    },
+    {
+      "target_id": 8,
+      "target_label": "cc6be71f2b79_8",
+      "variant": "mild_brightness",
+      "predicted_id": 8,
+      "predicted_label": "cc6be71f2b79_8",
+      "correct": true,
+      "top_score": 0.9984,
+      "runner_up_score": 0.9881,
+      "margin": 0.010299999999999976,
+      "ranked_scores": [
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9965,
+          "orb_matches": 378.0,
+          "orb_score": 1.0,
+          "combined": 0.9984
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9735,
+          "orb_matches": 139.0,
+          "orb_score": 1.0,
+          "combined": 0.9881
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9655,
+          "orb_matches": 144.0,
+          "orb_score": 1.0,
+          "combined": 0.9845
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9589,
+          "orb_matches": 82.0,
+          "orb_score": 1.0,
+          "combined": 0.9815
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9501,
+          "orb_matches": 66.0,
+          "orb_score": 1.0,
+          "combined": 0.9775
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9458,
+          "orb_matches": 37.0,
+          "orb_score": 1.0,
+          "combined": 0.9756
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.941,
+          "orb_matches": 41.0,
+          "orb_score": 1.0,
+          "combined": 0.9735
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9404,
+          "orb_matches": 61.0,
+          "orb_score": 1.0,
+          "combined": 0.9732
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9382,
+          "orb_matches": 44.0,
+          "orb_score": 1.0,
+          "combined": 0.9722
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9312,
+          "orb_matches": 42.0,
+          "orb_score": 1.0,
+          "combined": 0.969
+        }
+      ]
+    },
+    {
+      "target_id": 7,
+      "target_label": "0ec41a62dd38_7",
+      "variant": "mild_perspective",
+      "predicted_id": 7,
+      "predicted_label": "0ec41a62dd38_7",
+      "correct": true,
+      "top_score": 0.9839,
+      "runner_up_score": 0.9767,
+      "margin": 0.007199999999999984,
+      "ranked_scores": [
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9643,
+          "orb_matches": 266.0,
+          "orb_score": 1.0,
+          "combined": 0.9839
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9483,
+          "orb_matches": 112.0,
+          "orb_score": 1.0,
+          "combined": 0.9767
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9469,
+          "orb_matches": 88.0,
+          "orb_score": 1.0,
+          "combined": 0.9761
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9439,
+          "orb_matches": 73.0,
+          "orb_score": 1.0,
+          "combined": 0.9747
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9385,
+          "orb_matches": 51.0,
+          "orb_score": 1.0,
+          "combined": 0.9723
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9377,
+          "orb_matches": 49.0,
+          "orb_score": 1.0,
+          "combined": 0.9719
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9354,
+          "orb_matches": 59.0,
+          "orb_score": 1.0,
+          "combined": 0.9709
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9345,
+          "orb_matches": 33.0,
+          "orb_score": 1.0,
+          "combined": 0.9705
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9326,
+          "orb_matches": 32.0,
+          "orb_score": 1.0,
+          "combined": 0.9697
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9192,
+          "orb_matches": 42.0,
+          "orb_score": 1.0,
+          "combined": 0.9636
+        }
+      ]
+    },
+    {
+      "target_id": 7,
+      "target_label": "0ec41a62dd38_7",
+      "variant": "mild_brightness",
+      "predicted_id": 7,
+      "predicted_label": "0ec41a62dd38_7",
+      "correct": true,
+      "top_score": 0.9985,
+      "runner_up_score": 0.987,
+      "margin": 0.011500000000000066,
+      "ranked_scores": [
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9967,
+          "orb_matches": 368.0,
+          "orb_score": 1.0,
+          "combined": 0.9985
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9712,
+          "orb_matches": 121.0,
+          "orb_score": 1.0,
+          "combined": 0.987
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.97,
+          "orb_matches": 132.0,
+          "orb_score": 1.0,
+          "combined": 0.9865
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.957,
+          "orb_matches": 81.0,
+          "orb_score": 1.0,
+          "combined": 0.9806
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9508,
+          "orb_matches": 60.0,
+          "orb_score": 1.0,
+          "combined": 0.9778
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9469,
+          "orb_matches": 57.0,
+          "orb_score": 1.0,
+          "combined": 0.9761
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.945,
+          "orb_matches": 38.0,
+          "orb_score": 1.0,
+          "combined": 0.9752
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9444,
+          "orb_matches": 61.0,
+          "orb_score": 1.0,
+          "combined": 0.975
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9433,
+          "orb_matches": 45.0,
+          "orb_score": 1.0,
+          "combined": 0.9745
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9276,
+          "orb_matches": 32.0,
+          "orb_score": 1.0,
+          "combined": 0.9674
+        }
+      ]
+    },
+    {
+      "target_id": 6,
+      "target_label": "0df05a820454_6",
+      "variant": "mild_perspective",
+      "predicted_id": 6,
+      "predicted_label": "0df05a820454_6",
+      "correct": true,
+      "top_score": 0.9844,
+      "runner_up_score": 0.977,
+      "margin": 0.007400000000000073,
+      "ranked_scores": [
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9654,
+          "orb_matches": 294.0,
+          "orb_score": 1.0,
+          "combined": 0.9844
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.949,
+          "orb_matches": 92.0,
+          "orb_score": 1.0,
+          "combined": 0.977
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.946,
+          "orb_matches": 113.0,
+          "orb_score": 1.0,
+          "combined": 0.9757
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9428,
+          "orb_matches": 54.0,
+          "orb_score": 1.0,
+          "combined": 0.9742
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9407,
+          "orb_matches": 49.0,
+          "orb_score": 1.0,
+          "combined": 0.9733
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9367,
+          "orb_matches": 47.0,
+          "orb_score": 1.0,
+          "combined": 0.9715
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9336,
+          "orb_matches": 31.0,
+          "orb_score": 1.0,
+          "combined": 0.9701
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9307,
+          "orb_matches": 51.0,
+          "orb_score": 1.0,
+          "combined": 0.9688
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9258,
+          "orb_matches": 30.0,
+          "orb_score": 1.0,
+          "combined": 0.9666
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9207,
+          "orb_matches": 58.0,
+          "orb_score": 1.0,
+          "combined": 0.9643
+        }
+      ]
+    },
+    {
+      "target_id": 6,
+      "target_label": "0df05a820454_6",
+      "variant": "mild_brightness",
+      "predicted_id": 6,
+      "predicted_label": "0df05a820454_6",
+      "correct": true,
+      "top_score": 0.9987,
+      "runner_up_score": 0.9866,
+      "margin": 0.0121,
+      "ranked_scores": [
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.997,
+          "orb_matches": 389.0,
+          "orb_score": 1.0,
+          "combined": 0.9987
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9703,
+          "orb_matches": 161.0,
+          "orb_score": 1.0,
+          "combined": 0.9866
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9695,
+          "orb_matches": 173.0,
+          "orb_score": 1.0,
+          "combined": 0.9863
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9632,
+          "orb_matches": 72.0,
+          "orb_score": 1.0,
+          "combined": 0.9834
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.962,
+          "orb_matches": 78.0,
+          "orb_score": 1.0,
+          "combined": 0.9829
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9598,
+          "orb_matches": 62.0,
+          "orb_score": 1.0,
+          "combined": 0.9819
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9567,
+          "orb_matches": 59.0,
+          "orb_score": 1.0,
+          "combined": 0.9805
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9538,
+          "orb_matches": 49.0,
+          "orb_score": 1.0,
+          "combined": 0.9792
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9523,
+          "orb_matches": 46.0,
+          "orb_score": 1.0,
+          "combined": 0.9785
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9384,
+          "orb_matches": 62.0,
+          "orb_score": 1.0,
+          "combined": 0.9723
+        }
+      ]
+    },
+    {
+      "target_id": 5,
+      "target_label": "e268f49c0cc6_5",
+      "variant": "mild_perspective",
+      "predicted_id": 5,
+      "predicted_label": "e268f49c0cc6_5",
+      "correct": true,
+      "top_score": 0.9829,
+      "runner_up_score": 0.9768,
+      "margin": 0.006099999999999994,
+      "ranked_scores": [
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9621,
+          "orb_matches": 292.0,
+          "orb_score": 1.0,
+          "combined": 0.9829
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9483,
+          "orb_matches": 102.0,
+          "orb_score": 1.0,
+          "combined": 0.9768
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9479,
+          "orb_matches": 105.0,
+          "orb_score": 1.0,
+          "combined": 0.9765
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9445,
+          "orb_matches": 55.0,
+          "orb_score": 1.0,
+          "combined": 0.975
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9421,
+          "orb_matches": 53.0,
+          "orb_score": 1.0,
+          "combined": 0.9739
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9393,
+          "orb_matches": 36.0,
+          "orb_score": 1.0,
+          "combined": 0.9727
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9344,
+          "orb_matches": 40.0,
+          "orb_score": 1.0,
+          "combined": 0.9705
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9328,
+          "orb_matches": 37.0,
+          "orb_score": 1.0,
+          "combined": 0.9697
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9265,
+          "orb_matches": 35.0,
+          "orb_score": 1.0,
+          "combined": 0.9669
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9246,
+          "orb_matches": 55.0,
+          "orb_score": 1.0,
+          "combined": 0.9661
+        }
+      ]
+    },
+    {
+      "target_id": 5,
+      "target_label": "e268f49c0cc6_5",
+      "variant": "mild_brightness",
+      "predicted_id": 5,
+      "predicted_label": "e268f49c0cc6_5",
+      "correct": true,
+      "top_score": 0.9987,
+      "runner_up_score": 0.9868,
+      "margin": 0.011900000000000022,
+      "ranked_scores": [
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9971,
+          "orb_matches": 398.0,
+          "orb_score": 1.0,
+          "combined": 0.9987
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9707,
+          "orb_matches": 180.0,
+          "orb_score": 1.0,
+          "combined": 0.9868
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9687,
+          "orb_matches": 156.0,
+          "orb_score": 1.0,
+          "combined": 0.9859
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9664,
+          "orb_matches": 70.0,
+          "orb_score": 1.0,
+          "combined": 0.9849
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9637,
+          "orb_matches": 76.0,
+          "orb_score": 1.0,
+          "combined": 0.9837
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9582,
+          "orb_matches": 45.0,
+          "orb_score": 1.0,
+          "combined": 0.9812
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9572,
+          "orb_matches": 58.0,
+          "orb_score": 1.0,
+          "combined": 0.9808
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9556,
+          "orb_matches": 47.0,
+          "orb_score": 1.0,
+          "combined": 0.98
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.953,
+          "orb_matches": 46.0,
+          "orb_score": 1.0,
+          "combined": 0.9788
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9418,
+          "orb_matches": 61.0,
+          "orb_score": 1.0,
+          "combined": 0.9738
+        }
+      ]
+    },
+    {
+      "target_id": 4,
+      "target_label": "53d0bfa9b1c8_4",
+      "variant": "mild_perspective",
+      "predicted_id": 4,
+      "predicted_label": "53d0bfa9b1c8_4",
+      "correct": true,
+      "top_score": 0.9827,
+      "runner_up_score": 0.9766,
+      "margin": 0.006099999999999994,
+      "ranked_scores": [
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9616,
+          "orb_matches": 271.0,
+          "orb_score": 1.0,
+          "combined": 0.9827
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.948,
+          "orb_matches": 116.0,
+          "orb_score": 1.0,
+          "combined": 0.9766
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9468,
+          "orb_matches": 102.0,
+          "orb_score": 1.0,
+          "combined": 0.976
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9453,
+          "orb_matches": 54.0,
+          "orb_score": 1.0,
+          "combined": 0.9754
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9444,
+          "orb_matches": 55.0,
+          "orb_score": 1.0,
+          "combined": 0.975
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9393,
+          "orb_matches": 33.0,
+          "orb_score": 1.0,
+          "combined": 0.9727
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9374,
+          "orb_matches": 58.0,
+          "orb_score": 1.0,
+          "combined": 0.9718
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9371,
+          "orb_matches": 45.0,
+          "orb_score": 1.0,
+          "combined": 0.9717
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9328,
+          "orb_matches": 69.0,
+          "orb_score": 1.0,
+          "combined": 0.9698
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9324,
+          "orb_matches": 41.0,
+          "orb_score": 1.0,
+          "combined": 0.9696
+        }
+      ]
+    },
+    {
+      "target_id": 4,
+      "target_label": "53d0bfa9b1c8_4",
+      "variant": "mild_brightness",
+      "predicted_id": 4,
+      "predicted_label": "53d0bfa9b1c8_4",
+      "correct": true,
+      "top_score": 0.9987,
+      "runner_up_score": 0.9838,
+      "margin": 0.014900000000000024,
+      "ranked_scores": [
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.997,
+          "orb_matches": 396.0,
+          "orb_score": 1.0,
+          "combined": 0.9987
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9641,
+          "orb_matches": 66.0,
+          "orb_score": 1.0,
+          "combined": 0.9838
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9638,
+          "orb_matches": 159.0,
+          "orb_score": 1.0,
+          "combined": 0.9837
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9615,
+          "orb_matches": 74.0,
+          "orb_score": 1.0,
+          "combined": 0.9827
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.961,
+          "orb_matches": 136.0,
+          "orb_score": 1.0,
+          "combined": 0.9825
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9599,
+          "orb_matches": 62.0,
+          "orb_score": 1.0,
+          "combined": 0.982
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9568,
+          "orb_matches": 45.0,
+          "orb_score": 1.0,
+          "combined": 0.9806
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.955,
+          "orb_matches": 59.0,
+          "orb_score": 1.0,
+          "combined": 0.9798
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9545,
+          "orb_matches": 39.0,
+          "orb_score": 1.0,
+          "combined": 0.9795
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9483,
+          "orb_matches": 70.0,
+          "orb_score": 1.0,
+          "combined": 0.9767
+        }
+      ]
+    },
+    {
+      "target_id": 3,
+      "target_label": "5614d70b5972_3",
+      "variant": "mild_perspective",
+      "predicted_id": 3,
+      "predicted_label": "5614d70b5972_3",
+      "correct": true,
+      "top_score": 0.9829,
+      "runner_up_score": 0.9776,
+      "margin": 0.005299999999999971,
+      "ranked_scores": [
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.962,
+          "orb_matches": 317.0,
+          "orb_score": 1.0,
+          "combined": 0.9829
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9503,
+          "orb_matches": 102.0,
+          "orb_score": 1.0,
+          "combined": 0.9776
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9441,
+          "orb_matches": 72.0,
+          "orb_score": 1.0,
+          "combined": 0.9748
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9432,
+          "orb_matches": 72.0,
+          "orb_score": 1.0,
+          "combined": 0.9744
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9418,
+          "orb_matches": 67.0,
+          "orb_score": 1.0,
+          "combined": 0.9738
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9362,
+          "orb_matches": 34.0,
+          "orb_score": 1.0,
+          "combined": 0.9713
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9336,
+          "orb_matches": 104.0,
+          "orb_score": 1.0,
+          "combined": 0.9701
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9313,
+          "orb_matches": 39.0,
+          "orb_score": 1.0,
+          "combined": 0.9691
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9309,
+          "orb_matches": 34.0,
+          "orb_score": 1.0,
+          "combined": 0.9689
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9299,
+          "orb_matches": 31.0,
+          "orb_score": 1.0,
+          "combined": 0.9684
+        }
+      ]
+    },
+    {
+      "target_id": 3,
+      "target_label": "5614d70b5972_3",
+      "variant": "mild_brightness",
+      "predicted_id": 3,
+      "predicted_label": "5614d70b5972_3",
+      "correct": true,
+      "top_score": 0.9986,
+      "runner_up_score": 0.9862,
+      "margin": 0.012400000000000078,
+      "ranked_scores": [
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.997,
+          "orb_matches": 406.0,
+          "orb_score": 1.0,
+          "combined": 0.9986
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9692,
+          "orb_matches": 128.0,
+          "orb_score": 1.0,
+          "combined": 0.9862
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9628,
+          "orb_matches": 84.0,
+          "orb_score": 1.0,
+          "combined": 0.9832
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.958,
+          "orb_matches": 74.0,
+          "orb_score": 1.0,
+          "combined": 0.9811
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9548,
+          "orb_matches": 81.0,
+          "orb_score": 1.0,
+          "combined": 0.9797
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9539,
+          "orb_matches": 44.0,
+          "orb_score": 1.0,
+          "combined": 0.9792
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9523,
+          "orb_matches": 34.0,
+          "orb_score": 1.0,
+          "combined": 0.9785
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9497,
+          "orb_matches": 110.0,
+          "orb_score": 1.0,
+          "combined": 0.9773
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.949,
+          "orb_matches": 37.0,
+          "orb_score": 1.0,
+          "combined": 0.977
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9506,
+          "orb_matches": 27.0,
+          "orb_score": 0.9,
+          "combined": 0.9227
+        }
+      ]
+    },
+    {
+      "target_id": 2,
+      "target_label": "Monggo",
+      "variant": "mild_perspective",
+      "predicted_id": 2,
+      "predicted_label": "Monggo",
+      "correct": true,
+      "top_score": 0.9832,
+      "runner_up_score": 0.9767,
+      "margin": 0.00649999999999995,
+      "ranked_scores": [
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9626,
+          "orb_matches": 297.0,
+          "orb_score": 1.0,
+          "combined": 0.9832
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9483,
+          "orb_matches": 103.0,
+          "orb_score": 1.0,
+          "combined": 0.9767
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.945,
+          "orb_matches": 71.0,
+          "orb_score": 1.0,
+          "combined": 0.9753
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9448,
+          "orb_matches": 55.0,
+          "orb_score": 1.0,
+          "combined": 0.9752
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9421,
+          "orb_matches": 72.0,
+          "orb_score": 1.0,
+          "combined": 0.974
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9367,
+          "orb_matches": 91.0,
+          "orb_score": 1.0,
+          "combined": 0.9715
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.936,
+          "orb_matches": 43.0,
+          "orb_score": 1.0,
+          "combined": 0.9712
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9337,
+          "orb_matches": 36.0,
+          "orb_score": 1.0,
+          "combined": 0.9701
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9329,
+          "orb_matches": 39.0,
+          "orb_score": 1.0,
+          "combined": 0.9698
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9384,
+          "orb_matches": 25.0,
+          "orb_score": 0.8333,
+          "combined": 0.8806
+        }
+      ]
+    },
+    {
+      "target_id": 2,
+      "target_label": "Monggo",
+      "variant": "mild_brightness",
+      "predicted_id": 2,
+      "predicted_label": "Monggo",
+      "correct": true,
+      "top_score": 0.9986,
+      "runner_up_score": 0.9851,
+      "margin": 0.013500000000000068,
+      "ranked_scores": [
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9969,
+          "orb_matches": 388.0,
+          "orb_score": 1.0,
+          "combined": 0.9986
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9669,
+          "orb_matches": 130.0,
+          "orb_score": 1.0,
+          "combined": 0.9851
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.963,
+          "orb_matches": 84.0,
+          "orb_score": 1.0,
+          "combined": 0.9833
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9583,
+          "orb_matches": 59.0,
+          "orb_score": 1.0,
+          "combined": 0.9812
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9547,
+          "orb_matches": 39.0,
+          "orb_score": 1.0,
+          "combined": 0.9796
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9535,
+          "orb_matches": 37.0,
+          "orb_score": 1.0,
+          "combined": 0.9791
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9535,
+          "orb_matches": 69.0,
+          "orb_score": 1.0,
+          "combined": 0.9791
+        },
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9512,
+          "orb_matches": 107.0,
+          "orb_score": 1.0,
+          "combined": 0.978
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9482,
+          "orb_matches": 36.0,
+          "orb_score": 1.0,
+          "combined": 0.9767
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9525,
+          "orb_matches": 22.0,
+          "orb_score": 0.7333,
+          "combined": 0.8319
+        }
+      ]
+    },
+    {
+      "target_id": 1,
+      "target_label": "Pechay",
+      "variant": "mild_perspective",
+      "predicted_id": 1,
+      "predicted_label": "Pechay",
+      "correct": true,
+      "top_score": 0.983,
+      "runner_up_score": 0.9772,
+      "margin": 0.005800000000000027,
+      "ranked_scores": [
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.9623,
+          "orb_matches": 306.0,
+          "orb_score": 1.0,
+          "combined": 0.983
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9493,
+          "orb_matches": 83.0,
+          "orb_score": 1.0,
+          "combined": 0.9772
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9471,
+          "orb_matches": 89.0,
+          "orb_score": 1.0,
+          "combined": 0.9762
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9465,
+          "orb_matches": 61.0,
+          "orb_score": 1.0,
+          "combined": 0.9759
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9376,
+          "orb_matches": 43.0,
+          "orb_score": 1.0,
+          "combined": 0.9719
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9338,
+          "orb_matches": 54.0,
+          "orb_score": 1.0,
+          "combined": 0.9702
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9321,
+          "orb_matches": 32.0,
+          "orb_score": 1.0,
+          "combined": 0.9694
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9277,
+          "orb_matches": 42.0,
+          "orb_score": 1.0,
+          "combined": 0.9675
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9293,
+          "orb_matches": 21.0,
+          "orb_score": 0.7,
+          "combined": 0.8032
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9346,
+          "orb_matches": 12.0,
+          "orb_score": 0.4,
+          "combined": 0.6406
+        }
+      ]
+    },
+    {
+      "target_id": 1,
+      "target_label": "Pechay",
+      "variant": "mild_brightness",
+      "predicted_id": 1,
+      "predicted_label": "Pechay",
+      "correct": true,
+      "top_score": 0.9986,
+      "runner_up_score": 0.9768,
+      "margin": 0.02180000000000004,
+      "ranked_scores": [
+        {
+          "reference_id": 1,
+          "label": "Pechay",
+          "ssim": 0.997,
+          "orb_matches": 408.0,
+          "orb_score": 1.0,
+          "combined": 0.9986
+        },
+        {
+          "reference_id": 2,
+          "label": "Monggo",
+          "ssim": 0.9484,
+          "orb_matches": 90.0,
+          "orb_score": 1.0,
+          "combined": 0.9768
+        },
+        {
+          "reference_id": 3,
+          "label": "5614d70b5972_3",
+          "ssim": 0.9446,
+          "orb_matches": 104.0,
+          "orb_score": 1.0,
+          "combined": 0.9751
+        },
+        {
+          "reference_id": 4,
+          "label": "53d0bfa9b1c8_4",
+          "ssim": 0.9445,
+          "orb_matches": 81.0,
+          "orb_score": 1.0,
+          "combined": 0.975
+        },
+        {
+          "reference_id": 8,
+          "label": "cc6be71f2b79_8",
+          "ssim": 0.9374,
+          "orb_matches": 33.0,
+          "orb_score": 1.0,
+          "combined": 0.9718
+        },
+        {
+          "reference_id": 5,
+          "label": "e268f49c0cc6_5",
+          "ssim": 0.9313,
+          "orb_matches": 60.0,
+          "orb_score": 1.0,
+          "combined": 0.9691
+        },
+        {
+          "reference_id": 7,
+          "label": "0ec41a62dd38_7",
+          "ssim": 0.9283,
+          "orb_matches": 41.0,
+          "orb_score": 1.0,
+          "combined": 0.9677
+        },
+        {
+          "reference_id": 6,
+          "label": "0df05a820454_6",
+          "ssim": 0.9264,
+          "orb_matches": 62.0,
+          "orb_score": 1.0,
+          "combined": 0.9669
+        },
+        {
+          "reference_id": 9,
+          "label": "c3a0cd3dc990_9",
+          "ssim": 0.9377,
+          "orb_matches": 26.0,
+          "orb_score": 0.8667,
+          "combined": 0.8986
+        },
+        {
+          "reference_id": 10,
+          "label": "e4b7fb467a05_10",
+          "ssim": 0.9334,
+          "orb_matches": 14.0,
+          "orb_score": 0.4667,
+          "combined": 0.6767
+        }
+      ]
+    }
+  ],
+  "interpretation": {
+    "data_improvement_proven": false,
+    "reason": "No independent unseen camera query set or prior Pechay/Monggo recognition result is available for a before/after comparison.",
+    "test_type": "Closed-set reference matching with mild deterministic perspective and brightness transformations.",
+    "not_proven": [
+      "Unseen physical-camera recognition",
+      "Recognition under lighting/background changes",
+      "Open-set rejection of unrelated cards or objects",
+      "Generalization beyond the stored references"
+    ]
+  }
+}

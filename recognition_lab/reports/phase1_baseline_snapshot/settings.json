@@ -1,0 +1,14 @@
+﻿{
+  "snapshot": "Phase 1 baseline before perimeter/nesting experiment",
+  "detector_settings": {
+    "max_candidates": 12,
+    "min_area_ratio": 0.01,
+    "max_area_ratio": 0.92,
+    "min_aspect_ratio": 0.45,
+    "max_aspect_ratio": 0.90,
+    "max_perspective_distortion": 0.45,
+    "min_edge_support": 0.08
+  },
+  "evaluation_report": "phase1_ground_truth_audit.json",
+  "source_files": ["engines.py", "analysis.py", "lab_main.py"]
+}

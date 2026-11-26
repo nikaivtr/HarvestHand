@@ -1,0 +1,12 @@
+frame,top_candidate,prediction,score,margin,source,confident
+live_probe_0.jpg,Monggo,None,0.7906,0.0323,guide,false
+live_probe_10.jpg,Monggo,None,0.7268,0.0752,detected,false
+live_probe_20.jpg,Monggo,None,0.4561,0.1209,detected,false
+live_probe_30.jpg,Monggo,None,0.4523,0.1186,detected,false
+live_probe_40.jpg,Monggo,None,0.8457,0.0663,detected,false
+live_probe_50.jpg,Talong,None,0.5441,0.1509,detected,false
+physical_pechay_orb_20.jpg,Pechay,None,0.3568,0.0100,detected,false
+physical_pechay_orb_35.jpg,Monggo,None,0.5461,0.0149,detected,false
+physical_pechay_orb_50.jpg,Pechay,None,0.3517,0.0320,detected,false
+physical_pechay_orb_65.jpg,Pechay,None,0.4889,0.0243,detected,false
+physical_pechay_orb_80.jpg,Talong,None,0.3879,0.0797,detected,false

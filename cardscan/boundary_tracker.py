@@ -33,7 +33,9 @@ class BoundaryTracker:
 
         gray = self._gray(surface)
         dt = max(0.0, min(float(dt), 0.25))
-        candidate = self._find_candidate(gray, self.points)
+        import cardscan.preprocess as preprocess
+        candidate = self._find_candidate(
+            preprocess._surface_to_array(surface), self.points)
 
         if self.points is None:
             self._acquire(candidate, dt)
@@ -74,105 +76,17 @@ class BoundaryTracker:
         }
 
     @classmethod
-    def _find_candidate(cls, gray, previous):
-        import cv2
-        import numpy as np
+    def _find_candidate(cls, rgb, previous):
+        """Best card quad in an RGB array, via the shared detector.
 
-        height, width = gray.shape[:2]
-        scale = min(1.0, 640.0 / max(height, width))
-        small = (
-            cv2.resize(gray, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
-            if scale < 1.0
-            else gray
-        )
-        blurred = cv2.GaussianBlur(small, (5, 5), 0)
-        masks = [
-            cv2.Canny(blurred, 40, 100),
-            cv2.Canny(blurred, 70, 150),
-            cv2.adaptiveThreshold(
-                blurred,
-                255,
-                cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                cv2.THRESH_BINARY,
-                31,
-                5,
-            ),
-        ]
-        edges = cv2.Canny(blurred, 50, 150)
-        candidates = []
-        image_area = small.shape[0] * small.shape[1]
-        for mask in masks:
-            mask = cv2.morphologyEx(
-                mask, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8), iterations=2
-            )
-            contours, _ = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-            for contour in contours:
-                area = cv2.contourArea(contour)
-                if area < 0.025 * image_area or area > 0.92 * image_area:
-                    continue
-                perimeter = cv2.arcLength(contour, True)
-                approx = cv2.approxPolyDP(contour, 0.025 * perimeter, True)
-                if len(approx) != 4 or not cv2.isContourConvex(approx):
-                    continue
-                points = cls._order(approx.reshape(4, 2).astype(np.float32))
-                sides = [
-                    float(np.linalg.norm(points[(i + 1) % 4] - points[i]))
-                    for i in range(4)
-                ]
-                aspect = min(
-                    (sides[0] + sides[2]) / 2.0,
-                    (sides[1] + sides[3]) / 2.0,
-                ) / max(
-                    (sides[0] + sides[2]) / 2.0,
-                    (sides[1] + sides[3]) / 2.0,
-                    1.0,
-                )
-                opposite = min(
-                    sides[0] / max(sides[2], 1.0),
-                    sides[2] / max(sides[0], 1.0),
-                    sides[1] / max(sides[3], 1.0),
-                    sides[3] / max(sides[1], 1.0),
-                )
-                angles = []
-                for i in range(4):
-                    before = points[(i - 1) % 4] - points[i]
-                    after = points[(i + 1) % 4] - points[i]
-                    denominator = max(
-                        float(np.linalg.norm(before) * np.linalg.norm(after)), 1.0
-                    )
-                    angles.append(
-                        float(
-                            np.degrees(
-                                np.arccos(
-                                    np.clip(np.dot(before, after) / denominator, -1.0, 1.0)
-                                )
-                            )
-                        )
-                    )
-                support = cls._edge_support(edges, points)
-                if (
-                    aspect < 0.45
-                    or aspect > 0.95
-                    or opposite < cls.MIN_OPPOSITE_SIDE_RATIO
-                    or min(angles) < cls.MIN_CORNER_ANGLE
-                    or max(angles) > cls.MAX_CORNER_ANGLE
-                    or support < cls.MIN_EDGE_SUPPORT
-                ):
-                    continue
-                area_ratio = cv2.contourArea(points) / image_area
-                geometry = 1.0 - min(abs(aspect - 0.714) / 0.714, 1.0)
-                area_score = min(area_ratio / 0.20, 1.0)
-                score = 0.45 * geometry + 0.25 * support + 0.20 * area_score + 0.10 * opposite
-                full_points = points / max(scale, 1e-9)
-                if previous is not None:
-                    distance = float(
-                        np.mean(np.linalg.norm(full_points - previous, axis=1))
-                    ) / max(np.hypot(width, height), 1.0)
-                    score += 0.15 * max(0.0, 1.0 - distance / 0.25)
-                candidates.append((score, full_points))
-        if not candidates:
-            return None
-        return max(candidates, key=lambda item: item[0])[1]
+        Uses the same detection as recognition (cardscan.detect), so the
+        diagnostic overlay shows exactly what the scanner sees. Last
+        frame's quad is passed along to favour a stable choice.
+        """
+        import cardscan.preprocess as preprocess
+
+        points, _ = preprocess.detect_quad(rgb, previous=previous)
+        return points
 
     @staticmethod
     def _edge_support(edges, points):

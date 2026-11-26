@@ -30,14 +30,24 @@ SAMPLES_DIR = "data/card_samples"
 
 IMAGE_EXTS = (".png", ".jpg", ".jpeg", ".bmp", ".webp")
 
-DEFAULT_THRESHOLD = 0.80
-DEFAULT_MARGIN = 0.07
+# Scores are cosine similarity of MEAN-CENTERED vectors (see build_model).
+# Every card shares one printed template, so raw cosine puts all cards at
+# 0.8-0.95 and the gap between best and runner-up is tiny; subtracting the
+# average card first removes the shared template and leaves what differs.
+# Measured on the project's own samples (leave-one-out): raw cosine with
+# margin 0.07 accepted ~18 % of reads; centered with margin 0.20 accepts
+# ~79 % with <1 % wrong among them.
+DEFAULT_THRESHOLD = 0.50
+DEFAULT_MARGIN = 0.20
 MIN_SAMPLES = 5
 TOP_K = 3
-MODEL_VERSION = 2
+MODEL_VERSION = 3
 
 
 def _model_file():
+    override = os.environ.get("HARVESTHAND_CARD_MODEL")
+    if override:
+        return os.path.expandvars(os.path.expanduser(override))
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), MODEL_PATH)
 
 
@@ -79,6 +89,20 @@ def similarity(a, b):
     return 0.0 if v < 0.0 else (v if v <= 1.0 else 1.0)
 
 
+def _normalize(v):
+    mag = sum(x * x for x in v) ** 0.5
+    return [x / mag for x in v] if mag > 0.0 else list(v)
+
+
+def _center(model_or_mean, vector):
+    """Subtract the model's mean card and re-normalize (no-op if absent)."""
+    mean = (model_or_mean.get("mean")
+            if isinstance(model_or_mean, dict) else model_or_mean)
+    if not mean or len(mean) != len(vector):
+        return vector
+    return _normalize([x - m for x, m in zip(vector, mean)])
+
+
 def _mean(vectors):
     n = len(vectors[0])
     out = [0.0] * n
@@ -102,41 +126,132 @@ def _class_score(samples, vector, top_k=TOP_K):
     return sum(sims[:k]) / k
 
 
+# - Self-check -----------------------------------------------
+
+def evaluate(model, verbose=False):
+    """Leave-one-out check of a trained model on its own samples.
+
+    Each sample is scored against the model WITHOUT itself. Returns a
+    dict with top-1 accuracy, how many reads the live scanner would
+    accept at the model's threshold/margin, how many of those accepted
+    reads are wrong, and the most confused card pairs. Needs numpy.
+
+    Caveat: photos taken seconds apart are near-duplicates, so this is
+    optimistic. Test with photos from a different session/room too.
+    """
+    import numpy as np
+
+    slugs, X, y = [], [], []
+    for slug, entry in model.get("cards", {}).items():
+        slugs.append(slug)
+        for v in entry.get("samples", []):
+            X.append(v)
+            y.append(len(slugs) - 1)
+    if len(slugs) < 2 or len(X) < 2:
+        return None
+    X = np.asarray(X, dtype=np.float64)
+    X /= np.linalg.norm(X, axis=1, keepdims=True) + 1e-12
+    y = np.asarray(y)
+    sims = np.clip(X @ X.T, 0.0, 1.0)
+    np.fill_diagonal(sims, -1.0)               # exclude self
+
+    thr = model.get("threshold", DEFAULT_THRESHOLD)
+    mrg = model.get("margin", DEFAULT_MARGIN)
+    correct = accepted = wrong_accepted = 0
+    confusion = {}
+    for i in range(len(y)):
+        scores = []
+        for c in range(len(slugs)):
+            s = np.sort(sims[i, y == c])[::-1]
+            s = s[s >= 0.0][:TOP_K]
+            scores.append(s.mean() if len(s) else 0.0)
+        order = np.argsort(scores)[::-1]
+        best, run = order[0], order[1]
+        ok = best == y[i]
+        correct += int(ok)
+        if scores[best] >= thr and scores[best] - scores[run] >= mrg:
+            accepted += 1
+            wrong_accepted += int(not ok)
+        if not ok:
+            key = (slugs[y[i]], slugs[best])
+            confusion[key] = confusion.get(key, 0) + 1
+    n = len(y)
+    result = {
+        "samples": n,
+        "top1": correct / n,
+        "accepted": accepted / n,
+        "wrong_of_accepted": (wrong_accepted / accepted) if accepted else 0.0,
+        "confused": sorted(confusion.items(), key=lambda kv: -kv[1])[:8],
+    }
+    if verbose:
+        print("  leave-one-out: top-1 %.1f%% | accepted %.1f%% | wrong among "
+              "accepted %.1f%%" % (100 * result["top1"],
+                                    100 * result["accepted"],
+                                    100 * result["wrong_of_accepted"]))
+        for (true, pred), k in result["confused"]:
+            print("    %-20s mistaken for %-20s x%d" % (true, pred, k))
+    return result
+
+
 # - Training -------------------------------------------------
 
 def build_model(root=None, verbose=False):
     cards = {}
+    raw = {}
     problems = []
     found = sample_dirs(root)
     for slug in sorted(found):
         files = find_samples(slug, root)
         vectors = []
         skipped = 0
+        failed = []
         for f in files:
-            vec = features.extract(features.load_image(f))
+            # "training" fallback: a sample that is already a card-shaped
+            # image (e.g. an exported card design) is used whole when no
+            # boundary is found, instead of being thrown away.
+            vec = features.extract(features.load_image(f), fallback="training")
             if vec is None:
                 skipped += 1
+                failed.append(os.path.basename(f))
                 continue
             vectors.append(vec)
+        if failed:
+            problems.append("%s: %d/%d samples rejected (no card boundary): %s"
+                            % (slug, len(failed), len(files),
+                               ", ".join(failed[:12])
+                               + (" ..." if len(failed) > 12 else "")))
         if not vectors:
             problems.append(
                 "%s: none of %d images could be read" % (slug, len(files)))
             continue
-        cards[slug] = {
-            "centroid": _mean(vectors),
-            "samples": vectors,
-            "n": len(vectors),
-        }
+        raw[slug] = vectors
         if verbose:
             note = "  %-20s %3d samples" % (slug, len(vectors))
             if skipped:
                 note += "  (%d unreadable)" % skipped
             print(note)
 
+
+    # Mean card = average of the per-class means (so a class with more
+    # photos does not dominate), subtracted from every sample.
+    mean = None
+    if raw:
+        class_means = [[sum(col) / len(vecs) for col in zip(*vecs)]
+                       for vecs in raw.values()]
+        mean = [sum(col) / len(class_means) for col in zip(*class_means)]
+    for slug, vectors in raw.items():
+        centered = [_normalize([x - m for x, m in zip(v, mean)])
+                    for v in vectors]
+        cards[slug] = {
+            "centroid": _mean(centered),
+            "samples": centered,
+            "n": len(centered),
+        }
     return {
         "version": MODEL_VERSION,
         "feature_version": features.PREPROCESS_VERSION,
         "grid": features.GRID,
+        "mean": mean,
         "threshold": DEFAULT_THRESHOLD,
         "margin": DEFAULT_MARGIN,
         "cards": cards,
@@ -169,6 +284,7 @@ def is_trained(path=None):
 
 
 def _score_all(model, vector):
+    vector = _center(model, vector)
     scored = []
     for slug, entry in model.get("cards", {}).items():
         samples = entry.get("samples") or [entry.get("centroid")]

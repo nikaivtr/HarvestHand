@@ -1,0 +1,9 @@
+card,prediction,score,margin,confident
+Pechay,Pechay,0.951,0.457,true
+Monggo,Monggo,0.886,0.390,true
+Okra,Okra,0.974,0.442,true
+Kalabasa,Kalabasa,0.987,0.440,true
+Kamatis,Kamatis,0.973,0.325,true
+Talong,Talong,0.829,0.414,true
+Kamote,Kamote,0.762,0.211,true
+Palay,Palay,0.983,0.402,true

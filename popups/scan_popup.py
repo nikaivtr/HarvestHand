@@ -98,11 +98,11 @@ def _start_scan(expected_card=None):
         _error = f"Unrecognized card in story: {_card_name}"
         _status = "This card is not in the scanner catalog."
         return
-    if not _scanner.trained:
+    if not _scanner.trained and not _scanner.targeted:
         _error = "No current trained card model. Run tools/train_cards.py."
         _status = "Train the card samples before scanning."
         return
-    if not _scanner.can_recognize:
+    if not _scanner.can_recognize and not _scanner.targeted:
         _error = "The model has only one trained card class."
         _status = "Train samples for at least one more card to enable scanning."
         return

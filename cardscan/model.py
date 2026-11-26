@@ -48,6 +48,12 @@ def _model_file():
     override = os.environ.get("HARVESTHAND_CARD_MODEL")
     if override:
         return os.path.expandvars(os.path.expanduser(override))
+    experimental = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "card_model_card_plants_mean_centered_v13_experimental.json",
+    )
+    if os.path.isfile(experimental):
+        return experimental
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), MODEL_PATH)
 
 

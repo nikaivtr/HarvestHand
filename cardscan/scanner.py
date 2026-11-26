@@ -216,9 +216,6 @@ class CardScanner:
         if self.frame is None:
             return None, 0.0, False
 
-        if not self.can_recognize:
-            return None, 0.0, False
-
         if self.targeted:
             cands = preprocess.prepare_candidates(
                 self.frame,
@@ -295,6 +292,20 @@ class CardScanner:
                     "targeted": True,
                 }
                 return marker_slug, 1.0, False
+
+            if not self.can_recognize:
+                self.state = "SCAN_UNCERTAIN"
+                self.last_read = {
+                    "slug": None,
+                    "score": 0.0,
+                    "confident": False,
+                    "reason": (
+                        "compatible card model unavailable; "
+                        "targeted image matching cannot run"
+                    ),
+                    "targeted": True,
+                }
+                return None, 0.0, False
 
             best = None
             for canvas, details in cands:
@@ -389,6 +400,9 @@ class CardScanner:
                 "targeted": True,
             }
             return self.expected, score, confident
+
+        if not self.can_recognize:
+            return None, 0.0, False
 
         # Boundary detection returns a few ranked candidates. Take the
         # first one the card model is CONFIDENT about; otherwise keep the
@@ -569,10 +583,14 @@ class CardScanner:
         """One-line summary for logs and the debug overlay."""
         if not self.active:
             return "idle"
-        if not self.trained:
+        if not self.trained and not self.targeted:
             return "no current model (run tools/train_cards.py)"
-        if not self.can_recognize:
+        if not self.can_recognize and not self.targeted:
             return "only one card class trained; train another card to enable recognition"
+        if not self.can_recognize and self.targeted:
+            if self.last_read and self.last_read.get("reason"):
+                return self.last_read["reason"]
+            return "model unavailable; targeted matching requires a recognizable card marker"
         if self.cam is None or not self.cam.is_open:
             return "camera not open"
         if not self.saw_frame:

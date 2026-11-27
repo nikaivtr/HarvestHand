@@ -1,182 +1,275 @@
 {
   "method": "leave-one-out targeted v13 mean-centered top-k similarity",
-  "model": "card_model_card_plants_mean_centered_v13_experimental.json",
+  "model": "CardScanner-v13/cardscan/card_model.json",
   "top_k": 3,
   "maximum_false_acceptance_rate": 0.01,
   "classes": {
-    "pechay_plant": {
-      "total_test_samples": 269,
-      "correctly_accepted_expected_samples": 143,
-      "rejected_expected_samples": 126,
-      "false_acceptances": 16,
-      "false_acceptance_rate": 0.009768009768009733,
-      "true_acceptance_rate": 0.5315985130111525,
-      "threshold": 0.7856403555839112,
-      "negative_total": 1638,
+    "analyze": {
+      "total_test_samples": 150,
+      "correctly_accepted_expected_samples": 142,
+      "rejected_expected_samples": 8,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009849184364419838,
+      "true_acceptance_rate": 0.9466666666666667,
+      "threshold": 0.5478586117582142,
+      "negative_total": 3249,
       "negative_breakdown": {
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 14,
+          "false_acceptance_rate": 0.09395973154362416
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 8,
+          "false_acceptance_rate": 0.05333333333333334
+        },
         "monggo_plant": {
           "total_test_samples": 433,
-          "false_acceptances": 16,
-          "false_acceptance_rate": 0.03695150115473441
+          "false_acceptances": 5,
+          "false_acceptance_rate": 0.011547344110854504
         },
-        "okra_plant": {
-          "total_test_samples": 301,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        },
-        "squash_plant": {
-          "total_test_samples": 301,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        },
-        "tomato_plant": {
-          "total_test_samples": 151,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        },
-        "eggplant_plant": {
-          "total_test_samples": 151,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        },
-        "sweet_potato_plant": {
+        "natural_pesticide": {
           "total_test_samples": 150,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        },
-        "rice_plant": {
-          "total_test_samples": 151,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        }
-      }
-    },
-    "monggo_plant": {
-      "total_test_samples": 433,
-      "correctly_accepted_expected_samples": 278,
-      "rejected_expected_samples": 155,
-      "false_acceptances": 14,
-      "false_acceptance_rate": 0.009497964721845276,
-      "true_acceptance_rate": 0.6420323325635104,
-      "threshold": 0.7231142815302657,
-      "negative_total": 1474,
-      "negative_breakdown": {
-        "pechay_plant": {
-          "total_test_samples": 269,
-          "false_acceptances": 12,
-          "false_acceptance_rate": 0.04460966542750929
-        },
-        "okra_plant": {
-          "total_test_samples": 301,
           "false_acceptances": 2,
-          "false_acceptance_rate": 0.006644518272425249
+          "false_acceptance_rate": 0.013333333333333334
         },
-        "squash_plant": {
+        "okra_plant": {
           "total_test_samples": 301,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         },
-        "tomato_plant": {
-          "total_test_samples": 151,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        },
-        "eggplant_plant": {
-          "total_test_samples": 151,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        },
-        "sweet_potato_plant": {
+        "organic_fertilizer": {
           "total_test_samples": 150,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         },
-        "rice_plant": {
-          "total_test_samples": 151,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        }
-      }
-    },
-    "okra_plant": {
-      "total_test_samples": 301,
-      "correctly_accepted_expected_samples": 214,
-      "rejected_expected_samples": 87,
-      "false_acceptances": 16,
-      "false_acceptance_rate": 0.00996264009962644,
-      "true_acceptance_rate": 0.7109634551495017,
-      "threshold": 0.6699793149016297,
-      "negative_total": 1606,
-      "negative_breakdown": {
         "pechay_plant": {
           "total_test_samples": 269,
           "false_acceptances": 3,
           "false_acceptance_rate": 0.011152416356877323
         },
-        "monggo_plant": {
-          "total_test_samples": 433,
-          "false_acceptances": 10,
-          "false_acceptance_rate": 0.023094688221709007
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
         },
         "squash_plant": {
           "total_test_samples": 301,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
         "tomato_plant": {
           "total_test_samples": 151,
-          "false_acceptances": 2,
-          "false_acceptance_rate": 0.013245033112582781
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "cassava_plant": {
+      "total_test_samples": 151,
+      "correctly_accepted_expected_samples": 107,
+      "rejected_expected_samples": 44,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009852216748768461,
+      "true_acceptance_rate": 0.7086092715231789,
+      "threshold": 0.7156665750347978,
+      "negative_total": 3248,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 32,
+          "false_acceptance_rate": 0.21333333333333335
         },
         "eggplant_plant": {
           "total_test_samples": 151,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
         "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "chemical_fertilizer": {
+      "total_test_samples": 149,
+      "correctly_accepted_expected_samples": 120,
+      "rejected_expected_samples": 29,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009846153846153838,
+      "true_acceptance_rate": 0.8053691275167785,
+      "threshold": 0.5521630357974026,
+      "negative_total": 3250,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 11,
+          "false_acceptance_rate": 0.07333333333333333
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
           "total_test_samples": 150,
           "false_acceptances": 1,
           "false_acceptance_rate": 0.006666666666666667
         },
-        "rice_plant": {
-          "total_test_samples": 151,
+        "corn_plant": {
+          "total_test_samples": 150,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
-        }
-      }
-    },
-    "squash_plant": {
-      "total_test_samples": 301,
-      "correctly_accepted_expected_samples": 240,
-      "rejected_expected_samples": 61,
-      "false_acceptances": 16,
-      "false_acceptance_rate": 0.00996264009962644,
-      "true_acceptance_rate": 0.7973421926910299,
-      "threshold": 0.6568772696881694,
-      "negative_total": 1606,
-      "negative_breakdown": {
-        "pechay_plant": {
-          "total_test_samples": 269,
-          "false_acceptances": 3,
-          "false_acceptance_rate": 0.011152416356877323
-        },
-        "monggo_plant": {
-          "total_test_samples": 433,
-          "false_acceptances": 7,
-          "false_acceptance_rate": 0.016166281755196306
-        },
-        "okra_plant": {
-          "total_test_samples": 301,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        },
-        "tomato_plant": {
-          "total_test_samples": 151,
-          "false_acceptances": 6,
-          "false_acceptance_rate": 0.039735099337748346
         },
         "eggplant_plant": {
           "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006666666666666667
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.0033222591362126247
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 4,
+          "false_acceptance_rate": 0.02666666666666667
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 6,
+          "false_acceptance_rate": 0.022304832713754646
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006622516556291391
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         },
@@ -185,25 +278,157 @@
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.013986013986013986
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 5,
+          "false_acceptance_rate": 0.03355704697986577
+        }
+      }
+    },
+    "chemical_pesticide": {
+      "total_test_samples": 150,
+      "correctly_accepted_expected_samples": 126,
+      "rejected_expected_samples": 24,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009849184364419838,
+      "true_acceptance_rate": 0.84,
+      "threshold": 0.6320467984321133,
+      "negative_total": 3249,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 30,
+          "false_acceptance_rate": 0.2
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
         "rice_plant": {
           "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.013986013986013986
+        },
+        "weed": {
+          "total_test_samples": 149,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         }
       }
     },
-    "tomato_plant": {
-      "total_test_samples": 151,
-      "correctly_accepted_expected_samples": 105,
-      "rejected_expected_samples": 46,
-      "false_acceptances": 17,
-      "false_acceptance_rate": 0.009681093394077411,
-      "true_acceptance_rate": 0.695364238410596,
-      "threshold": 0.6453293749140955,
-      "negative_total": 1756,
+    "corn_plant": {
+      "total_test_samples": 150,
+      "correctly_accepted_expected_samples": 119,
+      "rejected_expected_samples": 31,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009849184364419838,
+      "true_acceptance_rate": 0.7933333333333333,
+      "threshold": 0.7178270482099259,
+      "negative_total": 3249,
       "negative_breakdown": {
-        "pechay_plant": {
-          "total_test_samples": 269,
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 27,
+          "false_acceptance_rate": 0.17880794701986755
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         },
@@ -212,30 +437,55 @@
           "false_acceptances": 1,
           "false_acceptance_rate": 0.0023094688221709007
         },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
         "okra_plant": {
           "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
           "false_acceptances": 4,
-          "false_acceptance_rate": 0.013289036544850499
+          "false_acceptance_rate": 0.026490066225165563
         },
         "squash_plant": {
           "total_test_samples": 301,
-          "false_acceptances": 10,
-          "false_acceptance_rate": 0.03322259136212625
-        },
-        "eggplant_plant": {
-          "total_test_samples": 151,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         },
         "sweet_potato_plant": {
           "total_test_samples": 150,
-          "false_acceptances": 1,
-          "false_acceptance_rate": 0.006666666666666667
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
         },
-        "rice_plant": {
+        "tomato_plant": {
           "total_test_samples": 151,
-          "false_acceptances": 1,
-          "false_acceptance_rate": 0.006622516556291391
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
         }
       }
     },
@@ -243,26 +493,949 @@
       "total_test_samples": 151,
       "correctly_accepted_expected_samples": 135,
       "rejected_expected_samples": 16,
-      "false_acceptances": 17,
-      "false_acceptance_rate": 0.009681093394077411,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009852216748768461,
       "true_acceptance_rate": 0.8940397350993378,
-      "threshold": 0.47928475497133505,
-      "negative_total": 1756,
+      "threshold": 0.47488137641539524,
+      "negative_total": 3248,
       "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 7,
+          "false_acceptance_rate": 0.016166281755196306
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 3,
+          "false_acceptance_rate": 0.009966777408637873
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
         "pechay_plant": {
           "total_test_samples": 269,
           "false_acceptances": 1,
           "false_acceptance_rate": 0.0037174721189591076
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.013245033112582781
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 16,
+          "false_acceptance_rate": 0.10666666666666667
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 3,
+          "false_acceptance_rate": 0.019867549668874173
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "harvest": {
+      "total_test_samples": 150,
+      "correctly_accepted_expected_samples": 136,
+      "rejected_expected_samples": 14,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009849184364419838,
+      "true_acceptance_rate": 0.9066666666666666,
+      "threshold": 0.602805223523772,
+      "negative_total": 3249,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006666666666666667
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 16,
+          "false_acceptance_rate": 0.03695150115473441
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006666666666666667
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 3,
+          "false_acceptance_rate": 0.011152416356877323
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.013986013986013986
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 9,
+          "false_acceptance_rate": 0.06040268456375839
+        }
+      }
+    },
+    "monggo_plant": {
+      "total_test_samples": 433,
+      "correctly_accepted_expected_samples": 300,
+      "rejected_expected_samples": 133,
+      "false_acceptances": 29,
+      "false_acceptance_rate": 0.009777478084962876,
+      "true_acceptance_rate": 0.6928406466512702,
+      "threshold": 0.7097577954851242,
+      "negative_total": 2966,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.013333333333333334
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 5,
+          "false_acceptance_rate": 0.016611295681063124
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 12,
+          "false_acceptance_rate": 0.04460966542750929
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 3,
+          "false_acceptance_rate": 0.019867549668874173
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 5,
+          "false_acceptance_rate": 0.016611295681063124
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006666666666666667
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006622516556291391
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "natural_pesticide": {
+      "total_test_samples": 150,
+      "correctly_accepted_expected_samples": 125,
+      "rejected_expected_samples": 25,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009849184364419838,
+      "true_acceptance_rate": 0.8333333333333334,
+      "threshold": 0.6332342641287226,
+      "negative_total": 3249,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 30,
+          "false_acceptance_rate": 0.2
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.013986013986013986
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "okra_plant": {
+      "total_test_samples": 301,
+      "correctly_accepted_expected_samples": 218,
+      "rejected_expected_samples": 83,
+      "false_acceptances": 30,
+      "false_acceptance_rate": 0.009683666881859287,
+      "true_acceptance_rate": 0.7242524916943522,
+      "threshold": 0.6882125943592406,
+      "negative_total": 3098,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 13,
+          "false_acceptance_rate": 0.03002309468822171
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.007434944237918215
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.013245033112582781
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 3,
+          "false_acceptance_rate": 0.009966777408637873
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006666666666666667
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 9,
+          "false_acceptance_rate": 0.059602649006622516
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "organic_fertilizer": {
+      "total_test_samples": 150,
+      "correctly_accepted_expected_samples": 113,
+      "rejected_expected_samples": 37,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009849184364419838,
+      "true_acceptance_rate": 0.7533333333333333,
+      "threshold": 0.5339088552525917,
+      "negative_total": 3249,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 16,
+          "false_acceptance_rate": 0.10738255033557047
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006666666666666667
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
         },
         "monggo_plant": {
           "total_test_samples": 433,
           "false_acceptances": 4,
           "false_acceptance_rate": 0.009237875288683603
         },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
         "okra_plant": {
           "total_test_samples": 301,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 3,
+          "false_acceptance_rate": 0.011152416356877323
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 8,
+          "false_acceptance_rate": 0.053691275167785234
+        }
+      }
+    },
+    "pechay_plant": {
+      "total_test_samples": 269,
+      "correctly_accepted_expected_samples": 165,
+      "rejected_expected_samples": 104,
+      "false_acceptances": 31,
+      "false_acceptance_rate": 0.009904153354632572,
+      "true_acceptance_rate": 0.6133828996282528,
+      "threshold": 0.7324928514805493,
+      "negative_total": 3130,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 26,
+          "false_acceptance_rate": 0.06004618937644342
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.0033222591362126247
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 4,
+          "false_acceptance_rate": 0.026845637583892617
+        }
+      }
+    },
+    "rice_plant": {
+      "total_test_samples": 151,
+      "correctly_accepted_expected_samples": 90,
+      "rejected_expected_samples": 61,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009852216748768461,
+      "true_acceptance_rate": 0.5960264900662251,
+      "threshold": 0.6850196946015862,
+      "negative_total": 3248,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 9,
+          "false_acceptance_rate": 0.06
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.004618937644341801
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.006644518272425249
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 15,
+          "false_acceptance_rate": 0.1
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 4,
+          "false_acceptance_rate": 0.026490066225165563
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "squash_plant": {
+      "total_test_samples": 301,
+      "correctly_accepted_expected_samples": 230,
+      "rejected_expected_samples": 71,
+      "false_acceptances": 30,
+      "false_acceptance_rate": 0.009683666881859287,
+      "true_acceptance_rate": 0.7641196013289037,
+      "threshold": 0.7317782084433512,
+      "negative_total": 3098,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 30,
+          "false_acceptance_rate": 0.1986754966887417
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "sweet_potato_plant": {
+      "total_test_samples": 150,
+      "correctly_accepted_expected_samples": 77,
+      "rejected_expected_samples": 73,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009849184364419838,
+      "true_acceptance_rate": 0.5133333333333333,
+      "threshold": 0.6811456466539084,
+      "negative_total": 3249,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 4,
+          "false_acceptance_rate": 0.009237875288683603
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.0033222591362126247
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 20,
+          "false_acceptance_rate": 0.13245033112582782
         },
         "squash_plant": {
           "total_test_samples": 301,
@@ -271,132 +1444,329 @@
         },
         "tomato_plant": {
           "total_test_samples": 151,
+          "false_acceptances": 6,
+          "false_acceptance_rate": 0.039735099337748346
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        }
+      }
+    },
+    "tomato_plant": {
+      "total_test_samples": 151,
+      "correctly_accepted_expected_samples": 100,
+      "rejected_expected_samples": 51,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009852216748768461,
+      "true_acceptance_rate": 0.6622516556291391,
+      "threshold": 0.7293642373065584,
+      "negative_total": 3248,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
           "false_acceptances": 1,
-          "false_acceptance_rate": 0.006622516556291391
+          "false_acceptance_rate": 0.0023094688221709007
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 5,
+          "false_acceptance_rate": 0.016611295681063124
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 25,
+          "false_acceptance_rate": 0.08305647840531562
         },
         "sweet_potato_plant": {
           "total_test_samples": 150,
-          "false_acceptances": 10,
-          "false_acceptance_rate": 0.06666666666666667
-        },
-        "rice_plant": {
-          "total_test_samples": 151,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        }
-      }
-    },
-    "sweet_potato_plant": {
-      "total_test_samples": 150,
-      "correctly_accepted_expected_samples": 87,
-      "rejected_expected_samples": 63,
-      "false_acceptances": 17,
-      "false_acceptance_rate": 0.009675583380762687,
-      "true_acceptance_rate": 0.5800000000000001,
-      "threshold": 0.622524245230102,
-      "negative_total": 1757,
-      "negative_breakdown": {
-        "pechay_plant": {
-          "total_test_samples": 269,
           "false_acceptances": 1,
-          "false_acceptance_rate": 0.0037174721189591076
+          "false_acceptance_rate": 0.006666666666666667
         },
-        "monggo_plant": {
-          "total_test_samples": 433,
-          "false_acceptances": 2,
-          "false_acceptance_rate": 0.004618937644341801
-        },
-        "okra_plant": {
-          "total_test_samples": 301,
+        "water": {
+          "total_test_samples": 143,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         },
-        "squash_plant": {
-          "total_test_samples": 301,
+        "weed": {
+          "total_test_samples": 149,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
-        },
-        "tomato_plant": {
-          "total_test_samples": 151,
-          "false_acceptances": 3,
-          "false_acceptance_rate": 0.019867549668874173
-        },
-        "eggplant_plant": {
-          "total_test_samples": 151,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        },
-        "rice_plant": {
-          "total_test_samples": 151,
-          "false_acceptances": 11,
-          "false_acceptance_rate": 0.0728476821192053
         }
       }
     },
-    "rice_plant": {
-      "total_test_samples": 151,
-      "correctly_accepted_expected_samples": 91,
-      "rejected_expected_samples": 60,
-      "false_acceptances": 17,
-      "false_acceptance_rate": 0.009681093394077411,
-      "true_acceptance_rate": 0.6026490066225165,
-      "threshold": 0.6403668416070101,
-      "negative_total": 1756,
+    "water": {
+      "total_test_samples": 143,
+      "correctly_accepted_expected_samples": 126,
+      "rejected_expected_samples": 17,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009828009828009798,
+      "true_acceptance_rate": 0.8811188811188811,
+      "threshold": 0.5512437038473957,
+      "negative_total": 3256,
       "negative_breakdown": {
-        "pechay_plant": {
-          "total_test_samples": 269,
-          "false_acceptances": 3,
-          "false_acceptance_rate": 0.011152416356877323
-        },
-        "monggo_plant": {
-          "total_test_samples": 433,
-          "false_acceptances": 5,
-          "false_acceptance_rate": 0.011547344110854504
-        },
-        "okra_plant": {
-          "total_test_samples": 301,
+        "analyze": {
+          "total_test_samples": 150,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         },
-        "squash_plant": {
-          "total_test_samples": 301,
-          "false_acceptances": 0,
-          "false_acceptance_rate": 0.0
-        },
-        "tomato_plant": {
+        "cassava_plant": {
           "total_test_samples": 151,
           "false_acceptances": 1,
           "false_acceptance_rate": 0.006622516556291391
         },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.013333333333333334
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
         "eggplant_plant": {
           "total_test_samples": 151,
           "false_acceptances": 0,
           "false_acceptance_rate": 0.0
         },
-        "sweet_potato_plant": {
+        "harvest": {
           "total_test_samples": 150,
           "false_acceptances": 8,
           "false_acceptance_rate": 0.05333333333333334
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 4,
+          "false_acceptance_rate": 0.009237875288683603
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 5,
+          "false_acceptance_rate": 0.03333333333333333
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 4,
+          "false_acceptance_rate": 0.01486988847583643
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006622516556291391
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "weed": {
+          "total_test_samples": 149,
+          "false_acceptances": 7,
+          "false_acceptance_rate": 0.04697986577181208
+        }
+      }
+    },
+    "weed": {
+      "total_test_samples": 149,
+      "correctly_accepted_expected_samples": 121,
+      "rejected_expected_samples": 28,
+      "false_acceptances": 32,
+      "false_acceptance_rate": 0.009846153846153838,
+      "true_acceptance_rate": 0.8120805369127517,
+      "threshold": 0.6194023856477638,
+      "negative_total": 3250,
+      "negative_breakdown": {
+        "analyze": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "cassava_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "chemical_fertilizer": {
+          "total_test_samples": 149,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.013422818791946308
+        },
+        "chemical_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006666666666666667
+        },
+        "corn_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "eggplant_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "harvest": {
+          "total_test_samples": 150,
+          "false_acceptances": 4,
+          "false_acceptance_rate": 0.02666666666666667
+        },
+        "monggo_plant": {
+          "total_test_samples": 433,
+          "false_acceptances": 13,
+          "false_acceptance_rate": 0.03002309468822171
+        },
+        "natural_pesticide": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "okra_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.0033222591362126247
+        },
+        "organic_fertilizer": {
+          "total_test_samples": 150,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006666666666666667
+        },
+        "pechay_plant": {
+          "total_test_samples": 269,
+          "false_acceptances": 7,
+          "false_acceptance_rate": 0.026022304832713755
+        },
+        "rice_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 1,
+          "false_acceptance_rate": 0.006622516556291391
+        },
+        "squash_plant": {
+          "total_test_samples": 301,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "sweet_potato_plant": {
+          "total_test_samples": 150,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "tomato_plant": {
+          "total_test_samples": 151,
+          "false_acceptances": 0,
+          "false_acceptance_rate": 0.0
+        },
+        "water": {
+          "total_test_samples": 143,
+          "false_acceptances": 2,
+          "false_acceptance_rate": 0.013986013986013986
         }
       }
     }
   },
   "comparison": {
     "targeted": {
-      "total_test_samples": 1907,
-      "true_acceptances": 1293,
-      "true_acceptance_rate": 0.6780283167278448,
-      "false_acceptances": 130,
-      "negative_test_samples": 13349,
-      "false_acceptance_rate": 0.009738557195295528
+      "total_test_samples": 3399,
+      "true_acceptances": 2550,
+      "true_acceptance_rate": 0.7502206531332745,
+      "false_acceptances": 568,
+      "negative_test_samples": 57783,
+      "false_acceptance_rate": 0.009829880760777392
     },
     "existing_multiclass": {
-      "total_test_samples": 1907,
-      "top1_accuracy": 0.8793917147351862,
-      "accepted": 1103,
-      "acceptance_rate": 0.578395385422129,
-      "wrong_acceptances": 0,
-      "wrong_acceptance_rate": 0.0
+      "total_test_samples": 3399,
+      "top1_accuracy": 0.900853192115328,
+      "accepted": 1984,
+      "acceptance_rate": 0.5837010885554574,
+      "wrong_acceptances": 1,
+      "wrong_acceptance_rate": 0.0005040322580645161
     }
   }
 }

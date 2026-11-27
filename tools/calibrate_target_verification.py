@@ -12,7 +12,7 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 MODEL_PATH = os.path.join(
-    ROOT, "card_model_card_plants_mean_centered_v13_experimental.json"
+    ROOT, "CardScanner-v13", "cardscan", "card_model.json"
 )
 THRESHOLD_PATH = os.path.join(ROOT, "cardscan", "target_verification.json")
 REPORT_PATH = os.path.join(
@@ -164,7 +164,7 @@ def main():
     targeted_negative = sum(row["negative_total"] for row in classes.values())
     output = {
         "method": "leave-one-out targeted v13 mean-centered top-k similarity",
-        "model": os.path.basename(MODEL_PATH),
+        "model": os.path.relpath(MODEL_PATH, ROOT).replace(os.sep, "/"),
         "top_k": TOP_K,
         "maximum_false_acceptance_rate": MAX_FALSE_ACCEPT_RATE,
         "classes": classes,

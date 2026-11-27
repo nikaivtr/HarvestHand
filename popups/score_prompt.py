@@ -62,7 +62,9 @@ def init(width, height):
         int(_panel.width * 0.76),
         max(38, int(_panel.height * 0.09)),
     )
-    name_button_y = _panel.top + int(_panel.height * 0.82)
+    name_button_y = (
+        _panel.bottom - button_height - max(8, int(_panel.height * 0.03))
+    )
     _name_buttons = {
         "save": pygame.Rect(
             _panel.centerx - button_gap // 2 - button_width,
@@ -78,11 +80,20 @@ def init(width, height):
         ),
     }
 
-    key_width = max(26, (_panel.width - 2 * 24 - 9 * 6) // 10)
-    key_height = max(28, int(_panel.height * 0.075))
+    key_width = max(16, (_panel.width - 2 * 24 - 9 * 6) // 10)
     key_gap = 6
     rows = ("QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM")
-    keyboard_y = _panel.top + int(_panel.height * 0.47)
+    keyboard_y = max(
+        _panel.top + int(_panel.height * 0.47),
+        _name_rect.bottom + max(6, int(_panel.height * 0.02)),
+    )
+    available_key_height = (
+        name_button_y - keyboard_y - 4 * key_gap
+    ) // 4
+    key_height = min(
+        max(28, int(_panel.height * 0.075)),
+        max(1, available_key_height),
+    )
     _keyboard_buttons = []
     for row_index, keys in enumerate(rows):
         row_width = len(keys) * key_width + (len(keys) - 1) * key_gap
@@ -102,8 +113,8 @@ def init(width, height):
     _keyboard_buttons.append(("⌫", backspace_rect))
     space_width = min(int(_panel.width * 0.48), key_width * 5 + key_gap * 4)
     _space_rect = pygame.Rect(0, 0, space_width, key_height)
-    _space_rect.center = (
-        _panel.centerx,
+    _space_rect.topleft = (
+        _panel.centerx - space_width // 2,
         keyboard_y + 3 * (key_height + key_gap),
     )
 

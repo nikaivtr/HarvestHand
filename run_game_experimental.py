@@ -1,4 +1,4 @@
-"""Launch Harvest Hand with the current experimental card model."""
+"""Launch Harvest Hand with the experimental v13 action-card model."""
 
 import os
 import runpy
@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
-MODEL = ROOT / "card_model_card_plants_mean_centered_v13_experimental.json"
+MODEL = ROOT / "CardScanner-v13" / "cardscan" / "card_model.json"
 
 if not MODEL.exists():
     raise FileNotFoundError(f"Experimental card model not found: {MODEL}")

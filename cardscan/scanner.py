@@ -170,6 +170,11 @@ class CardScanner:
         self.threshold = None
         self.previous_points = None
         self.state = "WAITING_FOR_CARD"
+        self.frame = None
+        self.saw_frame = False
+        self.last_read = None
+        self.last_source = None
+        self.last_score = 0.0
         self.active   = True
         self.t        = 0.0
         self.last_slug = None
@@ -188,6 +193,11 @@ class CardScanner:
         self.targeted = False
         self.previous_points = None
         self.state = "WAITING_FOR_CARD"
+        self.frame = None
+        self.saw_frame = False
+        self.last_read = None
+        self.last_source = None
+        self.last_score = 0.0
 
     def cancel(self):
         """Same as stop(), but also drops the camera."""
@@ -292,6 +302,125 @@ class CardScanner:
                     "targeted": True,
                 }
                 return marker_slug, 1.0, False
+
+            is_action_card = (
+                self.expected == "analyze"
+                or (
+                    self.card is not None
+                    and self.card.card_id.startswith("AC-")
+                )
+            )
+            if is_action_card:
+            # Rank all classes so an unreadable marker cannot turn a
+            # different card into a false match for the requested one.
+                if not self.can_recognize:
+                    self.last_source = None
+                    self.last_score = 0.0
+                    self.state = "SCAN_UNCERTAIN"
+                    self.last_read = {
+                        "slug": None,
+                        "score": 0.0,
+                        "confident": False,
+                        "reason": (
+                            "compatible card model unavailable; "
+                            "action-card image matching cannot run"
+                        ),
+                        "targeted": True,
+                    }
+                    return None, 0.0, False
+
+                best = None
+                for canvas, details in cands:
+                    if details.get("source") != "detected":
+                        continue
+                    if details.get("blurry"):
+                        continue
+                    if details.get("area_ratio", 0.0) < preprocess.MIN_LIVE_CARD_AREA_RATIO:
+                        continue
+                    if details.get("quality", 0.0) < 0.42:
+                        continue
+                    if details.get("edge_support", 0.0) < 0.05:
+                        continue
+                    aspect = details.get("aspect", 0.0)
+                    if aspect < 0.50 or aspect > 0.92:
+                        continue
+
+                    views = [canvas]
+                    if self.try_flipped:
+                        views.append(pygame.transform.rotate(canvas, 180))
+                    for view in views:
+                        vec = features.extract_card(view)
+                        info = targeted_verification.identify_best(
+                            self.model, vec
+                        )
+                        if info["slug"] is None:
+                            continue
+                        read = (info, details)
+                        if info["accepted"]:
+                            if info["slug"] == self.expected:
+                                best = read
+                                break
+                            if (
+                                best is None
+                                or not best[0]["accepted"]
+                                or info["score"] > best[0]["score"]
+                            ):
+                                best = read
+                        elif best is None or (
+                            not best[0]["accepted"]
+                            and info["score"] > best[0]["score"]
+                        ):
+                            best = read
+                    if (
+                        best is not None
+                        and best[0]["accepted"]
+                        and best[0]["slug"] == self.expected
+                    ):
+                        break
+
+                if best is None:
+                    self.last_source = None
+                    self.last_score = 0.0
+                    self.state = "SCAN_UNCERTAIN"
+                    self.last_read = {
+                        "slug": None,
+                        "score": 0.0,
+                        "confident": False,
+                        "reason": "action card boundary not found",
+                        "source": "image",
+                        "targeted": True,
+                    }
+                    return None, 0.0, False
+
+                info, details = best
+                self.last_source = "detected"
+                self.last_score = info["score"]
+                self.threshold = info["threshold"]
+                self.previous_points = details.get("points")
+                self.state = (
+                    "VERIFYING_EXPECTED_CARD"
+                    if info["accepted"] and info["slug"] == self.expected
+                    else "CARD_DETECTED"
+                    if info["accepted"]
+                    else "SCAN_UNCERTAIN"
+                )
+                self.last_read = {
+                    "slug": info["slug"],
+                    "score": info["score"],
+                    "confident": info["accepted"],
+                    "reason": info["reason"],
+                    "source": "image",
+                    "strategy": "multiclass",
+                    "quality": details.get("quality"),
+                    "sharpness": details.get("sharpness"),
+                    "blurry": details.get("blurry"),
+                    "threshold": info["threshold"],
+                    "runner": info["runner"],
+                    "runner_score": info["runner_score"],
+                    "gap": info["gap"],
+                    "targeted": True,
+                }
+                return info["slug"], info["score"], info["accepted"]
 
             if not self.can_recognize:
                 self.state = "SCAN_UNCERTAIN"
@@ -512,6 +641,22 @@ class CardScanner:
             return None
 
         if self.targeted and not confident:
+            if (
+                slug is not None
+                and slug != self.expected
+                and self.last_read
+                and self.last_read.get("source") == "marker"
+            ):
+                until = self.suppress.get(slug, 0.0)
+                if self.t < until:
+                    return None
+                self.suppress[slug] = self.t + self.wrong_cooldown
+                return ScanResult(
+                    ScanResult.WRONG,
+                    slug,
+                    self.expected,
+                    score,
+                )
             until = self.suppress.get("target_card", 0.0)
             self.state = "CARD_REJECTED"
             self.streak = 0
@@ -597,6 +742,12 @@ class CardScanner:
             return f"{self.cam.backend} camera returning no frame"
         resolution = f"{self.frame.get_width()}x{self.frame.get_height()}"
         if self.last_slug is None:
+            if (
+                self.last_read
+                and self.last_read.get("reason")
+                == "action card ArUco marker not detected"
+            ):
+                return "Hold the action card so its ArUco marker is visible"
             detection = preprocess.last_detection()
             if detection.get("status") == "failed":
                 return (

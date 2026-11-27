@@ -124,19 +124,6 @@ _ACTION_GAUGE_BY_SLUG = {
     "natural_pesticide": "pests",
     "chemical_pesticide": "pests",
 }
-_RANDOM_ACTION_CARDS = {
-    "water": ("water", "background/Action_Challenge-Water.png"),
-    "fertilizer": ("organic_fertilizer", "organicfertilizercard.png"),
-    "pests": ("natural_pesticide", "naturalpesticidecard.png"),
-    "weeds": ("weed", "weedremovalcard.png"),
-}
-_RANDOM_CHALLENGE_MIN_DAYS = 7
-_RANDOM_CHALLENGE_MAX_DAYS = 14
-_RANDOM_CHALLENGE_START_FRACTION = 0.25
-_RANDOM_CHALLENGE_END_FRACTION = 0.75
-_RANDOM_CHALLENGE_FIRST_WINDOW_FRACTION = 0.4
-_ANALYSIS_CHALLENGE_PROBABILITY = 0.5
-
 _WATER_DRYING_DAYS            = 7
 _WATER_DECAY_PER_DAY          = 0.28 / _WATER_DRYING_DAYS
 _WATER_LOW_THRESHOLD        = 0.28
@@ -206,23 +193,12 @@ _DIALOGUE_HINT_PT_FRAC = 0.022
 # resolution.
 _DIALOGUE_MIN_FONT_FRAC = 0.024
 
-# ── Action challenge (temporary stand-in for the real card scan) ──
-# Slide type "action_challenge": the instruction art is drawn over the
-# slide background, and the player taps one of two squares. This is a
-# placeholder so the scenes can be finished first; the camera-based
-# cardscan package replaces it later.
+# ── Action challenge ────────────────────────────────────────────
+# Action challenge slides show the requested card and launch the live
+# scanner. The button below reopens the scanner if the popup is closed.
 _ACTION_BLUE  = ( 62, 132, 226)
-_ACTION_RED   = (198,  74,  66)
-_ACTION_OK    = ( 86, 176,  96)
 _ACTION_EDGE  = (253, 241, 208)
-_ACTION_WRONG_FACE = "I-click naman ang BLUE na square."
-_ACTION_OK_FACE     = "Tama! Tama ang card na i-scan."
 _ACTION_HINT_IDLE   = (253, 241, 208)
-
-_ACTION_SOLVE_DELAY = 0.9   # seconds the success banner stays up
-_ACTION_WRONG_TIME  = 0.45  # seconds the red square flashes
-_ACTION_SOLVED_T    = 0.0
-_ACTION_WRONG_T     = 0.0
 _CHALLENGE_DURATION = 30.0
 _challenge_timer_slide = None
 _challenge_time_left = 0.0
@@ -231,9 +207,9 @@ _challenge_timeout_feedback = 0.0
 # Layout, as fractions of the screen, so it scales to any resolution.
 _ACTION_OVERLAY_W_FRAC = 0.60
 _ACTION_OVERLAY_TOP_FRAC = 0.05
-_ACTION_SQUARE_FRAC     = 0.17   # side length, of screen height
-_ACTION_SQUARE_GAP_FRAC = 0.06   # gap between the two, of screen width
-_ACTION_SQUARE_TOP_PAD  = 0.06   # gap under the instruction art
+_ACTION_BUTTON_W_FRAC   = 0.36
+_ACTION_BUTTON_H_FRAC   = 0.09
+_ACTION_BUTTON_TOP_PAD  = 0.06
 _ACTION_HINT_GAP_FRAC   = 0.045
 _font_action = None
 
@@ -337,65 +313,22 @@ def _action_kind(slide):
         return "weed"
     if "pesticide" in overlay or "pest" in overlay:
         return "pesticide"
+    if "harvest" in overlay:
+        return "harvest"
     return None
 
 
-def _random_action_pair(day, index, gauge, include_analysis=False, background=None):
-    slug, overlay = _RANDOM_ACTION_CARDS[gauge]
-    card = card_registry.get(slug)
-    if card is None:
-        raise ValueError(f"Random challenge card is not registered: {slug}")
-    event_id = f"random_care_{day}_{index}"
-    slides = []
-    if include_analysis:
-        research_messages = {
-            "water": (
-                "Napansin kong natutuyo ang lupa. Suriin muna natin ang mga palatandaan "
-                "at i-scan ang Analyze Card para malaman kung anong pangangalaga ang kailangan."
-            ),
-            "fertilizer": (
-                "Maputla ang mga dahon at tila kulang sa sustansya ang lupa. Suriin natin "
-                "ang pananim gamit ang Analyze Card bago pumili ng pataba."
-            ),
-            "pests": (
-                "May mga kagat at kakaibang marka sa mga dahon. Suriin muna natin ang "
-                "mga palatandaan gamit ang Analyze Card bago kumilos."
-            ),
-            "weeds": (
-                "May tumutubong damo sa paligid ng pananim. Suriin natin ang epekto nito "
-                "gamit ang Analyze Card bago kumilos."
-            ),
-        }
-        slides.extend((
-            {
-                "id": f"{event_id}_research",
-                "type": "dialogue",
-                "day": day,
-                "bg": background or "background/scenebg_default.png",
-                "chars": {"lola": {"side": "left", "expression": "worried", "flip": False}},
-                "lines": [("lola", research_messages[gauge])],
-                "random_research": True,
-            },
-            {
-                "id": f"{event_id}_analyze",
-                "type": "action_challenge",
-                "day": day,
-                "overlay": "analyzecard.png",
-                "card": "Analyze Card",
-                "question": "Analyze the crop to find the care action it needs.",
-                "random_challenge": True,
-            },
-        ))
-    slides.append({
-        "id": f"{event_id}_action",
-        "type": "action_challenge",
-        "day": day,
-        "overlay": overlay,
-        "card": card.display,
-        "question": f"Use the {card.name} to care for the crop.",
-        "random_challenge": True,
-    })
-    return slides
+def _action_card(slide):
+    """Resolve the card an action challenge asks the player to scan."""
+    card = card_registry.resolve(slide.get("card", ""))
+    if card is not None:
+        return card
+    kind = _action_kind(slide)
+    if kind == "fertilizer":
+        kind = "organic_fertilizer"
+    elif kind == "pesticide":
+        kind = "natural_pesticide"
+    return card_registry.get(kind)
 
 
 def _place_chapter_characters(chapter):
@@ -438,19 +371,13 @@ def _place_chapter_characters(chapter):
 
 
 def _prepare_chapter(chapter):
-    """Build per-playthrough care challenges without mutating chapter modules."""
+    """Prepare scripted slides and gauge totals without mutating chapter data."""
     prepared = dict(chapter)
     slides = _place_chapter_characters(chapter)
     crop = card_registry.crop_card(chapter.get("crop", ""))
     if crop is None:
         raise ValueError(f"No crop card is registered for chapter crop {chapter.get('crop')!r}")
 
-    crop_needs = {
-        "water": max(0, int(crop.details.get("water", 0))),
-        "fertilizer": max(0, int(crop.details.get("fertilizer", 0))),
-        "weeds": max(0, int(crop.details.get("weeds", 0))),
-        "pests": max(0, int(crop.details.get("pests", 0))),
-    }
     fixed_challenges = {gauge: 0 for gauge in _GAUGE_ORDER}
     for slide in slides:
         if slide.get("type") == "action_challenge":
@@ -458,72 +385,11 @@ def _prepare_chapter(chapter):
             if gauge is not None:
                 fixed_challenges[gauge] += 1
 
-    day_values = [slide["day"] for slide in slides if isinstance(slide.get("day"), int)]
-    last_day = max(day_values, default=int(crop.details.get("days", 0)))
-    total_days = max(
-        int(chapter.get("total_days") or crop.details.get("days") or last_day),
-        last_day,
-    )
-    candidates = [gauge for gauge in _GAUGE_ORDER if crop_needs[gauge] > 0]
-    scheduled = []
-    middle_start = max(
-        _RANDOM_CHALLENGE_MIN_DAYS,
-        int(total_days * _RANDOM_CHALLENGE_START_FRACTION + 0.999),
-    )
-    middle_end = min(
-        last_day,
-        int(total_days * _RANDOM_CHALLENGE_END_FRACTION),
-    )
-    if candidates and middle_start <= middle_end:
-        first_event_latest = min(
-            middle_end,
-            max(
-                middle_start,
-                int(total_days * _RANDOM_CHALLENGE_FIRST_WINDOW_FRACTION + 0.999),
-            ),
-        )
-        due_day = random.randint(middle_start, first_event_latest)
-        while due_day <= middle_end:
-            gauge = random.choices(
-                candidates,
-                weights=[3 if candidate == "water" else 1 for candidate in candidates],
-                k=1,
-            )[0]
-            scheduled.append((due_day, gauge))
-            due_day += random.randint(_RANDOM_CHALLENGE_MIN_DAYS, _RANDOM_CHALLENGE_MAX_DAYS)
-    analyze_index = None
-    if scheduled and random.random() < _ANALYSIS_CHALLENGE_PROBABILITY:
-        analyze_index = random.randrange(len(scheduled))
-
-    scheduled_index = 0
-    prepared_slides = []
-    current_day = 0
-    random_counts = {gauge: 0 for gauge in _GAUGE_ORDER}
-    for slide in slides:
-        slide_day = slide.get("day", current_day)
-        while scheduled_index < len(scheduled) and scheduled[scheduled_index][0] <= slide_day:
-            due_day, gauge = scheduled[scheduled_index]
-            prepared_slides.extend(_random_action_pair(
-                due_day,
-                scheduled_index + 1,
-                gauge,
-                include_analysis=(scheduled_index == analyze_index),
-                background=slide.get("bg"),
-            ))
-            random_counts[gauge] += 1
-            scheduled_index += 1
-        prepared_slides.append(slide)
-        if isinstance(slide.get("day"), int):
-            current_day = slide["day"]
-
     totals = {
-        gauge: (
-            0 if gauge == "water"
-            else max(crop_needs[gauge], fixed_challenges[gauge]) + random_counts[gauge]
-        )
+        gauge: 0 if gauge == "water" else fixed_challenges[gauge]
         for gauge in _GAUGE_ORDER
     }
-    prepared["slides"] = prepared_slides
+    prepared["slides"] = slides
     return prepared, totals
 
 
@@ -573,10 +439,6 @@ def _sync_chars():
     )
     _start_shake_if_flagged()
 
-    # Fresh panel, fresh challenge state: a solved or flashing square from
-    # a previous panel must never carry over.
-    if s.get("type") != "action_challenge":
-        _reset_action()
     _reset_challenge_timer()
 
     # Smoke panels (e.g. S2P21) also fire a dense one-shot burst on
@@ -586,6 +448,32 @@ def _sync_chars():
             _smoke.start(burst=True)
         else:
             _smoke.stop()
+    if s.get("type") == "action_challenge":
+        _open_action_scan()
+
+
+def _open_action_scan():
+    global _pending_water_scan
+    if _engine is None or _engine.slide.get("type") != "action_challenge":
+        return
+    if _engine.popup_open:
+        return
+
+    slide = _engine.slide
+    card = _action_card(slide)
+    if card is None:
+        raise ValueError(
+            f"Action challenge {slide.get('id')!r} does not identify a scanner card"
+        )
+    _pending_water_scan = card.slug == "water"
+    _engine.popup_open = "scan"
+    scan_popup.open(
+        card_name=card.display,
+        expected_card=card.slug,
+        question=slide.get("question") or f"Show the {card.name} to the camera.",
+        on_complete=_on_scan_done,
+        on_cancel=_on_scan_cancel,
+    )
 
 
 def _start_shake_if_flagged():
@@ -615,6 +503,8 @@ def _on_chapter_end():
     result = player_data.complete_chapter()
     if result is not None:
         game_state.score[result["chapter"]] = result["score"]
+    if game_state.selected_chapter == chapters_data.CHAPTER_IDS[-1]:
+        player_data.release_pending_score_prompts()
     _chapter_done = True
     _chars = None
     _compute_end_buttons()
@@ -1336,7 +1226,7 @@ def _compute_dbox(full_text: str) -> pygame.Rect:
 
 
 # ─────────────────────────────────────────────────────────────
-#  Action challenge  (temporary stand-in for the real card scan)
+#  Action challenge
 # ─────────────────────────────────────────────────────────────
 
 def _action_fonts():
@@ -1345,12 +1235,6 @@ def _action_fonts():
     if _font_action is None:
         _font_action = (_make_font(0.024), _make_font(0.038))
     return _font_action
-
-
-def _reset_action():
-    global _ACTION_SOLVED_T, _ACTION_WRONG_T
-    _ACTION_SOLVED_T = 0.0
-    _ACTION_WRONG_T  = 0.0
 
 
 def _reset_challenge_timer():
@@ -1379,7 +1263,6 @@ def _update_challenge_timer(dt):
     if _challenge_time_left == 0.0:
         player_data.record_mistake()
         _challenge_timeout_feedback = 1.5
-        _reset_action()
 
 
 def _draw_challenge_timer(surf):
@@ -1407,12 +1290,12 @@ def _draw_challenge_timer(surf):
 
 
 def _action_layout():
-    """Rects for the instruction art, the two squares and the hint line.
+    """Rects for the instruction art, scan button and hint line.
 
     Recomputed from the screen size every call, so it follows the
     resolution exactly like the rest of the scene.
     """
-    lay = {"overlay": None, "blue": None, "red": None, "hint_y": HEIGHT}
+    lay = {"overlay": None, "button": None, "hint_y": HEIGHT}
     if _engine is None:
         return lay
     path = _engine.slide.get("overlay")
@@ -1424,113 +1307,54 @@ def _action_layout():
     r.midtop = (WIDTH // 2, int(HEIGHT * _ACTION_OVERLAY_TOP_FRAC))
     lay["overlay"] = (img, r)
 
-    side = int(HEIGHT * _ACTION_SQUARE_FRAC)
-    top  = r.bottom + int(HEIGHT * _ACTION_SQUARE_TOP_PAD)
-    # Never let the squares run off the bottom, whatever the aspect ratio.
+    button_h = max(44, int(HEIGHT * _ACTION_BUTTON_H_FRAC))
+    button_w = max(160, int(WIDTH * _ACTION_BUTTON_W_FRAC))
+    top = r.bottom + int(HEIGHT * _ACTION_BUTTON_TOP_PAD)
     floor = int(HEIGHT * 0.88)
-    if top + side > floor:
-        side = max(24, floor - top)
-    gap  = int(WIDTH * _ACTION_SQUARE_GAP_FRAC)
-    mid  = WIDTH // 2
-    lay["blue"] = pygame.Rect(mid - gap // 2 - side, top, side, side)
-    lay["red"]  = pygame.Rect(mid + gap // 2,      top, side, side)
-    lay["hint_y"] = top + side + int(HEIGHT * _ACTION_HINT_GAP_FRAC)
+    if top + button_h > floor:
+        top = max(r.bottom, floor - button_h)
+    button_w = max(1, min(button_w, int(WIDTH * 0.8)))
+    lay["button"] = pygame.Rect(0, top, button_w, button_h)
+    lay["button"].centerx = WIDTH // 2
+    lay["hint_y"] = lay["button"].bottom + int(HEIGHT * _ACTION_HINT_GAP_FRAC)
     return lay
 
 
 def _handle_action_tap(px, py):
-    """Blue square -> solved. Red square -> flash and let them try again.
-
-    Tapping anywhere else does nothing: the player has to pick a square,
-    so the panel cannot be skipped past.
-    """
-    global _ACTION_SOLVED_T, _ACTION_WRONG_T, _water_level
-
-    if _ACTION_SOLVED_T > 0:
-        return                       # already solved, waiting to advance
-
+    """Open the scanner when the action challenge's scan button is tapped."""
     lay = _action_layout()
-    blue, red = lay["blue"], lay["red"]
-    if blue is not None and blue.collidepoint(px, py):
-        player_data.record_challenge_success(
-            _challenge_time_left if _engine.slide.get("timer") else 0
-        )
-        action = _action_kind(_engine.slide)
-        gauge = _ACTION_GAUGE_BY_SLUG.get(action)
-        if gauge is not None:
-            _gauge_visible[gauge] = True
-            if gauge != "water":
-                _gauge_remaining[gauge] = max(0, _gauge_remaining[gauge] - 1)
-        if gauge == "water":
-            _water_level = 1.0
-        _ACTION_SOLVED_T = _ACTION_SOLVE_DELAY
-        return
-    if red is not None and red.collidepoint(px, py):
-        player_data.record_mistake()
-        _ACTION_WRONG_T = _ACTION_WRONG_TIME
-        return
+    button = lay["button"]
+    if button is not None and button.collidepoint(px, py):
+        _open_action_scan()
 
 
-def _draw_action_square(surf, rect, color, wobble_t=0.0, solved=False):
-    """One pickable square, with a cream frame like the rest of the UI."""
-    r = rect
-    if wobble_t > 0.0:
-        # Quick shake, so a wrong pick registers even without reading text.
-        amp = int(6 * (wobble_t / _ACTION_WRONG_TIME))
-        r = r.move(int(amp * 2.0 * ((wobble_t * 18) % 2 - 1)), 0)
-
-    pygame.draw.rect(surf, color, r, border_radius=int(r.width * 0.12))
-    edge = _ACTION_OK if solved else _ACTION_EDGE
-    pygame.draw.rect(surf, edge, r, width=4, border_radius=int(r.width * 0.12))
-    # Inner highlight so the flat colour reads as a solid tile.
-    inset = r.inflate(-int(r.width * 0.22), -int(r.height * 0.22))
-    pygame.draw.rect(surf, edge, inset, width=2, border_radius=int(inset.width * 0.14))
-
-
-def _draw_action(surf, dt):
-    """Instruction art over the slide background, plus the two squares.
-
-    Advances the story on its own once the solved banner has had its
-    moment, so the player sees the confirmation before moving on.
-    """
-    global _ACTION_SOLVED_T, _ACTION_WRONG_T
-
-    if _ACTION_SOLVED_T > 0.0:
-        _ACTION_SOLVED_T = max(0.0, _ACTION_SOLVED_T - dt)
-        if _ACTION_SOLVED_T <= 0.0 and _engine is not None and not _chapter_done:
-            _engine.tap()
-            if not _chapter_done:
-                _sync_chars()
-                if _engine.slide.get("type") == "whack_a_pest" and not _whack_a_pest_played:
-                    _launch_whack_a_pest()
-            return
-    if _ACTION_WRONG_T > 0.0:
-        _ACTION_WRONG_T = max(0.0, _ACTION_WRONG_T - dt)
-
+def _draw_action(surf):
+    """Draw the requested card and a button for reopening its scanner."""
     lay = _action_layout()
     if lay["overlay"] is None:
         return
     img, r = lay["overlay"]
     surf.blit(img, r.topleft)
 
-    solved = _ACTION_SOLVED_T > 0.0
-    _draw_action_square(surf, lay["blue"], _ACTION_BLUE, solved=solved)
-    _draw_action_square(surf, lay["red"],  _ACTION_RED,
-                        wobble_t=_ACTION_WRONG_T if not solved else 0.0,
-                        solved=solved)
-
-    hint_f, banner_f = _action_fonts()
-    if solved:
-        text, color, font = _ACTION_OK_FACE, _ACTION_OK, banner_f
-    elif _ACTION_WRONG_T > 0.0:
-        text, color, font = _ACTION_WRONG_FACE, _ACTION_RED, banner_f
-    else:
-        text, color, font = _ACTION_WRONG_FACE, _ACTION_HINT_IDLE, hint_f
+    button = lay["button"]
+    pygame.draw.rect(surf, _ACTION_BLUE, button, border_radius=10)
+    pygame.draw.rect(surf, _ACTION_EDGE, button, width=3, border_radius=10)
+    _, button_font = _action_fonts()
+    label = button_font.render("SCAN ACTION CARD", True, _ACTION_EDGE)
+    if label.get_width() > button.width - 20:
+        label = pygame.transform.smoothscale(
+            label,
+            (button.width - 20,
+             max(1, int(label.get_height() * (button.width - 20) / label.get_width()))),
+        )
+    surf.blit(label, label.get_rect(center=button.center))
 
     # The hint sits over the planter, which is dark and busy, so the text
     # gets a dark shadow behind it and stays legible on any background.
-    label = font.render(text, True, color)
-    shad  = font.render(text, True, (20, 10, 4))
+    hint_f, _ = _action_fonts()
+    text = "Tap to scan the requested card."
+    label = hint_f.render(text, True, _ACTION_HINT_IDLE)
+    shad  = hint_f.render(text, True, (20, 10, 4))
     y     = int(min(lay["hint_y"], HEIGHT - label.get_height() - 4))
     surf.blit(shad,  shad.get_rect(midtop=(WIDTH // 2 + 2, y + 2)))
     surf.blit(label, label.get_rect(midtop=(WIDTH // 2, y)))
@@ -1798,10 +1622,19 @@ def handle_tap(px, py):
         return
 
     if _engine.popup_open == "scan":
+        if _engine.slide.get("type") == "action_challenge":
+            _open_action_scan()
+            return
         card_name = _engine.slide.get("card", "")
-        _pending_water_scan = "water" in card_name.lower()
+        card = card_registry.resolve(card_name)
+        _pending_water_scan = (
+            card.slug == "water"
+            if card is not None
+            else "water" in card_name.lower()
+        )
         scan_popup.open(
             card_name=card_name,
+            expected_card=card.slug if card is not None else None,
             question=_engine.slide.get("question", ""),
             on_complete=_on_scan_done,
             on_cancel=_on_scan_cancel,
@@ -1809,18 +1642,39 @@ def handle_tap(px, py):
 
 
 def _on_scan_done():
-    global _water_level
+    global _water_level, _pending_water_scan
     if _engine is None:
         return
-    if _pending_water_scan:
+
+    if _engine.slide.get("type") == "action_challenge":
+        _record_action_success()
+    elif _pending_water_scan:
         _water_level = 1.0
+    _pending_water_scan = False
     _engine.on_scan_complete()
     _sync_chars()
 
 
 def _on_scan_cancel():
+    global _pending_water_scan
+    _pending_water_scan = False
     if _engine is not None:
         _engine.close_popup()
+
+
+def _record_action_success():
+    global _water_level
+    slide = _engine.slide
+    player_data.record_challenge_success(
+        _challenge_time_left if slide.get("timer") else 0
+    )
+    gauge = _ACTION_GAUGE_BY_SLUG.get(_action_kind(slide))
+    if gauge is not None:
+        _gauge_visible[gauge] = True
+        if gauge != "water":
+            _gauge_remaining[gauge] = max(0, _gauge_remaining[gauge] - 1)
+    if gauge == "water":
+        _water_level = 1.0
 
 
 def _handle_end_tap(px, py):
@@ -1838,14 +1692,22 @@ def _handle_end_tap(px, py):
                 _engine = None
                 _load_chapter()
             elif key == "menu":
+                player_data.release_pending_score_prompts()
                 game_state.selected_chapter = None
                 _go_to_scene("main_menu")
             elif key == "next":
                 if has_next:
-                    game_state.selected_chapter = chapters_data.CHAPTER_IDS[idx + 1]
                     _engine = None
-                    _load_chapter()
+                    scan_popup.close()
+                    game_state.selected_chapter = None
+                    from scenes import level_select
+
+                    level_select.begin_chapter_scan(
+                        chapters_data.CHAPTER_IDS[idx + 1]
+                    )
+                    _go_to_scene("level_select")
                 else:
+                    player_data.release_pending_score_prompts()
                     game_state.selected_chapter = None
                     _go_to_scene("main_menu")
             return
@@ -2017,18 +1879,20 @@ def _draw_chapter_frame(surf):
         _finish_fade_in(surf, dt)
         return
 
-    # ── Action challenge: instruction art + two squares ─────────
+    # ── Action challenge: instruction art + live scanner ─────────
     # Sits after the "scene" branch because it is the same shape of
     # screen: a background, no dialogue box, no typewriter.
     if stype == "action_challenge":
         if _chars is not None:
             _chars.draw(target)
-        _draw_action(target, dt)
+        _draw_action(target)
         _draw_day_counter(target)
         _draw_water_bar(target)
         _draw_challenge_timer(target)
         _blit_shaken(surf)
         _finish_fade_in(surf, dt)
+        if _engine.popup_open == "scan":
+            scan_popup.draw(surf)
         return
 
     # ── Narration overlay: board + prose, no dialogue box ────

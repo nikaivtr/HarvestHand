@@ -30,6 +30,7 @@ _data = None
 _current_run = None
 _last_error = ""
 _pending_score_records = []
+_score_prompts_deferred = False
 
 
 def _load():
@@ -117,7 +118,8 @@ def _save():
 
 
 def begin_chapter(chapter_id):
-    global _current_run
+    global _current_run, _score_prompts_deferred
+    _score_prompts_deferred = True
     _current_run = {
         "chapter": chapter_id,
         "started": time.monotonic(),
@@ -162,7 +164,14 @@ def record_minigame_result(name, score, mistakes=0, time_bonus=0):
 
 
 def pending_score_record():
+    if _score_prompts_deferred:
+        return None
     return _pending_score_records[0] if _pending_score_records else None
+
+
+def release_pending_score_prompts():
+    global _score_prompts_deferred
+    _score_prompts_deferred = False
 
 
 def record_pending_score(player_name):

@@ -16,6 +16,7 @@ import pygame
 import config
 import utils
 import game_state
+import player_data
 import data.chapters as chapters_data
 from cardscan import registry as card_registry
 from popups import scan_popup
@@ -415,28 +416,15 @@ def handle_release(px, py):
 
     if _selection_chapter is not None:
         if _selection_confirm_rect.collidepoint(px, py):
-            card = card_registry.crop_card(_selection_chapter.get("crop", ""))
-            if card is None:
-                _selection_error = "This chapter has no registered crop card."
-                return
             _selection_error = ""
-            _chapter_scan_open = True
-            scan_popup.open(
-                card_name=card.display,
-                expected_card=card.slug,
-                question=(
-                    f"Scan the {card.name} to unlock "
-                    f"{_selection_chapter.get('crop', 'this')} chapter."
-                ),
-                on_complete=_on_chapter_card_scanned,
-                on_cancel=_on_chapter_scan_cancel,
-            )
+            _open_selected_chapter_scan()
         elif _selection_cancel_rect.collidepoint(px, py):
             _selection_chapter = None
             _selection_error = ""
         return
 
     if back_rect and back_rect.collidepoint(px, py):
+        player_data.release_pending_score_prompts()
         _go_to_scene("main_menu")
         return
 
@@ -466,6 +454,46 @@ def _on_chapter_card_scanned():
 def _on_chapter_scan_cancel():
     global _chapter_scan_open
     _chapter_scan_open = False
+
+
+def begin_chapter_scan(chapter_id):
+    global _selection_chapter, _selection_error
+    _selection_chapter = next(
+        (
+            chapter
+            for group in _groups
+            for chapter in group["chapters"]
+            if chapter["_module_id"] == chapter_id
+        ),
+        None,
+    )
+    if _selection_chapter is None:
+        raise ValueError(f"Unknown chapter ID: {chapter_id!r}")
+    _selection_error = ""
+    if not _open_selected_chapter_scan():
+        raise ValueError(_selection_error)
+
+
+def _open_selected_chapter_scan():
+    global _chapter_scan_open, _selection_error
+    if _selection_chapter is None:
+        raise RuntimeError("Cannot scan a chapter before selecting it")
+    card = card_registry.crop_card(_selection_chapter.get("crop", ""))
+    if card is None:
+        _selection_error = "This chapter has no registered crop card."
+        return False
+    _chapter_scan_open = True
+    scan_popup.open(
+        card_name=card.display,
+        expected_card=card.slug,
+        question=(
+            f"Scan the {card.name} to unlock "
+            f"{_selection_chapter.get('crop', 'this')} chapter."
+        ),
+        on_complete=_on_chapter_card_scanned,
+        on_cancel=_on_chapter_scan_cancel,
+    )
+    return True
 
 
 

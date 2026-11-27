@@ -8,6 +8,8 @@ import cardscan.registry as registry
 
 DEFAULT_FAR_LIMIT = 0.01
 TOP_K = 3
+_CLASS_MATRIX_MODEL = None
+_CLASS_MATRICES = None
 
 
 def _normalize_slug(expected_card):
@@ -107,4 +109,96 @@ def verify(model, vector, expected_card, threshold=None, top_k=TOP_K):
         "threshold": required,
         "accepted": accepted,
         "reason": "target match" if accepted else "below targeted threshold",
+    }
+
+
+def identify_best(model, vector, thresholds=None, top_k=TOP_K):
+    """Identify the best class using vectorized scores and its calibrated threshold."""
+    import numpy as np
+    import cardscan.model as model_module
+
+    global _CLASS_MATRIX_MODEL, _CLASS_MATRICES
+
+    if not model or not vector:
+        return {
+            "slug": None,
+            "score": 0.0,
+            "threshold": 1.0,
+            "accepted": False,
+            "reason": "no model or feature vector",
+            "runner": None,
+            "runner_score": 0.0,
+            "gap": 0.0,
+        }
+
+    centered = np.asarray(model_module._center(model, vector), dtype=np.float64)
+    vector_norm = float(np.linalg.norm(centered))
+    if vector_norm <= 0.0:
+        return {
+            "slug": None,
+            "score": 0.0,
+            "threshold": 1.0,
+            "accepted": False,
+            "reason": "empty feature vector",
+            "runner": None,
+            "runner_score": 0.0,
+            "gap": 0.0,
+        }
+    centered /= vector_norm
+    centered32 = centered.astype(np.float32)
+
+    if _CLASS_MATRIX_MODEL is not model:
+        matrices = {}
+        for slug, entry in model.get("cards", {}).items():
+            samples = entry.get("samples") or [entry.get("centroid")]
+            if not samples or samples[0] is None:
+                continue
+            try:
+                matrix = np.asarray(samples, dtype=np.float32)
+            except (TypeError, ValueError):
+                continue
+            if matrix.ndim != 2 or matrix.shape[1] != len(centered):
+                continue
+            norms = np.linalg.norm(matrix, axis=1)
+            valid = norms > 0.0
+            if not np.any(valid):
+                continue
+            matrix = matrix[valid] / norms[valid, np.newaxis]
+            matrices[slug] = matrix
+        _CLASS_MATRIX_MODEL = model
+        _CLASS_MATRICES = matrices
+
+    scored = []
+    for slug, matrix in _CLASS_MATRICES.items():
+        similarities = np.clip(matrix @ centered32, 0.0, 1.0)
+        count = min(max(1, int(top_k)), len(similarities))
+        top = np.partition(similarities, len(similarities) - count)[-count:]
+        scored.append((float(top.mean()), slug))
+
+    if not scored:
+        return {
+            "slug": None,
+            "score": 0.0,
+            "threshold": 1.0,
+            "accepted": False,
+            "reason": "no compatible model classes",
+            "runner": None,
+            "runner_score": 0.0,
+            "gap": 0.0,
+        }
+
+    scored.sort(reverse=True)
+    score, slug = scored[0]
+    runner_score, runner = scored[1] if len(scored) > 1 else (0.0, None)
+    required = get_threshold(slug, model, thresholds)
+    accepted = score >= required
+    return {
+        "slug": slug,
+        "score": score,
+        "threshold": required,
+        "accepted": accepted,
+        "reason": "best-class match" if accepted else "below targeted threshold",
+        "runner": runner,
+        "runner_score": runner_score,
+        "gap": score - runner_score,
     }

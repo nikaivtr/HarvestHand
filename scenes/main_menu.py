@@ -1,9 +1,8 @@
 """
 Main menu scene.
 
-Owns the menu background/logo/buttons AND the three popups that open from it
-(leaderboard, info, settings) — those popups never appear anywhere else, so
-keeping them here (instead of in main.py) keeps the scene self-contained.
+Owns the menu background/logo/buttons and the popups opened from it, including
+the Story Mode profile prompt.
 """
 
 import sys
@@ -13,7 +12,15 @@ import pygame
 
 import config
 import utils
-from popups import leaderboards, info, settings, minigames, card_scan
+from popups import (
+    card_scan,
+    info,
+    leaderboards,
+    minigames,
+    player_session,
+    settings,
+)
+from scenes import level_select
 
 WIDTH = 0
 HEIGHT = 0
@@ -27,7 +34,7 @@ main_menu_buttons = []   # [{"img", "rect", "cb", "pressed_at"}, ...]
 TAP_PAD = 0              # invisible extra tap area around each button
 
 # Popup state — only relevant while this scene is active
-active_popup = None   # None, "leaderboard", "info", or "settings"
+active_popup = None
 _display_change_callback = None
 
 
@@ -125,6 +132,13 @@ def init(width, height, go_to_scene_callback):
         settings.set_display_callback(_display_change_callback)
     minigames.init(WIDTH, HEIGHT, _close_popup, _launch_minigame)
     card_scan.init(WIDTH, HEIGHT, _close_popup)
+    player_session.init(
+        WIDTH,
+        HEIGHT,
+        _close_popup,
+        _continue_profile,
+        _start_new_profile,
+    )
     if active_popup == "settings":
         settings.open()
     elif active_popup == "card_scan":
@@ -151,7 +165,27 @@ def _close_popup():
 
 
 # ── Button callbacks ──────────────────────────────────────────────────────────
-def _on_play():        _go_to_scene("level_select")
+def _on_play():
+    player_session.open()
+    _open_popup("story_start")
+
+
+def _continue_profile(profile):
+    _close_popup()
+    checkpoint = profile.get("checkpoint") if profile else None
+    if checkpoint:
+        try:
+            level_select.begin_chapter_scan(checkpoint.get("chapter"))
+        except ValueError as exc:
+            print(f"[story] Saved chapter could not be resumed: {exc}", file=sys.stderr)
+    _go_to_scene("level_select")
+
+
+def _start_new_profile():
+    _close_popup()
+    _go_to_scene("level_select")
+
+
 def _on_leaderboard():  _open_popup("leaderboard")
 def _on_info():          _open_popup("info")
 def _on_settings():
@@ -228,8 +262,17 @@ def handle_tap(px, py):
         minigames.handle_tap(px, py)
     elif active_popup == "card_scan":
         card_scan.handle_tap(px, py)
+    elif active_popup == "story_start":
+        player_session.handle_tap(px, py)
     else:
         _handle_button_tap(px, py)
+
+
+def handle_event(event):
+    if active_popup == "story_start":
+        player_session.handle_event(event)
+        return True
+    return False
 
 
 def handle_drag(px, py):
@@ -275,3 +318,5 @@ def draw(surf):
         minigames.draw(surf)
     elif active_popup == "card_scan":
         card_scan.draw(surf)
+    elif active_popup == "story_start":
+        player_session.draw(surf)

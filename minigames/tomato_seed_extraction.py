@@ -197,12 +197,30 @@ def _button_rects():
         gap = int(WIDTH * 0.03)
         cx = WIDTH // 2
         y = int(HEIGHT * 0.78)
-        _buttons["primary"] = pygame.Rect(cx - w // 2, y, w, h)
+        if _return_callback:
+            _buttons["primary"] = pygame.Rect(cx - w - gap // 2, y, w, h)
+            _buttons["return"] = pygame.Rect(cx + gap // 2, y, w, h)
+        else:
+            _buttons["primary"] = pygame.Rect(cx - w // 2, y, w, h)
+    elif _return_callback:
+        w = max(112, int(WIDTH * 0.18))
+        h = max(40, int(HEIGHT * 0.06))
+        _buttons["return"] = pygame.Rect(
+            WIDTH - int(WIDTH * 0.04) - w,
+            int(HEIGHT * 0.115),
+            w,
+            h,
+        )
     return _buttons
 
 def handle_tap(x, y):
     global _ptr, _ptr_down, _knife_dragging, _slice_start, _state
     global _extracting, _active_seed, _drag_offset, _drag_distance
+
+    return_rect = _button_rects().get("return")
+    if return_rect is not None and return_rect.collidepoint(x, y):
+        _return_callback("main_menu")
+        return
 
     if _state in ("success", "failure"):
         rects = _button_rects()
@@ -473,6 +491,24 @@ def _draw_ui(surface):
         txt = _fonts["body"].render(message, True, _PALETTE["cream"])
         surface.blit(txt, txt.get_rect(center=banner.center))
 
+    return_rect = _button_rects().get("return")
+    if return_rect is not None:
+        pygame.draw.rect(surface, _PALETTE["green"], return_rect, border_radius=10)
+        pygame.draw.rect(
+            surface, (255, 239, 195), return_rect, width=2, border_radius=10
+        )
+        return_text = _fonts["small"].render(_return_label, True, (255, 255, 255))
+        if return_text.get_width() > return_rect.width - 12:
+            width = return_rect.width - 12
+            return_text = pygame.transform.smoothscale(
+                return_text,
+                (
+                    width,
+                    max(1, round(return_text.get_height() * width / return_text.get_width())),
+                ),
+            )
+        surface.blit(return_text, return_text.get_rect(center=return_rect.center))
+
     if _state not in ("slicing", "extraction"):
         return
 
@@ -519,6 +555,31 @@ def _draw_result(surface):
 
     rects = _button_rects()
     pygame.draw.rect(surface, _PALETTE["green"], rects["primary"], border_radius=14)
-    plabel = _success_label if _state == "success" else "Retry"
+    pygame.draw.rect(
+        surface, (177, 128, 59), rects["primary"], width=2, border_radius=14
+    )
+    plabel = (
+        _success_label if _state == "success" and _success_callback
+        else "Play Again" if _state == "success"
+        else "Retry"
+    )
     pt = _fonts["body"].render(plabel, True, (255, 255, 255))
     surface.blit(pt, pt.get_rect(center=rects["primary"].center))
+    if "return" in rects:
+        pygame.draw.rect(
+            surface, _PALETTE["green"], rects["return"], border_radius=14
+        )
+        pygame.draw.rect(
+            surface, (177, 128, 59), rects["return"], width=2, border_radius=14
+        )
+        return_text = _fonts["body"].render(_return_label, True, (255, 255, 255))
+        if return_text.get_width() > rects["return"].width - 12:
+            width = rects["return"].width - 12
+            return_text = pygame.transform.smoothscale(
+                return_text,
+                (
+                    width,
+                    max(1, round(return_text.get_height() * width / return_text.get_width())),
+                ),
+            )
+        surface.blit(return_text, return_text.get_rect(center=rects["return"].center))

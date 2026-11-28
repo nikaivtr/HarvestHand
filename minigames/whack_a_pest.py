@@ -221,7 +221,12 @@ def _layout():
     button_h = max(44, round(HEIGHT * 0.07))
     _buttons = {
         "menu": pygame.Rect(round(WIDTH * 0.025), round(HEIGHT * 0.025), button_w, button_h),
-        "restart": pygame.Rect(WIDTH - round(WIDTH * 0.025) - button_w, round(HEIGHT * 0.025), button_w, button_h),
+        "restart": pygame.Rect(
+            WIDTH - round(WIDTH * 0.025) - button_w,
+            round(HEIGHT * 0.81),
+            button_w,
+            button_h,
+        ),
         "next": pygame.Rect(WIDTH // 2 - button_w - 12, round(HEIGHT * 0.67), button_w, button_h),
         "retry": pygame.Rect(WIDTH // 2 - button_w - 12, round(HEIGHT * 0.67), button_w, button_h),
         "result_menu": pygame.Rect(WIDTH // 2 + 12, round(HEIGHT * 0.67), button_w, button_h),

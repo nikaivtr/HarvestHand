@@ -48,7 +48,7 @@ class ActionChallengeScanningTests(unittest.TestCase):
 
         self.assertFalse(result["accepted"])
 
-    def test_action_scan_uses_multiclass_fallback_without_marker(self):
+    def test_action_scan_waits_for_marker_without_image_fallback(self):
         model = _model()
         scanner = CardScanner(model_data=model, confirm_frames=1)
         scanner.start(
@@ -72,16 +72,20 @@ class ActionChallengeScanningTests(unittest.TestCase):
                 preprocess,
                 "prepare_candidates",
                 return_value=[(canvas, details)],
-            ),
-            patch.object(features, "extract_card", return_value=[0.98, 0.02]),
+            ) as prepare_candidates,
+            patch.object(features, "extract_card") as extract,
         ):
-            slug, _, confident = scanner.read_once()
+            result = scanner.update(1.0)
 
-        self.assertEqual(slug, "natural_pesticide")
-        self.assertTrue(confident)
-        self.assertEqual(scanner.last_read["strategy"], "multiclass")
+        self.assertIsNone(result)
+        self.assertEqual(
+            scanner.last_read["reason"],
+            "action card ArUco marker not detected",
+        )
+        self.assertFalse(prepare_candidates.call_args.kwargs["fast_marker"])
+        extract.assert_not_called()
 
-    def test_action_scan_reports_wrong_card_from_visual_fallback(self):
+    def test_action_scan_rejects_marker_for_wrong_expected_card(self):
         model = _model()
         scanner = CardScanner(model_data=model, confirm_frames=1)
         scanner.start(
@@ -92,6 +96,9 @@ class ActionChallengeScanningTests(unittest.TestCase):
         canvas = pygame.Surface((160, 240))
         details = {
             "source": "detected",
+            "marker_identity_only": True,
+            "marker_slug": "water",
+            "marker_id": 11,
             "blurry": False,
             "area_ratio": 0.5,
             "quality": 0.8,
@@ -106,12 +113,56 @@ class ActionChallengeScanningTests(unittest.TestCase):
                 "prepare_candidates",
                 return_value=[(canvas, details)],
             ),
-            patch.object(features, "extract_card", return_value=[0.02, 0.98]),
+            patch.object(features, "extract_card") as extract,
         ):
             result = scanner.update(1.0)
 
         self.assertEqual(result.status, ScanResult.WRONG)
         self.assertEqual(result.card, "water")
+        self.assertEqual(scanner.last_read["marker_id"], 11)
+        extract.assert_not_called()
+
+    def test_action_marker_accepts_expected_card_without_model_class(self):
+        model = {
+            "feature_version": features.PREPROCESS_VERSION,
+            "mean": [0.0, 0.0],
+            "cards": {
+                "water": {"samples": [[0.0, 1.0]]},
+                "weed": {"samples": [[1.0, 0.0]]},
+            },
+        }
+        scanner = CardScanner(model_data=model, confirm_frames=1)
+        scanner.start(
+            "AC-04A Natural Pesticide Card",
+            expected_card="natural_pesticide",
+        )
+        scanner.cam = _Camera()
+        details = {
+            "source": "detected",
+            "marker_identity_only": True,
+            "marker_slug": "natural_pesticide",
+            "marker_id": 15,
+            "blurry": False,
+            "area_ratio": 0.5,
+            "quality": 0.8,
+            "edge_support": 0.1,
+            "aspect": 0.66,
+        }
+
+        with (
+            patch.object(
+                preprocess,
+                "prepare_candidates",
+                return_value=[(pygame.Surface((160, 240)), details)],
+            ) as prepare_candidates,
+            patch.object(features, "extract_card") as extract,
+        ):
+            result = scanner.update(0.1)
+
+        self.assertEqual(result.status, ScanResult.MATCH)
+        self.assertEqual(result.card, "natural_pesticide")
+        self.assertFalse(prepare_candidates.call_args.kwargs["fast_marker"])
+        extract.assert_not_called()
 
 
 if __name__ == "__main__":

@@ -1,11 +1,13 @@
-"""Locally persisted game settings, chapter runs, and minigame records."""
+"""Locally persisted settings, player profiles, story saves, and score records."""
 
 from datetime import datetime, timezone
+from copy import deepcopy
 import json
 import os
 from pathlib import Path
 import sys
 import time
+from uuid import uuid4
 
 
 def _data_directory():
@@ -28,6 +30,7 @@ _DEFAULT_SETTINGS = {
 }
 _data = None
 _current_run = None
+_active_profile_id = None
 _last_error = ""
 _pending_score_records = []
 _score_prompts_deferred = False
@@ -70,6 +73,27 @@ def _load():
         _data["minigame_records"] = []
     if not isinstance(_data.get("completed_chapters"), list):
         _data["completed_chapters"] = []
+    if not isinstance(_data.get("profiles"), dict):
+        _data["profiles"] = {}
+    legacy_completed = list(_data["completed_chapters"])
+    legacy_completed.extend(
+        record.get("chapter")
+        for record in _data["chapter_records"]
+        if isinstance(record, dict)
+        and record.get("completed")
+        and record.get("chapter")
+    )
+    legacy_completed = list(dict.fromkeys(legacy_completed))
+    if not _data["profiles"] and legacy_completed:
+        _data["profiles"]["legacy"] = {
+            "name": "Player",
+            "completed_chapters": legacy_completed,
+            "total_score": 0,
+            "checkpoint": None,
+        }
+        _data["last_profile_id"] = "legacy"
+    if _data.get("last_profile_id") not in _data["profiles"]:
+        _data["last_profile_id"] = None
     return _data
 
 
@@ -97,6 +121,118 @@ def update_settings(**changes):
         elif key == "camera_device":
             settings[key] = max(0, min(9, int(value)))
     return _save()
+
+
+def last_profile():
+    data = _load()
+    profile_id = data.get("last_profile_id")
+    profile = data["profiles"].get(profile_id)
+    if not isinstance(profile, dict):
+        return None
+    return {**deepcopy(profile), "id": profile_id}
+
+
+def current_profile():
+    data = _load()
+    profile_id = _active_profile_id or data.get("last_profile_id")
+    profile = data["profiles"].get(profile_id)
+    if not isinstance(profile, dict):
+        return None
+    return {**deepcopy(profile), "id": profile_id}
+
+
+def active_profile_id():
+    return _active_profile_id
+
+
+def select_profile(profile_id):
+    global _active_profile_id
+    data = _load()
+    if profile_id not in data["profiles"]:
+        _report_error("The selected player profile no longer exists.")
+        return False
+    previous_id = _active_profile_id
+    previous_last_id = data.get("last_profile_id")
+    _active_profile_id = profile_id
+    data["last_profile_id"] = profile_id
+    if not _save():
+        _active_profile_id = previous_id
+        data["last_profile_id"] = previous_last_id
+        return False
+    return True
+
+
+def create_profile(player_name):
+    global _active_profile_id
+    name = str(player_name).strip()[:16]
+    if not name:
+        _report_error("Enter a name before starting a new game.")
+        return False
+
+    data = _load()
+    if any(
+        str(profile.get("name", "")).casefold() == name.casefold()
+        for profile in data["profiles"].values()
+        if isinstance(profile, dict)
+    ):
+        _report_error("A player with that name already has a save.")
+        return False
+
+    profile_id = uuid4().hex
+    data["profiles"][profile_id] = {
+        "name": name,
+        "completed_chapters": [],
+        "total_score": 0,
+        "checkpoint": None,
+    }
+    previous_last_id = data.get("last_profile_id")
+    previous_active_id = _active_profile_id
+    data["last_profile_id"] = profile_id
+    _active_profile_id = profile_id
+    if not _save():
+        del data["profiles"][profile_id]
+        data["last_profile_id"] = previous_last_id
+        _active_profile_id = previous_active_id
+        return False
+    return True
+
+
+def profile_total_score(profile=None):
+    profile = profile or current_profile()
+    if not isinstance(profile, dict):
+        return 0
+    total = max(0, int(profile.get("total_score", 0)))
+    checkpoint = profile.get("checkpoint")
+    if isinstance(checkpoint, dict):
+        run = checkpoint.get("run", {})
+        if isinstance(run, dict):
+            minigame_points = sum(
+                max(0, int(score))
+                for score in run.get("minigame_scores", {}).values()
+            )
+            total += max(
+                0,
+                (1000 if checkpoint.get("completed") else 0)
+                + max(0, int(run.get("time_bonus", 0)))
+                + minigame_points - max(0, int(run.get("mistakes", 0))) * 50,
+            )
+    return total
+
+
+def player_rankings():
+    profiles = [
+        {
+            "player_name": str(profile.get("name", "Player")),
+            "score": profile_total_score(profile),
+            "completed_chapters": len(profile.get("completed_chapters", [])),
+        }
+        for profile in _load()["profiles"].values()
+        if isinstance(profile, dict)
+    ]
+    return sorted(
+        profiles,
+        key=lambda profile: (-profile["score"], profile["player_name"].casefold()),
+    )
 
 
 def _save():
@@ -130,6 +266,79 @@ def begin_chapter(chapter_id):
     }
 
 
+def chapter_save(chapter_id=None):
+    profile = current_profile()
+    checkpoint = profile.get("checkpoint") if profile else None
+    if not isinstance(checkpoint, dict):
+        return None
+    if chapter_id is not None and checkpoint.get("chapter") != chapter_id:
+        return None
+    return deepcopy(checkpoint)
+
+
+def resume_chapter(chapter_id, checkpoint):
+    global _current_run, _score_prompts_deferred
+    if not isinstance(checkpoint, dict) or checkpoint.get("chapter") != chapter_id:
+        return False
+    run = checkpoint.get("run")
+    if not isinstance(run, dict) or not isinstance(run.get("minigame_scores", {}), dict):
+        return False
+    try:
+        elapsed = max(0, int(run.get("elapsed_seconds", 0)))
+        mistakes = max(0, int(run.get("mistakes", 0)))
+        time_bonus = max(0, int(run.get("time_bonus", 0)))
+        challenges_solved = max(0, int(run.get("challenges_solved", 0)))
+        minigame_scores = {
+            str(name): max(0, int(score))
+            for name, score in run.get("minigame_scores", {}).items()
+        }
+    except (TypeError, ValueError):
+        return False
+    _current_run = {
+        "chapter": chapter_id,
+        "started": time.monotonic() - elapsed,
+        "mistakes": mistakes,
+        "time_bonus": time_bonus,
+        "challenges_solved": challenges_solved,
+        "minigame_scores": minigame_scores,
+    }
+    _score_prompts_deferred = True
+    return True
+
+
+def save_chapter_progress(checkpoint):
+    profile = current_profile()
+    if profile is None:
+        _report_error("Select a player before saving story progress.")
+        return False
+    if not isinstance(checkpoint, dict) or not checkpoint.get("chapter"):
+        _report_error("The story checkpoint is invalid.")
+        return False
+
+    data = _load()
+    profile_id = _active_profile_id or data.get("last_profile_id")
+    stored_profile = data["profiles"][profile_id]
+    old_checkpoint = deepcopy(stored_profile.get("checkpoint"))
+    elapsed = (
+        max(0, int(time.monotonic() - _current_run["started"]))
+        if _current_run is not None
+        else 0
+    )
+    run = {
+        "mistakes": _current_run["mistakes"],
+        "time_bonus": _current_run["time_bonus"],
+        "challenges_solved": _current_run["challenges_solved"],
+        "minigame_scores": dict(_current_run["minigame_scores"]),
+        "elapsed_seconds": elapsed,
+    } if _current_run is not None else {}
+    stored_profile["checkpoint"] = deepcopy(checkpoint)
+    stored_profile["checkpoint"]["run"] = run
+    if not _save():
+        stored_profile["checkpoint"] = old_checkpoint
+        return False
+    return True
+
+
 def abort_chapter():
     global _current_run
     _current_run = None
@@ -157,9 +366,25 @@ def record_minigame_result(name, score, mistakes=0, time_bonus=0):
         "recorded_at": datetime.now(timezone.utc).isoformat(),
     }
     if _current_run is not None:
-        _current_run["minigame_scores"][str(name)] = max(0, score - result["time_bonus"])
+        key = str(name)
+        _current_run["minigame_scores"][key] = (
+            _current_run["minigame_scores"].get(key, 0)
+            + max(0, score - result["time_bonus"])
+        )
         _current_run["time_bonus"] += result["time_bonus"]
-    _pending_score_records.append({"kind": "minigame", "record": result})
+    else:
+        profile = current_profile()
+        if profile is not None:
+            data = _load()
+            profile_id = _active_profile_id or data.get("last_profile_id")
+            stored_profile = data["profiles"][profile_id]
+            old_total = stored_profile.get("total_score", 0)
+            stored_profile["total_score"] = max(0, int(old_total)) + score
+            if not _save():
+                stored_profile["total_score"] = old_total
+                return False
+        else:
+            _pending_score_records.append({"kind": "minigame", "record": result})
     return True
 
 
@@ -235,12 +460,28 @@ def complete_chapter():
         "recorded_at": datetime.now(timezone.utc).isoformat(),
     }
     data = _load()
-    completed = data["completed_chapters"]
-    if _current_run["chapter"] not in completed:
-        completed.append(_current_run["chapter"])
+    profile = current_profile()
+    if profile is not None:
+        profile_id = _active_profile_id or data.get("last_profile_id")
+        stored_profile = data["profiles"][profile_id]
+        completed = stored_profile.setdefault("completed_chapters", [])
+        if result["chapter"] not in completed:
+            completed.append(result["chapter"])
+        stored_profile["total_score"] = (
+            max(0, int(stored_profile.get("total_score", 0))) + total_score
+        )
+        stored_profile["checkpoint"] = None
+        result["player_name"] = stored_profile.get("name", "Player")
+    else:
+        completed = data["completed_chapters"]
+        if result["chapter"] not in completed:
+            completed.append(result["chapter"])
     _current_run = None
-    _save()
-    _pending_score_records.append({"kind": "chapter", "record": result})
+    if profile is None:
+        _save()
+        _pending_score_records.append({"kind": "chapter", "record": result})
+    else:
+        _save()
     return result
 
 
@@ -273,6 +514,9 @@ def minigame_rankings():
 
 
 def chapter_progress():
+    profile = current_profile()
+    if profile is not None:
+        return set(profile.get("completed_chapters", []))
     completed = {
         record.get("chapter")
         for record in _load()["chapter_records"]
@@ -280,3 +524,12 @@ def chapter_progress():
     }
     completed.update(_load()["completed_chapters"])
     return completed
+
+
+def chapter_unlocked(chapter_id, chapter_ids):
+    try:
+        chapter_index = chapter_ids.index(chapter_id)
+    except ValueError:
+        return False
+    completed = chapter_progress()
+    return all(previous_id in completed for previous_id in chapter_ids[:chapter_index])

@@ -22,6 +22,48 @@ class StoryEngine:
         self._retry_slide: int | None = None  # slide index to loop back to on wrong answer
         self.is_retry: bool = False  # True when re-showing a choice after a wrong attempt
 
+    def snapshot_state(self) -> dict:
+        return {
+            "slide_idx": self.slide_idx,
+            "line_idx": self.line_idx,
+            "answer_result": self.answer_result,
+            "last_answer": self._last_answer,
+            "skip_slides": sorted(self._skip_slides),
+            "retry_slide": self._retry_slide,
+            "is_retry": self.is_retry,
+        }
+
+    def restore_state(self, state: dict) -> bool:
+        if not isinstance(state, dict):
+            return False
+        try:
+            slide_idx = int(state.get("slide_idx", 0))
+            line_idx = int(state.get("line_idx", 0))
+            retry_slide = state.get("retry_slide")
+            retry_slide = int(retry_slide) if retry_slide is not None else None
+            skip_slides = {int(index) for index in state.get("skip_slides", [])}
+        except (TypeError, ValueError):
+            return False
+        if not 0 <= slide_idx < len(self.slides):
+            return False
+        if retry_slide is not None and not 0 <= retry_slide < len(self.slides):
+            return False
+        if any(not 0 <= index < len(self.slides) for index in skip_slides):
+            return False
+
+        lines = self.slides[slide_idx].get("lines", [])
+        self.slide_idx = slide_idx
+        self.line_idx = min(max(0, line_idx), max(0, len(lines) - 1))
+        answer_result = state.get("answer_result")
+        self.answer_result = answer_result if isinstance(answer_result, bool) else None
+        last_answer = state.get("last_answer")
+        self._last_answer = last_answer if isinstance(last_answer, bool) else None
+        self._skip_slides = skip_slides
+        self._retry_slide = retry_slide
+        self.is_retry = bool(state.get("is_retry", False))
+        self.popup_open = None
+        return True
+
     # ── Quick accessors ──────────────────────────────────────
 
     @property

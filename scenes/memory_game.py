@@ -218,7 +218,12 @@ def _layout():
     button_top = int(HEIGHT * 0.015)
     _buttons = {
         "menu": pygame.Rect(margin, button_top, button_w, button_h),
-        "restart": pygame.Rect(WIDTH - margin - button_w, button_top, button_w, button_h),
+        "restart": pygame.Rect(
+            WIDTH - margin - button_w,
+            HEIGHT - int(HEIGHT * 0.018) - button_h,
+            button_w,
+            button_h,
+        ),
     }
 
     card_count = len(_cards)

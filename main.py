@@ -88,7 +88,18 @@ def _call(method, *args):
     scene = SCENES[current_scene]
     fn = getattr(scene, method, None)
     if fn:
-        fn(*args)
+        return fn(*args)
+    return None
+
+
+def _try_chapter_save_tap(px, py):
+    global skip_next_release
+    if current_scene != "story_mode":
+        return False
+    if story_mode.handle_chapter_save_tap(px, py):
+        skip_next_release = True
+        return True
+    return False
 
 
 def _try_chapter_exit_tap(px, py):
@@ -103,6 +114,8 @@ def _try_chapter_exit_tap(px, py):
 def _handle_tap(px, py):
     if score_prompt.active():
         score_prompt.handle_tap(px, py)
+        return
+    if _try_chapter_save_tap(px, py):
         return
     if _try_chapter_exit_tap(px, py):
         return
@@ -132,6 +145,10 @@ while True:
         if event.type == pygame.KEYDOWN and score_prompt.active():
             score_prompt.handle_event(event)
             continue
+
+        if event.type in (pygame.TEXTINPUT, pygame.KEYDOWN):
+            if _call("handle_event", event):
+                continue
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             chapter_scene = current_scene not in ("main_menu", "level_select")
@@ -187,6 +204,12 @@ while True:
             if fn:
                 fn(event)
 
+    music_context = (
+        "menu" if current_scene in ("main_menu", "level_select")
+        else "chapter" if current_scene == "story_mode"
+        else "minigame"
+    )
+    audio_manager.set_context(music_context)
     SCENES[current_scene].draw(screen)
     if current_scene != "story_mode":
         story_mode.draw_chapter_exit(screen)

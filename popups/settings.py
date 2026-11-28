@@ -32,7 +32,7 @@ def init(width, height, close_popup_callback):
     WIDTH, HEIGHT = width, height
     _close_popup = close_popup_callback
     _settings_values = player_data.get_settings()
-    panel_rect = base.make_panel_rect(WIDTH, HEIGHT, w_pct=0.84, h_pct=0.82)
+    panel_rect = base.make_panel_rect(WIDTH, HEIGHT, w_pct=0.86, h_pct=0.84)
     close_btn_rect = base.make_close_rect(panel_rect, WIDTH, HEIGHT)
     track_x = panel_rect.left + int(panel_rect.width * 0.39)
     track_w = int(panel_rect.width * 0.37)

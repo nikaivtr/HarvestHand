@@ -20,10 +20,9 @@
 #
 # Detection notes (measured on the project's real card photos):
 #   * the markers are small and have no white quiet zone, so a plain
-#     detector fails on a 640 px frame with even slight blur. A wide
-#     adaptive-threshold window plus a 2x upscale before detection reads
-#     them reliably at 640 px; severe or motion blur still defeats it,
-#     which is why the colour recogniser remains as the fallback.
+#     detector fails with even slight blur. A wide adaptive-threshold
+#     window plus multi-scale sharpened detection improves recovery;
+#     severe or motion blur can still defeat it.
 #   * capture at 1280x720 if you can; print the markers larger and with
 #     a white margin of at least one cell for much better reliability.
 #
@@ -41,7 +40,10 @@ DICTIONARY = "DICT_4X4_50"
 # eight sample cards land in the same place.
 CROP_BOX = (-3.45, 1.25, -0.70, 6.40)       # x0, x1, y0, y1
 
-UPSCALE_BELOW = 1400     # frames with a shorter long side are upscaled 2x
+# Action-card markers identify and orient the card, but their varying
+# printed size makes CROP_BOX unreliable for framing those cards.
+CROP_IDS = frozenset(range(1, 11))
+
 MIN_SIDE_PIXELS = 12.0   # ignore markers smaller than this (in the frame)
 
 IDS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -124,8 +126,22 @@ def _tune(params):
 
 # ── Detection ───────────────────────────────────────────────
 
-def detect(rgb):
-    """All plausible markers in an RGB array, largest first."""
+# Markers without a quiet zone can be detected at one image scale and
+# missed at another, so examine several sizes and sharpened variants.
+SCALES = (1280, 960, 640, 1920, 800, 480, 1600)
+FAST_SCALES_PER_CALL = 3
+_CALL = 0
+
+
+def _gray_variants(gray):
+    import cv2
+    yield gray
+    yield cv2.addWeighted(gray, 1.8, cv2.GaussianBlur(gray, (0, 0), 3), -0.8, 0)
+
+
+def detect(rgb, fast=False):
+    """Return plausible markers, detected across multiple image scales."""
+    global _CALL
     import cv2
     import numpy as np
 
@@ -133,24 +149,53 @@ def detect(rgb):
     if detector is None:
         return []
     h, w = rgb.shape[:2]
-    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
-    scale = 2.0 if max(h, w) < UPSCALE_BELOW else 1.0
-    if scale != 1.0:
-        gray = cv2.resize(gray, None, fx=scale, fy=scale,
-                          interpolation=cv2.INTER_CUBIC)
-    try:
-        corners, ids = detector(gray)
-    except cv2.error:
-        return []
+    long_side = max(h, w)
+    gray0 = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
+    scales = [target for target in SCALES if target <= long_side * 2.0]
+    if not scales:
+        scales = [long_side]
+    if fast and len(scales) > FAST_SCALES_PER_CALL:
+        start = (_CALL * FAST_SCALES_PER_CALL) % len(scales)
+        scales = [
+            scales[(start + index) % len(scales)]
+            for index in range(FAST_SCALES_PER_CALL)
+        ]
+        _CALL += 1
+
+    known = id_map()
+    hits = {}
+    for target in scales:
+        scale = target / float(long_side)
+        gray = gray0 if scale == 1.0 else cv2.resize(
+            gray0,
+            None,
+            fx=scale,
+            fy=scale,
+            interpolation=cv2.INTER_AREA if scale < 1 else cv2.INTER_CUBIC,
+        )
+        for variant in _gray_variants(gray):
+            try:
+                corners, ids = detector(variant)
+            except cv2.error:
+                continue
+            if ids is None:
+                continue
+            for quad, marker_id in zip(corners, ids.ravel()):
+                item = Marker(marker_id, np.asarray(quad).reshape(4, 2) / scale)
+                if _plausible(item):
+                    hits.setdefault(item.id, []).append((target, item))
+        if any(marker_id in known and len(found) >= 2
+               for marker_id, found in hits.items()):
+            break
+
     found = []
-    if ids is None:
-        return found
-    for quad, marker_id in zip(corners, ids.ravel()):
-        m = Marker(marker_id, np.asarray(quad).reshape(4, 2) / scale)
-        if _plausible(m):
-            found.append(m)
-    found.sort(key=lambda m: -m.side)
-    return found
+    for marker_id, observations in hits.items():
+        if marker_id not in known and len(observations) < 2:
+            continue
+        item = max(observations, key=lambda observation: observation[0])[1]
+        found.append((len(observations), item))
+    found.sort(key=lambda result: (-result[0], -result[1].side))
+    return [item for _, item in found]
 
 
 def _plausible(m):
@@ -171,6 +216,11 @@ def best_known(markers):
         if m.id in ids:
             return m
     return None
+
+
+def has_crop(marker_id):
+    """Whether CROP_BOX reliably frames the card for this marker."""
+    return int(marker_id) in CROP_IDS
 
 
 # ── Marker id <-> card ──────────────────────────────────────

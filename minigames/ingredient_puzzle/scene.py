@@ -210,7 +210,7 @@ def _finish_level(time_up=False):
         _results.show("victory", _level_mgr.current_level, total, time_bonus)
     else:
         _results.show("complete", _level_mgr.current_level, total, time_bonus)
-    if not _result_recorded:
+    if not _result_recorded and (time_up or _level_mgr.is_final_level()):
         player_data.record_minigame_result(
             "ingredient_puzzle",
             total,
@@ -549,7 +549,6 @@ def draw_buttons(surf):
     if "rotate" in _button_rects():
         buttons.append(("rotate", "Rotate", AC.PALETTE["deep_green"]))
     buttons.extend((
-        ("skip", "Skip", AC.PALETTE["deep_green"]),
         ("exit", "Exit", AC.PALETTE["ink"]),
     ))
 
@@ -613,11 +612,11 @@ def draw(surf):
         surf.blit(paused, paused.get_rect(center=(WIDTH // 2, HEIGHT // 2)))
 
 def _button_rects():
-    labels = ["restart", "pause", "skip", "exit"]
+    labels = ["restart", "pause", "exit"]
     if _level_mgr.get_config()["rotation"]:
         labels.insert(2, "rotate")
 
-    group_w = int(WIDTH * (0.84 if len(labels) == 5 else 0.64))
+    group_w = int(WIDTH * (0.84 if len(labels) == 4 else 0.64))
     gap = max(8, int(WIDTH * 0.014))
     button_w = (group_w - gap * (len(labels) - 1)) // len(labels)
     button_h = min(58, max(42, int(HEIGHT * 0.065)))
@@ -668,13 +667,6 @@ def handle_tap(x, y):
             _timer.resume()
         else:
             _timer.pause()
-        return
-    if buttons["skip"].collidepoint(x, y):
-        if _timer._is_paused or _advance_at is not None:
-            return
-        _level_mgr.ingredient_completed()
-        _advance_at = time.monotonic() + 0.35
-        _show_message("Ingredient skipped.")
         return
     if buttons["exit"].collidepoint(x, y):
         _timer.stop()

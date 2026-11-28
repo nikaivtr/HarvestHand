@@ -9,29 +9,34 @@ WIDTH = HEIGHT = 0
 _close_popup = None
 panel_rect = None
 close_btn_rect = None
-_chapter_tab = None
-_minigame_tab = None
+_tabs = {}
 _previous_rect = None
 _next_rect = None
-_tab = "chapters"
+_tab = "players"
 _page = 0
 _PAGE_SIZE = 5
 
 
 def init(width, height, close_popup_callback):
     global WIDTH, HEIGHT, _close_popup, panel_rect, close_btn_rect
-    global _chapter_tab, _minigame_tab, _previous_rect, _next_rect
+    global _tabs, _previous_rect, _next_rect
     WIDTH, HEIGHT = width, height
     _close_popup = close_popup_callback
     panel_rect = base.make_panel_rect(WIDTH, HEIGHT, w_pct=0.86, h_pct=0.84)
     close_btn_rect = base.make_close_rect(panel_rect, WIDTH, HEIGHT)
-    tab_width = int(panel_rect.width * 0.34)
+    tab_gap = max(8, int(panel_rect.width * 0.018))
+    tab_width = (panel_rect.width - tab_gap * 2) // 3
     tab_height = max(38, int(HEIGHT * 0.065))
     tab_y = panel_rect.top + int(HEIGHT * 0.105)
-    _chapter_tab = pygame.Rect(0, tab_y, tab_width, tab_height)
-    _chapter_tab.centerx = panel_rect.centerx - tab_width // 2
-    _minigame_tab = pygame.Rect(0, tab_y, tab_width, tab_height)
-    _minigame_tab.centerx = panel_rect.centerx + tab_width // 2
+    _tabs = {
+        key: pygame.Rect(
+            panel_rect.left + index * (tab_width + tab_gap),
+            tab_y,
+            tab_width,
+            tab_height,
+        )
+        for index, key in enumerate(("chapters", "minigames", "players"))
+    }
     button_size = max(42, int(HEIGHT * 0.065))
     page_gap = max(10, int(HEIGHT * 0.025))
     page_label_width = max(64, int(WIDTH * 0.075))
@@ -59,22 +64,25 @@ def handle_tap(px, py):
     if not panel_rect.collidepoint(px, py):
         _close_popup()
         return
-    if _chapter_tab.collidepoint(px, py):
-        _tab = "chapters"
-        _page = 0
-    elif _minigame_tab.collidepoint(px, py):
-        _tab = "minigames"
-        _page = 0
-    elif _previous_rect.collidepoint(px, py):
+    for tab, rect in _tabs.items():
+        if rect.collidepoint(px, py):
+            _tab = tab
+            _page = 0
+            return
+    if _previous_rect.collidepoint(px, py):
         _page = max(0, _page - 1)
     elif _next_rect.collidepoint(px, py):
-        count = (
-            len(player_data.chapter_rankings())
-            if _tab == "chapters"
-            else len(player_data.minigame_rankings())
-        )
+        count = len(_records_for_tab())
         page_count = max(1, (count + _PAGE_SIZE - 1) // _PAGE_SIZE)
         _page = min(page_count - 1, _page + 1)
+
+
+def _records_for_tab():
+    if _tab == "chapters":
+        return player_data.chapter_rankings()
+    if _tab == "minigames":
+        return player_data.minigame_rankings()
+    return player_data.player_rankings()
 
 
 def _chapter_title(chapter_id):
@@ -124,23 +132,29 @@ def _draw_chapter_rankings(surf):
         f"Chapters completed: {len(completed)} / {len(chapters_data.CHAPTER_IDS)}",
         True, (225, 215, 187),
     )
-    surf.blit(summary, summary.get_rect(midtop=(panel_rect.centerx, _chapter_tab.bottom + 5)))
+    tab_bottom = _tabs["chapters"].bottom
+    surf.blit(summary, summary.get_rect(midtop=(panel_rect.centerx, tab_bottom + 5)))
     formula_font = pygame.font.SysFont(None, max(14, int(HEIGHT * 0.021)))
     formula = formula_font.render(
         "Score: 1,000 completion + bonuses + mini-games - 50 per mistake",
         True, (205, 198, 178),
     )
     surf.blit(formula, formula.get_rect(midtop=(panel_rect.centerx,
-                                                _chapter_tab.bottom + summary.get_height() + 8)))
+                                                tab_bottom + summary.get_height() + 8)))
     _draw_storage_warning(surf)
     if not records:
-        _draw_empty(surf, "Finish a chapter to start your local rankings.")
+        message = (
+            "Current chapter points are combined in the Players tab."
+            if player_data.current_profile()
+            else "Finish a chapter to start your local rankings."
+        )
+        _draw_empty(surf, message)
         return
 
     page = _draw_pagination(surf, len(records))
     first = page * _PAGE_SIZE
-    row_top = _chapter_tab.bottom + int(HEIGHT * 0.105)
-    row_height = int(HEIGHT * 0.077)
+    row_top = tab_bottom + int(HEIGHT * 0.105)
+    row_height = int(HEIGHT * 0.085)
     title_font = pygame.font.SysFont(None, max(18, int(HEIGHT * 0.029)))
     detail_font = pygame.font.SysFont(None, max(15, int(HEIGHT * 0.023)))
     for rank, record in enumerate(records[first:first + _PAGE_SIZE], first + 1):
@@ -166,12 +180,17 @@ def _draw_minigame_rankings(surf):
     records = player_data.minigame_rankings()
     _draw_storage_warning(surf)
     if not records:
-        _draw_empty(surf, "Play a mini-game to record a local high score.")
+        message = (
+            "Current mini-game points are combined in the Players tab."
+            if player_data.current_profile()
+            else "Play a mini-game to record a local high score."
+        )
+        _draw_empty(surf, message)
         return
     page = _draw_pagination(surf, len(records))
     first = page * _PAGE_SIZE
-    row_top = _chapter_tab.bottom + int(HEIGHT * 0.14)
-    row_height = int(HEIGHT * 0.09)
+    row_top = _tabs["minigames"].bottom + int(HEIGHT * 0.105)
+    row_height = int(HEIGHT * 0.085)
     title_font = pygame.font.SysFont(None, max(20, int(HEIGHT * 0.034)))
     detail_font = pygame.font.SysFont(None, max(16, int(HEIGHT * 0.025)))
     for rank, record in enumerate(records[first:first + _PAGE_SIZE], first + 1):
@@ -192,6 +211,36 @@ def _draw_minigame_rankings(surf):
                            y + title.get_height()))
 
 
+def _draw_player_rankings(surf):
+    records = player_data.player_rankings()
+    _draw_storage_warning(surf)
+    if not records:
+        _draw_empty(surf, "Start Story Mode to create a player total.")
+        return
+    page = _draw_pagination(surf, len(records))
+    first = page * _PAGE_SIZE
+    row_top = _tabs["players"].bottom + int(HEIGHT * 0.105)
+    row_height = int(HEIGHT * 0.085)
+    title_font = pygame.font.SysFont(None, max(20, int(HEIGHT * 0.034)))
+    detail_font = pygame.font.SysFont(None, max(16, int(HEIGHT * 0.025)))
+    for rank, record in enumerate(records[first:first + _PAGE_SIZE], first + 1):
+        y = row_top + (rank - first - 1) * row_height
+        title = title_font.render(
+            f"{rank}. {record['player_name']}", True, (255, 240, 200)
+        )
+        surf.blit(title, (panel_rect.left + int(panel_rect.width * 0.08), y))
+        detail = detail_font.render(
+            f"Total score: {int(record['score']):,}   |   "
+            f"Chapters completed: {int(record['completed_chapters'])}",
+            True,
+            (218, 218, 205),
+        )
+        surf.blit(
+            detail,
+            (panel_rect.left + int(panel_rect.width * 0.12), y + title.get_height()),
+        )
+
+
 def _draw_storage_warning(surf):
     error = player_data.last_error()
     if not error:
@@ -205,10 +254,16 @@ def _draw_storage_warning(surf):
 def draw(surf):
     base.draw_overlay(surf, WIDTH, HEIGHT)
     base.draw_panel_frame(surf, panel_rect, "Local Rankings", title_font_size=max(30, int(HEIGHT * 0.05)))
-    _draw_tab(surf, _chapter_tab, "Chapters", _tab == "chapters")
-    _draw_tab(surf, _minigame_tab, "Mini-games", _tab == "minigames")
+    for key, label in (
+        ("chapters", "Chapters"),
+        ("minigames", "Mini-games"),
+        ("players", "Players"),
+    ):
+        _draw_tab(surf, _tabs[key], label, _tab == key)
     if _tab == "chapters":
         _draw_chapter_rankings(surf)
-    else:
+    elif _tab == "minigames":
         _draw_minigame_rankings(surf)
+    else:
+        _draw_player_rankings(surf)
     base.draw_close_button(surf, close_btn_rect)

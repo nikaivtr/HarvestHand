@@ -218,9 +218,16 @@ def _update_scanner():
         _status = f"Matched {result.card.replace('_', ' ').title()} ({result.score:.0%})."
         _pending_match_at = now + 1500
     elif result.status == result.WRONG:
+        read = _scanner.last_read or {}
+        marker_id = read.get("marker_id")
+        source = (
+            f"ArUco ID {marker_id}"
+            if marker_id is not None
+            else "image model"
+        )
         _status = (
             f"Detected {result.card.replace('_', ' ').title()}; "
-            "show the requested card."
+            f"{source} read; show the requested card."
         )
     elif result.status == result.REJECTED:
         _status = "Card not verified. Show the requested card and hold it steady."

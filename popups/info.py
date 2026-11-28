@@ -17,9 +17,9 @@ _page = 0
 _GUIDE = (
     "Choose Play, then select a chapter from the farm map.",
     "Read the story and tap to continue. On choice scenes, select an answer.",
-    "For action challenges, follow the card prompt and choose the matching action.",
+    "For action challenges, follow the prompt and tap Scan Action Card when ready.",
     "Care meters appear when a chapter first needs that kind of plant care.",
-    "Finish a chapter to save your progress, then choose whether to record your score.",
+    "Finish a chapter to save progress and add its points to your player total.",
     "Open the Card Scan Tester from the main menu to preview a camera and test cards.",
 )
 
@@ -71,8 +71,11 @@ def _items(section):
     return [card for card in registry.CARDS if card.details.get("days")]
 
 
-def _page_size():
-    return 2 if HEIGHT < 600 else 4
+def _page_size(section=None):
+    section = section or _section
+    if HEIGHT < 600:
+        return 2 if section == "guide" else 1
+    return 4 if section == "guide" else 2
 
 
 def handle_tap(px, py):
@@ -91,7 +94,7 @@ def handle_tap(px, py):
     if _previous_rect.collidepoint(px, py):
         _page = max(0, _page - 1)
     elif _next_rect.collidepoint(px, py):
-        size = _page_size()
+        size = _page_size(_section)
         page_count = max(1, (len(_items(_section)) + size - 1) // size)
         _page = min(page_count - 1, _page + 1)
 
@@ -150,7 +153,7 @@ def _draw_tab(surf, rect, label, active):
 
 def _draw_content(surf):
     items = _items(_section)
-    page_size = _page_size()
+    page_size = _page_size(_section)
     page_count = max(1, (len(items) + page_size - 1) // page_size)
     page = min(_page, page_count - 1)
     first = page * page_size
@@ -162,10 +165,22 @@ def _draw_content(surf):
     max_width = int(panel_rect.width * 0.85)
     item_gap = max(18, int(HEIGHT * 0.025))
     visible = items[first:first + page_size]
-    for index, item in enumerate(visible, first + 1):
-        text = f"{index}. {item}" if _section == "guide" else _item_text(_section, item)
+    for visible_index, item in enumerate(visible, first + 1):
+        text = (
+            f"{visible_index}. {item}"
+            if _section == "guide"
+            else _item_text(_section, item)
+        )
         y = _draw_wrapped(surf, body_font, text, (237, 231, 211), x, y,
                           max_width, line_gap)
+        if visible_index < first + len(visible):
+            pygame.draw.line(
+                surf,
+                (100, 91, 70),
+                (x, y + item_gap // 2),
+                (panel_rect.right - int(panel_rect.width * 0.075), y + item_gap // 2),
+                1,
+            )
         y += item_gap
 
     nav_font = pygame.font.SysFont(None, max(18, int(HEIGHT * 0.03)))

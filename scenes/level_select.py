@@ -95,6 +95,8 @@ _selection_confirm_rect = None
 _selection_cancel_rect = None
 _chapter_scan_open = False
 _selection_error = ""
+_unlock_message = ""
+_unlock_message_until = 0.0
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -111,6 +113,7 @@ def init(width, height, go_to_scene_callback):
     global _selection_art, _selection_chapter
     global _selection_confirm_rect, _selection_cancel_rect
     global _chapter_scan_open, _selection_error
+    global _unlock_message, _unlock_message_until
     global _shadow_p, _shadow_t
     global _f_title, _f_name, _f_sub, _f_chap, _f_crop, _f_back
 
@@ -119,6 +122,8 @@ def init(width, height, go_to_scene_callback):
     _selection_chapter = None
     _chapter_scan_open = False
     _selection_error = ""
+    _unlock_message = ""
+    _unlock_message_until = 0.0
     scan_popup.init(WIDTH, HEIGHT)
 
     bg_image = utils.load_bg("background/menubg2.png", (WIDTH, HEIGHT))
@@ -409,6 +414,7 @@ def handle_drag(_px, _py):
 
 def handle_release(px, py):
     global _pressed, _selection_chapter, _chapter_scan_open, _selection_error
+    global _unlock_message, _unlock_message_until
     _pressed = None
 
     if _chapter_scan_open:
@@ -435,6 +441,13 @@ def handle_release(px, py):
             g = _groups[item["gi"]]
             g["expanded"] = not g["expanded"]
         elif item["kind"] == "chap":
+            chapter_id = item["ch"]["_module_id"]
+            if not player_data.chapter_unlocked(
+                chapter_id, chapters_data.CHAPTER_IDS
+            ):
+                _unlock_message = "Complete the previous chapter to unlock this one."
+                _unlock_message_until = time.monotonic() + 3.0
+                return
             _selection_chapter = item["ch"]
             _selection_error = ""
         return
@@ -458,6 +471,8 @@ def _on_chapter_scan_cancel():
 
 def begin_chapter_scan(chapter_id):
     global _selection_chapter, _selection_error
+    if not player_data.chapter_unlocked(chapter_id, chapters_data.CHAPTER_IDS):
+        raise ValueError(f"Chapter {chapter_id!r} is locked.")
     _selection_chapter = next(
         (
             chapter
@@ -523,6 +538,7 @@ def draw(surf):
     pygame.draw.rect(surf, border_color, (10, 10, WIDTH-20, HEIGHT-20), 4, border_radius=8)
 
     _draw_title(surf)
+    _draw_profile_status(surf)
 
     # Posts first, so the cards hang in front of them.
     for gi, g in enumerate(_groups):
@@ -536,6 +552,16 @@ def draw(surf):
             _draw_card(surf, item)
 
     _draw_back(surf)
+    if _unlock_message and time.monotonic() < _unlock_message_until:
+        message_font = _make_font(HEIGHT * 0.027)
+        message = _fit_font(_unlock_message, int(WIDTH * 0.78), message_font)
+        _paint_text(
+            surf,
+            _unlock_message,
+            message,
+            (255, 190, 145),
+            (WIDTH // 2, int(HEIGHT * 0.94)),
+        )
     if _selection_chapter is not None:
         _draw_chapter_scan_prompt(surf)
     if _chapter_scan_open:
@@ -713,6 +739,53 @@ def _draw_card(surf, item):
         _CREAM,
         (panel.left + stripe_w + int(panel.width * 0.42), panel.centery + int(panel.height * 0.24)),
     )
+    chapter_id = ch["_module_id"]
+    if not player_data.chapter_unlocked(chapter_id, chapters_data.CHAPTER_IDS):
+        shade = pygame.Surface(r.size, pygame.SRCALPHA)
+        shade.fill((20, 24, 18, 175))
+        surf.blit(shade, r)
+        lock_center = (r.centerx, r.centery - int(r.height * 0.07))
+        lock_w = max(18, int(r.width * 0.11))
+        lock_h = max(16, int(r.height * 0.22))
+        lock_rect = pygame.Rect(0, 0, lock_w, lock_h)
+        lock_rect.midtop = (lock_center[0], lock_center[1])
+        pygame.draw.arc(
+            surf,
+            _GOLD,
+            pygame.Rect(
+                lock_rect.left + lock_w // 4,
+                lock_rect.top - lock_h // 2,
+                lock_w // 2,
+                lock_h,
+            ),
+            0,
+            3.14,
+            max(2, lock_w // 8),
+        )
+        pygame.draw.rect(surf, _GOLD, lock_rect, border_radius=4)
+        lock_label = _make_font(max(12, HEIGHT * 0.016)).render(
+            "LOCKED", True, _CREAM
+        )
+        surf.blit(
+            lock_label,
+            lock_label.get_rect(center=(r.centerx, r.bottom - int(r.height * 0.2))),
+        )
+
+
+def _draw_profile_status(surf):
+    profile = player_data.current_profile()
+    if profile is None:
+        return
+    font = _make_font(HEIGHT * 0.023)
+    text = (
+        f"{profile['name']}  |  "
+        f"{player_data.profile_total_score(profile):,} points"
+    )
+    rendered = font.render(text, True, _CREAM)
+    rect = rendered.get_rect(topright=(WIDTH - int(WIDTH * 0.035), _TITLE_TOP))
+    shadow = font.render(text, True, _SHADOW)
+    surf.blit(shadow, rect.move(2, 2))
+    surf.blit(rendered, rect)
 
 
 def _draw_back(surf):

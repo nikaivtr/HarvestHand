@@ -5,6 +5,8 @@
 # ============================================================
 
 import random
+import sys
+import time
 
 import pygame
 import config
@@ -51,6 +53,8 @@ _shake_surf: pygame.Surface | None = None
 
 # ── Chapter-complete overlay ──────────────────────────────────
 _chapter_done  = False
+_save_status = ""
+_save_status_until = 0.0
 _memory_game_played = False
 _ingredient_puzzle_played = False
 _whack_a_pest_played = False
@@ -88,16 +92,15 @@ _DAY_BORDER = (155, 115, 60)
 _DAY_TEXT   = (75,  42,  10)
 _DAY_TOTAL  = 30    # overwritten per chapter by _load_chapter()
 
-# ── Water meter (bottom of the planter) ─────────────────────────
-_water_level        = 1.0    # 0.0 (bone dry) - 1.0 (freshly watered)
-_crop_name          = ""     # current chapter's crop, for tailoring the meter
+# ── Action-card usage meters ────────────────────────────────────
 _pending_water_scan = False
 _gauge_remaining = {}
 _gauge_totals = {}
 _gauge_visible = {}
+_gauge_used = {}
 _GAUGE_ORDER = ("water", "fertilizer", "pests", "weeds")
 _GAUGE_LABELS = {
-    "water": "Water",
+    "water": "Watering can",
     "fertilizer": "Fertilizer",
     "pests": "Pest control",
     "weeds": "Weed removal",
@@ -124,25 +127,6 @@ _ACTION_GAUGE_BY_SLUG = {
     "natural_pesticide": "pests",
     "chemical_pesticide": "pests",
 }
-_WATER_DRYING_DAYS            = 7
-_WATER_DECAY_PER_DAY          = 0.28 / _WATER_DRYING_DAYS
-_WATER_LOW_THRESHOLD        = 0.28
-_WATER_DEFAULT_COLOR        = (70, 140, 200)
-
-# Accent colour per crop so the meter reads as "that plant's" water, not a generic bar.
-_CROP_WATER_COLORS = {
-    "Pechay":   (100, 170, 90),
-    "Monggo":   (150, 130, 60),
-    "Okra":     (90,  150, 70),
-    "Squash":   (230, 150, 40),
-    "Tomato":   (200, 70,  55),
-    "Eggplant": (120, 70,  140),
-    "Kamote":   (170, 90,  140),
-    "Rice":     (210, 190, 120),
-    "Corn":     (235, 195, 60),
-    "Cassava":  (150, 110, 70),
-}
-
 # ── Layout constants ──────────────────────────────────────────
 _EDGE_MARGIN_FRAC = 0.03
 
@@ -385,40 +369,86 @@ def _prepare_chapter(chapter):
             if gauge is not None:
                 fixed_challenges[gauge] += 1
 
-    totals = {
-        gauge: 0 if gauge == "water" else fixed_challenges[gauge]
-        for gauge in _GAUGE_ORDER
-    }
+    totals = dict(fixed_challenges)
     prepared["slides"] = slides
     return prepared, totals
 
 
 def _load_chapter():
     global _engine, _chars, _DAY_TOTAL, _chapter_done, _last_bg_surf
-    global _water_level, _crop_name, _pending_water_scan, _challenge_timer_slide
+    global _pending_water_scan, _challenge_timer_slide
     global _gauge_remaining, _gauge_totals, _gauge_visible
+    global _gauge_used
     global _memory_game_played, _ingredient_puzzle_played, _whack_a_pest_played
     global _tomato_seed_extraction_played
+    global _save_status, _save_status_until
     chapter, _gauge_totals = _prepare_chapter(
         chapters_data.load(game_state.selected_chapter)
     )
+    checkpoint = player_data.chapter_save(game_state.selected_chapter)
     _gauge_remaining = dict(_gauge_totals)
     _gauge_visible = {gauge: False for gauge in _GAUGE_ORDER}
+    _gauge_used = {gauge: 0 for gauge in _GAUGE_ORDER}
     _DAY_TOTAL  = chapter.get("total_days", 30)
-    game_state.day = 0
+    game_state.day = int(checkpoint.get("day", 0)) if checkpoint else 0
     _chars      = CharacterLayer(WIDTH, HEIGHT)
     _engine     = StoryEngine(chapter, on_chapter_end=_on_chapter_end)
-    player_data.begin_chapter(game_state.selected_chapter)
+    if checkpoint:
+        restored = _engine.restore_state(checkpoint.get("engine", {}))
+        if restored and player_data.resume_chapter(
+            game_state.selected_chapter, checkpoint
+        ):
+            _gauge_remaining = dict(
+                checkpoint.get("gauge_remaining", _gauge_remaining)
+            )
+            _gauge_visible = dict(
+                checkpoint.get("gauge_visible", _gauge_visible)
+            )
+            saved_usage = checkpoint.get("gauge_used")
+            if isinstance(saved_usage, dict):
+                _gauge_used = {
+                    gauge: max(0, int(saved_usage.get(gauge, 0)))
+                    for gauge in _GAUGE_ORDER
+                }
+            else:
+                _gauge_used = {
+                    gauge: (
+                        int(bool(_gauge_visible.get(gauge, False)))
+                        if gauge == "water"
+                        else max(
+                            0,
+                            int(_gauge_totals[gauge])
+                            - int(_gauge_remaining.get(gauge, _gauge_totals[gauge])),
+                        )
+                    )
+                    for gauge in _GAUGE_ORDER
+                }
+            played = checkpoint.get("minigames", {})
+            _memory_game_played = bool(played.get("memory", False))
+            _ingredient_puzzle_played = bool(played.get("ingredient", False))
+            _whack_a_pest_played = bool(played.get("whack", False))
+            _tomato_seed_extraction_played = bool(played.get("tomato", False))
+        else:
+            print(
+                "[story] Saved chapter state was invalid; restarting this chapter.",
+                file=sys.stderr,
+            )
+            player_data.begin_chapter(game_state.selected_chapter)
+            checkpoint = None
+    else:
+        player_data.begin_chapter(game_state.selected_chapter)
     _chapter_done = False
-    _memory_game_played = False
-    _ingredient_puzzle_played = False
-    _whack_a_pest_played = False
-    _tomato_seed_extraction_played = False
+    if checkpoint is None:
+        game_state.day = 0
+        _memory_game_played = False
+        _ingredient_puzzle_played = False
+        _whack_a_pest_played = False
+        _tomato_seed_extraction_played = False
     _last_bg_surf = None
-    _water_level  = 1.0
-    _crop_name    = chapter.get("crop", "")
     _pending_water_scan = False
     _challenge_timer_slide = None
+    _save_status = ""
+    _save_status_until = 0.0
     _reset_typing()
     _sync_chars()
 
@@ -428,9 +458,6 @@ def _sync_chars():
         return
     s = _engine.slide
     if "day" in s:
-        elapsed_days = max(0, s["day"] - game_state.day)
-        if elapsed_days:
-            _decay_water(elapsed_days)
         game_state.day = s["day"]
     _chars.set_slide(
         s.get("chars", {}),
@@ -448,8 +475,8 @@ def _sync_chars():
             _smoke.start(burst=True)
         else:
             _smoke.stop()
-    if s.get("type") == "action_challenge":
-        _open_action_scan()
+    if player_data.current_profile() is not None:
+        _save_current_progress()
 
 
 def _open_action_scan():
@@ -499,10 +526,17 @@ def _blit_shaken(surf: pygame.Surface):
 
 
 def _on_chapter_end():
-    global _engine, _chars, _chapter_done
+    global _engine, _chars, _chapter_done, _save_status, _save_status_until
     result = player_data.complete_chapter()
     if result is not None:
         game_state.score[result["chapter"]] = result["score"]
+    if result is not None:
+        _save_status = (
+            "Progress saved."
+            if not player_data.last_error()
+            else player_data.last_error()
+        )
+        _save_status_until = time.monotonic() + 4.0
     if game_state.selected_chapter == chapters_data.CHAPTER_IDS[-1]:
         player_data.release_pending_score_prompts()
     _chapter_done = True
@@ -1642,14 +1676,14 @@ def handle_tap(px, py):
 
 
 def _on_scan_done():
-    global _water_level, _pending_water_scan
+    global _pending_water_scan
     if _engine is None:
         return
 
     if _engine.slide.get("type") == "action_challenge":
         _record_action_success()
     elif _pending_water_scan:
-        _water_level = 1.0
+        _record_gauge_use("water")
     _pending_water_scan = False
     _engine.on_scan_complete()
     _sync_chars()
@@ -1663,18 +1697,21 @@ def _on_scan_cancel():
 
 
 def _record_action_success():
-    global _water_level
     slide = _engine.slide
     player_data.record_challenge_success(
         _challenge_time_left if slide.get("timer") else 0
     )
     gauge = _ACTION_GAUGE_BY_SLUG.get(_action_kind(slide))
     if gauge is not None:
-        _gauge_visible[gauge] = True
-        if gauge != "water":
-            _gauge_remaining[gauge] = max(0, _gauge_remaining[gauge] - 1)
-    if gauge == "water":
-        _water_level = 1.0
+        _record_gauge_use(gauge)
+
+
+def _record_gauge_use(gauge):
+    if gauge not in _gauge_used:
+        return
+    _gauge_visible[gauge] = True
+    _gauge_used[gauge] = max(0, int(_gauge_used[gauge])) + 1
+    _gauge_remaining[gauge] = max(0, _gauge_remaining[gauge] - 1)
 
 
 def _handle_end_tap(px, py):
@@ -1720,6 +1757,11 @@ def exit_chapter():
 
     if game_state.selected_chapter is None:
         return
+    if not _chapter_done:
+        if _engine is None:
+            _load_chapter()
+        if not _save_current_progress(show_status=True):
+            return
     if _smoke is not None:
         _smoke.stop()
     scan_popup.close()
@@ -1736,13 +1778,50 @@ def exit_chapter():
     _go_to_scene("level_select")
 
 
+def _save_current_progress(show_status=False):
+    global _save_status, _save_status_until
+    if game_state.selected_chapter is None or _chapter_done:
+        return False
+    if _engine is None:
+        return False
+    if player_data.current_profile() is None:
+        if show_status:
+            _save_status = "Choose a player profile before saving."
+            _save_status_until = time.monotonic() + 4.0
+        return False
+
+    checkpoint = {
+        "chapter": game_state.selected_chapter,
+        "engine": _engine.snapshot_state(),
+        "day": game_state.day,
+        "gauge_remaining": dict(_gauge_remaining),
+        "gauge_visible": dict(_gauge_visible),
+        "gauge_used": dict(_gauge_used),
+        "minigames": {
+            "memory": _memory_game_played,
+            "ingredient": _ingredient_puzzle_played,
+            "whack": _whack_a_pest_played,
+            "tomato": _tomato_seed_extraction_played,
+        },
+    }
+    saved = player_data.save_chapter_progress(checkpoint)
+    if show_status:
+        _save_status = (
+            "Progress saved."
+            if saved
+            else player_data.last_error() or "Progress could not be saved."
+        )
+        _save_status_until = time.monotonic() + 4.0
+    return saved
+
+
 # ─────────────────────────────────────────────────────────────
 #  Drawing
 # ─────────────────────────────────────────────────────────────
 
 def draw(surf):
     _draw_chapter_frame(surf)
-    draw_chapter_exit(surf)
+    draw_chapter_exit(surf, include_save=True)
 
 
 def handle_chapter_exit_tap(px, py):
@@ -1751,9 +1830,20 @@ def handle_chapter_exit_tap(px, py):
     return _chapter_exit_button_rect().collidepoint(px, py)
 
 
-def draw_chapter_exit(surf):
+def handle_chapter_save_tap(px, py):
+    if (
+        game_state.selected_chapter is None
+        or _chapter_done
+        or not _chapter_save_button_rect().collidepoint(px, py)
+    ):
+        return False
+    _save_current_progress(show_status=True)
+    return True
+
+
+def draw_chapter_exit(surf, include_save=False):
     if game_state.selected_chapter is not None:
-        _draw_chapter_exit(surf)
+        _draw_chapter_exit(surf, include_save=include_save)
 
 
 def _draw_chapter_frame(surf):
@@ -1879,7 +1969,7 @@ def _draw_chapter_frame(surf):
         _finish_fade_in(surf, dt)
         return
 
-    # ── Action challenge: instruction art + live scanner ─────────
+    # ── Action challenge: instruction art + manual scanner ───────
     # Sits after the "scene" branch because it is the same shape of
     # screen: a background, no dialogue box, no typewriter.
     if stype == "action_challenge":
@@ -1977,13 +2067,54 @@ def _chapter_exit_button_rect():
     return pygame.Rect(WIDTH - button_w - margin, margin, button_w, button_h)
 
 
-def _draw_chapter_exit(surf):
-    rect = _chapter_exit_button_rect()
-    pygame.draw.rect(surf, (132, 48, 40), rect, border_radius=rect.height // 3)
-    pygame.draw.rect(surf, (245, 220, 195), rect, width=2, border_radius=rect.height // 3)
+def _chapter_save_button_rect():
+    exit_rect = _chapter_exit_button_rect()
+    gap = max(8, int(WIDTH * 0.012))
+    return pygame.Rect(
+        exit_rect.left - gap - exit_rect.width,
+        exit_rect.top,
+        exit_rect.width,
+        exit_rect.height,
+    )
+
+
+def _draw_chapter_exit(surf, include_save=False):
+    if include_save and not _chapter_done:
+        _draw_chapter_control(
+            surf,
+            _chapter_save_button_rect(),
+            "Save",
+            (55, 107, 70),
+        )
+    _draw_chapter_control(
+        surf,
+        _chapter_exit_button_rect(),
+        "Exit chapter",
+        (132, 48, 40),
+    )
+    if (
+        include_save
+        and _save_status
+        and time.monotonic() < _save_status_until
+    ):
+        font = _make_font(max(0.022, 14 / HEIGHT))
+        message = font.render(_save_status, True, (255, 235, 190))
+        backdrop = message.get_rect(midtop=(
+            _chapter_save_button_rect().centerx,
+            _chapter_save_button_rect().bottom + int(HEIGHT * 0.008),
+        )).inflate(12, 8)
+        pygame.draw.rect(surf, (35, 40, 30), backdrop, border_radius=6)
+        surf.blit(message, message.get_rect(center=backdrop.center))
+
+
+def _draw_chapter_control(surf, rect, label, fill):
+    pygame.draw.rect(surf, fill, rect, border_radius=rect.height // 3)
+    pygame.draw.rect(
+        surf, (245, 220, 195), rect, width=2, border_radius=rect.height // 3
+    )
 
     font = _make_font(max(0.028, 16 / HEIGHT))
-    label = font.render("Exit chapter", True, (255, 245, 230))
+    label = font.render(label, True, (255, 245, 230))
     max_width = rect.width - 16
     if label.get_width() > max_width:
         label = pygame.transform.smoothscale(
@@ -2146,12 +2277,6 @@ def _apply_fade(surf, dt):
     surf.blit(overlay, (0, 0))
 
 
-def _decay_water(days_passed):
-    """Reduce the meter in proportion to elapsed in-game days."""
-    global _water_level
-    _water_level = max(0.0, _water_level - _WATER_DECAY_PER_DAY * days_passed)
-
-
 def _draw_water_bar(surf):
     """Draw only the care meters whose matching action has been encountered."""
     if _engine is None or _engine.popup_open:
@@ -2182,13 +2307,11 @@ def _draw_water_bar(surf):
         icon_y = panel_y + (panel_h - icon_size) // 2
         surf.blit(icon, (x + 8, icon_y))
 
-        if gauge == "water":
-            water_label = f"Water {int(_water_level * 100)}%"
-            label = f"{_crop_name} {water_label}" if _crop_name else water_label
-        else:
-            remaining = _gauge_remaining[gauge]
-            total = _gauge_totals[gauge]
-            label = f"{_GAUGE_LABELS[gauge]} {remaining}/{total}"
+        total = _gauge_totals[gauge]
+        used = _gauge_used.get(gauge, 0)
+        label = f"{_GAUGE_LABELS[gauge]} used {used}"
+        if total:
+            label += f"/{total}"
         text = label_font.render(label, True, (250, 245, 230))
         max_text_w = max(20, item_w - icon_size - 24)
         if text.get_width() > max_text_w:
@@ -2204,14 +2327,8 @@ def _draw_water_bar(surf):
         bar_w = max(16, margin + (index + 1) * item_w - 8 - bar_x)
         track = pygame.Rect(bar_x, bar_y, bar_w, 9)
         pygame.draw.rect(surf, (54, 43, 31), track, border_radius=5)
-        if gauge == "water":
-            fraction = _water_level
-            fill_color = (215, 70, 55) if _water_level < _WATER_LOW_THRESHOLD else _CROP_WATER_COLORS.get(
-                _crop_name, _WATER_DEFAULT_COLOR
-            )
-        else:
-            fraction = remaining / total if total else 0
-            fill_color = _GAUGE_COLORS[gauge]
+        fraction = min(1.0, used / total) if total else (1.0 if used else 0.0)
+        fill_color = _GAUGE_COLORS[gauge]
         fill_w = int(track.width * max(0.0, min(1.0, fraction)))
         if fill_w:
             pygame.draw.rect(

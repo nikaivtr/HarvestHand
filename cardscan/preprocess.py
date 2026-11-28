@@ -314,8 +314,85 @@ def _record(details):
     return details
 
 
+def _find_marker(arr, fast=False):
+    import cardscan.marker as marker
+    if not marker.available():
+        return None
+    return marker.best_known(marker.detect(arr, fast=fast))
+
+
+def _marker_fields(m, arr):
+    import cardscan.marker as marker
+    sharp = _sharpness(arr)
+    return {
+        "marker_id": m.id,
+        "marker_slug": marker.slug_for_id(m.id),
+        "marker_side": round(m.side, 1),
+        "sharpness": round(sharp, 1),
+        "blurry": bool(sharp < BLUR_THRESHOLD),
+    }
+
+
+def _marker_crop(arr, m):
+    import cardscan.marker as marker
+    canvas = _array_to_surface(
+        marker.card_array(arr, m, CANVAS_W, CANVAS_H, WARP_SUPERSAMPLE))
+    return canvas, {
+        "status": "detected",
+        "reason": "ArUco marker %d" % m.id,
+        "source": "marker",
+        "strategy": "aruco",
+        "quality": 1.0,
+        "points": [[float(p[0]), float(p[1])]
+                   for p in marker.card_quad(m)],
+        **_marker_fields(m, arr),
+    }
+
+
+def _upright_turns(center_xy, size):
+    x, y = center_xy[0] / size[0], center_xy[1] / size[1]
+    return 180 if x < 0.5 and y > 0.5 else 0
+
+
+def _identity_candidates(surface, arr, m, candidates, fallback):
+    """Use action-card markers for identity/orientation, not card framing."""
+    import cv2
+    import numpy as np
+    import cardscan.marker as marker
+
+    fields = _marker_fields(m, arr)
+    center = np.asarray(m.corners, dtype=np.float32).mean(axis=0)
+    output = []
+    for points, details in candidates:
+        canvas = _array_to_surface(_warp_array(arr, points))
+        quad = np.asarray(points, dtype=np.float32).reshape(4, 2)
+        destination = np.float32([
+            [0, 0], [CANVAS_W, 0], [CANVAS_W, CANVAS_H], [0, CANVAS_H]
+        ])
+        homography = cv2.getPerspectiveTransform(quad, destination)
+        cx, cy = cv2.perspectiveTransform(
+            center.reshape(1, 1, 2), homography
+        ).reshape(2)
+        turn = _upright_turns((cx, cy), (CANVAS_W, CANVAS_H))
+        if turn:
+            canvas = pygame.transform.rotate(canvas, turn)
+        output.append((canvas, {
+            **details,
+            **fields,
+            "marker_identity_only": True,
+            "oriented_by_marker": True,
+        }))
+
+    if not output and fallback:
+        canvas, details = _apply_fallback(surface, arr, fallback, {})
+        if canvas is not None:
+            output.append((canvas, {**details, **fields,
+                                   "marker_identity_only": True}))
+    return output
+
+
 def prepare_candidates(surface, max_candidates=3, fallback=None,
-                       previous=None, use_marker=None):
+                       previous=None, use_marker=None, fast_marker=False):
     """Return [(canvas, details), ...] best boundary first.
 
     The scanner uses the alternates to let the recognition model veto a
@@ -336,36 +413,24 @@ def prepare_candidates(surface, max_candidates=3, fallback=None,
     if use_marker is None:
         use_marker = MARKER_MODE != "off"
     try:
+        identity = None
         if use_marker:
             import cardscan.marker as marker
-            if marker.available():
-                found = marker.detect(arr)
-                m = marker.best_known(found)
-                if m is not None:
-                    canvas = _array_to_surface(
-                        marker.card_array(
-                            arr, m, CANVAS_W, CANVAS_H, WARP_SUPERSAMPLE
-                        )
-                    )
-                    sharp = _sharpness(arr)
-                    details = {
-                        "status": "detected",
-                        "reason": "ArUco marker %d" % m.id,
-                        "source": "marker",
-                        "strategy": "aruco",
-                        "marker_id": m.id,
-                        "marker_slug": marker.slug_for_id(m.id),
-                        "marker_side": round(m.side, 1),
-                        "quality": 1.0,
-                        "points": [[float(p[0]), float(p[1])]
-                                   for p in marker.card_quad(m)],
-                        "sharpness": round(sharp, 1),
-                        "blurry": bool(sharp < BLUR_THRESHOLD),
-                    }
+            m = _find_marker(arr, fast_marker)
+            if m is not None:
+                if marker.has_crop(m.id):
+                    hit = _marker_crop(arr, m)
                     _LAST_DETECTION_ERROR = None
-                    _record(details)
-                    return [(canvas, details)]
+                    _record(hit[1])
+                    return [hit]
+                identity = m
         cands = find_candidates(arr, max_candidates, previous)
+        if identity is not None:
+            out = _identity_candidates(surface, arr, identity, cands, fallback)
+            if out:
+                _LAST_DETECTION_ERROR = None
+                _record(out[0][1])
+                return out
         if not cands:
             _, details = detect_quad(arr)
             canvas, details = _apply_fallback(surface, arr, fallback, details)
